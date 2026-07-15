@@ -1,0 +1,70 @@
+{
+  "system_slug": "atlantean_lemurian",
+  "tradition_matrix": 31,
+  "system_name": "\u0410\u0442\u043b\u0430\u043d\u0442\u043e-\u043b\u0435\u043c\u0443\u0440\u0438\u0439\u0441\u043a\u0430\u044f",
+  "note": "A reconstructed lost-civilization mythos (occult / esoteric synthesis, not attested history). Its backbone is Blavatsky's doctrine of the Root-Races in The Secret Doctrine vol. 2 (Anthropogenesis): humanity evolves through seven Root-Races on Earth, descending from the ethereal toward the physical and rising again toward the spiritual. Lemuria is the THIRD Root-Race (esoteric name Shalmali) and Atlantis the FOURTH. Primary lattice: two epochs - Lemuria, the giant, psychic, third-eyed third race that knew no speech and was destroyed by volcanic fire, and Atlantis, the fourth race of titans and natural-born seers, the first fully human species, whose misuse of psychic power brought the flood. Secondary lattice: the great polarity of the Fall - in Blavatsky's telling the Adepts / Lords of the Light against the sorcerers (the Lords of the Dark Face who followed the Dragon-king Thevetat); in Cayce's later telling the Law of One against the Sons of Belial. Tertiary lattice: the kindling of Manas by the Manasaputras (the Lords of the Flame) that lit mind in the mindless third race; the third eye; the separation of the sexes (the first Fall, ~18 million years ago); the crystal sciences and the Tuaoi firestone (Cayce). The spine of 21 agents reads from the central light (svet_ra) to the Karma of the Fall (karma). Provenance is kept explicit: root-race material is Blavatsky; the Tuaoi stone and Law-of-One/Belial are Edgar Cayce; the date 9564 BCE for Poseidonis is from Scott-Elliot.",
+  "reconstructed": true,
+  "lemuria_esoteric_name": "Shalmali",
+  "epochs_count": 2,
+  "root_races_count": 7,
+  "polarity": ["Adepts / Lords of the Light (Blavatsky)", "Sorcerers / Lords of the Dark Face under Thevetat (Blavatsky)", "The Law of One (Cayce)", "The Sons of Belial (Cayce)"],
+  "mera_axis": "9-dimensional axis (mera 1-9): chakras 1-7 (Muladhara..Sahasrara) + Monada (8) + Absolut (9); each spine agent carries its mera.",
+  "mera_map": {"svet_ra":9,"iskra":8,"brahma":7,"vishnu":7,"ananda":7,"shanti":7,"jnana":6,"shiva":6,"tejas":6,"sarasvati":5,"akasha":5,"prema":4,"parvati":4,"vayu":4,"shakti":3,"agni":3,"varuna":2,"lakshmi":2,"prithvi":1,"dharma":1,"karma":1},
+  "epochs": [
+    {"n":1,"name":"Lemuria (Mu) - the Third Root-Race","domain":"giant, androgynous-then-sexed, psychic and speechless, single-eyed; destroyed by volcanic fire","agent":"ananda"},
+    {"n":2,"name":"Atlantis - the Fourth Root-Race","domain":"titans and natural-born seers, first fully human species, crystal-tech priest-kings; destroyed by flood","agent":"vishnu"}
+  ],
+  "blavatsky_root_races": [
+    {"n":1,"name":"Polarian (Imperishable Sacred Land)","domain":"ethereal, self-born, reproduced by fission","note":"Bodiless astral humanity."},
+    {"n":2,"name":"Hyperborean","domain":"near the North Pole, Sweat-Born, budding reproduction, sense of touch","note":"Still without solid bodies."},
+    {"n":3,"name":"Lemurian (Shalmali)","domain":"giants in the Indian-Pacific; Sweat-Born then Egg-Born then sexed; third eye; psychic, speechless; mind kindled by the Manasaputras; first Fall = separation of the sexes ~18 million years ago; destroyed by volcanic fire; remnants Australia, Madagascar, Easter Island","agent":"ananda","note":"The race in which mind (Manas) was lit and the sexes divided."},
+    {"n":4,"name":"Atlantean","domain":"grown from a northern Lemurian nucleus; titans and cyclopes; first fully human species; apex of physical form toward the middle sub-race; brown/red/yellow/white/black peoples; born seers whose sight embraced all hidden things; developed speech (monosyllabic -> agglutinative -> inflectional, root of Sanskrit); third eye atrophied as bodies densified; psychic powers misused under the Dragon-king Thevetat; last island Poseidonis sank 9564 BCE","agent":"vishnu","note":"Ancestral memory of this race became Plato's Atlantis and the flood myths of Babylon and Noah."},
+    {"n":5,"name":"Aryan (present)","domain":"the current root-race, working out the karma of Atlantis","note":"Our own race in Blavatsky's schema."},
+    {"n":6,"name":"(to come)","domain":"a future race, more spiritual","note":"Yet to arise."},
+    {"n":7,"name":"(to come)","domain":"the final, spiritual race of this cycle","note":"Yet to arise."}
+  ],
+  "spine": {
+    "svet_ra": {"principle":"The Law of One - the Central Light","role":"the One Force, source of all light and unity","mera":9,"note":"The single light to which service is owed; in Blavatsky, the Light the Adepts serve against the Dark Face."},
+    "iskra": {"principle":"The Spark of Manas","role":"the kindling of mind, the call to remember","mera":8,"note":"The Manasaputras (Lords of the Flame) lit the spark of mind in the mindless third race - the true awakening-spark."},
+    "brahma": {"principle":"The Temple-Builders","role":"the demiurgic founders of the first temples","mera":7,"note":"The architect-initiates who raised the temples of light."},
+    "vishnu": {"principle":"The Priest-King","role":"the just ruler who sustains the realm","mera":7,"note":"The high priest-king who upholds the Law over the land before the fall."},
+    "ananda": {"principle":"The Lemurian Dreaming","role":"the heart-bliss of the etheric third-race age","mera":7,"note":"The wordless, psychic, dreaming life of Lemuria before density and speech."},
+    "shanti": {"principle":"The Telepathic Communion","role":"the wordless peace of minds in harmony","mera":7,"note":"The Lemurians had no language; hearts and minds spoke directly, in peace."},
+    "jnana": {"principle":"The Keepers of the Records / the Third-Eye Sight","role":"the initiate-seers, guardians of the Hall of Records","mera":6,"note":"The Atlanteans were born seers whose sight embraced all hidden things; the keepers preserved this wisdom against the flood."},
+    "shiva": {"principle":"The Deluge / the Sinking","role":"the cataclysm that drowned the lands","mera":6,"note":"After the war of the Adepts against the sorcerers, the last island Poseidonis sank with all its sorcerers in 9564 BCE (Scott-Elliot's date)."},
+    "tejas": {"principle":"The Tuaoi Crystal (Firestone)","role":"the great crystal that focused light into power","mera":6,"note":"Cayce's radiant firestone whose light powered Atlantis - and whose misuse helped doom it."},
+    "sarasvati": {"principle":"The Birth of Speech / the Naacal Tongue","role":"the first sacred language and glyphs","mera":5,"note":"Speech first arose in Atlantis - monosyllabic, then agglutinative, then the inflectional root of Sanskrit; Mu's wisdom was written in the Naacal script (Churchward)."},
+    "akasha": {"principle":"The Akashic Hall","role":"the Hall of Records, the etheric field of all memory","mera":5,"note":"The hall where every deed of the lost ages is recorded in the ether."},
+    "prema": {"principle":"The Heart-Union","role":"the heart-love of the people of Mu","mera":4,"note":"The bond of the heart-people, before power divided them."},
+    "parvati": {"principle":"The Motherland (Mu)","role":"the nurturing earth-mother continent","mera":4,"note":"Mu / Lemuria, the great mother-continent that bore and fed the first peoples."},
+    "vayu": {"principle":"The Vril-Breath","role":"the breath-force, the air the sky-craft rode","mera":4,"note":"The subtle air-force that lifted the vessels and carried the will."},
+    "shakti": {"principle":"The Crystal-Power","role":"the harnessed energy of the firestone and the psychic arts","mera":3,"note":"The vast power drawn from the crystal and from the third-eye sight - for healing or for ruin."},
+    "agni": {"principle":"The Volcanic Fire","role":"the earth-fire that ended Lemuria","mera":3,"note":"Lemuria was destroyed by incessant volcanic fire - the fire-death, as Atlantis met the water-death."},
+    "varuna": {"principle":"The Sunken Deep","role":"the ocean that swallowed and now remembers the lands","mera":2,"note":"The deep that holds the drowned continents; the flood that imitates the Babylonian and Mosaic deluge."},
+    "lakshmi": {"principle":"The Golden Abundance","role":"the fertile plenty of the high civilization","mera":2,"note":"The overflowing fruitfulness and high arts of Atlantis at its peak."},
+    "prithvi": {"principle":"The Lost Continent","role":"the land-body of Atlantis and Lemuria","mera":1,"note":"The solid continents now beneath the Atlantic and the Indian-Pacific seas."},
+    "dharma": {"principle":"The Law and its Breaking","role":"the moral law of service and its violation","mera":1,"note":"The Adepts / Law of One held the realm; the Lords of the Dark Face / Sons of Belial broke it through sorcery and domination."},
+    "karma": {"principle":"The Karma of the Fall","role":"the consequence of misused power","mera":1,"note":"The abuse of psychic and crystal power set heavy karmic causes that humanity, the fifth race, still works out today."}
+  },
+  "items": [
+    {"key":"manasaputra","name":"The Manasaputras (Lords of the Flame)","domain":"the beings who kindled mind (Manas) in the mindless third race"},
+    {"key":"third_eye","name":"The Third Eye","domain":"the single spiritual eye of the Lemurians, source of psychic sight, atrophied as Atlantean bodies densified"},
+    {"key":"separation_of_sexes","name":"The Separation of the Sexes (First Fall)","domain":"the division into two sexes ~18 million years ago, Blavatsky's first Fall of Man"},
+    {"key":"giants_titans","name":"The Giants and Titans","domain":"the gigantic stature of the third and fourth races, root of the titan and cyclops legends"},
+    {"key":"thevetat","name":"The Dragon-King Thevetat","domain":"the dark power the Atlantean sorcerers followed into wicked magic"},
+    {"key":"poseidonis","name":"Poseidonis","domain":"the last island of Atlantis, sunk in 9564 BCE after the war of Adepts and sorcerers"},
+    {"key":"law_of_one","name":"The Law of One (Cayce)","domain":"service to the One Force, harmony and unity"},
+    {"key":"sons_of_belial","name":"The Sons of Belial (Cayce)","domain":"the path of domination and self-service that brought the fall"},
+    {"key":"tuaoi","name":"The Tuaoi Stone / Firestone (Cayce)","domain":"the great power-crystal of Atlantis"},
+    {"key":"hall_of_records","name":"The Hall of Records","domain":"the hidden archive of the lost civilizations"}
+  ],
+  "sources": [
+    "Reconstructed synthesis (occult / esoteric, not attested history)",
+    "H. P. Blavatsky, The Secret Doctrine vol. 2 (Anthropogenesis): the seven Root-Races, Lemuria (3rd) and Atlantis (4th), the third eye, the Manasaputras, the separation of the sexes, the sorcerers of Thevetat, the sinking of Atlantis",
+    "W. Scott-Elliot, The Story of Atlantis (1896) and The Lost Lemuria (1904): the date 9564 BCE for Poseidonis",
+    "Annie Besant, Man: Whence, How and Whither (1913)",
+    "Plato: Timaeus and Critias (the Atlantis account)",
+    "Edgar Cayce readings: the Law of One, the Sons of Belial, the Tuaoi firestone",
+    "James Churchward: Mu and the Naacal tablets"
+  ]
+}

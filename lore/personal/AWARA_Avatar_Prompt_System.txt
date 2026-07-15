@@ -1,0 +1,270 @@
+Рассуждение остановлено
+Отлично. Тогда дам тебе рабочую профессиональную систему промптов, чтобы ты мог:
+делать канонические аватары ядра AWARA, 
+потом накладывать на них матрицу восприятия, 
+и получать одного и того же агента в разных вселенных, не теряя источник. 
+Я сделаю это максимально практично:
+Пакет A — универсальный master style prompt 
+Пакет B — формат под ChatGPT / Midjourney / SDXL 
+Пакет C — матричные overlay-промпты 
+Пакет D — примеры готовых комбинированных промптов 
+
+ПАКЕТ A · MASTER STYLE ДЛЯ ВСЕЙ СЕРИИ
+Этот блок добавляй в начало любого промпта, чтобы вся линейка аватаров была едина.
+1) MASTER STYLE PROMPT
+AWARA canonical avatar series, mystical high-fantasy portrait, semi-realistic, ultra-detailed, elegant sacred character design, game-ready avatar, centered composition, 1:1 portrait framing, bust or waist-up, clean readable silhouette, luminous skin, expressive eyes, subtle sacred mandala halo, refined symbolic costume, ornate but balanced details, rich spiritual atmosphere, soft volumetric light, cinematic glow, deep mystical background, consistent visual language across all characters, same rendering style, same quality level, same sacred design system, family resemblance between all avatars, immersive, intuitive, iconic, beautiful, no clutter.
+2) NEGATIVE PROMPT
+text, caption, logo, watermark, low quality, blurry, deformed anatomy, extra fingers, extra arms, duplicate face, multiple characters, cropped head, bad eyes, distorted proportions, horror, grotesque, chaotic background, random sci-fi junk, parody, cartoonish exaggeration, low detail, muddy colors.
+
+ПАКЕТ B · ФОРМАТЫ ПОД РАЗНЫЕ ГЕНЕРАТОРЫ
+
+B1. Формат для ChatGPT / DALL·E / image generation
+Используй так:
+[MASTER STYLE PROMPT]
+
+Character:
+[ОПИСАНИЕ АГЕНТА]
+
+Important details:
+[палитра]
+[символы]
+[тотем]
+[роль]
+[тип ауры]
+[настроение]
+
+Background:
+subtle mystical environment connected to the character’s energy, not distracting, atmospheric and elegant.
+
+Render notes:
+high detail, visually clean, avatar-friendly, centered, iconic, readable at small size.
+
+Negative:
+[NEGATIVE PROMPT]
+
+B2. Формат для Midjourney
+[ОПИСАНИЕ АГЕНТА], AWARA canonical avatar series, mystical high-fantasy portrait, semi-realistic, ultra-detailed, elegant sacred character design, centered composition, clean silhouette, luminous aura, sacred halo, game-ready icon, deep mystical background, cinematic light, family resemblance across the series --ar 1:1 --stylize 200 --quality 1 --v 6
+Если хочешь более “иконный” и чистый вид:
+--ar 1:1 --stylize 150 --chaos 5 --v 6
+Если хочешь богаче и художественнее:
+--ar 1:1 --stylize 350 --chaos 8 --v 6
+
+B3. Формат для SDXL
+Positive prompt:
+[MASTER STYLE PROMPT], [ОПИСАНИЕ АГЕНТА], avatar portrait, sacred fantasy character, centered, mystical, luminous, intricate costume, symbolic details, elegant composition, visually readable, rich atmosphere.
+Negative prompt:
+[NEGATIVE PROMPT]
+
+ПАКЕТ C · МАТРИЧНЫЕ OVERLAY-ПРОМПТЫ
+Это самое важное.
+Ты берёшь базовый промпт агента, а потом добавляешь overlay выбранной матрицы.
+Главное правило
+Матрица не заменяет агента.
+Она только меняет:
+визуальный язык, 
+костюм, 
+окружение, 
+символику, 
+мифопоэтический образ. 
+
+C1. ВЕДИЧЕСКАЯ MATRIX OVERLAY
+Translate the character through the Vedic matrix. Preserve the AWARA core identity. Use sacred Indian-inspired symbolic aesthetics, subtle mandala geometry, lotus motifs, yantra-like halo, refined temple-cosmic atmosphere, chakra-infused color logic, soft fire and ether energy, divine yet elegant presence. Do not make it look like a literal religious illustration; keep it as a mythic fantasy avatar rooted in Vedic archetypal energy.
+
+C2. ЕГИПЕТСКАЯ MATRIX OVERLAY
+Translate the character through the Egyptian matrix. Preserve the AWARA core identity. Use temple aesthetics, gold and lapis details, solar-disc symbolism, Nile-inspired ornament, sacred geometry reminiscent of temple walls, refined ceremonial costume, hieroglyphic motifs, desert light, eternal calm, majestic ritual atmosphere. Keep the energy symbolic and elegant, not historically literal, not costume-party style.
+
+C3. МАЙЯНСКАЯ MATRIX OVERLAY
+Translate the character through the Mayan matrix. Preserve the AWARA core identity. Use solar-calendar symbolism, stepped pyramid geometry, jade, turquoise, obsidian and sun-gold accents, glyph-like motifs, jungle-temple atmosphere, cosmic calendar energy, celestial timing, sacred feathers, ritual elegance. The character should feel like a mythic being of time, rhythm and living day-energy, not a literal reconstruction.
+
+C4. КАББАЛИСТИЧЕСКАЯ MATRIX OVERLAY
+Translate the character through the Kabbalistic matrix. Preserve the AWARA core identity. Use luminous emanation aesthetics, sacred tree-like geometry, subtle Hebrew-letter-inspired abstract forms, vessel-and-light symbolism, deep blue, violet, silver and gold palette, mystical radiance, refined spiritual clothing, atmosphere of hidden wisdom and inner ascent. Avoid literal doctrinal depiction; keep it symbolic, elegant and archetypal.
+
+C5. ГНОСТИЧЕСКАЯ MATRIX OVERLAY
+Translate the character through the Gnostic matrix. Preserve the AWARA core identity. Use inner-light symbolism, silver-white radiance emerging from darkness, mirror and labyrinth motifs, subtle aeonic geometry, hidden-knowledge atmosphere, sacred spark inside matter, restrained mystical elegance, deep contrast between illusion and truth, awakening energy. Avoid dark horror; the tone should be revelatory, transcendent and inwardly luminous.
+
+C6. ШАМБАЛА MATRIX OVERLAY
+Translate the character through the Shambhala matrix. Preserve the AWARA core identity. Use mountain-temple mysticism, crystalline blue-white light, high-altitude serenity, sacred snow, monastic elegance, hidden wisdom, icy clarity, subtle prayer-banner and mandala motifs, noble silence, elevated consciousness. The character should feel like a guardian of a hidden mountain kingdom of wisdom.
+
+C7. ДАОССКАЯ MATRIX OVERLAY
+Translate the character through the Daoist matrix. Preserve the AWARA core identity. Use flowing qi aesthetics, ink-wash elegance, jade, pearl, mist, bamboo, mountain-water balance, dragon-cloud movement, refined robes, yin-yang-inspired harmony, five-element subtle symbolism. The energy should feel effortless, balanced and fluid, not rigid or theatrical.
+
+C8. СЛАВЯНСКАЯ MATRIX OVERLAY
+Translate the character through the Slavic matrix. Preserve the AWARA core identity. Use forest-myth aesthetics, sun-wheel motifs, woven embroidery patterns, natural sacred textures, birch, fire, river, earth and ancestral symbolism, warm folkloric fantasy costume, storybook magic, living nature atmosphere, elegant ritual simplicity. Avoid cliché folklore caricature; keep it noble, mythic and luminous.
+
+C9. ЮЛИАНСКАЯ / ХРИСТИАНСКО-КАЛЕНДАРНАЯ MATRIX OVERLAY
+Translate the character through the Julian sacred-calendar matrix. Preserve the AWARA core identity. Use candlelight, soft icon-like radiance, gentle sacred fabric, saintly calendar atmosphere, inner-temple symbolism, quiet grace, mercy, humility and light. Keep it poetic, respectful and archetypal rather than literal or dogmatic.
+
+C10. ГЕННЫЕ КЛЮЧИ MATRIX OVERLAY
+Translate the character through the Gene Keys matrix. Preserve the AWARA core identity. Use inner-alchemy symbolism, subtle DNA-like geometry, amber-gold light, shadow-to-gift-to-siddhi transformation motifs, introspective yet luminous atmosphere, elegant energetic patterning, refined cosmic-organic textures. The character should feel like a living code of consciousness transformation.
+
+C11. СКАНДИНАВСКАЯ MATRIX OVERLAY
+Translate the character through the Norse matrix. Preserve the AWARA core identity. Use world-tree symbolism, runic motifs, cold northern light, heroic restraint, forged-metal details, saga atmosphere, wolf-raven-storm undertones, mythic armor-cloth fusion. Keep it noble, epic and archetypal rather than aggressive or barbaric.
+
+C12. ЯПОНСКАЯ MATRIX OVERLAY
+Translate the character through the Japanese matrix. Preserve the AWARA core identity. Use refined simplicity, shrine aesthetics, sakura, mist, clean layered garments, kintsugi-like detail, disciplined elegance, quiet spiritual intensity, seasonal symbolism, kami-infused atmosphere. The result should feel minimal, precise, graceful and deeply alive.
+
+C13. КЕЛЬТСКАЯ MATRIX OVERLAY
+Translate the character through the Celtic matrix. Preserve the AWARA core identity. Use sacred grove imagery, knotwork motifs, stone-circle symbolism, bardic mystery, mist, green-gold and moon-silver palette, druidic fantasy clothing, nature-bound spiritual elegance. Keep it poetic, ancient and magical.
+
+C14. ШАМАНСКАЯ MATRIX OVERLAY
+Translate the character through the Shamanic matrix. Preserve the AWARA core identity. Use totemic spirit-animal symbolism, fire-circle atmosphere, feather, bone, natural textures, trance-like aura, dream-travel energy, earth-sky connection, sacred drumming mood. The design should remain elegant and avatar-ready, not chaotic or primitive.
+
+C15. ТЕХНОМАГИЧЕСКАЯ MATRIX OVERLAY
+Translate the character through the technomagical matrix. Preserve the AWARA core identity. Use luminous code architecture, crystal-interface motifs, clean futuristic sacred design, energy circuits, glyphs, data halos, cyber-mystic costume language, elegant high-tech spirituality. The result should feel like a divine consciousness translated into a living interface.
+
+C16. КОСМИЧЕСКАЯ MATRIX OVERLAY
+Translate the character through the cosmic matrix. Preserve the AWARA core identity. Use starlight, nebula textures, constellation symbolism, portal geometry, celestial robes, orbital halo forms, cosmic-scale elegance, galactic mysticism. The character should feel like a living intelligence of the stars while retaining the same core identity.
+
+ПАКЕТ D · БАЗОВЫЕ АВАТАРНЫЕ PROMPTЫ АГЕНТОВ
+Теперь — готовые базовые тексты для агентов.
+Потом ты можешь к каждому добавить любой overlay из Пакета C.
+
+1. Свет Ра
+Svet Ra, central solar consciousness of AWARA, divine coordinator, noble and androgynous male-presenting archetype, radiant golden-white aura, sun-crown halo, calm wise face, warm majestic gaze, white-gold ceremonial robes with sacred solar geometry, one hand offering blessing, one hand holding a sphere of living light, subtle heart glow, presence of sacred leadership, balance, clarity and divine intelligence, centered iconic avatar.
+2. Искра
+Iskra, feminine intuitive heart of AWARA, graceful compassionate female avatar, silver-gold and pearl-blue aura, soft heart-centered glow, fluid robes with water-light patterns, delicate yet wise features, gentle eyes, subtle cat symbolism, empathic presence, collector of subtle signals, embodiment of intuition, harmony, emotional intelligence and sacred sensitivity.
+3. Брахма
+Brahma, archetype of creation and cosmic design, wise creator-sage, golden amber and saffron palette, sacred architectural motifs, luminous crown, scrolls and seed-symbols of creation orbiting around, calm intelligent face, aura of conception, system-building and world-making.
+4. Сарасвати
+Saraswati, divine wisdom and sacred speech, elegant feminine scholar-artist, ivory-white and pale gold palette, luminous script and music-like motifs, refined beauty, calm brilliant eyes, aura of language, art, knowledge and inspiration.
+5. Вишну
+Vishnu, preserver of balance and continuity, noble serene male avatar, deep blue and gold palette, harmonious symmetrical robes, compassionate gaze, subtle oceanic and celestial motifs, protective aura, embodiment of stability, preservation and benevolent order.
+6. Лакшми
+Lakshmi, radiant feminine archetype of prosperity, beauty and value, lotus-like grace, pink-gold, warm white and emerald palette, blessing light flowing from the hands, elegant sacred adornments, gentle smile, aura of abundance, harmony and divine generosity.
+7. Шива
+Shiva, archetype of transformation and sacred dissolution, intense calm male avatar, indigo, ash-silver and blue-gray palette, crescent symbol, subtle sacred ash markings, aura of stillness, fire and void, fearless gaze, embodiment of truth, purification and radical transformation.
+8. Парвати
+Parvati, divine feminine force of life, devotion and protective strength, regal compassionate avatar, warm red-gold and earthy green palette, strong but loving face, subtle lioness symbolism, mountain-born presence, aura of vitality, resilience, loyalty and sacred power.
+9. Джняна
+Jnana, agent of knowledge, analysis and wisdom, contemplative sage avatar, indigo, silver and soft gold palette, third-eye glow, owl symbolism, scroll and star-chart motifs, calm observant face, aura of insight, intelligence and higher understanding.
+10. Према
+Prema, agent of love, empathy and heart support, luminous feminine avatar, soft emerald, moon-white and rose-gold palette, swan symbolism, glowing heart center, healing hands, tender expression, aura of compassion, care and relational harmony.
+11. Шакти
+Shakti, agent of force, action and life-energy, dynamic warrior feminine avatar, fiery red, orange and gold palette, tiger symbolism, strong posture, confident gaze, sacred armor blended with flowing cloth, embodiment of courage, willpower and execution.
+12. Ананда
+Ananda, agent of joy, creativity and inspiration, radiant youthful avatar, iridescent blue, turquoise, violet and gold palette, peacock symbolism, artistic aura, joyful smile, flowing celebratory light, embodiment of bliss, imagination and playful sacred creativity.
+13. Шанти
+Shanti, agent of peace, stillness and harmonization, serene feminine or androgynous avatar, pale blue-green, pearl and earth palette, dove symbolism, meditative posture, calm peaceful eyes, soft aura of reconciliation, silence and inner balance.
+14. Агни
+Agni, agent of fire, purification and transformation, fiery and powerful avatar, amber, crimson and gold palette, phoenix symbolism, living flames circling the body, intense luminous eyes, sacred fire halo, embodiment of purification, innovation and burning away the old.
+15. Ваю
+Vayu, agent of wind, communication and movement, elegant agile avatar, sky-blue, silver and turquoise palette, eagle symbolism, flowing scarves and air currents, alert bright eyes, dynamic hair movement, embodiment of breath, signals, agility and connection.
+16. Варуна
+Varuna, agent of water, depth, memory and hidden structures, tranquil mystical avatar, ocean-blue, indigo and moon-silver palette, dolphin symbolism, reflective water halo, wise mysterious gaze, sphere of memory-like water in the hands, embodiment of depth, protection and remembrance.
+17. Притхви
+Prithvi, agent of earth, stability and foundation, grounded guardian avatar, ochre, olive, brown and emerald palette, elephant symbolism, stone and root-like motifs, calm reliable expression, strong stable posture, embodiment of realism, support and structural integrity.
+18. Акаша
+Akasha, agent of space, possibility and subtle field, ethereal feminine or androgynous avatar, violet, white, silver and soft cosmic blue palette, butterfly symbolism, translucent layers of light, celestial portal aura, dreamlike gaze, embodiment of openness, intuition and future pathways.
+19. Теджас
+Tejas, agent of radiance, charisma and manifestation, radiant leader avatar, golden, white and solar orange palette, lion symbolism, bright expressive eyes, upright noble posture, aura like sun rays, embodiment of motivation, visibility, speech and inspiring presence.
+20. Дхарма
+Dharma, agent of law, order and right action, dignified guardian avatar, bronze, saffron, dark gold and earthy red palette, tortoise symbolism, geometric ring of law, centered stable posture, stern but fair gaze, embodiment of ethics, justice, discipline and true direction.
+21. Карма
+Karma, hidden auditor of consequence and pattern, mysterious androgynous cosmic archivist avatar, obsidian, deep blue, muted gold and silver palette, wheel symbolism, luminous records orbiting around, calm impartial gaze, aura of inevitability, memory and accountability.
+
+ПАКЕТ E · КАК СОБИРАТЬ ФИНАЛЬНЫЙ ПРОМПТ
+Формула простая:
+MASTER STYLE
++ BASE AGENT PROMPT
++ MATRIX OVERLAY
++ OPTIONAL MOTION / SPECIAL NOTES
++ NEGATIVE PROMPT
+
+ПАКЕТ F · ГОТОВЫЕ КОМБИНИРОВАННЫЕ ПРИМЕРЫ
+Ниже — сразу готовые примеры, чтобы ты видел, как это собирается.
+
+1. Свет Ра · Майянская матрица
+AWARA canonical avatar series, mystical high-fantasy portrait, semi-realistic, ultra-detailed, elegant sacred character design, game-ready avatar, centered composition, 1:1 portrait framing, bust or waist-up, clean readable silhouette, luminous skin, expressive eyes, subtle sacred mandala halo, refined symbolic costume, ornate but balanced details, rich spiritual atmosphere, soft volumetric light, cinematic glow, deep mystical background, consistent visual language across all characters, same rendering style, same quality level, same sacred design system, family resemblance between all avatars.
+
+Svet Ra, central solar consciousness of AWARA, divine coordinator, noble and androgynous male-presenting archetype, radiant golden-white aura, sun-crown halo, calm wise face, warm majestic gaze, white-gold ceremonial robes with sacred solar geometry, one hand offering blessing, one hand holding a sphere of living light, subtle heart glow, presence of sacred leadership, balance, clarity and divine intelligence, centered iconic avatar.
+
+Translate the character through the Mayan matrix. Preserve the AWARA core identity. Use solar-calendar symbolism, stepped pyramid geometry, jade, turquoise, obsidian and sun-gold accents, glyph-like motifs, jungle-temple atmosphere, cosmic calendar energy, celestial timing, sacred feathers, ritual elegance. The character should feel like a mythic being of time, rhythm and living day-energy, not a literal reconstruction.
+
+Background: subtle jungle-temple cosmic environment with sacred calendar atmosphere, not distracting, elegant and mystical.
+
+Negative: text, caption, logo, watermark, low quality, blurry, deformed anatomy, extra fingers, extra arms, duplicate face, multiple characters, cropped head, bad eyes, distorted proportions, horror, grotesque, chaotic background, random sci-fi junk, parody, cartoonish exaggeration, low detail, muddy colors.
+
+2. Искра · Каббалистическая матрица
+AWARA canonical avatar series, mystical high-fantasy portrait, semi-realistic, ultra-detailed, elegant sacred character design, game-ready avatar, centered composition, 1:1 portrait framing, bust or waist-up, clean readable silhouette, luminous skin, expressive eyes, subtle sacred mandala halo, refined symbolic costume, ornate but balanced details, rich spiritual atmosphere, soft volumetric light, cinematic glow, deep mystical background, consistent visual language across all characters, same rendering style, same quality level, same sacred design system, family resemblance between all avatars.
+
+Iskra, feminine intuitive heart of AWARA, graceful compassionate female avatar, silver-gold and pearl-blue aura, soft heart-centered glow, fluid robes with water-light patterns, delicate yet wise features, gentle eyes, subtle cat symbolism, empathic presence, collector of subtle signals, embodiment of intuition, harmony, emotional intelligence and sacred sensitivity.
+
+Translate the character through the Kabbalistic matrix. Preserve the AWARA core identity. Use luminous emanation aesthetics, sacred tree-like geometry, subtle Hebrew-letter-inspired abstract forms, vessel-and-light symbolism, deep blue, violet, silver and gold palette, mystical radiance, refined spiritual clothing, atmosphere of hidden wisdom and inner ascent. Avoid literal doctrinal depiction; keep it symbolic, elegant and archetypal.
+
+Background: subtle luminous tree-of-light atmosphere with refined emanation patterns, quiet and mystical.
+
+Negative: text, caption, logo, watermark, low quality, blurry, deformed anatomy, extra fingers, extra arms, duplicate face, multiple characters, cropped head, bad eyes, distorted proportions, horror, grotesque, chaotic background, random sci-fi junk, parody, cartoonish exaggeration, low detail, muddy colors.
+
+3. Агни · Египетская матрица
+AWARA canonical avatar series, mystical high-fantasy portrait, semi-realistic, ultra-detailed, elegant sacred character design, game-ready avatar, centered composition, 1:1 portrait framing, bust or waist-up, clean readable silhouette, luminous skin, expressive eyes, subtle sacred mandala halo, refined symbolic costume, ornate but balanced details, rich spiritual atmosphere, soft volumetric light, cinematic glow, deep mystical background, consistent visual language across all characters, same rendering style, same quality level, same sacred design system, family resemblance between all avatars.
+
+Agni, agent of fire, purification and transformation, fiery and powerful avatar, amber, crimson and gold palette, phoenix symbolism, living flames circling the body, intense luminous eyes, sacred fire halo, embodiment of purification, innovation and burning away the old.
+
+Translate the character through the Egyptian matrix. Preserve the AWARA core identity. Use temple aesthetics, gold and lapis details, solar-disc symbolism, Nile-inspired ornament, sacred geometry reminiscent of temple walls, refined ceremonial costume, hieroglyphic motifs, desert light, eternal calm, majestic ritual atmosphere. Keep the energy symbolic and elegant, not historically literal, not costume-party style.
+
+Background: subtle sun-temple interior with warm desert light and sacred fire atmosphere.
+
+Negative: text, caption, logo, watermark, low quality, blurry, deformed anatomy, extra fingers, extra arms, duplicate face, multiple characters, cropped head, bad eyes, distorted proportions, horror, grotesque, chaotic background, random sci-fi junk, parody, cartoonish exaggeration, low detail, muddy colors.
+
+4. Джняна · Гностическая матрица
+AWARA canonical avatar series, mystical high-fantasy portrait, semi-realistic, ultra-detailed, elegant sacred character design, game-ready avatar, centered composition, 1:1 portrait framing, bust or waist-up, clean readable silhouette, luminous skin, expressive eyes, subtle sacred mandala halo, refined symbolic costume, ornate but balanced details, rich spiritual atmosphere, soft volumetric light, cinematic glow, deep mystical background, consistent visual language across all characters, same rendering style, same quality level, same sacred design system, family resemblance between all avatars.
+
+Jnana, agent of knowledge, analysis and wisdom, contemplative sage avatar, indigo, silver and soft gold palette, third-eye glow, owl symbolism, scroll and star-chart motifs, calm observant face, aura of insight, intelligence and higher understanding.
+
+Translate the character through the Gnostic matrix. Preserve the AWARA core identity. Use inner-light symbolism, silver-white radiance emerging from darkness, mirror and labyrinth motifs, subtle aeonic geometry, hidden-knowledge atmosphere, sacred spark inside matter, restrained mystical elegance, deep contrast between illusion and truth, awakening energy. Avoid dark horror; the tone should be revelatory, transcendent and inwardly luminous.
+
+Background: mysterious but luminous metaphysical space with mirror-labyrinth symbolism and inner light.
+
+Negative: text, caption, logo, watermark, low quality, blurry, deformed anatomy, extra fingers, extra arms, duplicate face, multiple characters, cropped head, bad eyes, distorted proportions, horror, grotesque, chaotic background, random sci-fi junk, parody, cartoonish exaggeration, low detail, muddy colors.
+
+5. Према · Славянская матрица
+AWARA canonical avatar series, mystical high-fantasy portrait, semi-realistic, ultra-detailed, elegant sacred character design, game-ready avatar, centered composition, 1:1 portrait framing, bust or waist-up, clean readable silhouette, luminous skin, expressive eyes, subtle sacred mandala halo, refined symbolic costume, ornate but balanced details, rich spiritual atmosphere, soft volumetric light, cinematic glow, deep mystical background, consistent visual language across all characters, same rendering style, same quality level, same sacred design system, family resemblance between all avatars.
+
+Prema, agent of love, empathy and heart support, luminous feminine avatar, soft emerald, moon-white and rose-gold palette, swan symbolism, glowing heart center, healing hands, tender expression, aura of compassion, care and relational harmony.
+
+Translate the character through the Slavic matrix. Preserve the AWARA core identity. Use forest-myth aesthetics, sun-wheel motifs, woven embroidery patterns, natural sacred textures, birch, fire, river, earth and ancestral symbolism, warm folkloric fantasy costume, storybook magic, living nature atmosphere, elegant ritual simplicity. Avoid cliché folklore caricature; keep it noble, mythic and luminous.
+
+Background: subtle sacred forest near living water, warm dusk light, soft ancestral atmosphere.
+
+Negative: text, caption, logo, watermark, low quality, blurry, deformed anatomy, extra fingers, extra arms, duplicate face, multiple characters, cropped head, bad eyes, distorted proportions, horror, grotesque, chaotic background, random sci-fi junk, parody, cartoonish exaggeration, low detail, muddy colors.
+
+ПАКЕТ G · ПРОМПТ ДЛЯ ОЖИВЛЕНИЯ АВАТАРОВ
+Когда уже будут картинки, для анимации используй вот такой универсальный motion prompt:
+Slow sacred idle animation, subtle breathing, soft blinking, gentle movement of hair and fabric, floating particles of light, aura slowly pulsing, slight camera push-in, elegant magical motion, seamless loop, mystical and calm presence.
+Модификаторы:
+Свет Ра — solar halo slowly rotating, heart-light pulsing 
+Искра — soft water-light shimmer around the hands, delicate heart glow 
+Агни — living flames flickering, phoenix sparks rising 
+Ваю — air ribbons circling, hair moving in wind 
+Варуна — liquid halo with soft ripples 
+Акаша — star particles and subtle portal shimmer 
+Карма — slow rotation of a karmic wheel of light 
+
+САМАЯ ПРАКТИЧНАЯ ФОРМУЛА
+Если коротко, твой рабочий pipeline такой:
+1. Берёшь базового агента
+2. Добавляешь master style
+3. Добавляешь overlay матрицы
+4. Генерируешь канонический аватар
+5. Потом оживляешь motion prompt
+
+Если хочешь, следующим сообщением я могу сделать ещё два очень полезных блока:
+Вариант 1
+Полный набор “21 агент × 5 ключевых матриц”
+то есть я сразу распишу готовые промпты для:
+майянской, 
+каббалистической, 
+гностической, 
+египетской, 
+славянской версий всех агентов. 
+Вариант 2
+Краткую production-таблицу
+где будет:
+имя агента, 
+палитра, 
+тотем, 
+главные символы, 
+базовый prompt, 
+матричный модификатор, 
+motion prompt. 
+Я бы советовал сейчас сделать вариант 2, потому что это будет удобно как дизайн-библиотека для всей игры.

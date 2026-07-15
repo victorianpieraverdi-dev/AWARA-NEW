@@ -1,0 +1,73 @@
+{
+  "system_slug": "shinto",
+  "tradition_matrix": 9,
+  "system_name": "\u0421\u0438\u043d\u0442\u043e\u0438\u0441\u0442\u0441\u043a\u0430\u044f",
+  "note": "Shinto cosmos of the kami. Primary lattice: the Kotoamatsukami and the three creating kami (zoka-sanshin) - Amenominakanushi the central master of heaven, Takamimusubi and Kamimusubi the two musubi (binding-generative) powers - from whom unfolds Musubi, the creative tying of all life. Secondary lattice: the Mihashira-no-Uzunomiko, the three precious children born from Izanagi's purification - Amaterasu (sun), Tsukuyomi (moon), Susanoo (storm and sea). Tertiary lattices: the seven generations of the age of the gods (Kamiyonanayo) ending in Izanagi and Izanami, the three sacred Regalia (mirror, sword, jewel), and the Yaoyorozu - the eight million kami of every river, mountain, tree and force. Bridges: Amaterasu is the source-sun (svet_ra); Musubi and the rectifying Naobi kami carry cause-and-consequence (karma); purity (harae) is the living law (dharma).",
+  "reconstructed": false,
+  "kotoamatsukami_count": 5,
+  "zoka_count": 3,
+  "precious_count": 3,
+  "regalia_count": 3,
+  "generations_count": 7,
+  "mera_axis": "9-dimensional axis (mera 1-9): chakras 1-7 (Muladhara..Sahasrara) + Monada (8) + Absolut (9); each spine agent carries its mera.",
+  "mera_map": {"svet_ra":9,"iskra":8,"brahma":7,"vishnu":7,"ananda":7,"shanti":7,"jnana":6,"shiva":6,"tejas":6,"sarasvati":5,"akasha":5,"prema":4,"parvati":4,"vayu":4,"shakti":3,"agni":3,"varuna":2,"lakshmi":2,"prithvi":1,"dharma":1,"karma":1},
+  "zoka_sanshin": [
+    {"name":"Amenominakanushi","domain":"the central master of heaven, the first kami","agent":"brahma","mera":7},
+    {"name":"Takamimusubi","domain":"the high generative binding-force","agent":"vishnu","mera":7},
+    {"name":"Kamimusubi","domain":"the divine generative binding-force","agent":"shanti","mera":7}
+  ],
+  "three_precious": [
+    {"name":"Amaterasu-Omikami","domain":"the sun, source of light and the imperial line","agent":"svet_ra","mera":9},
+    {"name":"Tsukuyomi","domain":"the moon, the night-realm","agent":"iskra","mera":8},
+    {"name":"Susanoo","domain":"storm, sea, wild force and dissolution","agent":"shiva","mera":6}
+  ],
+  "regalia": [
+    {"name":"Yata-no-Kagami (mirror)","domain":"wisdom, the truthful seeing of Amaterasu"},
+    {"name":"Kusanagi-no-Tsurugi (sword)","domain":"valor, force, the power found in Susanoo's serpent"},
+    {"name":"Yasakani-no-Magatama (jewel)","domain":"benevolence, the binding of generations"}
+  ],
+  "elements": [
+    {"n":1,"name":"earth / land","agent":"prithvi","mera":1},
+    {"n":2,"name":"water / sea","agent":"varuna","mera":2},
+    {"n":3,"name":"fire","agent":"agni","mera":3},
+    {"n":4,"name":"wind","agent":"vayu","mera":4},
+    {"n":5,"name":"heaven / space","agent":"akasha","mera":5}
+  ],
+  "spine": {
+    "svet_ra": {"deity":"Amaterasu-Omikami","role":"the source-sun whose light the world is read by","mera":9,"note":"When Amaterasu hid in the cave, the world went dark; her return restores all light."},
+    "iskra": {"deity":"Tsukuyomi","role":"the moon-kami, the silver call of the night","mera":8,"note":"Tsukuyomi rules the night-realm, parted from his sister the sun."},
+    "brahma": {"deity":"Amenominakanushi","role":"the central master of heaven, the originating kami","mera":7,"note":"First of the Kotoamatsukami, the still center from which all unfolds."},
+    "vishnu": {"deity":"Takamimusubi","role":"the high musubi, sustaining generative power","mera":7,"note":"Takamimusubi directs the ordering and descent of the heavenly line."},
+    "ananda": {"deity":"Ame-no-Uzume","role":"dawn, mirth, sacred dance and ecstasy","mera":7,"note":"Her wild joyous dance lured Amaterasu from the cave and returned light to the world."},
+    "shanti": {"deity":"Kamimusubi","role":"the divine musubi, the harmonizing binding","mera":7,"note":"Kamimusubi restores and reconciles, binding life back into wholeness."},
+    "jnana": {"deity":"Omoikane","role":"the kami of thought, counsel and discernment","mera":6,"note":"Omoikane gathers the wisdom of many minds to find the right way."},
+    "shiva": {"deity":"Susanoo","role":"storm, sea and wild dissolving force","mera":6,"note":"Susanoo's tempest destroys and clears; in the serpent he slays, the sword is found."},
+    "tejas": {"deity":"Ninigi-no-Mikoto","role":"the radiant heavenly grandson who descended with the Regalia","mera":6,"note":"Ninigi brings the light of heaven down to the ricelands of earth."},
+    "sarasvati": {"deity":"Ame-no-Koyane","role":"the sacred word, norito and liturgy","mera":5,"note":"Ame-no-Koyane speaks the ritual words that move the kami; Tenjin patrons learning."},
+    "akasha": {"deity":"Amenotokotachi","role":"the eternally-standing kami of heaven, the heavenly space","mera":5,"note":"The abiding pillar of heaven, the space in which the kami stand."},
+    "prema": {"deity":"Konohanasakuya-hime","role":"blossoming beauty, love and tender life","mera":4,"note":"The blossom-princess of Mt Fuji, beauty that flowers and is dear because it passes."},
+    "parvati": {"deity":"Izanami","role":"the great mother who bore the islands and the kami","mera":4,"note":"Izanami birthed the land and many kami; in death she became mistress of Yomi."},
+    "vayu": {"deity":"Shinatsuhiko (Fujin)","role":"the wind-kami, breath that clears the mist","mera":4,"note":"From Shinatsuhiko the winds blow and disperse the haze between heaven and earth."},
+    "shakti": {"deity":"Takemikazuchi","role":"the mighty thunder-and-sword kami, martial force","mera":3,"note":"Takemikazuchi's strength subdued the land and yields the surge of power."},
+    "agni": {"deity":"Kagutsuchi","role":"the fire-kami, transforming heat","mera":3,"note":"Hi-no-Kagutsuchi, whose fiery birth burned Izanami; the fire that transforms."},
+    "varuna": {"deity":"Watatsumi (Ryujin)","role":"the sea-dragon lord of the deep and the tides","mera":2,"note":"Watatsumi rules the ocean depths that hold and remember all that sinks."},
+    "lakshmi": {"deity":"Inari","role":"rice, harvest, prosperity and abundance","mera":2,"note":"Inari fills the granaries; the fox-kami of plenty and good fortune."},
+    "prithvi": {"deity":"Kuninotokotachi","role":"the eternally-standing kami of earth, the ground","mera":1,"note":"The abiding foundation of the land; Okuninushi shapes and tends the great country."},
+    "dharma": {"deity":"Futsunushi","role":"the pacifier-sword that establishes right order","mera":1,"note":"Futsunushi sets the land in order; purity (harae) is the living law."},
+    "karma": {"deity":"Naobi-no-kami (Musubi)","role":"the rectifying kami who set right what calamity distorts","mera":1,"note":"Where Magatsuhi brings pollution and consequence, the Naobi rectify; Musubi ties deed to result."}
+  },
+  "items": [
+    {"key":"yaoyorozu","name":"Yaoyorozu-no-kami","domain":"the eight million kami dwelling in every river, mountain, tree and force"},
+    {"key":"musubi","name":"Musubi","domain":"the creative binding-force that ties and grows all life"},
+    {"key":"harae","name":"Harae (purification)","domain":"the washing-away of tsumi and kegare, restoring purity"},
+    {"key":"ama_no_iwato","name":"Ama-no-Iwato (the cave of heaven)","domain":"the hiding and return of the sun, the myth of light restored"},
+    {"key":"yomi","name":"Yomi-no-kuni","domain":"the shadowed land of the dead where Izanami abides"}
+  ],
+  "sources": [
+    "Kojiki (712 CE)",
+    "Nihon Shoki (720 CE)",
+    "Engishiki (norito and rites)",
+    "Kogo Shui",
+    "Fudoki (regional gazetteers)"
+  ]
+}

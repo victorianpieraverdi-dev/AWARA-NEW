@@ -1,0 +1,181 @@
+{
+  "version": "1.0.0",
+  "description": "Canonical Daimon evolution path from baby guardian to cosmic co-creator.",
+  "maxLevel": 100,
+  "coreFormula": "xp -> level -> chakra -> granthi -> stage -> abilities -> synthesis/domains/worlds",
+  "stateFields": [
+    "level",
+    "tier",
+    "xp",
+    "totalXP",
+    "chakra",
+    "chakraName",
+    "evolutionStage",
+    "dnaStrands",
+    "granthiPierced",
+    "abilities",
+    "bond",
+    "resonance"
+  ],
+  "stages": [
+    {
+      "stage": 1,
+      "name_ru": "Пашу / Малыш / Пробуждение",
+      "name_en": "Pashu / Baby / Awakening",
+      "levels": [1, 20],
+      "tier": "Common",
+      "chakraRange": [1, 2],
+      "dnaStrands": 2,
+      "granthiGate": null,
+      "role": "first companion, spark, baby guardian",
+      "abilities": ["moodSense", "basicResonance", "dailyHint"],
+      "gameplay": [
+        "receives XP from Tigel",
+        "small light bonus on elemental match",
+        "reacts to day element",
+        "opens basic daily hints"
+      ],
+      "zlatogrozForm_ru": "маленький белый кристальный котёнок-барс с едва видимыми золотыми рожками и синими искрами Ардры"
+    },
+    {
+      "stage": 2,
+      "name_ru": "Вира / Юный спутник / Герой",
+      "name_en": "Vira / Young Companion / Hero",
+      "levels": [21, 40],
+      "tier": "Uncommon",
+      "chakraRange": [3, 4],
+      "dnaStrands": 4,
+      "granthiGate": "brahma",
+      "role": "emotional resonance companion",
+      "abilities": ["seeEmotions", "compositeElement"],
+      "gameplay": [
+        "sees emotional fields",
+        "boosts honest Tigel entries",
+        "unlocks two-element synthesis",
+        "transmutes pain into light"
+      ],
+      "zlatogrozForm_ru": "юный снежный барс с видимыми золотыми рожками, кристаллическим гребнем и электрическими следами"
+    },
+    {
+      "stage": 3,
+      "name_ru": "Садхака / Зрелый Daimon / Практикующий",
+      "name_en": "Sadhaka / Mature Daimon / Practitioner",
+      "levels": [41, 60],
+      "tier": "Rare",
+      "chakraRange": [5, 6],
+      "dnaStrands": 7,
+      "granthiGate": "vishnu",
+      "role": "protector, mantra voice, illusion-reader",
+      "abilities": ["mantra", "seeThroughMaya", "cardAffinityBoost"],
+      "gameplay": [
+        "unlocks personal mantra",
+        "boosts matching cards",
+        "detects daily distortions",
+        "gives bonus for shadow work"
+      ],
+      "zlatogrozForm_ru": "кристальный белый тигр или барс с огненным сердцем Агни, грозовой гривой и голосом-мантрой"
+    },
+    {
+      "stage": 4,
+      "name_ru": "Дживанмукта / Архитектор домена",
+      "name_en": "Jivanmukta / Domain Architect",
+      "levels": [61, 80],
+      "tier": "Epic",
+      "chakraRange": [7, 8],
+      "dnaStrands": 10,
+      "granthiGate": "rudra",
+      "role": "domain builder and Akashic reader",
+      "abilities": ["readAkasha", "tripleElement", "domainLink"],
+      "gameplay": [
+        "unlocks three-element synthesis",
+        "creates domain seeds",
+        "links Daimon to player domain",
+        "reads Akashic trace of events"
+      ],
+      "zlatogrozForm_ru": "огромный бело-кристальный тигр-хранитель с молниями Ардры, чакровыми кольцами и храмом под лапами"
+    },
+    {
+      "stage": 5,
+      "name_ru": "Парамукти / Космический со-творец",
+      "name_en": "Paramukti / Cosmic Co-Creator",
+      "levels": [81, 100],
+      "tier": "Mythic / Legendary",
+      "chakraRange": [9],
+      "dnaStrands": 12,
+      "granthiGate": "all_granthi_and_shiva_quest",
+      "role": "cosmic being, world creator, collective center",
+      "abilities": ["generateMinions", "realityWeave", "createDomain", "sharedWorldCore"],
+      "gameplay": [
+        "creates minions",
+        "creates domains",
+        "can become center of collective world",
+        "generates mythic and legendary cards",
+        "influences AWARA reality fabric"
+      ],
+      "zlatogrozForm_ru": "космический кристальный Рудра-тигр из белого света, молнии, соли, звёзд и золотой геометрии"
+    }
+  ],
+  "xpSources": {
+    "tigel": {
+      "normalEntry": 20,
+      "deepEntry": 50,
+      "elementMatchMultiplier": 1.2,
+      "shadowWorkMultiplier": 1.5,
+      "ardraBonusNotes": "For Ardra Daimons such as Zlatogroz, honest crisis processing, tears, pain naming and chaos-to-light transformation should grant additional XP."
+    },
+    "cards": {
+      "baseMatchXp": 30,
+      "agentMatchXp": 60,
+      "matrixMatchXp": 60,
+      "elementMatchXp": 30,
+      "archetypeMatchXp": 80
+    },
+    "fusion": {
+      "resonance_form": 100,
+      "elemental_minion": 300,
+      "artifact": 500,
+      "domain_seed": 1000,
+      "shared_domain": 3000
+    },
+    "granthiQuests": {
+      "brahma": 500,
+      "vishnu": 1500,
+      "rudra": 3000,
+      "paramukti": 7000
+    }
+  },
+  "granthiGates": {
+    "brahma": {
+      "transition": "stage_1_to_2",
+      "levelRequired": 20,
+      "theme_ru": "тело, страх, выживание, инерция",
+      "quest_ru": "сделать действие в материи; признать боль; заземлить бурю"
+    },
+    "vishnu": {
+      "transition": "stage_2_to_3",
+      "levelRequired": 40,
+      "theme_ru": "сердце, привязанности, отношения, голос",
+      "quest_ru": "сказать правду без разрушения; превратить грозу в мантру"
+    },
+    "rudra": {
+      "transition": "stage_3_to_4",
+      "levelRequired": 60,
+      "theme_ru": "эго, контроль, образ себя, страх растворения",
+      "quest_ru": "отпустить ложную форму; разрушить ложный храм и построить настоящий"
+    },
+    "paramukti": {
+      "transition": "stage_4_to_5",
+      "levelRequired": 80,
+      "theme_ru": "со-творчество и выход за пределы личной формы",
+      "quest_ru": "создать домен, помочь другим или завершить цикл Шивы"
+    }
+  },
+  "nextImplementationSteps": [
+    "create updateDaimonProgress helper",
+    "replace raw XP addition in cauldronEngine with full progress recalculation",
+    "add granthi gate functions",
+    "add Evolution Path UI to daimon.html",
+    "connect card rewards and fusion rewards to Daimon XP",
+    "add domain creation unlocks for stages 4 and 5"
+  ]
+}

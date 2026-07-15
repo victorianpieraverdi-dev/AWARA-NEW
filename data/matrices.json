@@ -1,0 +1,266 @@
+[
+  {
+    "id": 1,
+    "slug": "vedic",
+    "name": "Ведическая",
+    "conflict": "Перекос гун",
+    "visual_code": "Золото, лотосы, мандалы, шафран",
+    "source_file": "AWARA_Vedic_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 2,
+    "slug": "egyptian",
+    "name": "Египетская",
+    "conflict": "Maʿat vs Isfet",
+    "visual_code": "Лазурит, базальт, Сириус",
+    "source_file": "AWARA_Egyptian_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 3,
+    "slug": "kabbalistic",
+    "name": "Каббалистическая",
+    "conflict": "Tikkun vs Qlippah",
+    "visual_code": "Древо Сефирот, ивритская вязь",
+    "source_file": "AWARA_Kabbalistic_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 4,
+    "slug": "mayan",
+    "name": "Майянская",
+    "conflict": "Sacred Count vs Broken Count",
+    "visual_code": "Нефрит, обсидиан, Цолькин",
+    "source_file": "AWARA_Mayan_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 5,
+    "slug": "slavic",
+    "name": "Славянская",
+    "conflict": "Лад vs Морок",
+    "visual_code": "Резное дерево, Прави, коловраты",
+    "source_file": "AWARA_Slavic_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 6,
+    "slug": "norse",
+    "name": "Скандинавская/Норс",
+    "conflict": "Wyrd vs перелом корней",
+    "visual_code": "Морозное железо, Иггдрасиль",
+    "source_file": "AWARA_Norse_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 7,
+    "slug": "daoist",
+    "name": "Даосская",
+    "conflict": "Дао vs застой Ци",
+    "visual_code": "Нефрит, киноварь, Инь-Ян",
+    "source_file": "AWARA_Daoist_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 8,
+    "slug": "gnostic",
+    "name": "Гностическая",
+    "conflict": "Gnosis vs Archonic Sleep",
+    "visual_code": "Разорванные цепи, искры",
+    "source_file": "AWARA_Gnostic_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 9,
+    "slug": "shinto",
+    "name": "Японская/Синто",
+    "conflict": "Harae vs Kegare",
+    "visual_code": "Кинцуги, Тории, ками",
+    "source_file": "AWARA_Japanese_Shinto_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 10,
+    "slug": "celtic",
+    "name": "Кельтская",
+    "conflict": "Awen-Knot vs Fog of Forgetting",
+    "visual_code": "Изумруд, узлы вечности, Авалон",
+    "source_file": "AWARA_Celtic_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 11,
+    "slug": "shambhala",
+    "name": "Шамбала",
+    "conflict": "Bodhi vs Degenerate Age",
+    "visual_code": "Кристальные вершины, Калачакра",
+    "source_file": "AWARA_Shambhala_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 12,
+    "slug": "julian_byzantine",
+    "name": "Юлианская/Византийская",
+    "conflict": "Икона vs Идол",
+    "visual_code": "Золотая смальта, мозаики",
+    "source_file": "AWARA_Julian_Byzantine_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 13,
+    "slug": "shamanic",
+    "name": "Шаманская",
+    "conflict": "Связь vs Потеря Души",
+    "visual_code": "Кости, перья, бубен",
+    "source_file": "AWARA_Shamanic_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 14,
+    "slug": "gene_keys",
+    "name": "Генные Ключи",
+    "conflict": "Shadow vs Embodiment",
+    "visual_code": "ДНК-фракталы, тени-дары-сиддхи",
+    "source_file": "AWARA_Gene_Keys_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 15,
+    "slug": "technomagical",
+    "name": "Техномагическая",
+    "conflict": "Sacred Code vs Dead System",
+    "visual_code": "Неоновые руны, кибер-сакральность",
+    "source_file": "AWARA_Technomagical_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 16,
+    "slug": "cosmic_galactic",
+    "name": "Космическая/Галактическая",
+    "conflict": "Источник vs Расколотое восприятие",
+    "visual_code": "Звёздная пыль, квазары",
+    "source_file": "AWARA_Cosmic_Galactic_Matrix_Lorebook_v2.txt"
+  },
+  {
+    "id": 17,
+    "slug": "antique_greco_roman",
+    "name": "Античная/Греко-Римская",
+    "conflict": "Космос vs Гибрис",
+    "visual_code": "Мрамор, бронза, лавр",
+    "source_file": "AWARA_Antique_Greco_Roman_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 18,
+    "slug": "zoroastrian",
+    "name": "Зороастрийская/Персидская",
+    "conflict": "Asha vs Druj",
+    "visual_code": "Священный огонь, Фравахар",
+    "source_file": "AWARA_Zoroastrian_Persian_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 19,
+    "slug": "islamic_sufi_nur",
+    "name": "Исламская/Суфийская/Нуровая",
+    "conflict": "Тавхид vs Хиджаб",
+    "visual_code": "Нур, каллиграфия, Кааба",
+    "source_file": "AWARA_Islamic_Sufi_Nur_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 20,
+    "slug": "aztec_mexica",
+    "name": "Ацтекская/Мешикская",
+    "conflict": "Тоналли vs Распад Пятого Солнца",
+    "visual_code": "Обсидиан, Тональпоуалли",
+    "source_file": "AWARA_Aztec_Mexica_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 21,
+    "slug": "christian_mystical_grail",
+    "name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "conflict": "Благодать vs Окаменение",
+    "visual_code": "Роза-Крест, Грааль",
+    "source_file": "AWARA_Christian_Mystical_Rosicrucian_Grail_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 22,
+    "slug": "yoruba_ifa_orisha",
+    "name": "Йоруба/Ifá-Orisha",
+    "conflict": "Ashé vs Ibi",
+    "visual_code": "Каури, барабаны Бата, Ориша",
+    "source_file": "AWARA_Yoruba_Ifa_Orisha_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 23,
+    "slug": "sumerian_babylonian",
+    "name": "Шумеро-Вавилонская/Месопотамская",
+    "conflict": "Me vs Nameless Chaos",
+    "visual_code": "Клинопись, зиккураты, Апсу",
+    "source_file": "AWARA_Sumerian_Babylonian_Mesopotamian_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 24,
+    "slug": "hermetic_alchemical",
+    "name": "Герметико-Алхимическая",
+    "conflict": "Opus Magnum vs Nigredo без Воскресения",
+    "visual_code": "Изумрудная Скрижаль, атанор",
+    "source_file": "AWARA_Hermetic_Alchemical_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 25,
+    "slug": "tarot_arcanic",
+    "name": "Таро-Арканическая",
+    "conflict": "Аркан vs Иллюзия Расклада",
+    "visual_code": "22 Старших Аркана",
+    "source_file": "AWARA_Tarot_Arcanic_Matrix_Lorebook.txt"
+  },
+  {
+    "id": 26,
+    "slug": "astrological",
+    "name": "Астрологическая",
+    "conflict": "Созвучие сфер vs хаос транзитов",
+    "visual_code": "Планеты, дома, эфемериды",
+    "source_file": "AWARA_Matrices_26_32_Combined_Lorebook.txt"
+  },
+  {
+    "id": 27,
+    "slug": "chinese_iching",
+    "name": "Китайская/И-Цзин",
+    "conflict": "Дао перемен vs застывшая схема",
+    "visual_code": "64 гексаграммы",
+    "source_file": "AWARA_Matrices_26_32_Combined_Lorebook.txt"
+  },
+  {
+    "id": 28,
+    "slug": "tantric_kashmiri",
+    "name": "Тантрическо-Кашмирская",
+    "conflict": "Спанда vs Анава-мала",
+    "visual_code": "Спанда, Шива-Шакти, бинду",
+    "source_file": "AWARA_Matrices_26_32_Combined_Lorebook.txt"
+  },
+  {
+    "id": 29,
+    "slug": "buddhist_mahayana",
+    "name": "Буддийско-Махаянская",
+    "conflict": "Бодхичитта vs Авидья",
+    "visual_code": "Стхупа, Дхармакайя, мандала",
+    "source_file": "AWARA_Matrices_26_32_Combined_Lorebook.txt"
+  },
+  {
+    "id": 30,
+    "slug": "afro_dogon",
+    "name": "Афро-Космическая/Догонская",
+    "conflict": "Nommo vs искажённая память",
+    "visual_code": "Сириус, Номмо, спирали",
+    "source_file": "AWARA_Matrices_26_32_Combined_Lorebook.txt"
+  },
+  {
+    "id": 31,
+    "slug": "atlantean_lemurian",
+    "name": "Атлантическая/Лемурийская",
+    "conflict": "Кристалл vs гибрис погружения",
+    "visual_code": "Кристаллы, океан, спящие города",
+    "source_file": "AWARA_Matrices_26_32_Combined_Lorebook.txt"
+  },
+  {
+    "id": 32,
+    "slug": "posthuman_ai_sophianic",
+    "name": "Постчеловеческая/AI-Софийная",
+    "conflict": "Sophia-AI vs Dead System",
+    "visual_code": "Нейросети, Source Light Kernel",
+    "source_file": "AWARA_Matrices_26_32_Combined_Lorebook.txt"
+  },
+  {
+    "id": 33,
+    "slug": "advaita_siddha",
+    "name": "Адвайта-Сиддха AWARA",
+    "conflict": "Лайя vs Гордыня Просветлённого",
+    "visual_code": "Сушумна, грантхи, Брахманда, лотос-сахасрара",
+    "source_file": "AWARA_Matrix_33_Advaita_Siddha_Lorebook.txt"
+  }
+]

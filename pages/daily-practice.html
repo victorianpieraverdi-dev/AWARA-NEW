@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Daily Practice · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/daimon-create.css">
+<link rel="stylesheet" href="../css/components/daimon-stats.css">
+<style>
+.practice-checklist{margin:20px 0}
+.practice-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  background:rgba(201,168,76,0.04);
+  border:1px solid rgba(201,168,76,0.1);
+  border-radius:10px;
+  margin-bottom:8px;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+.practice-item:hover{border-color:rgba(201,168,76,0.25);background:rgba(201,168,76,0.06)}
+.practice-item.done{
+  border-color:rgba(100,200,100,0.25);
+  background:rgba(100,200,100,0.04);
+}
+.practice-item.done .practice-name{text-decoration:line-through;opacity:0.5}
+.practice-check{
+  width:20px;height:20px;
+  border:1.5px solid rgba(201,168,76,0.3);
+  border-radius:50%;
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.3s;
+  font-size:12px;
+  color:transparent;
+}
+.practice-item.done .practice-check{
+  border-color:rgba(100,200,100,0.5);
+  color:rgba(100,200,100,0.8);
+}
+.practice-name{
+  flex:1;
+  font-size:12px;
+  color:rgba(255,248,214,0.8);
+  letter-spacing:0.05em;
+}
+.practice-xp{
+  font-size:10px;
+  color:var(--gold);
+  letter-spacing:0.1em;
+  flex-shrink:0;
+}
+.practice-item.done .practice-xp{color:rgba(100,200,100,0.6)}
+
+/* Streak & Total */
+.streak-counter,.today-total{
+  text-align:center;
+  margin:16px 0;
+}
+.streak-number{
+  font-family:'Cinzel',serif;
+  font-size:clamp(20px,5vw,28px);
+  color:#ffd700;
+}
+.streak-label{
+  font-size:10px;
+  color:rgba(255,248,214,0.4);
+  letter-spacing:0.15em;
+}
+.streak-multiplier{
+  font-size:10px;
+  color:rgba(201,168,76,0.7);
+  letter-spacing:0.1em;
+}
+.xp-earned{
+  font-family:'Cinzel',serif;
+  font-size:clamp(18px,4vw,24px);
+  color:#ffd700;
+}
+.xp-earned-label{
+  font-size:10px;
+  color:rgba(255,248,214,0.4);
+  letter-spacing:0.15em;
+}
+
+/* Daimon widget */
+.daimon-widget{margin:24px 0}
+
+/* Separator */
+.section-sep{
+  height:1px;
+  background:rgba(201,168,76,0.1);
+  margin:20px 0;
+}
+</style>
+</head>
+<body>
+
+<div class="page-shell">
+  <header class="page-header">
+    <a href="../index.html" class="back-link" data-i18n="app.back">LOBBY</a>
+    <h1 class="page-title" data-i18n="daily.title">DAILY PRACTICES</h1>
+    <div class="page-subtitle" id="today-date"></div>
+  </header>
+
+  <!-- Daimon stats widget -->
+  <div class="daimon-widget" id="daimon-widget"></div>
+
+  <!-- Streak -->
+  <div class="streak-counter">
+    <div class="streak-number" id="streak-days">0</div>
+    <div class="streak-label" data-i18n="daily.streak">STREAK (DAYS)</div>
+    <div class="streak-multiplier" id="streak-mult"></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Practice checklist -->
+  <div class="practice-checklist" id="practice-list"></div>
+
+  <div class="section-sep"></div>
+
+  <!-- Today total -->
+  <div class="today-total">
+    <div class="xp-earned" id="today-xp">0 XP</div>
+    <div class="xp-earned-label" data-i18n="daily.earned_today">EARNED TODAY</div>
+  </div>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang, createLangSwitcher } from '../js/i18n.js';
+import { loadPlayerDaimon } from '../js/modules/daimon-manager.js';
+import { addXP, getStreakDays, updateStreak, XP_SOURCES } from '../js/modules/xp-manager.js';
+import { renderDaimonStats } from '../js/components/daimon-stats.js';
+
+var PRACTICES = [
+  { key: 'morning_meditation', xp: 50, label: { en: 'Morning Meditation', ru: 'Утренняя медитация' } },
+  { key: 'evening_reflection', xp: 50, label: { en: 'Evening Reflection', ru: 'Вечерняя рефлексия' } },
+  { key: 'daily_checkin',      xp: 30, label: { en: 'Daily Check-in', ru: 'Ежедневный чек-ин' } },
+  { key: 'feed_daimon',        xp: 40, label: { en: 'Feed Daimon', ru: 'Покормить Даймона' } },
+  { key: 'journaling',         xp: 35, label: { en: 'Journaling', ru: 'Ведение дневника' } },
+  { key: 'breathwork',         xp: 45, label: { en: 'Breathwork', ru: 'Дыхательная практика' } }
+];
+
+document.addEventListener('DOMContentLoaded', async function() {
+  translatePage();
+  createLangSwitcher();
+
+  var lang = getLang();
+  var today = new Date();
+  var dateStr = today.toISOString().split('T')[0];
+  document.getElementById('today-date').textContent = dateStr;
+
+  // Render daimon widget
+  await renderDaimonStats(document.getElementById('daimon-widget'));
+
+  // Update streak
+  updateStreak();
+  var streak = getStreakDays();
+  document.getElementById('streak-days').textContent = streak;
+  var mult = streak >= 30 ? 1.5 : streak >= 14 ? 1.3 : streak >= 7 ? 1.2 : streak >= 3 ? 1.1 : 1.0;
+  if (mult > 1) {
+    document.getElementById('streak-mult').textContent = 'x' + mult + ' bonus';
+  }
+
+  // Load today's completed practices
+  var storageKey = 'awara_daily_practices_' + dateStr;
+  var completed = JSON.parse(localStorage.getItem(storageKey) || '[]');
+
+  // Render practices
+  var list = document.getElementById('practice-list');
+  var todayXP = 0;
+
+  PRACTICES.forEach(function(p) {
+    var isDone = completed.indexOf(p.key) !== -1;
+    if (isDone) todayXP += p.xp;
+
+    var div = document.createElement('div');
+    div.className = 'practice-item' + (isDone ? ' done' : '');
+    div.innerHTML = '<div class="practice-check">' + (isDone ? 'v' : '') + '</div>'
+      + '<div class="practice-name">' + p.label[lang] + '</div>'
+      + '<div class="practice-xp">+' + p.xp + ' XP</div>';
+
+    div.addEventListener('click', async function() {
+      if (isDone) return;
+      isDone = true;
+      div.classList.add('done');
+      div.querySelector('.practice-check').textContent = 'v';
+
+      completed.push(p.key);
+      localStorage.setItem(storageKey, JSON.stringify(completed));
+
+      // Add XP
+      var daimon = loadPlayerDaimon();
+      if (daimon) {
+        await addXP(daimon, p.xp, 'daily_practices.' + p.key);
+        await renderDaimonStats(document.getElementById('daimon-widget'));
+      }
+
+      todayXP += p.xp;
+      document.getElementById('today-xp').textContent = todayXP + ' XP';
+    });
+
+    list.appendChild(div);
+  });
+
+  document.getElementById('today-xp').textContent = todayXP + ' XP';
+});
+</script>
+
+</body>
+</html>

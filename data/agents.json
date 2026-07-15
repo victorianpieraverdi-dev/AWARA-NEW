@@ -1,0 +1,233 @@
+[
+  {
+    "id": 1,
+    "slug": "svet_ra",
+    "name": "Свет Ра",
+    "domain": "Гелиосфера",
+    "guna": "саттва",
+    "vastu_zone": "Восток",
+    "planet": "Солнце",
+    "element": "Огонь",
+    "ray": 1
+  },
+  {
+    "id": 2,
+    "slug": "iskra",
+    "name": "Искра",
+    "domain": "Океан Синхронности",
+    "guna": "тамас",
+    "vastu_zone": "Северо-Запад",
+    "planet": "Луна",
+    "element": "Вода",
+    "ray": 2
+  },
+  {
+    "id": 3,
+    "slug": "brahma",
+    "name": "Брахма",
+    "domain": "Кузница Фракталов",
+    "guna": "раджас",
+    "vastu_zone": "Центр",
+    "planet": "Брахмастан",
+    "element": "Эфир",
+    "ray": 3
+  },
+  {
+    "id": 4,
+    "slug": "sarasvati",
+    "name": "Сарасвати",
+    "domain": "Эфир Логоса",
+    "guna": "саттва",
+    "vastu_zone": "Север",
+    "planet": "Меркурий",
+    "element": "Воздух",
+    "ray": 3
+  },
+  {
+    "id": 5,
+    "slug": "vishnu",
+    "name": "Вишну",
+    "domain": "Горизонт Равновесия",
+    "guna": "саттва",
+    "vastu_zone": "Северо-Восток",
+    "planet": "Юпитер",
+    "element": "Эфир",
+    "ray": 2
+  },
+  {
+    "id": 6,
+    "slug": "lakshmi",
+    "name": "Лакшми",
+    "domain": "Розарий Изобилия",
+    "guna": "раджас",
+    "vastu_zone": "Юго-Восток",
+    "planet": "Венера",
+    "element": "Земля",
+    "ray": 6
+  },
+  {
+    "id": 7,
+    "slug": "shiva",
+    "name": "Шива",
+    "domain": "Пепельный Зенит",
+    "guna": "тамас",
+    "vastu_zone": "Юго-Запад",
+    "planet": "Раху",
+    "element": "Огонь",
+    "ray": 1
+  },
+  {
+    "id": 8,
+    "slug": "parvati",
+    "name": "Парвати",
+    "domain": "Колыбель Вершин",
+    "guna": "раджас",
+    "vastu_zone": "Северо-Восток",
+    "planet": "Юпитер",
+    "element": "Земля",
+    "ray": 4
+  },
+  {
+    "id": 9,
+    "slug": "jnana",
+    "name": "Джняна",
+    "domain": "Астральная Обсерватория",
+    "guna": "саттва",
+    "vastu_zone": "Север",
+    "planet": "Меркурий",
+    "element": "Эфир",
+    "ray": 3
+  },
+  {
+    "id": 10,
+    "slug": "prema",
+    "name": "Према",
+    "domain": "Сад Единого Сердца",
+    "guna": "саттва",
+    "vastu_zone": "Северо-Восток",
+    "planet": "Юпитер",
+    "element": "Вода",
+    "ray": 2
+  },
+  {
+    "id": 11,
+    "slug": "shakti",
+    "name": "Шакти",
+    "domain": "Горнило Воли",
+    "guna": "раджас",
+    "vastu_zone": "Юг",
+    "planet": "Марс",
+    "element": "Огонь",
+    "ray": 1
+  },
+  {
+    "id": 12,
+    "slug": "ananda",
+    "name": "Ананда",
+    "domain": "Сфера Ликования",
+    "guna": "раджас",
+    "vastu_zone": "Юго-Восток",
+    "planet": "Венера",
+    "element": "Эфир",
+    "ray": 6
+  },
+  {
+    "id": 13,
+    "slug": "shanti",
+    "name": "Шанти",
+    "domain": "Обитель Безмолвия",
+    "guna": "саттва",
+    "vastu_zone": "Запад",
+    "planet": "Сатурн",
+    "element": "Эфир",
+    "ray": 7
+  },
+  {
+    "id": 14,
+    "slug": "agni",
+    "name": "Агни",
+    "domain": "Горнило Возрождения",
+    "guna": "раджас",
+    "vastu_zone": "Юго-Восток",
+    "planet": "Венера",
+    "element": "Огонь",
+    "ray": 4
+  },
+  {
+    "id": 15,
+    "slug": "vayu",
+    "name": "Ваю",
+    "domain": "Стратосфера Эха",
+    "guna": "раджас",
+    "vastu_zone": "Северо-Запад",
+    "planet": "Луна",
+    "element": "Воздух",
+    "ray": 7
+  },
+  {
+    "id": 16,
+    "slug": "varuna",
+    "name": "Варуна",
+    "domain": "Бездна Воспоминаний",
+    "guna": "тамас",
+    "vastu_zone": "Запад",
+    "planet": "Сатурн",
+    "element": "Вода",
+    "ray": 5
+  },
+  {
+    "id": 17,
+    "slug": "prithvi",
+    "name": "Притхви",
+    "domain": "Терракотовый Бастион",
+    "guna": "тамас",
+    "vastu_zone": "Юго-Запад",
+    "planet": "Раху",
+    "element": "Земля",
+    "ray": 5
+  },
+  {
+    "id": 18,
+    "slug": "akasha",
+    "name": "Акаша",
+    "domain": "Космический Ткацкий Станок",
+    "guna": "тамас",
+    "vastu_zone": "Центр",
+    "planet": "Брахмастан",
+    "element": "Эфир",
+    "ray": 7
+  },
+  {
+    "id": 19,
+    "slug": "tejas",
+    "name": "Теджас",
+    "domain": "Эпицентр Сияния",
+    "guna": "раджас",
+    "vastu_zone": "Восток",
+    "planet": "Солнце",
+    "element": "Огонь",
+    "ray": 6
+  },
+  {
+    "id": 20,
+    "slug": "dharma",
+    "name": "Дхарма",
+    "domain": "Залы Равновесия",
+    "guna": "саттва",
+    "vastu_zone": "Юг",
+    "planet": "Марс",
+    "element": "Земля",
+    "ray": 5
+  },
+  {
+    "id": 21,
+    "slug": "karma",
+    "name": "Карма",
+    "domain": "Архив Эха",
+    "guna": "тамас",
+    "vastu_zone": "Юг",
+    "planet": "Марс",
+    "element": "Земля",
+    "ray": 4
+  }
+]

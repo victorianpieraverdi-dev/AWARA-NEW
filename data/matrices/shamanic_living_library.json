@@ -1,0 +1,71 @@
+{
+  "system_slug": "shamanic",
+  "tradition_matrix": 13,
+  "system_name": "\u0428\u0430\u043c\u0430\u043d\u0438\u0437\u043c: 3 \u043c\u0438\u0440\u0430 \u041c\u0438\u0440\u043e\u0432\u043e\u0433\u043e \u0414\u0440\u0435\u0432\u0430, 4 \u0441\u0442\u043e\u0440\u043e\u043d\u044b \u0441\u0432\u0435\u0442\u0430 \u0438 \u0434\u0443\u0445\u0438-\u0437\u0432\u0435\u0440\u0438",
+  "note": "Core / cross-cultural shamanism (Mircea Eliade's 'archaic techniques of ecstasy'). The vertical cosmos is strung on the axis mundi - the World Tree (also World Pillar / World Mountain) - whose crown rises into the heavens and whose roots sink into the underworld, connecting the three Worlds: Upper (heavens), Middle (the lived earth), and Lower (the underworld). Primary lattice: the eight power animals / helping spirit-animals that carry, teach and protect the shaman. Secondary lattice: the nine ascending levels of the World Tree (the heavens the shaman climbs, marked as notches on the tree/drum) - mapped here one-to-one onto the 9-dimensional mera axis, so the World Tree literally IS the mera spine (level 9 = highest heaven / svet_ra, level 1 = deepest underworld / karma). Tertiary lattice: the four cardinal Directions with their element, season and guardian. The shaman's drum is the steed (horse) that bears the soul up the Tree; the smoke-hole / Pole Star is the gateway between worlds. By design 9 tree-levels + 4 directions + 8 power animals = 21, one per spine agent; the 3 Worlds group the nine levels (Upper = mera 6-9, Middle = mera 3-5, Lower = mera 1-2). NOTE: shamanism is not a single tradition - this is a synthesis across Siberian/Tungus and Mongol (Tengri) shamanism, circumpolar practice, and the North American medicine wheel; the nine heavens are Turko-Mongol, and the directional elements, seasons and guardian animals vary widely by culture. reconstructed true. Each element carries a spine agent and its mera (1-9).",
+  "element_count": 8,
+  "world_count": 3,
+  "tree_level_count": 9,
+  "direction_count": 4,
+  "layers": ["key", "animal", "power", "world", "agent", "mera"],
+  "reconstructed": true,
+  "mera_axis": "9-dimensional axis (mera 1-9): chakras 1-7 (Muladhara..Sahasrara) + Monada (8) + Absolut (9); each spine agent carries its mera. Here the axis is the World Tree itself: level 9 = highest heaven, level 1 = deepest underworld.",
+  "mera_map": { "svet_ra": 9, "iskra": 8, "brahma": 7, "vishnu": 7, "ananda": 7, "shanti": 7, "jnana": 6, "shiva": 6, "tejas": 6, "sarasvati": 5, "akasha": 5, "prema": 4, "parvati": 4, "vayu": 4, "shakti": 3, "agni": 3, "varuna": 2, "lakshmi": 2, "prithvi": 1, "dharma": 1, "karma": 1 },
+  "axis_mundi": {"name": "World Tree / Axis Mundi", "meaning": "the central pillar (tree, pole or mountain) joining the three worlds; the shaman climbs or descends it in trance", "steed": "the drum is the horse/steed that carries the soul on its flight up and down the Tree", "gateway": "the smoke-hole / Pole Star is the opening between the Middle World and the heavens"},
+  "worlds": [
+    {"n": 1, "world": "Upper World", "ruler": "the Sky Father (Tengri / Ulgen)", "mera_band": "6-9", "meaning": "the heavens of benevolent sky-spirits, gods and ancestors-become-stars; reached by ascending the World Tree"},
+    {"n": 2, "world": "Middle World", "ruler": "the land- and nature-spirits", "mera_band": "3-5", "meaning": "the lived earth and its spirit-double; the realm of humans, beasts and place; where the axis mundi stands"},
+    {"n": 3, "world": "Lower World", "ruler": "Erlik, lord of the dead", "mera_band": "1-2", "meaning": "the underworld of the dead, chthonic powers and animal-teacher spirits; reached by descending the roots"}
+  ],
+  "tree_levels": [
+    {"n": 9, "realm": "Highest Heaven - the Sky Father at the crown of the Tree", "agent": "svet_ra", "mera": 9},
+    {"n": 8, "realm": "The celestial / star realm - heavenly fires and star-spirits", "agent": "iskra", "mera": 8},
+    {"n": 7, "realm": "Heaven of the great creator sky-spirits", "agent": "brahma", "mera": 7},
+    {"n": 6, "realm": "Realm of the wise sky-spirits and the upper winds", "agent": "jnana", "mera": 6},
+    {"n": 5, "realm": "The firmament / threshold - the Pole Star smoke-hole gateway", "agent": "akasha", "mera": 5},
+    {"n": 4, "realm": "The middle airs - the sky of the Middle World", "agent": "vayu", "mera": 4},
+    {"n": 3, "realm": "The Middle World surface - living earth of humans and animals", "agent": "shakti", "mera": 3},
+    {"n": 2, "realm": "The upper Lower World - waters and the threshold of the dead", "agent": "varuna", "mera": 2},
+    {"n": 1, "realm": "The deepest Lower World - Erlik and the roots of the Tree", "agent": "karma", "mera": 1}
+  ],
+  "directions": [
+    {"n": 1, "direction": "East", "element": "air", "season": "spring", "time": "dawn", "quality": "vision and new beginnings", "guardian": "Hawk", "agent": "sarasvati", "mera": 5},
+    {"n": 2, "direction": "South", "element": "fire", "season": "summer", "time": "noon", "quality": "growth, passion and trust", "guardian": "Coyote", "agent": "agni", "mera": 3},
+    {"n": 3, "direction": "West", "element": "water", "season": "autumn", "time": "dusk", "quality": "introspection and healing", "guardian": "Salmon", "agent": "prema", "mera": 4},
+    {"n": 4, "direction": "North", "element": "earth", "season": "winter", "time": "midnight", "quality": "wisdom and the ancestors", "guardian": "Buffalo", "agent": "prithvi", "mera": 1}
+  ],
+  "spine": {
+    "svet_ra": {"tree_level": 9, "mera": 9, "note": "Highest Heaven - the Sky Father (Tengri/Ulgen) at the crown of the World Tree; the radiant source the shaman ascends toward."},
+    "iskra": {"tree_level": 8, "mera": 8, "note": "The celestial / star realm - heavenly fires and star-spirits; the spark-light of the upper heavens."},
+    "brahma": {"tree_level": 7, "mera": 7, "note": "Heaven of the great creator sky-spirits; the structuring powers of the Upper World."},
+    "vishnu": {"animal": "Eagle", "mera": 7, "note": "Eagle - the great sky-bird atop the World Tree; messenger to the heavens, far-sight and the shaman's ascent."},
+    "ananda": {"animal": "Horse", "mera": 7, "note": "Horse - the shaman's steed; the drum is the horse that bears the soul on its ecstatic flight between worlds."},
+    "shanti": {"animal": "Owl", "mera": 7, "note": "Owl - silent night-sight; seer of the unseen and guardian of the threshold of death and stillness."},
+    "jnana": {"tree_level": 6, "mera": 6, "note": "Realm of the wise sky-spirits and the upper winds; discernment and the knowledge of the heavens."},
+    "shiva": {"animal": "Raven", "mera": 6, "note": "Raven - psychopomp and trickster-creator; carries souls between worlds, master of magic, death and rebirth."},
+    "tejas": {"animal": "Bear", "mera": 6, "note": "Bear - the great healing and medicine animal; solar strength, the keeper of dreaming and the deep cave."},
+    "sarasvati": {"direction": "East", "mera": 5, "note": "The East - air, dawn, spring; vision and new beginnings; guardian Hawk. The word and breath of the rising sun."},
+    "akasha": {"tree_level": 5, "mera": 5, "note": "The firmament / threshold - the Pole Star smoke-hole, the gateway between the Middle World and the heavens."},
+    "prema": {"direction": "West", "mera": 4, "note": "The West - water, dusk, autumn; introspection and healing; guardian Salmon. The heart's inward turn."},
+    "parvati": {"animal": "Stag", "mera": 4, "note": "Stag / Deer - the gentle forest lord whose antlers branch like the World Tree; fertility, nurture and the wild paths."},
+    "vayu": {"tree_level": 4, "mera": 4, "note": "The middle airs - the sky of the Middle World; winds, breath and the moving spirit."},
+    "shakti": {"tree_level": 3, "mera": 3, "note": "The Middle World surface - the living earth of humans, beasts and land-spirits where the axis mundi stands."},
+    "agni": {"direction": "South", "mera": 3, "note": "The South - fire, noon, summer; growth, passion and trust; guardian Coyote. The blaze of vital force."},
+    "varuna": {"tree_level": 2, "mera": 2, "note": "The upper Lower World - the waters and the threshold of the dead; the descent begins."},
+    "lakshmi": {"animal": "Serpent", "mera": 2, "note": "Serpent / Snake - renewal by shedding; chthonic abundance, the coiled life-force and healing of the Lower World."},
+    "prithvi": {"direction": "North", "mera": 1, "note": "The North - earth, midnight, winter; wisdom and the ancestors; guardian Buffalo. The grounding place of the elders."},
+    "dharma": {"animal": "Wolf", "mera": 1, "note": "Wolf - the pathfinder and teacher; loyalty and the law of the pack; the guide who walks ahead on the trail."},
+    "karma": {"tree_level": 1, "mera": 1, "note": "The deepest Lower World - the underworld of Erlik, lord of the dead; the roots of the World Tree and the causal ground."}
+  },
+  "items": [
+    {"key": 1, "animal": "Eagle", "power": "vision, far-sight, messenger to the heavens; the soul's ascent", "world": "Upper", "agent": "vishnu", "mera": 7},
+    {"key": 2, "animal": "Horse", "power": "the soul's steed; ecstatic flight, the drum-journey", "world": "all worlds", "agent": "ananda", "mera": 7},
+    {"key": 3, "animal": "Owl", "power": "night-sight, seeing the unseen, the threshold of death", "world": "Upper / Lower", "agent": "shanti", "mera": 7},
+    {"key": 4, "animal": "Raven", "power": "psychopomp, magic, death and rebirth; the between", "world": "all worlds", "agent": "shiva", "mera": 6},
+    {"key": 5, "animal": "Bear", "power": "healing and medicine, strength, dreaming in the cave", "world": "Middle / Lower", "agent": "tejas", "mera": 6},
+    {"key": 6, "animal": "Stag", "power": "fertility, the forest, antlers as the branching Tree", "world": "Middle", "agent": "parvati", "mera": 4},
+    {"key": 7, "animal": "Serpent", "power": "renewal by shedding, chthonic life-force, healing", "world": "Lower", "agent": "lakshmi", "mera": 2},
+    {"key": 8, "animal": "Wolf", "power": "pathfinding, teaching, loyalty and the law of the pack", "world": "Middle", "agent": "dharma", "mera": 1}
+  ],
+  "sources": ["Mircea Eliade, Shamanism: Archaic Techniques of Ecstasy", "Michael Harner, The Way of the Shaman", "en.wikipedia.org/wiki/Axis_mundi", "en.wikipedia.org/wiki/Tengrism - the heavens and Tengri", "en.wikipedia.org/wiki/World_tree", "en.wikipedia.org/wiki/Power_animal", "legendsofamerica.com - Medicine Wheel and the Four Directions", "learnreligions.com - Spirit Keepers of the Native American Medicine Wheel"]
+}

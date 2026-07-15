@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>AWARA · Карта Вселенных</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'JetBrains Mono',monospace;color:#cfc4a6;cursor:default}
+  #c{position:fixed;inset:0;display:block}
+  .hud{position:fixed;z-index:10;pointer-events:none;user-select:none;transition:opacity .6s}
+  #brand{top:18px;left:22px;font-family:'Cinzel Decorative',serif;letter-spacing:3px;font-size:15px;color:#e8d9a8;text-shadow:0 0 18px rgba(150,180,255,.4)}
+  #brand small{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:#8a8aa6;margin-top:4px;font-weight:300}
+  #hint{bottom:26px;left:0;right:0;text-align:center;font-size:12px;color:#8a8aa6;letter-spacing:1px;padding:0 16px}
+  #lang{top:16px;right:20px;z-index:12;pointer-events:auto;cursor:pointer;border:1px solid #33335a;border-radius:20px;padding:5px 12px;font-size:11px;color:#bfc0e0;background:rgba(12,12,28,.5)}
+  #flash{position:fixed;inset:0;z-index:20;background:radial-gradient(circle at 50% 50%,#fff 0%,#ffe9b0 38%,#6a86ff 86%);opacity:0;pointer-events:none}
+  #enter-veil{position:fixed;inset:0;z-index:60;pointer-events:none;background:radial-gradient(circle at 50% 50%,#fff 0%,#fff5d6 28%,#ffd277 52%,#6a86ff 78%,#000 100%);opacity:1;transition:opacity 1.4s ease-out}
+  #err{position:fixed;inset:0;display:none;z-index:99;background:#001;color:#8af;padding:22px;font:13px/1.6 monospace;white-space:pre-wrap;overflow:auto}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="brand" class="hud">КАРТА ВСЕЛЕННЫХ<small data-ru="макрокосм · вселенные иных" data-en="macrocosm · universes of others">…</small></div>
+<div id="hint" class="hud" data-ru="каждый пузырь — чьё-то Мироздание · кликни, чтобы занырнуть внутрь" data-en="each bubble is someone's universe · click to dive inside">…</div>
+<div id="lang">RU / EN</div>
+<div id="flash"></div>
+<div id="enter-veil"></div>
+<script>
+(function(){var fromEye=false;try{fromEye=sessionStorage.getItem('awara_from_eye')==='1';}catch(e){}window.__awaraFromEye=fromEye;if(fromEye){try{sessionStorage.removeItem('awara_from_eye');}catch(e){}}else{var v=document.getElementById('enter-veil');if(v)v.style.display='none';}})();
+</script>
+<div id="err"><b>Ошибка</b><br><span id="err-msg"></span></div>
+
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const $=s=>document.querySelector(s);
+function showErr(m){ const e=$('#err'); $('#err-msg').textContent=String(m); e.style.display='block'; }
+window.addEventListener('error',e=>showErr(e.message+'  @line '+e.lineno));
+window.addEventListener('unhandledrejection',e=>showErr('promise: '+((e.reason&&e.reason.message)||e.reason)));
+
+const G = window.gsap || (function(){
+  function to(target,vars){
+    const dur=(vars.duration||1)*1000, delay=(vars.delay||0)*1000, t0=performance.now();
+    const skip=['duration','ease','onUpdate','onComplete','delay'];
+    const keys=Object.keys(vars).filter(k=>!skip.includes(k));
+    const from={}; keys.forEach(k=>from[k]=target[k]);
+    function step(now){ let p=(now-t0-delay)/dur; if(p<0){requestAnimationFrame(step);return;} p=Math.min(1,p);
+      const e=p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+      keys.forEach(k=>target[k]=from[k]+(vars[k]-from[k])*e);
+      vars.onUpdate&&vars.onUpdate(); if(p<1)requestAnimationFrame(step); else vars.onComplete&&vars.onComplete(); }
+    requestAnimationFrame(step);
+  }
+  return {to};
+})();
+
+try{
+const IS_MOBILE=matchMedia('(max-width:768px)').matches;
+const canvas=$('#c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio, IS_MOBILE?1.5:1.25));
+renderer.setSize(innerWidth,innerHeight);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=0.88;
+const PIX=renderer.getPixelRatio();
+
+const mouse=new THREE.Vector2(0,0), mouseT=new THREE.Vector2(0,0);
+addEventListener('pointermove',e=>{ mouseT.x=(e.clientX/innerWidth)*2-1; mouseT.y=-((e.clientY/innerHeight)*2-1); });
+
+const camera=new THREE.PerspectiveCamera(58, innerWidth/innerHeight, 0.05, 800);
+camera.position.set(0,0,20);
+
+/* =====================================================================
+   TEXTURES (procedural, no external files)
+   ===================================================================== */
+// soft round star
+function makeStarTex(){
+  const cv=document.createElement('canvas'); cv.width=cv.height=64; const x=cv.getContext('2d');
+  const g=x.createRadialGradient(32,32,0,32,32,32);
+  g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(0.3,'rgba(255,255,255,0.7)');
+  g.addColorStop(0.7,'rgba(255,255,255,0.12)'); g.addColorStop(1,'rgba(255,255,255,0)');
+  x.fillStyle=g; x.fillRect(0,0,64,64);
+  const t=new THREE.CanvasTexture(cv); t.colorSpace=THREE.SRGBColorSpace; return t;
+}
+// soft blurred galaxy glow with faint spiral wisps
+function makeGalaxyTex(){
+  const S=256, cv=document.createElement('canvas'); cv.width=cv.height=S; const x=cv.getContext('2d');
+  const g=x.createRadialGradient(S/2,S/2,0,S/2,S/2,S/2);
+  g.addColorStop(0.0,'rgba(255,255,255,0.95)');
+  g.addColorStop(0.16,'rgba(220,228,255,0.55)');
+  g.addColorStop(0.45,'rgba(150,170,255,0.16)');
+  g.addColorStop(1.0,'rgba(0,0,0,0)');
+  x.fillStyle=g; x.fillRect(0,0,S,S);
+  x.globalCompositeOperation='lighter';
+  for(let a=0;a<3;a++){
+    x.save(); x.translate(S/2,S/2); x.rotate(a*Math.PI*2/3);
+    x.beginPath();
+    for(let r=6;r<118;r+=2){ const ang=r*0.05; const px=Math.cos(ang)*r, py=Math.sin(ang)*r*0.55; if(r===6)x.moveTo(px,py); else x.lineTo(px,py); }
+    x.strokeStyle='rgba(190,205,255,0.045)'; x.lineWidth=14; x.lineCap='round'; x.stroke();
+    x.restore();
+  }
+  const t=new THREE.CanvasTexture(cv); t.colorSpace=THREE.SRGBColorSpace; return t;
+}
+const STAR_TEX=makeStarTex();
+const GAL_TEX=makeGalaxyTex();
+
+/* =====================================================================
+   sceneBG : everything that lives BEHIND the glass (refraction source)
+   - cosmic dome (soft gradient + nebula)
+   - deep starfield
+   - one soft galaxy sprite per universe
+   ===================================================================== */
+const sceneBG=new THREE.Scene();
+
+// cosmic dome
+const domeU={ uTime:{value:0} };
+const dome=new THREE.Mesh(
+  new THREE.SphereGeometry(500,32,32),
+  new THREE.ShaderMaterial({ side:THREE.BackSide, depthWrite:false, depthTest:false, uniforms:domeU,
+    vertexShader:`varying vec3 vDir; void main(){ vDir=normalize(position); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+    fragmentShader:`
+      precision highp float; varying vec3 vDir; uniform float uTime;
+      float h(vec2 p){ return fract(sin(dot(p,vec2(41.3,289.1)))*43758.5); }
+      float vn(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f);
+        return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y); }
+      float fbm(vec2 p){ float s=0.,a=.5; for(int i=0;i<4;i++){ s+=a*vn(p); p*=2.03; a*=.5;} return s; }
+      void main(){
+        float y=vDir.y*0.5+0.5;
+        vec3 bot=vec3(0.018,0.010,0.048);
+        vec3 top=vec3(0.005,0.005,0.018);
+        vec3 col=mix(bot,top,smoothstep(0.0,1.0,y));
+        vec2 q=vDir.xz*1.6 + vDir.y*0.6;
+        float n=fbm(q + uTime*0.008);
+        n=fbm(q + n*1.1);
+        col+=vec3(0.055,0.025,0.120)*smoothstep(0.50,0.98,n);   // soft nebula clouds
+        col+=vec3(0.018,0.022,0.055)*smoothstep(0.2,0.7,n)*0.5;
+        gl_FragColor=vec4(col,1.0);
+      }`
+  })
+);
+sceneBG.add(dome);
+
+// deep starfield (soft round points)
+function makeStars(n,spread){
+  const pos=new Float32Array(n*3), siz=new Float32Array(n), col=new Float32Array(n*3);
+  const c=new THREE.Color();
+  for(let i=0;i<n;i++){
+    pos[i*3]=(Math.random()-0.5)*spread;
+    pos[i*3+1]=(Math.random()-0.5)*spread;
+    pos[i*3+2]=10-Math.random()*spread;
+    const tone=Math.random();
+    c.setHSL(0.58+ (Math.random()-0.5)*0.12, 0.5, 0.65+tone*0.25);
+    col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
+    siz[i]=0.6+Math.random()*2.0;
+  }
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  g.setAttribute('aColor',new THREE.BufferAttribute(col,3));
+  g.setAttribute('aSize',new THREE.BufferAttribute(siz,1));
+  const m=new THREE.ShaderMaterial({
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+    uniforms:{ uMap:{value:STAR_TEX}, uPix:{value:PIX}, uTime:{value:0} },
+    vertexShader:`attribute float aSize; attribute vec3 aColor; varying vec3 vC;
+      uniform float uPix, uTime;
+      void main(){ vC=aColor; vec4 mv=modelViewMatrix*vec4(position,1.0);
+        float tw=0.75+0.25*sin(uTime*0.8+position.x*7.0);
+        gl_PointSize=aSize*uPix*tw*(120.0/-mv.z); gl_Position=projectionMatrix*mv; }`,
+    fragmentShader:`precision highp float; varying vec3 vC; uniform sampler2D uMap;
+      void main(){ vec4 t=texture2D(uMap,gl_PointCoord); if(t.a<0.01)discard; gl_FragColor=vec4(vC,1.0)*t.a; }`
+  });
+  return new THREE.Points(g,m);
+}
+const stars=makeStars(IS_MOBILE?2500:6000, 380);
+sceneBG.add(stars);
+
+/* =====================================================================
+   GLASS UNIVERSES (refraction + chromatic aberration + neon rim)
+   ===================================================================== */
+const GLASS_VERT=`
+  varying vec3 vWN; varying vec3 vView; varying vec3 vVN; varying vec4 vClip;
+  void main(){
+    vec4 wp = modelMatrix * vec4(position,1.0);
+    vWN = normalize(mat3(modelMatrix) * normal);
+    vView = normalize(cameraPosition - wp.xyz);
+    vVN = normalize(normalMatrix * normal);
+    vClip = projectionMatrix * viewMatrix * wp;
+    gl_Position = vClip;
+  }`;
+const GLASS_FRAG=`
+  precision highp float;
+  varying vec3 vWN; varying vec3 vView; varying vec3 vVN; varying vec4 vClip;
+  uniform sampler2D uScene; uniform vec3 uEdge; uniform float uHover; uniform float uTime;
+  void main(){
+    vec3 N=normalize(vWN); vec3 V=normalize(vView);
+    float fres = pow(1.0 - clamp(dot(N,V),0.0,1.0), 2.6);
+    // screen-space UV of this fragment
+    vec2 uv = (vClip.xy / vClip.w) * 0.5 + 0.5;
+    // refraction: push lookup along view-space normal
+    vec2 refr = vVN.xy * (0.07 + 0.05*fres);
+    // chromatic aberration: separate RGB by extra offset, strongest at the rim
+    float ca = (0.006 + 0.020*fres);
+    vec2 dir = normalize(vVN.xy + 1e-4);
+    float r = texture2D(uScene, uv + refr + dir*ca).r;
+    float g = texture2D(uScene, uv + refr).g;
+    float b = texture2D(uScene, uv + refr - dir*ca).b;
+    vec3 refrCol = vec3(r,g,b);
+    // neon rim (blue / violet)
+    vec3 neon = uEdge * (fres*fres) * (2.6 + uHover*2.0);
+    // faint inner tint so the glass has presence
+    vec3 col = refrCol*(0.9) + neon;
+    gl_FragColor = vec4(col, 1.0);
+  }`;
+
+const sceneGlass=new THREE.Scene();
+const EDGE=[new THREE.Color(0x3a6bff), new THREE.Color(0x7a3cff), new THREE.Color(0x4aa0ff), new THREE.Color(0x9b4dff)];
+const TINTS=[0x9fb8ff,0xc9a6ff,0x8ad8ff,0xffd9a6,0xa6ffd8,0xffa6d8];
+const COUNT=IS_MOBILE?18:32;
+const universes=[]; const glassMeshes=[]; const galaxies=[]; const glassMats=[];
+const bgRT=new THREE.WebGLRenderTarget(16,16,{ depthBuffer:true });
+
+for(let i=0;i<COUNT;i++){
+  const isTorus=Math.random()<0.55;
+  const R=0.8+Math.random()*1.2;
+  const geo=isTorus ? new THREE.TorusGeometry(R, R*0.36, 36, 120) : new THREE.SphereGeometry(R, 56, 56);
+  const mat=new THREE.ShaderMaterial({
+    vertexShader:GLASS_VERT, fragmentShader:GLASS_FRAG,
+    uniforms:{ uScene:{value:bgRT.texture}, uEdge:{value:EDGE[i%EDGE.length].clone()}, uHover:{value:0}, uTime:{value:0} },
+    transparent:false, depthWrite:true, depthTest:true, side:THREE.FrontSide
+  });
+  const mesh=new THREE.Mesh(geo,mat);
+  const px=(Math.random()-0.5)*32, py=(Math.random()-0.5)*18, pz=-4-Math.random()*40;
+  mesh.position.set(px,py,pz);
+  mesh.rotation.set(Math.random()*0.7-0.35, Math.random()*Math.PI*2, Math.random()*0.7-0.35);
+  mesh.userData.uIndex=i;
+  sceneGlass.add(mesh);
+
+  // central galaxy sprite (soft glow), lives in sceneBG so it refracts through glass
+  const spr=new THREE.Sprite(new THREE.SpriteMaterial({ map:GAL_TEX, color:new THREE.Color(TINTS[i%TINTS.length]),
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, opacity:0.9 }));
+  const gs=R*2.4; spr.scale.set(gs,gs,1); spr.position.set(px,py,pz);
+  sceneBG.add(spr);
+
+  glassMeshes.push(mesh); glassMats.push(mat);
+  galaxies.push({ sprite:spr, base:gs, phase:Math.random()*6.28 });
+  universes.push({ index:i, mesh, mat, R, pos:new THREE.Vector3(px,py,pz),
+    spin:(Math.random()-0.5)*0.0018, hovered:false });
+}
+
+/* =====================================================================
+   POST: render bg->RT, then composer (bg + glass + bloom + tonemap)
+   ===================================================================== */
+const composer=new EffectComposer(renderer);
+const bgPass=new RenderPass(sceneBG,camera); composer.addPass(bgPass);
+const glassPass=new RenderPass(sceneGlass,camera); glassPass.clear=false; glassPass.clearDepth=true; composer.addPass(glassPass);
+const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight), 0.55, 0.7, 0.7); composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+function setSizes(){
+  const w=innerWidth,h=innerHeight;
+  renderer.setSize(w,h); composer.setSize(w,h); bloom.setSize(w,h);
+  const db=renderer.getDrawingBufferSize(new THREE.Vector2());
+  bgRT.setSize(db.x,db.y);
+  camera.aspect=w/h; camera.updateProjectionMatrix();
+}
+setSizes();
+addEventListener('resize',setSizes);
+
+/* =====================================================================
+   INTERACTION
+   ===================================================================== */
+const ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
+let zooming=false, hoverU=null;
+/* ── навигация: зум + перемещение ── */
+let camZT=26, camZ=26;
+let panXT=0, panX=0, panYT=0, panY=0;
+const PAN_LIM=22, Z_MIN=3, Z_MAX=90;
+const drag={active:false,sx:0,sy:0,px:0,py:0,moved:false};
+function pick(ev){
+  ndc.x=(ev.clientX/innerWidth)*2-1; ndc.y=-((ev.clientY/innerHeight)*2-1);
+  ray.setFromCamera(ndc,camera);
+  const hit=ray.intersectObjects(glassMeshes,false)[0];
+  return hit?universes[hit.object.userData.uIndex]:null;
+}
+addEventListener('pointermove',ev=>{
+  if(zooming) return;
+  if(drag.active){
+    const dx=ev.clientX-drag.sx, dy=ev.clientY-drag.sy;
+    if(Math.abs(dx)+Math.abs(dy)>5) drag.moved=true;
+    const spd=camZ/26;
+    panXT=Math.max(-PAN_LIM,Math.min(PAN_LIM, drag.px - dx*0.030*spd));
+    panYT=Math.max(-PAN_LIM,Math.min(PAN_LIM, drag.py + dy*0.020*spd));
+  }
+  if(!drag.moved){
+    const u=pick(ev);
+    if(hoverU&&hoverU!==u) hoverU.hovered=false;
+    hoverU=u; if(u)u.hovered=true;
+    document.body.style.cursor=u?'pointer':'default';
+  } else { document.body.style.cursor='grabbing'; }
+});
+addEventListener('pointerdown',ev=>{
+  if(zooming||ev.button!==0) return;
+  drag.active=true; drag.sx=ev.clientX; drag.sy=ev.clientY;
+  drag.px=panXT; drag.py=panYT; drag.moved=false;
+  try{ document.body.setPointerCapture(ev.pointerId); }catch(e){}
+});
+addEventListener('pointerup',()=>{ drag.active=false; if(!drag.moved) document.body.style.cursor='default'; });
+addEventListener('wheel',ev=>{
+  ev.preventDefault();
+  camZT=Math.max(Z_MIN,Math.min(Z_MAX, camZT+ev.deltaY*0.045));
+},{passive:false});
+let _pinch0=0;
+addEventListener('touchstart',ev=>{ if(ev.touches.length===2) _pinch0=Math.hypot(ev.touches[0].clientX-ev.touches[1].clientX,ev.touches[0].clientY-ev.touches[1].clientY); },{passive:true});
+addEventListener('touchmove',ev=>{
+  if(ev.touches.length!==2) return;
+  const d=Math.hypot(ev.touches[0].clientX-ev.touches[1].clientX,ev.touches[0].clientY-ev.touches[1].clientY);
+  camZT=Math.max(Z_MIN,Math.min(Z_MAX, camZT-(d-_pinch0)*0.10)); _pinch0=d;
+},{passive:true});
+addEventListener('click',ev=>{ if(zooming||drag.moved)return; const u=pick(ev); if(u)dive(u); });
+
+function dive(u){
+  if(zooming)return; zooming=true;
+  $('#hint').style.opacity=0; $('#brand').style.opacity=0;
+  const tgt=u.pos.clone();
+  G.to(camera.position,{ x:tgt.x, y:tgt.y, z:tgt.z + Math.max(u.R*0.5,0.6), duration:2.3, ease:'power2.inOut',
+    onUpdate:()=>camera.lookAt(tgt) });
+  G.to(camera,{ fov:34, duration:2.3, ease:'power2.in', onUpdate:()=>camera.updateProjectionMatrix() });
+  const fl={o:0};
+  G.to(fl,{ o:1, duration:0.7, delay:1.8, onUpdate:()=>{ $('#flash').style.opacity=fl.o; },
+    onComplete:()=>{ try{ sessionStorage.setItem('awara_warp_in','1'); sessionStorage.setItem('awara_target_universe',String(u.index)); }catch(e){} location.href='lobby-3d.html'; } });
+}
+
+/* =====================================================================
+   RENDER LOOP
+   ===================================================================== */
+function frame(ms){
+  const t=ms*0.001;
+  mouse.x+=(mouseT.x-mouse.x)*0.05; mouse.y+=(mouseT.y-mouse.y)*0.05;
+  domeU.uTime.value=t; stars.material.uniforms.uTime.value=t;
+  stars.rotation.y=t*0.005;
+  for(let i=0;i<universes.length;i++){
+    const u=universes[i];
+    u.mat.uniforms.uTime.value=t;
+    u.mesh.rotation.y+=u.spin; u.mesh.rotation.x+=u.spin*0.4;
+    const target=u.hovered?1:0;
+    u.mat.uniforms.uHover.value+=(target-u.mat.uniforms.uHover.value)*0.1;
+    const s=1+u.mat.uniforms.uHover.value*0.08; u.mesh.scale.setScalar(s);
+    // pulsing galaxy
+    const gx=galaxies[i]; const sc=gx.base*(1+0.10*Math.sin(t*0.7+gx.phase));
+    gx.sprite.scale.set(sc,sc,1);
+    gx.sprite.material.opacity=0.65+0.3*Math.sin(t*0.7+gx.phase);
+  }
+  if(!zooming){
+    camZ+=(camZT-camZ)*0.07;
+    panX+=(panXT-panX)*0.06;
+    panY+=(panYT-panY)*0.06;
+    const ds=Math.min(1.0, camZ/26);
+    camera.position.x=Math.sin(t*0.05)*1.4*ds + mouse.x*1.2*ds + panX;
+    camera.position.y=Math.cos(t*0.045)*0.9*ds + mouse.y*0.8*ds + panY;
+    camera.position.z=camZ;
+    camera.lookAt(panX*0.22, panY*0.22, -14);
+  }
+  // 1) render background (dome+stars+galaxies) into RT for refraction sampling
+  renderer.setRenderTarget(bgRT); renderer.clear(); renderer.render(sceneBG,camera);
+  renderer.setRenderTarget(null);
+  // 2) composite: bg + glass(refracts RT) + bloom + tonemap
+  composer.render();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ===== ВХОД · бесшовное выныривание из Глаза в Карту ===== */
+(function(){
+  const v=document.getElementById('enter-veil');
+  if(!window.__awaraFromEye){ if(v)v.remove(); return; }
+  camera.fov=98; camera.updateProjectionMatrix();
+  G.to(camera,{ fov:58, duration:1.8, ease:'power3.out', onUpdate:()=>camera.updateProjectionMatrix() });
+  if(v){ requestAnimationFrame(()=>requestAnimationFrame(()=>{ v.style.opacity='0'; })); setTimeout(()=>{ if(v&&v.parentNode)v.remove(); },1800); }
+})();
+
+/* ====== HUD lang ====== */
+let lang=localStorage.getItem('awara_lang')||'en';
+function applyLang(){ document.querySelectorAll('[data-ru]').forEach(el=>{ el.textContent=el.getAttribute('data-'+lang)||el.getAttribute('data-ru'); }); }
+applyLang();
+$('#lang').addEventListener('click',e=>{ e.stopPropagation(); lang=lang==='ru'?'en':'ru'; localStorage.setItem('awara_lang',lang); applyLang(); });
+
+}catch(err){ showErr((err&&err.stack)||err); }
+</script>
+</body>
+</html>

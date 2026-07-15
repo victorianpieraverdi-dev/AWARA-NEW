@@ -1,0 +1,2884 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>AWARA · Пространство Души v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#02010a;font-family:'Cormorant Garamond',serif;user-select:none;-webkit-user-select:none;}
+#c{position:fixed;inset:0;z-index:1;touch-action:none}
+
+/* INTRO — как в оригинале */
+#intro{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(2,1,10,0.82);backdrop-filter:blur(4px);transition:opacity 1.2s;}
+#intro.hide{opacity:0;pointer-events:none}
+.intro-glyph{font-size:56px;margin-bottom:20px;filter:drop-shadow(0 0 24px rgba(201,168,76,0.9));animation:flt 3s ease-in-out infinite}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.intro-title{font-family:'Cinzel Decorative',serif;font-size:clamp(14px,3vw,22px);color:#c9a84c;letter-spacing:0.2em;text-align:center;text-shadow:0 0 30px rgba(201,168,76,0.6);margin-bottom:8px}
+.intro-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:rgba(255,255,255,0.35);letter-spacing:0.1em;margin-bottom:30px}
+
+/* HUD — как в оригинале */
+#hud{position:fixed;top:0;left:0;right:0;z-index:20;padding:14px 20px 10px;background:linear-gradient(180deg,rgba(2,1,10,0.9),transparent);display:flex;align-items:center;justify-content:space-between;opacity:0;transition:opacity 1s;pointer-events:none}
+#hud.show{opacity:1}
+.hud-title{font-family:'Cinzel Decorative',serif;font-size:12px;color:#c9a84c;letter-spacing:0.2em}
+.hud-dots{display:flex;gap:10px;align-items:center}
+.hdot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.12);transition:all 0.6s}
+.hdot.done{box-shadow:0 0 8px currentColor}
+.hud-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-align:center;margin-top:2px}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(8,4,18,0.92);border:1px solid rgba(201,168,76,0.35);border-radius:10px;padding:10px 18px;z-index:30;font-family:'Cormorant Garamond',serif;font-size:14px;color:#ffd700;opacity:0;transition:opacity 0.5s;pointer-events:none;text-align:center;max-width:90vw}
+.toast.on{opacity:1}
+
+/* HINT */
+#hint{position:fixed;bottom:60px;left:0;right:0;z-index:20;text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;color:rgba(255,255,255,0.25);opacity:0;transition:opacity 1s;pointer-events:none}
+#hint.show{opacity:1}
+
+/* NAV */
+.back-btn{position:fixed;top:20px;left:20px;z-index:30;padding:8px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.35);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;text-decoration:none;letter-spacing:0.15em;transition:all 0.3s}
+.back-btn:hover{background:rgba(201,168,76,0.2);color:#ffd700}
+
+/* SUBPANEL */
+.subpanel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.95);width:min(520px,92vw);max-height:85vh;z-index:50;background:rgba(2,1,10,0.97);border:1px solid rgba(201,168,76,0.4);border-radius:14px;padding:24px 20px;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity 0.35s ease,transform 0.35s ease;box-shadow:0 0 60px rgba(201,168,76,0.15),0 30px 80px rgba(0,0,0,0.6)}
+.subpanel.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.subpanel-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:49;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.subpanel-backdrop.open{opacity:1;pointer-events:auto}
+.subpanel .sp-close{float:right;width:30px;height:30px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);color:#c9a84c;cursor:pointer;font-size:16px}
+.subpanel .sp-title{font-family:'Cinzel',serif;font-size:16px;color:#ffd700;margin-bottom:4px;letter-spacing:0.1em}
+.subpanel .sp-sub{font-size:10px;color:rgba(201,168,76,0.4);margin-bottom:14px;font-style:italic}
+.subpanel .sp-prompt{font-size:12px;color:#dcd2be;line-height:1.45;padding:10px 12px;margin-bottom:12px;background:linear-gradient(180deg,rgba(201,168,76,0.07),rgba(201,168,76,0.02));border:1px solid rgba(201,168,76,0.18);border-left:2px solid #c9a84c;border-radius:6px;font-family:'Cinzel',serif}
+.subpanel .sp-prompt:before{content:'❉ ';color:#c9a84c;letter-spacing:0.1em}
+.subpanel .sp-light{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,0.5);margin-bottom:16px;padding:6px 10px;background:rgba(201,168,76,0.05);border-radius:6px}
+.subpanel .sp-item{display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:6px;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.1);border-radius:8px;font-size:13px;color:#dcd2be}
+.subpanel .sp-item.locked{opacity:0.3;color:#555}
+.subpanel .sp-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.subpanel .sp-item .dot.active{background:#ffd700;box-shadow:0 0 6px rgba(255,215,0,0.5)}
+.subpanel .sp-item .dot.empty{background:rgba(201,168,76,0.2);border:1px dashed rgba(201,168,76,0.3)}
+.subpanel .sp-item .dot.locked{background:rgba(255,80,80,0.2);border:1px solid rgba(255,80,80,0.3)}
+.subpanel .sp-input{width:100%;padding:8px;margin-top:4px;background:rgba(0,0,0,0.4);border:1px solid rgba(201,168,76,0.25);border-radius:6px;color:#dcd2be;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;resize:none}
+.subpanel .sp-input:focus{border-color:#ffd700}
+.subpanel .sp-save{width:100%;padding:8px;margin-top:6px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:6px;color:#ffd700;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;letter-spacing:0.1em}
+.subpanel .sp-save:hover{background:rgba(201,168,76,0.2)}
+.subpanel .sp-remove{width:100%;padding:6px;margin-top:4px;background:transparent;border:1px solid rgba(255,80,80,0.15);border-radius:6px;color:rgba(255,80,80,0.4);font-size:9px;cursor:pointer}
+.subpanel .sp-remove:hover{background:rgba(255,80,80,0.1);color:rgba(255,80,80,0.7)}
+
+.stat-row{display:flex;justify-content:space-between;padding:4px 0;font-size:9px;border-bottom:1px solid rgba(201,168,76,0.06)}
+.stat-label{color:rgba(201,168,76,0.4);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
+.stat-val{color:#ffd700}
+
+/* T-626: вкладки в панели сферы */
+.subpanel .sp-aura{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,0.65);letter-spacing:0.1em;margin-bottom:10px;padding:3px 8px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:999px}
+.subpanel .sp-tabs{display:flex;gap:0;border-bottom:1px solid rgba(201,168,76,0.15);margin-bottom:14px}
+.subpanel .sp-tab{flex:1;padding:7px 6px;text-align:center;font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.14em;color:rgba(201,168,76,0.5);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
+.subpanel .sp-tab.on{color:#ffd700;border-bottom-color:#ffd700}
+.subpanel .sp-tab:hover{color:#ffd700}
+.subpanel .sp-tab-body{display:none}
+.subpanel .sp-tab-body.on{display:block}
+
+/* Журнал */
+.jrn-types-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.jrn-type-btn{padding:4px 9px;border-radius:999px;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.15);color:rgba(201,168,76,0.6);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;cursor:pointer}
+.jrn-type-btn.on{background:rgba(201,168,76,0.15);border-color:rgba(201,168,76,0.5);color:#ffd700}
+.jrn-form{margin-top:8px;padding:8px;background:rgba(201,168,76,0.03);border:1px dashed rgba(201,168,76,0.18);border-radius:8px}
+.jrn-form input,.jrn-form textarea{width:100%;padding:6px 8px;background:rgba(0,0,0,0.4);border:1px solid rgba(201,168,76,0.2);border-radius:6px;color:#dcd2be;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;resize:none;margin-bottom:5px;box-sizing:border-box}
+.jrn-form input:focus,.jrn-form textarea:focus{border-color:#ffd700}
+.jrn-form-btn{width:100%;padding:6px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:6px;color:#ffd700;font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.12em;cursor:pointer}
+.jrn-form-btn:hover{background:rgba(201,168,76,0.2)}
+.jrn-list{margin-top:10px}
+.jrn-entry{padding:8px 10px;margin-bottom:6px;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.1);border-radius:8px}
+.jrn-entry-head{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.jrn-entry-ico{font-size:13px}
+.jrn-entry-title{flex:1;font-family:'Cinzel',serif;font-size:11px;color:#ffd700;letter-spacing:0.05em}
+.jrn-entry-date{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,0.4)}
+.jrn-entry-body{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:rgba(220,210,190,0.85);line-height:1.4}
+.jrn-entry-coms{margin-top:6px;border-top:1px dashed rgba(201,168,76,0.1);padding-top:6px}
+.jrn-com{font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(220,210,190,0.6);padding:3px 0;line-height:1.35}
+.jrn-com-author{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,0.5);margin-right:5px}
+.jrn-com-row{display:flex;gap:4px;margin-top:5px}
+.jrn-com-row input{flex:1;padding:4px 7px;background:rgba(0,0,0,0.4);border:1px solid rgba(201,168,76,0.15);border-radius:6px;color:#dcd2be;font-family:'JetBrains Mono',monospace;font-size:10px;outline:none}
+.jrn-com-row button{padding:4px 9px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:6px;color:#ffd700;font-family:'Cinzel',serif;font-size:9px;cursor:pointer}
+.jrn-del{background:transparent;border:none;color:rgba(255,80,80,0.4);font-size:11px;cursor:pointer;padding:0 3px;margin-left:3px}
+.jrn-del:hover{color:rgba(255,80,80,0.8)}
+.jrn-empty{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;color:rgba(255,255,255,0.25);text-align:center;padding:18px 8px}
+
+/* Планы / намерения */
+.plan-list{margin-bottom:10px}
+.plan-item{display:flex;align-items:center;gap:7px;padding:6px 8px;margin-bottom:4px;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.08);border-radius:8px}
+.plan-check{width:14px;height:14px;border:1px solid rgba(201,168,76,0.4);border-radius:50%;cursor:pointer;flex-shrink:0;transition:all 0.2s}
+.plan-check.done{background:rgba(201,168,76,0.45);border-color:#ffd700;box-shadow:0 0 6px rgba(255,215,0,0.35)}
+.plan-text{flex:1;font-family:'Cormorant Garamond',serif;font-size:13px;color:#dcd2be;line-height:1.35}
+.plan-text.done{text-decoration:line-through;color:rgba(220,210,190,0.4)}
+.plan-add-row{display:flex;gap:5px}
+.plan-add-row input{flex:1;padding:6px 9px;background:rgba(0,0,0,0.4);border:1px solid rgba(201,168,76,0.2);border-radius:6px;color:#dcd2be;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none}
+.plan-add-row input:focus{border-color:#ffd700}
+.plan-add-btn{padding:6px 11px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:6px;color:#ffd700;font-family:'Cinzel',serif;font-size:10px;cursor:pointer}
+.plan-add-btn:hover{background:rgba(201,168,76,0.2)}
+
+/* ONBOARDING TUTORIAL */
+#tutorial-overlay{position:fixed;inset:0;z-index:60;background:rgba(2,1,10,0.92);backdrop-filter:blur(6px);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity 0.8s;pointer-events:none;padding:20px}
+#tutorial-overlay.show{opacity:1;pointer-events:auto}
+.tut-glyph{font-size:48px;margin-bottom:16px;filter:drop-shadow(0 0 20px rgba(201,168,76,0.8));animation:flt 3s ease-in-out infinite}
+.tut-title{font-family:'Cinzel Decorative',serif;font-size:clamp(16px,4vw,24px);color:#ffd700;letter-spacing:0.15em;text-align:center;margin-bottom:8px;text-shadow:0 0 20px rgba(255,215,0,0.4)}
+.tut-text{font-family:'Cormorant Garamond',serif;font-size:clamp(13px,2.5vw,16px);color:rgba(220,210,190,0.85);text-align:center;max-width:520px;line-height:1.55;margin-bottom:20px;font-style:italic}
+.tut-sphere-label{font-family:'Cinzel',serif;font-size:12px;color:#c9a84c;letter-spacing:0.15em;margin-bottom:6px}
+.tut-sphere-desc{font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(220,210,190,0.65);text-align:center;max-width:420px;line-height:1.4;margin-bottom:14px}
+.tut-input{width:min(90vw,400px);padding:10px 12px;background:rgba(0,0,0,0.5);border:1px solid rgba(201,168,76,0.3);border-radius:8px;color:#dcd2be;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;resize:none;margin-bottom:8px}
+.tut-input:focus{border-color:#ffd700}
+.tut-input::placeholder{color:rgba(201,168,76,0.3)}
+.tut-btn{padding:10px 28px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.4);border-radius:8px;color:#ffd700;font-family:'Cinzel',serif;font-size:11px;cursor:pointer;letter-spacing:0.12em;transition:all 0.3s;margin:4px}
+.tut-btn:hover{background:rgba(201,168,76,0.25);color:#fff}
+.tut-btn.primary{background:rgba(255,215,0,0.15);border-color:#ffd700}
+.tut-btn-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.tut-entries{width:min(90vw,400px);margin-bottom:10px}
+.tut-entry{display:flex;align-items:center;gap:6px;padding:6px 10px;margin-bottom:4px;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.15);border-radius:8px;font-size:12px;color:#dcd2be;font-family:'Cormorant Garamond',serif}
+.tut-entry .tut-dot{width:6px;height:6px;border-radius:50%;background:#ffd700;box-shadow:0 0 4px rgba(255,215,0,0.5);flex-shrink:0}
+.tut-step-dots{display:flex;gap:8px;margin-bottom:16px}
+.tut-step-dot{width:8px;height:8px;border-radius:50%;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);transition:all 0.4s}
+.tut-step-dot.active{background:#ffd700;border-color:#ffd700;box-shadow:0 0 8px rgba(255,215,0,0.5)}
+.tut-step-dot.done{background:rgba(201,168,76,0.5);border-color:#c9a84c}
+.tut-skip{position:absolute;top:12px;right:16px;background:none;border:none;color:rgba(201,168,76,0.3);font-family:'JetBrains Mono',monospace;font-size:9px;cursor:pointer;letter-spacing:0.1em}
+.tut-skip:hover{color:rgba(201,168,76,0.6)}
+.tut-counter{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,0.4);margin-bottom:4px}
+
+/* SPARK HELPER */
+#spark-helper{position:fixed;z-index:35;pointer-events:none;width:20px;height:20px;filter:drop-shadow(0 0 8px rgba(255,215,0,0.8))}
+#spark-helper .spark-core{position:absolute;width:6px;height:6px;background:#ffd700;border-radius:50%;top:7px;left:7px;box-shadow:0 0 10px rgba(255,215,0,0.9),0 0 20px rgba(255,215,0,0.4)}
+#spark-helper .spark-trail{position:absolute;width:4px;height:4px;background:rgba(255,215,0,0.3);border-radius:50%;animation:sparkTrail 1.5s ease-out infinite}
+@keyframes sparkTrail{0%{opacity:0.6;transform:scale(1)}100%{opacity:0;transform:scale(0.2)}}
+#spark-tooltip{position:fixed;z-index:36;background:rgba(8,4,18,0.95);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:8px 12px;max-width:220px;font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(220,210,190,0.85);font-style:italic;opacity:0;transition:opacity 0.4s;pointer-events:none;text-align:center}
+#spark-tooltip.show{opacity:1}
+
+/* ATTACHMENTS */
+.attach-bar{display:flex;gap:4px;margin:6px 0 2px}
+.attach-btn{padding:5px 10px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.18);border-radius:6px;color:#c9a84c;font-size:13px;cursor:pointer;transition:all 0.2s;flex:1;text-align:center}
+.attach-btn:hover{background:rgba(201,168,76,0.15);color:#ffd700;border-color:rgba(201,168,76,0.4)}
+.attach-btn.recording{background:rgba(255,60,60,0.15);border-color:rgba(255,60,60,0.5);color:#ff6666;animation:recPulse 1s ease-in-out infinite}
+@keyframes recPulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.attach-preview{margin:6px 0;padding:8px;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.12);border-radius:8px}
+.attach-preview img,.attach-preview video{max-width:100%;max-height:160px;border-radius:6px;margin:4px 0}
+.attach-preview audio{width:100%;margin:4px 0;height:32px}
+.attach-preview .attach-remove{float:right;background:none;border:none;color:rgba(255,80,80,0.5);font-size:11px;cursor:pointer;padding:0 4px}
+.attach-preview .attach-remove:hover{color:rgba(255,80,80,0.8)}
+.attach-link-row{display:flex;gap:4px;margin:4px 0}
+.attach-link-row input{flex:1;padding:5px 8px;background:rgba(0,0,0,0.4);border:1px solid rgba(201,168,76,0.2);border-radius:6px;color:#dcd2be;font-family:'JetBrains Mono',monospace;font-size:10px;outline:none}
+.attach-link-row input:focus{border-color:#ffd700}
+.attach-link-row button{padding:5px 10px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:6px;color:#ffd700;font-size:10px;cursor:pointer}
+
+/* Media tab */
+.media-list{margin:8px 0}
+.media-item{padding:8px 10px;margin-bottom:6px;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.1);border-radius:8px}
+.media-item-head{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.media-item-ico{font-size:13px}
+.media-item-type{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,0.5);letter-spacing:0.08em}
+.media-item-date{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,0.35);margin-left:auto}
+.media-item-del{background:none;border:none;color:rgba(255,80,80,0.4);font-size:11px;cursor:pointer;padding:0 3px}
+.media-item-del:hover{color:rgba(255,80,80,0.8)}
+.media-item img,.media-item video{max-width:100%;max-height:180px;border-radius:6px;margin:4px 0}
+.media-item audio{width:100%;height:32px;margin:4px 0}
+.media-item .media-link{display:block;color:#c9a84c;font-size:12px;text-decoration:none;word-break:break-all;padding:4px 0}
+.media-item .media-link:hover{color:#ffd700;text-decoration:underline}
+.media-item .media-caption{font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(220,210,190,0.7);font-style:italic;margin-top:2px}
+
+/* Social links section */
+.social-section{margin-top:14px;padding-top:10px;border-top:1px dashed rgba(201,168,76,0.15)}
+.social-title{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,0.5);letter-spacing:0.12em;margin-bottom:8px}
+.social-link-item{display:flex;align-items:center;gap:6px;padding:4px 8px;margin-bottom:4px;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.08);border-radius:6px}
+.social-link-item a{flex:1;color:#c9a84c;font-size:11px;text-decoration:none;word-break:break-all;font-family:'JetBrains Mono',monospace}
+.social-link-item a:hover{color:#ffd700;text-decoration:underline}
+.social-link-item .social-ico{font-size:13px;flex-shrink:0}
+.social-link-item .social-del{background:none;border:none;color:rgba(255,80,80,0.4);font-size:10px;cursor:pointer}
+.social-add-row{display:flex;gap:4px;margin-top:4px}
+.social-add-row input{flex:1;padding:5px 8px;background:rgba(0,0,0,0.4);border:1px solid rgba(201,168,76,0.2);border-radius:6px;color:#dcd2be;font-family:'JetBrains Mono',monospace;font-size:10px;outline:none}
+.social-add-row input:focus{border-color:#ffd700}
+.social-add-row button{padding:5px 10px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:6px;color:#ffd700;font-size:10px;cursor:pointer}
+
+/* TIGEL LINK */
+.tigel-link{position:fixed;bottom:20px;right:20px;z-index:25;padding:10px 18px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.4);border-radius:8px;color:#ffd700;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;text-decoration:none;letter-spacing:0.1em;transition:all 0.3s;display:none}
+.tigel-link:hover{background:rgba(201,168,76,0.25);color:#fff}
+.tigel-link.show{display:block}
+
+/* EARTH LINK */
+.earth-link{position:fixed;bottom:20px;left:20px;z-index:25;padding:10px 18px;background:rgba(74,103,65,0.1);border:1px solid rgba(74,103,65,0.4);border-radius:8px;color:#6a9a5f;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;text-decoration:none;letter-spacing:0.1em;transition:all 0.3s}
+.earth-link:hover{background:rgba(74,103,65,0.25);color:#8fc77f}
+
+/* SPARK BUTTON */
+.spark-btn{position:fixed;top:70px;right:20px;z-index:25;padding:10px 16px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.3);border-radius:8px;color:#ffd700;font-family:'Cinzel',serif;font-size:9px;cursor:pointer;letter-spacing:0.15em;transition:all 0.3s;display:none}
+.spark-btn:hover{background:rgba(255,215,0,0.18);box-shadow:0 0 12px rgba(255,215,0,0.3)}
+.spark-btn.show{display:block}
+
+/* SPARK PANEL */
+.spark-panel{position:fixed;inset:0;z-index:100;background:rgba(2,1,10,0.97);backdrop-filter:blur(8px);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.spark-panel.show{display:flex}
+.spark-content{max-width:600px;width:100%;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:24px;position:relative}
+.spark-close{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);color:#c9a84c;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.spark-close:hover{background:rgba(201,168,76,0.2)}
+.spark-title{font-family:'Cinzel',serif;font-size:18px;color:#ffd700;text-align:center;margin-bottom:8px;letter-spacing:0.15em}
+.spark-subtitle{font-size:10px;color:rgba(201,168,76,0.5);text-align:center;margin-bottom:20px;font-style:italic}
+.spark-result{font-size:13px;color:#dcd2be;line-height:1.6}
+.spark-insight{margin-bottom:16px;padding:12px;background:rgba(255,215,0,0.05);border-left:3px solid #ffd700;border-radius:6px}
+.spark-insight-label{font-family:'Cinzel',serif;font-size:10px;color:#ffd700;letter-spacing:0.1em;margin-bottom:6px}
+.spark-advices{margin-bottom:16px}
+.spark-advice{display:flex;gap:10px;padding:8px;margin-bottom:6px;background:rgba(201,168,76,0.03);border-radius:6px}
+.spark-advice-ico{font-size:16px;flex-shrink:0}
+.spark-question{padding:12px;background:rgba(201,168,76,0.05);border-radius:6px;font-style:italic;color:rgba(255,215,0,0.8)}
+.spark-question-label{font-family:'Cinzel',serif;font-size:10px;color:#c9a84c;letter-spacing:0.1em;margin-bottom:6px}
+.spark-loading{text-align:center;color:rgba(255,215,0,0.6);font-size:12px;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:0.4} 50%{opacity:1}}
+
+/* MOBILE: адаптация ссылок и кнопок */
+@media (max-width: 768px) {
+  .tigel-link{
+    bottom:20px;
+    right:50%;
+    transform:translateX(50%);
+  }
+  .earth-link{
+    bottom:80px;
+    left:50%;
+    transform:translateX(-50%);
+  }
+}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<!-- INTRO (как в оригинале) -->
+<div id="intro" onclick="enterSpace()" style="cursor:pointer">
+  <div class="intro-glyph">✦</div>
+  <div class="intro-title" data-i18n="sph.intro.title">ПРОСТРАНСТВО ДУШИ</div>
+  <div class="intro-sub" data-i18n="sph.intro.sub">Нажми чтобы войти</div>
+</div>
+
+<!-- HUD (как в оригинале) -->
+<div id="hud">
+  <div style="font-family:'Cinzel Decorative',serif;font-size:11px;color:#c9a84c;letter-spacing:0.2em">✦ INITIATIO</div>
+  <div style="text-align:center">
+    <div class="hud-title" data-i18n="sph.hud.title">КАРТА СОЗНАНИЯ</div>
+    <div class="hud-sub" data-i18n="sph.hud.sub">✦ ДУША · ОСНОВА · СЕРДЦЕ · РАЗУМ · СВЯЗИ ✦</div>
+    <div class="hud-dots" style="justify-content:center;margin-top:4px">
+      <div class="hdot" id="d0"></div>
+      <div class="hdot" id="d1"></div>
+      <div class="hdot" id="d2"></div>
+      <div class="hdot" id="d3"></div>
+    </div>
+  </div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(255,255,255,0.3)">AWARA · v2</div>
+</div>
+
+<!-- ACTION BUTTONS (отдельно от HUD, чтобы избежать pointer-events:none) -->
+<div id="action-buttons" style="position:fixed;top:20px;right:20px;z-index:55;display:none;gap:8px;align-items:center;">
+  <button onclick="quickAddEntry()" style="padding:8px 14px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);border-radius:6px;color:#ffd700;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;letter-spacing:0.1em;backdrop-filter:blur(8px);" title="Быстро создать запись">+ ЗАПИСЬ</button>
+  <button onclick="resetSoul()" style="padding:8px 14px;background:rgba(255,80,80,0.1);border:1px solid rgba(255,80,80,0.35);border-radius:6px;color:#ff8080;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;letter-spacing:0.1em;backdrop-filter:blur(8px);" title="Полностью сбросить Душу">⟲ СБРОС</button>
+</div>
+
+<!-- SPHERE PLUS BUTTONS OVERLAY (кнопки "+" рядом со сферами для добавления подсфер) -->
+<div id="sphere-plus-overlay" style="position:fixed;inset:0;z-index:15;pointer-events:none;"></div>
+
+<!-- HOVER HINT (всплывающая подсказка) -->
+<div id="sphere-hint" style="position:fixed;z-index:40;display:none;background:rgba(8,4,18,0.95);border:1px solid rgba(201,168,76,0.4);border-radius:8px;padding:8px 12px;max-width:240px;font-family:'Cormorant Garamond',serif;font-size:12px;color:#ffd700;font-style:italic;text-align:center;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,0.6)"></div>
+
+
+<!-- HINT -->
+<div id="hint" data-i18n="sph.hint">тап = войти в сферу · удержать = нить · тянуть = двигать</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- SUBPANEL -->
+<div class="subpanel-backdrop" id="subpanel-backdrop" onclick="closePanel()"></div>
+<div class="subpanel" id="subpanel">
+  <button class="sp-close" onclick="closePanel()">×</button>
+  <div class="sp-title" id="sp-title">—</div>
+  <div class="sp-sub" id="sp-sub"></div>
+  <!-- T-626: уровень ауры на основе s.light -->
+  <div class="sp-aura" id="sp-aura" data-i18n="sph.panel.aura.none">АУРА: ○ нет</div>
+  <div class="sp-light" id="sp-light" data-i18n="sph.panel.light">СВЕТ СФЕРЫ: 0 ✦</div>
+
+  <!-- T-626: вкладки сферы -->
+  <div class="sp-tabs">
+    <div class="sp-tab on" data-tab="entries" onclick="spTab('entries', this)" data-i18n="sph.tab.entries">ЗАПИСИ</div>
+    <div class="sp-tab" data-tab="journal" onclick="spTab('journal', this)" data-i18n="sph.tab.journal">ЖУРНАЛ</div>
+    <div class="sp-tab" data-tab="plans"   onclick="spTab('plans', this)"   data-i18n="sph.tab.plans">ПЛАНЫ</div>
+    <div class="sp-tab" data-tab="media"   onclick="spTab('media', this)">МЕДИА</div>
+    <div class="sp-tab" data-tab="style"   onclick="spTab('style', this)">СТИЛЬ</div>
+  </div>
+
+  <!-- Вкладка 1: ЗАПИСИ (бывший контент панели) -->
+  <div class="sp-tab-body on" id="sp-body-entries">
+    <div class="sp-prompt" id="sp-prompt" style="display:none"></div>
+    <div style="font-size:10px;color:rgba(201,168,76,0.55);padding:8px 10px;margin-bottom:10px;background:rgba(201,168,76,0.04);border-left:2px solid rgba(201,168,76,0.3);border-radius:4px;line-height:1.4;">
+      <span style="color:#ffd700;">✦ Как создать подсферу:</span> напиши текст ниже и нажми <strong>✦ ДОБАВИТЬ</strong>. У каждой сферы до 3 подсфер. По мере роста света открываются новые слоты.
+    </div>
+    <div id="sp-items"></div>
+    <textarea class="sp-input" id="sp-input" placeholder="Новая запись..." data-i18n-placeholder="sph.panel.input" rows="2"></textarea>
+    <div class="attach-bar">
+      <button class="attach-btn" id="btn-voice" onclick="toggleVoiceRec()" title="Диктофон">🎤</button>
+      <button class="attach-btn" onclick="triggerFileUpload('image')" title="Фото">📷</button>
+      <button class="attach-btn" onclick="triggerFileUpload('video')" title="Видео">🎬</button>
+      <button class="attach-btn" onclick="toggleLinkInput()" title="Ссылка">🔗</button>
+    </div>
+    <div id="attach-link-row" class="attach-link-row" style="display:none">
+      <input type="text" id="attach-link-input" placeholder="https://...">
+      <button onclick="addLinkAttach()">+</button>
+    </div>
+    <div id="attach-preview"></div>
+    <input type="file" id="file-upload" style="display:none" accept="image/*,video/*" onchange="handleFileUpload(event)">
+    <button class="sp-save" onclick="addSubSphere()" data-i18n="sph.panel.add">✦ ДОБАВИТЬ</button>
+    <button class="sp-remove" onclick="removeSubSphere()" data-i18n="sph.panel.remove">очистить последнюю</button>
+  </div>
+
+  <!-- Вкладка 2: ЖУРНАЛ опыта сферы -->
+  <div class="sp-tab-body" id="sp-body-journal">
+    <div class="jrn-types-row" id="jrn-filter-row"></div>
+    <div class="jrn-list" id="jrn-list"></div>
+    <div class="jrn-form" id="jrn-form">
+      <div class="jrn-types-row" id="jrn-type-row"></div>
+      <input id="jrn-title" type="text" placeholder="Заголовок (опц.)..." data-i18n-placeholder="sph.jrn.title.ph" maxlength="60">
+      <textarea id="jrn-body" rows="2" placeholder="Опиши наблюдение, инсайт..." data-i18n-placeholder="sph.jrn.body.ph"></textarea>
+      <button class="jrn-form-btn" onclick="addJrnEntry()" data-i18n="sph.jrn.save">✦ СОХРАНИТЬ В ЖУРНАЛ</button>
+    </div>
+  </div>
+
+  <!-- Вкладка 3: ПЛАНЫ / НАМЕРЕНИЯ -->
+  <div class="sp-tab-body" id="sp-body-plans">
+    <div class="plan-list" id="plan-list"></div>
+    <div class="plan-add-row">
+      <input id="plan-input" type="text" placeholder="Намерение..." data-i18n-placeholder="sph.plan.add.ph" maxlength="80" onkeydown="if(event.key==='Enter')addPlan()">
+      <button class="plan-add-btn" onclick="addPlan()">+</button>
+    </div>
+  </div>
+
+  <!-- Вкладка 4: МЕДИА / ВЛОЖЕНИЯ -->
+  <div class="sp-tab-body" id="sp-body-media">
+    <div class="media-list" id="media-list"></div>
+    <div class="attach-bar">
+      <button class="attach-btn" onclick="mediaVoiceRec()" id="btn-media-voice">🎤 <span style="font-size:9px">ГОЛОС</span></button>
+      <button class="attach-btn" onclick="mediaFileUpload('image')">📷 <span style="font-size:9px">ФОТО</span></button>
+      <button class="attach-btn" onclick="mediaFileUpload('video')">🎬 <span style="font-size:9px">ВИДЕО</span></button>
+    </div>
+    <div class="attach-link-row" style="margin-top:6px">
+      <input type="text" id="media-link-input" placeholder="https://..." onkeydown="if(event.key==='Enter')addMediaLink()">
+      <button onclick="addMediaLink()">🔗 +</button>
+    </div>
+    <input type="file" id="media-file-upload" style="display:none" accept="image/*,video/*,audio/*" onchange="handleMediaFileUpload(event)">
+
+    <!-- Social Links / Профиль -->
+    <div class="social-section">
+      <div class="social-title">🌐 МОИ СОЦСЕТИ / ССЫЛКИ</div>
+      <div id="social-links-list"></div>
+      <div class="social-add-row">
+        <input type="text" id="social-link-input" placeholder="https://t.me/... или Instagram, VK..." onkeydown="if(event.key==='Enter')addSocialLink()">
+        <button onclick="addSocialLink()">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Вкладка 5: СТИЛЬ — настройки цвета и оформления -->
+  <div class="sp-tab-body" id="sp-body-style">
+    <div style="font-size:11px;color:rgba(201,168,76,0.7);margin-bottom:14px;line-height:1.5;">
+      Измени цвет, размер и оформление этой сферы и её подсфер.
+    </div>
+
+    <!-- Цвет сферы -->
+    <div style="margin-bottom:18px;padding:12px;background:rgba(201,168,76,0.04);border-radius:8px;border:1px solid rgba(201,168,76,0.15);">
+      <div style="font-family:'Cinzel',serif;font-size:11px;color:#ffd700;letter-spacing:0.1em;margin-bottom:8px;">ЦВЕТ СФЕРЫ</div>
+      <input type="color" id="style-sphere-color" oninput="updateSphereStyle()" style="width:100%;height:36px;border-radius:6px;border:1px solid rgba(201,168,76,0.3);background:transparent;cursor:pointer;">
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+        <button onclick="setStyleColor('#ffd700')" style="padding:4px 8px;background:#ffd700;border:none;border-radius:4px;cursor:pointer;font-size:9px;color:#000;">золото</button>
+        <button onclick="setStyleColor('#c9a84c')" style="padding:4px 8px;background:#c9a84c;border:none;border-radius:4px;cursor:pointer;font-size:9px;color:#000;">бронза</button>
+        <button onclick="setStyleColor('#ff8844')" style="padding:4px 8px;background:#ff8844;border:none;border-radius:4px;cursor:pointer;font-size:9px;color:#000;">огонь</button>
+        <button onclick="setStyleColor('#8888ff')" style="padding:4px 8px;background:#8888ff;border:none;border-radius:4px;cursor:pointer;font-size:9px;color:#fff;">небо</button>
+        <button onclick="setStyleColor('#44ddaa')" style="padding:4px 8px;background:#44ddaa;border:none;border-radius:4px;cursor:pointer;font-size:9px;color:#000;">мята</button>
+        <button onclick="setStyleColor('#dd66dd')" style="padding:4px 8px;background:#dd66dd;border:none;border-radius:4px;cursor:pointer;font-size:9px;color:#fff;">пурпур</button>
+      </div>
+    </div>
+
+    <!-- Размер сферы -->
+    <div style="margin-bottom:18px;padding:12px;background:rgba(201,168,76,0.04);border-radius:8px;border:1px solid rgba(201,168,76,0.15);">
+      <div style="font-family:'Cinzel',serif;font-size:11px;color:#ffd700;letter-spacing:0.1em;margin-bottom:8px;">РАЗМЕР: <span id="style-size-val" style="color:#c9a84c">34</span> px</div>
+      <input type="range" id="style-sphere-size" min="20" max="80" value="34" oninput="updateSphereStyle()" style="width:100%;cursor:pointer;">
+    </div>
+
+    <!-- Подсветка / glow -->
+    <div style="margin-bottom:18px;padding:12px;background:rgba(201,168,76,0.04);border-radius:8px;border:1px solid rgba(201,168,76,0.15);">
+      <div style="font-family:'Cinzel',serif;font-size:11px;color:#ffd700;letter-spacing:0.1em;margin-bottom:8px;">СВЕЧЕНИЕ: <span id="style-glow-val" style="color:#c9a84c">средне</span></div>
+      <input type="range" id="style-sphere-glow" min="0" max="100" value="50" oninput="updateSphereStyle()" style="width:100%;cursor:pointer;">
+    </div>
+
+    <!-- Цвета подсфер -->
+    <div style="margin-bottom:14px;padding:12px;background:rgba(201,168,76,0.04);border-radius:8px;border:1px solid rgba(201,168,76,0.15);">
+      <div style="font-family:'Cinzel',serif;font-size:11px;color:#ffd700;letter-spacing:0.1em;margin-bottom:10px;">ЦВЕТА ПОДСФЕР</div>
+      <div id="style-subspheres-list"></div>
+    </div>
+
+    <button onclick="resetSphereStyle()" style="width:100%;padding:10px;background:rgba(255,80,80,0.08);border:1px solid rgba(255,80,80,0.3);border-radius:6px;color:#ff8080;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.1em;cursor:pointer;">↺ СБРОСИТЬ ОФОРМЛЕНИЕ</button>
+  </div>
+</div>
+
+<a href="index.html" class="back-btn" data-i18n="common.back.lobby">← ЛОББИ</a>
+
+<!-- ONBOARDING TUTORIAL OVERLAY -->
+<div id="tutorial-overlay">
+  <button class="tut-skip" onclick="tutSkip()">ПРОПУСТИТЬ ▸</button>
+  <div id="tut-content"></div>
+</div>
+
+<!-- SPARK HELPER -->
+<div id="spark-helper" style="display:none">
+  <div class="spark-core"></div>
+  <div class="spark-trail" style="top:3px;left:3px"></div>
+  <div class="spark-trail" style="top:11px;left:11px;animation-delay:0.5s"></div>
+</div>
+<div id="spark-tooltip"></div>
+
+<!-- TIGEL LINK -->
+<a href="#" class="tigel-link" id="tigel-link" onclick="goToTigel(event)">✦ ПЕРЕЙТИ В ТИГЕЛЬ</a>
+
+<!-- EARTH LINK -->
+<a href="earth-player.html" class="earth-link">🌍 ЗЕМЛЯ ИГРОКА</a>
+
+<!-- SPARK BUTTON -->
+<button class="spark-btn" id="spark-btn" onclick="openSpark()">
+  <span id="spark-btn-lbl">✦ ИСКРА</span>
+</button>
+
+<!-- SPARK PANEL -->
+<div class="spark-panel" id="spark-panel">
+  <div class="spark-content">
+    <button class="spark-close" onclick="closeSpark()">×</button>
+    <div class="spark-title" id="spark-mode-lbl">ВЕЧЕРНИЙ ОГОНЬ · ДЕНЬ</div>
+    <div class="spark-subtitle" id="spark-time-lbl">Анализ прожитого дня и задач</div>
+    <div class="spark-result" id="spark-result"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// СОСТОЯНИЕ
+// ══════════════════════════════════════════════
+let _lang = localStorage.getItem('awara_lang') || 'ru';
+// T-608 v2: три сферы времени + Центр (Душа).
+// foundation = ТЕЛО/ПРОШЛОЕ (ноги + живот), heart = СЕРДЦЕ/НАСТОЯЩЕЕ, mind = РАЗУМ/БУДУЩЕЕ.
+// Душа — источник/зеркало ума. На старте Душа тёмная — светлеет по мере наполнения сфер.
+const SPHERES = [
+  { id:'soul',  label:'ДУША',  label_en:'SOUL', sub:'Зеркало ума · Источник', sub_en:'Mirror of mind · Source', x:0.50, y:0.50, color:'#ffd700', radius:48, revealed:true,  light:0 },
+  { id:'foundation', label:'ТЕЛО · ПРОШЛОЕ', label_en:'BODY · PAST', sub:'Ноги · Живот · Корни', sub_en:'Legs · Belly · Roots', x:0.50, y:0.80, color:'#c9a84c', radius:34, revealed:false, light:0 },
+  { id:'heart',       label:'СЕРДЦЕ · НАСТОЯЩЕЕ', label_en:'HEART · PRESENT', sub:'Дела · Чувства · Поток', sub_en:'Deeds · Feelings · Flow', x:0.50, y:0.50, color:'#ff8844', radius:34, revealed:false, light:0 },
+  { id:'mind',        label:'РАЗУМ · БУДУЩЕЕ', label_en:'MIND · FUTURE', sub:'Намерения · Мысли · Творение', sub_en:'Intentions · Thoughts · Creation', x:0.50, y:0.50, color:'#8888ff', radius:34, revealed:false, light:0 },
+  { id:'connections', label:'СВЯЗИ', label_en:'CONNECTIONS', sub:'Взаимодействия · Игроки · Агенты', sub_en:'Interactions · Players · Agents', x:0.50, y:0.50, color:'#44ddaa', radius:30, revealed:false, light:0 },
+];
+function _n(o,f){return _lang==='en'&&o[f+'_en']?o[f+'_en']:o[f];}
+
+let threads = [];
+let subSpheres = {};
+let step = 0;
+let onboarded = false;
+let activePanel = null;
+let totalLight = 0;
+
+// T-625: плавный рост света. Сфера рождается тёмной и заполняется по мере
+// своего собственного света — никаких бинарных переключений «выкл/вкл».
+// brightAt — порог «полного света»; Душа держит темноту дольше.
+function sphereBrightT(s) {
+  const brightAt = (s.id === 'soul') ? 250 : 200;
+  return Math.max(0, Math.min(1, (s.light || 0) / brightAt));
+}
+function _hexRGB(hex) {
+  const c = (hex||'#000000').replace('#','');
+  return [parseInt(c.substring(0,2),16)||0, parseInt(c.substring(2,4),16)||0, parseInt(c.substring(4,6),16)||0];
+}
+function lerpRGBA(hexA, hexB, t, alpha) {
+  const [r1,g1,b1] = _hexRGB(hexA);
+  const [r2,g2,b2] = _hexRGB(hexB);
+  const r = Math.round(r1 + (r2-r1)*t);
+  const g = Math.round(g1 + (g2-g1)*t);
+  const b = Math.round(b1 + (b2-b1)*t);
+  return 'rgba('+r+','+g+','+b+','+alpha+')';
+}
+
+// T-608: пороги общего света (state.totalLight) для раскрытия сфер.
+// Раскрытие через свет важнее, чем через onboarding-шаги — оно работает
+// и когда игрок копит свет в Тигле, не заходя в Душу.
+const LIGHT_THRESHOLDS = { foundation: 50, heart: 150, mind: 300, connections: 100 };
+
+function readPlayerTotalLight() {
+  try {
+    const raw = localStorage.getItem('awara_v258_state');
+    if (!raw) return 0;
+    const state = JSON.parse(raw);
+    return Number(state && state.totalLight || 0);
+  } catch(e) { return 0; }
+}
+
+// ══════════════════════════════════════════════
+// ЗАГРУЗКА / СОХРАНЕНИЕ
+// ══════════════════════════════════════════════
+function load() {
+  try { subSpheres = JSON.parse(localStorage.getItem('awara_subspheres_v3') || '{}'); } catch(e) { subSpheres = {}; }
+  SPHERES.forEach(s => {
+    if (!subSpheres[s.id]) subSpheres[s.id] = [];
+    s.light = subSpheres[s.id].reduce((sum, x) => sum + (x.light || 0), 0);
+  });
+  // Восстановление кастомных стилей сфер (цвет/размер/свечение)
+  try {
+    const styles = JSON.parse(localStorage.getItem('awara_sphere_styles_v1') || '{}');
+    SPHERES.forEach(s => {
+      const st = styles[s.id];
+      if (st) {
+        if (st.color) s.color = st.color;
+        if (st.radius) s.radius = st.radius;
+        if (st.glow != null) s.glow = st.glow;
+      }
+    });
+  } catch(e) {}
+  try { threads = JSON.parse(localStorage.getItem('awara_threads_v3') || '[]'); } catch(e) { threads = []; }
+  step = parseInt(localStorage.getItem('awara_sphere_step_v3') || '0');
+  onboarded = localStorage.getItem('awara_spheres_onboarded_v3') === '1';
+
+  // T-608: на старте видна только Душа (1 сфера). Остальные раскрываются
+  // по достижению порога суммарного света игрока (`state.totalLight`).
+  // Старая логика по `step` сохранена как fallback для уже-онбоарденных.
+  const playerLight = readPlayerTotalLight();
+  SPHERES[0].revealed = true;
+  if (step >= 1 || playerLight >= LIGHT_THRESHOLDS.foundation) revealSphere('foundation', 0.50, 0.80);
+  if (step >= 2 || playerLight >= LIGHT_THRESHOLDS.heart)      revealSphere('heart',      0.22, 0.30);
+  if (step >= 3 || playerLight >= LIGHT_THRESHOLDS.mind)       revealSphere('mind',       0.78, 0.30);
+  if (step >= 4 || playerLight >= LIGHT_THRESHOLDS.connections) revealSphere('connections', 0.82, 0.75);
+  autoThread(); // авто-нити между всеми раскрытыми парами
+}
+function revealSphere(id, x, y) {
+  const s = SPHERES.find(s => s.id === id);
+  if (s) { s.revealed = true; s.x = x; s.y = y; }
+  if (typeof renderSpherePlusButtons === 'function') renderSpherePlusButtons();
+}
+function autoThread() {
+  // T-608: «союзы» (нити) между всеми парами раскрытых сфер, включая Душу.
+  // Раньше Душа в авто-нити не входила — теперь любая активная пара
+  // получает свою линию-связь.
+  const pairs = [
+    ['soul','foundation'], ['soul','heart'], ['soul','mind'], ['soul','connections'],
+    ['foundation','heart'], ['heart','mind'], ['foundation','mind'],
+    ['connections','heart'], ['connections','mind'], ['connections','foundation']
+  ];
+  pairs.forEach(([a,b]) => {
+    if (!threads.find(t => (t.from===a&&t.to===b) || (t.from===b&&t.to===a))) {
+      if (SPHERES.find(s=>s.id===a)?.revealed && SPHERES.find(s=>s.id===b)?.revealed) {
+        threads.push({from:a, to:b});
+      }
+    }
+  });
+}
+function save() {
+  SPHERES.forEach(s => {
+    s.light = (subSpheres[s.id] || []).reduce((sum, x) => sum + (x.light || 0), 0);
+  });
+  totalLight = SPHERES.reduce((s,x) => s + x.light, 0);
+  localStorage.setItem('awara_subspheres_v3', JSON.stringify(subSpheres));
+  localStorage.setItem('awara_threads_v3', JSON.stringify(threads));
+  localStorage.setItem('awara_sphere_step_v3', String(step));
+  // Сохранение кастомных стилей
+  const styles = {};
+  SPHERES.forEach(s => {
+    if (typeof SPHERE_DEFAULTS !== 'undefined' && SPHERE_DEFAULTS[s.id]) {
+      const d = SPHERE_DEFAULTS[s.id];
+      if (s.color !== d.color || s.radius !== d.radius || (s.glow != null && s.glow !== d.glow)) {
+        styles[s.id] = { color: s.color, radius: s.radius, glow: s.glow };
+      }
+    }
+  });
+  localStorage.setItem('awara_sphere_styles_v1', JSON.stringify(styles));
+  updateHUD();
+}
+
+// ══════════════════════════════════════════════
+// ENTER SPACE (intro)
+// ══════════════════════════════════════════════
+function enterSpace() {
+  document.getElementById('intro').classList.add('hide');
+  document.getElementById('hud').classList.add('show');
+  document.getElementById('hint').classList.add('show');
+  const ab = document.getElementById('action-buttons');
+  if (ab) ab.style.display = 'flex';
+  if (typeof renderSpherePlusButtons === 'function') {
+    setTimeout(renderSpherePlusButtons, 100);
+  }
+  if (step === 0 && !onboarded) {
+    setTimeout(() => showToast('Душа здесь. Двойной тап по Основе — начни путь. ✦'), 600);
+  }
+}
+window.enterSpace = enterSpace;
+
+// ══════════════════════════════════════════════
+// CANVAS ОТРИСОВКА
+// ══════════════════════════════════════════════
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  if (typeof renderSpherePlusButtons === 'function') renderSpherePlusButtons();
+}
+resize(); window.addEventListener('resize', resize);
+
+let time = 0;
+let dragTarget = null, dragOffX = 0, dragOffY = 0;
+let dragSubsphere = null; // {sphereId, subIndex, offX, offY}
+let connectingFrom = null;
+let mouseX = 0, mouseY = 0;
+let lastSubTap = null; // {sphereId, subIndex, time} для двойного клика
+let pressSubsphere = null; // {sphereId, subIndex} для отслеживания drag подсферы
+
+function getPos(s) { return { x: s.x * W, y: s.y * H }; }
+
+// Рендер кнопок "+" рядом с раскрытыми сферами
+function renderSpherePlusButtons() {
+  const overlay = document.getElementById('sphere-plus-overlay');
+  if (!overlay) return;
+  if (!onboarded && step === 0) {
+    overlay.innerHTML = '';
+    return;
+  }
+  let html = '';
+  SPHERES.forEach(s => {
+    if (!s.revealed) return;
+    const p = getPos(s);
+    const offsetX = s.radius + 18;
+    const ss = subSpheres[s.id] || [];
+    const unlocked = getUnlocked(s.id);
+    const filled = ss.filter(e => e && e.text).length;
+    const total = 3;
+    const canAdd = filled < unlocked;
+    const isFull = filled >= total;
+    const sphereName = _n(s, 'label');
+    const hint = isFull
+      ? (_lang === 'en' ? sphereName + ': all 3 subspheres filled' : sphereName + ': все 3 подсферы заполнены')
+      : (_lang === 'en' ? 'Add subsphere to ' + sphereName + ' (' + filled + '/' + unlocked + ')' : 'Добавить подсферу в ' + sphereName + ' (' + filled + '/' + unlocked + ')');
+    const color = isFull ? 'rgba(120,120,120,0.5)' : s.color;
+    const bg = isFull ? 'rgba(50,50,50,0.4)' : 'rgba(2,1,10,0.85)';
+    const sym = isFull ? '✓' : '+';
+    const cursor = canAdd ? 'pointer' : 'not-allowed';
+    html += '<button data-sphere="' + s.id + '" data-hint="' + hint.replace(/"/g, '&quot;') + '" '
+      + 'onclick="event.stopPropagation(); ' + (canAdd ? 'createEmptySubsphere(\'' + s.id + '\')' : '') + '" '
+      + 'onmouseenter="showSphereHint(event)" onmouseleave="hideSphereHint()" '
+      + 'ontouchstart="showSphereHint(event)" '
+      + 'style="position:absolute;left:' + (p.x + offsetX) + 'px;top:' + (p.y - 14) + 'px;'
+      + 'width:28px;height:28px;border-radius:50%;background:' + bg + ';border:2px solid ' + color + ';'
+      + 'color:' + color + ';font-size:18px;font-weight:bold;cursor:' + cursor + ';pointer-events:auto;'
+      + 'display:flex;align-items:center;justify-content:center;line-height:1;'
+      + 'box-shadow:0 0 12px ' + color + ';transition:transform 0.2s;font-family:Arial,sans-serif;"'
+      + ' onmouseover="this.style.transform=\'scale(1.2)\'" onmouseout="this.style.transform=\'scale(1)\'">'
+      + sym + '</button>';
+
+    // Маленькая подпись-счётчик
+    if (!isFull) {
+      html += '<div style="position:absolute;left:' + (p.x + offsetX - 10) + 'px;top:' + (p.y + 18) + 'px;'
+        + 'font-family:JetBrains Mono,monospace;font-size:8px;color:' + s.color + ';opacity:0.7;'
+        + 'pointer-events:none;letter-spacing:0.1em;">' + filled + '/' + unlocked + '</div>';
+    }
+  });
+  overlay.innerHTML = html;
+}
+
+function showSphereHint(e) {
+  const btn = e.currentTarget || e.target;
+  const hint = btn.getAttribute('data-hint');
+  if (!hint) return;
+  const el = document.getElementById('sphere-hint');
+  if (!el) return;
+  el.textContent = hint;
+  el.style.display = 'block';
+  const rect = btn.getBoundingClientRect();
+  el.style.left = rect.left + 'px';
+  el.style.top = (rect.bottom + 4) + 'px';
+}
+
+// Создать пустую подсферу рядом с основной сферой
+function createEmptySubsphere(sphereId) {
+  const ss = subSpheres[sphereId] || [];
+  const unlocked = getUnlocked(sphereId);
+  let slot = -1;
+  for (let i = 0; i < unlocked; i++) { if (!ss[i] || !ss[i].text) { slot = i; break; } }
+  if (slot === -1) {
+    showToast(_lang==='en'?'All subspheres filled. Need more light!':'Все подсферы заполнены. Нужно больше света!');
+    return;
+  }
+
+  // Создаём пустую подсферу с позицией рядом с основной
+  const parentSphere = SPHERES.find(x => x.id === sphereId);
+  if (!parentSphere) return;
+
+  const parentPos = getPos(parentSphere);
+  const angle = (slot / 3) * Math.PI * 2;
+  const orbitR = (parentSphere.radius + 25) * 1.8;
+
+  if (!ss[slot]) ss[slot] = {};
+  ss[slot].text = ''; // Пустая подсфера
+  ss[slot].date = new Date().toISOString();
+  ss[slot].light = 0; // Пока нет света
+  ss[slot].origin = 'soul';
+  ss[slot].x = parentPos.x + Math.cos(angle) * orbitR;
+  ss[slot].y = parentPos.y + Math.sin(angle) * orbitR;
+
+  subSpheres[sphereId] = ss;
+  save();
+  renderSpherePlusButtons();
+
+  showToast(_lang==='en' ? 'Empty subsphere created. Click to fill it!' : 'Пустая подсфера создана. Кликни чтобы наполнить!');
+}
+
+function showSphereHint_old(e) {
+  const btn = e.currentTarget || e.target;
+  const hint = btn.getAttribute('data-hint');
+  if (!hint) return;
+  const el = document.getElementById('sphere-hint');
+  if (!el) return;
+  el.textContent = hint;
+  el.style.display = 'block';
+  const rect = btn.getBoundingClientRect();
+  el.style.left = Math.min(window.innerWidth - 260, rect.right + 8) + 'px';
+  el.style.top = (rect.top - 8) + 'px';
+}
+function hideSphereHint() {
+  const el = document.getElementById('sphere-hint');
+  if (el) el.style.display = 'none';
+}
+window.showSphereHint = showSphereHint;
+window.hideSphereHint = hideSphereHint;
+
+// Открывает панель сферы и сразу фокусирует поле ввода новой подсферы
+function openPanelForSubsphere(sphereId) {
+  openPanel(sphereId);
+  hideSphereHint();
+  setTimeout(() => {
+    const entriesTab = document.querySelector('.sp-tab[data-tab="entries"]');
+    if (entriesTab) spTab('entries', entriesTab);
+    const input = document.getElementById('sp-input');
+    if (input) {
+      input.focus();
+      input.style.transition = 'box-shadow 0.4s';
+      input.style.boxShadow = '0 0 0 2px rgba(255,215,0,0.6)';
+      setTimeout(() => { input.style.boxShadow = ''; }, 1200);
+      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, 350);
+}
+window.openPanelForSubsphere = openPanelForSubsphere;
+
+function draw(ts) {
+  time = ts;
+  const ft = ts / 1000;
+
+  // Фон — как в оригинале
+  const bgGrd = ctx.createRadialGradient(W*0.3, H*0.25, 0, W/2, H/2, Math.max(W,H)*0.7);
+  bgGrd.addColorStop(0, '#0d0525');
+  bgGrd.addColorStop(0.5, '#050215');
+  bgGrd.addColorStop(1, '#02010a');
+  ctx.fillStyle = bgGrd;
+  ctx.fillRect(0, 0, W, H);
+
+  // Звёзды
+  for (let i = 0; i < 120; i++) {
+    const sx = (Math.sin(i * 73.37 + ft * 0.03) * 0.5 + 0.5) * W;
+    const sy = (Math.cos(i * 47.73 + ft * 0.04) * 0.5 + 0.5) * H;
+    const twinkle = 0.2 + Math.sin(ft * 2 + i) * 0.15;
+    ctx.fillStyle = `rgba(255,255,255,${twinkle})`;
+    ctx.fillRect(sx, sy, 1.2, 1.2);
+  }
+
+  // Нити
+  threads.forEach(t => {
+    const a = SPHERES.find(s => s.id === t.from);
+    const b = SPHERES.find(s => s.id === t.to);
+    if (!a || !b || !a.revealed || !b.revealed) return;
+    const pa = getPos(a), pb = getPos(b);
+    const strength = Math.min(1, (a.light + b.light) / 1000);
+
+    // Свечение под линией
+    ctx.strokeStyle = `rgba(255,215,0,${0.08 + strength * 0.15})`;
+    ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
+
+    // Основная линия
+    ctx.strokeStyle = `rgba(255,215,0,${0.2 + strength * 0.3})`;
+    ctx.lineWidth = 0.8 + strength * 1.5;
+    ctx.setLineDash([6, 10]);
+    ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Частицы
+    const tp = ((ft * 0.7 + threads.indexOf(t) * 0.3) % 1);
+    const px = pa.x + (pb.x - pa.x) * tp;
+    const py = pa.y + (pb.y - pa.y) * tp;
+    const glow = ctx.createRadialGradient(px, py, 0, px, py, 5);
+    glow.addColorStop(0, 'rgba(255,255,255,0.8)');
+    glow.addColorStop(1, 'rgba(255,215,0,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI*2); ctx.fill();
+  });
+
+  // Тянущаяся нить
+  if (connectingFrom) {
+    const a = SPHERES.find(s => s.id === connectingFrom);
+    if (a) {
+      const pa = getPos(a);
+      ctx.strokeStyle = 'rgba(255,215,0,0.4)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([3, 8]);
+      ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(mouseX, mouseY); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // Сферы — отрисовка в стиле оригинала
+  SPHERES.forEach(s => {
+    if (!s.revealed) return;
+    const pos = getPos(s);
+    const scale = Math.min(1, W / 600); // mobile scaling
+    const baseR = (s.radius + Math.min(25, s.light / 40)) * scale;
+    const pulse = 1 + Math.sin(ft * 2 + SPHERES.indexOf(s)) * 0.025;
+
+    // T-625: плавный рост света 0..1, общий для всех сфер.
+    // На старте каждая сфера тёмная (тлеющий уголь) — светлеет по мере
+    // накопления собственного света (записи + поток из Тигля).
+    const tLight = sphereBrightT(s);
+
+    // ЭМ-поле — лерп тёмного «тления» к цвету сферы.
+    const glowMult = 0.5 + ((s.glow != null ? s.glow : 50) / 100);
+    const glowR = baseR * 2.8 * glowMult;
+    const glow = ctx.createRadialGradient(pos.x, pos.y, baseR * 0.4, pos.x, pos.y, glowR);
+    glow.addColorStop(0,   lerpRGBA('#503720', s.color, tLight, 0.18 + tLight * 0.07));
+    glow.addColorStop(0.5, lerpRGBA('#281810', s.color, tLight, 0.05 + tLight * 0.02));
+    glow.addColorStop(1,   'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(pos.x, pos.y, glowR, 0, Math.PI*2); ctx.fill();
+
+    // Тело сферы — многослойный градиент, плавно лерпит из тлеющего угля
+    // в белое ядро + насыщенный цветной край.
+    const r = baseR * pulse;
+    const grd = ctx.createRadialGradient(pos.x - r*0.2, pos.y - r*0.25, r*0.05, pos.x, pos.y, r);
+    grd.addColorStop(0,    lerpRGBA('#5a4530', '#ffffff', tLight,                          1));
+    grd.addColorStop(0.08, lerpRGBA('#3a2820', '#fff8d6', Math.min(1, tLight * 1.25),      1));
+    grd.addColorStop(0.3,  lerpRGBA('#2a1815', s.color,   tLight,                          1));
+    grd.addColorStop(0.7,  'rgba(2,1,10,' + (0.85 - tLight * 0.25).toFixed(3) + ')');
+    grd.addColorStop(1,    'rgba(0,0,0,0)');
+    ctx.fillStyle = grd;
+    ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, Math.PI*2); ctx.fill();
+
+    // Обводка — alpha тоже подвязана к свету, тёмная сфера почти без обводки.
+    const isTarget = s.id === dragTarget || s.id === activePanel;
+    const outlineA = 0.10 + tLight * 0.25 + Math.sin(ft) * 0.05 * tLight;
+    ctx.strokeStyle = isTarget ? '#ffffff' : 'rgba(255,215,0,' + outlineA.toFixed(3) + ')';
+    ctx.lineWidth = isTarget ? 2 : 1;
+    ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, Math.PI*2); ctx.stroke();
+
+    // Внутреннее кольцо (только когда сфера уже немного светится).
+    ctx.strokeStyle = 'rgba(255,215,0,' + (0.04 + tLight * 0.10).toFixed(3) + ')';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.arc(pos.x, pos.y, r * 0.65, 0, Math.PI*2); ctx.stroke();
+
+    // T-626: кольца ауры (○ / ◐ / ◑ / ●) — отрисовываются как
+    // концентрические кольца поверх сферы. Каждое кольцо — отдельный
+    // уровень: 1 кольцо при ауре 1, 2 — при 2, 3 — при 3.
+    // Толщина и alpha привязаны к tLight и к индексу.
+    const auraLvl = (function(){
+      const L = s.light || 0;
+      if (L >= 250) return 3;
+      if (L >= 100) return 2;
+      if (L >= 25)  return 1;
+      return 0;
+    })();
+    for (let ai = 0; ai < auraLvl; ai++) {
+      const ringR = r + 7 + ai * 5 + Math.sin(ft * 0.6 + ai + SPHERES.indexOf(s)) * 1.4;
+      const ringA = (0.18 - ai * 0.04) * Math.max(0.4, tLight);
+      ctx.strokeStyle = lerpRGBA('#3a2820', s.color, tLight, ringA);
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(pos.x, pos.y, ringR, 0, Math.PI*2); ctx.stroke();
+    }
+
+    // Название — тоже тускнеет на тёмной сфере.
+    const fontSize = 10 + Math.min(6, s.light / 100);
+    ctx.fillStyle = 'rgba(255,215,0,' + (0.30 + tLight * 0.60).toFixed(3) + ')';
+    ctx.font = `bold ${fontSize}px Cinzel,serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(_n(s,'label'), pos.x, pos.y + r + 8);
+
+    // Подсферы — независимые перемещаемые объекты, связанные с основной сферой
+    const ss = subSpheres[s.id] || [];
+    const maxSubs = 3;
+    const unlocked = getUnlocked(s.id);
+    for (let i = 0; i < maxSubs; i++) {
+      // Позиция: используем сохранённую (x, y) или вычисляем орбитальную как fallback
+      let ox, oy;
+      if (ss[i] && ss[i].x != null && ss[i].y != null) {
+        ox = ss[i].x;
+        oy = ss[i].y;
+      } else {
+        // Fallback: орбитальная позиция для пустых/новых подсфер
+        const angle = (i / maxSubs) * Math.PI * 2 + ft * 0.3;
+        const orbitR = r * 1.8;
+        ox = pos.x + Math.cos(angle) * orbitR;
+        oy = pos.y + Math.sin(angle) * orbitR;
+      }
+
+      if (ss[i] && ss[i].text) {
+        // Активная подсфера — заполненная
+        const subR = 16;
+        const subColor = ss[i].color || s.color;
+
+        // Линия связи с основной сферой
+        ctx.strokeStyle = `rgba(201,168,76,${0.15 + tLight * 0.15})`;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 4]);
+        ctx.beginPath(); ctx.moveTo(pos.x, pos.y); ctx.lineTo(ox, oy); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Свечение подсферы
+        const sg = ctx.createRadialGradient(ox, oy, 0, ox, oy, subR * 2);
+        sg.addColorStop(0, lerpRGBA('#ffffff', subColor, 0.5, 0.3));
+        sg.addColorStop(0.4, lerpRGBA(subColor, '#ffd700', 0.6, 0.2));
+        sg.addColorStop(1, 'rgba(255,215,0,0)');
+        ctx.fillStyle = sg;
+        ctx.beginPath(); ctx.arc(ox, oy, subR * 2, 0, Math.PI*2); ctx.fill();
+
+        // Тело подсферы
+        const bodyGrad = ctx.createRadialGradient(ox - subR*0.3, oy - subR*0.3, 0, ox, oy, subR);
+        bodyGrad.addColorStop(0, lerpRGBA('#ffffff', subColor, 0.3, 0.9));
+        bodyGrad.addColorStop(0.5, lerpRGBA(subColor, '#ffd700', 0.7, 0.7));
+        bodyGrad.addColorStop(1, lerpRGBA('#1a1410', subColor, 0.5, 0.5));
+        ctx.fillStyle = bodyGrad;
+        ctx.beginPath(); ctx.arc(ox, oy, subR, 0, Math.PI*2); ctx.fill();
+
+        // Обводка
+        ctx.strokeStyle = lerpRGBA(subColor, '#ffd700', 0.5, 0.6);
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(ox, oy, subR, 0, Math.PI*2); ctx.stroke();
+
+      } else if (ss[i] && ss[i].x != null) {
+        // Пустая созданная подсфера (text='') — призрачная, но уже размещена
+        const subR = 14;
+
+        // Линия связи (тусклая)
+        ctx.strokeStyle = 'rgba(201,168,76,0.12)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 6]);
+        ctx.beginPath(); ctx.moveTo(pos.x, pos.y); ctx.lineTo(ox, oy); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Призрачное тело с пульсацией (привлекает внимание)
+        const pulseAlpha = 0.08 + Math.sin(ft * 3) * 0.04;
+        ctx.fillStyle = `rgba(201,168,76,${pulseAlpha})`;
+        ctx.beginPath(); ctx.arc(ox, oy, subR, 0, Math.PI*2); ctx.fill();
+        ctx.strokeStyle = `rgba(201,168,76,${0.2 + Math.sin(ft * 3) * 0.1})`;
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.arc(ox, oy, subR, 0, Math.PI*2); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Символ "✎" (карандаш) — кликни чтобы наполнить
+        ctx.fillStyle = 'rgba(201,168,76,0.4)';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('✎', ox, oy);
+
+      } else if (i < unlocked) {
+        // Слот доступен, но подсфера ещё не создана — не рисуем (кнопка "+" создаст)
+        continue;
+
+      } else {
+        // Закрыта — красная точка
+        ctx.fillStyle = 'rgba(255,80,80,0.15)';
+        ctx.beginPath(); ctx.arc(ox, oy, 6, 0, Math.PI*2); ctx.fill();
+        ctx.strokeStyle = 'rgba(255,80,80,0.3)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(ox, oy, 6, 0, Math.PI*2); ctx.stroke();
+
+        // Замок
+        ctx.fillStyle = 'rgba(255,80,80,0.4)';
+        ctx.font = '10px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🔒', ox, oy);
+      }
+    }
+  });
+
+  updateDots();
+}
+
+function updateDots() {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('d'+i);
+    if (dot) {
+      const s = SPHERES[i+1]; // foundation, heart, mind, connections
+      const hasContent = s && (subSpheres[s.id] || []).filter(x => x && x.text).length > 0;
+      dot.classList.toggle('done', !!hasContent);
+      if (hasContent) dot.style.background = s ? s.color : '#c9a84c';
+    }
+  }
+}
+
+// ══════════════════════════════════════════════
+// DRAG & DROP
+// ══════════════════════════════════════════════
+function findSphere(mx, my) {
+  for (let i = SPHERES.length - 1; i >= 0; i--) {
+    const s = SPHERES[i];
+    if (!s.revealed) continue;
+    const pos = getPos(s);
+    const scale = Math.min(1, W / 600);
+    const r = (s.radius + Math.min(25, s.light / 40)) * scale;
+    if (Math.hypot(mx - pos.x, my - pos.y) < r * 1.8) return s.id;
+  }
+  return null;
+}
+
+// Поиск подсферы по координатам клика
+function findSubsphere(mx, my) {
+  const ft = time / 1000;
+  for (let i = SPHERES.length - 1; i >= 0; i--) {
+    const s = SPHERES[i];
+    if (!s.revealed) continue;
+    const pos = getPos(s);
+    const scale = Math.min(1, W / 600);
+    const r = (s.radius + Math.min(25, s.light / 40)) * scale;
+
+    const ss = subSpheres[s.id] || [];
+    const maxSubs = 3;
+    const unlocked = getUnlocked(s.id);
+
+    for (let j = 0; j < maxSubs; j++) {
+      // Используем сохранённую позицию или орбитальную как fallback
+      let ox, oy;
+      if (ss[j] && ss[j].x != null && ss[j].y != null) {
+        ox = ss[j].x;
+        oy = ss[j].y;
+      } else {
+        // Fallback: орбитальная позиция
+        const angle = (j / maxSubs) * Math.PI * 2 + ft * 0.3;
+        const orbitR = r * 1.8;
+        ox = pos.x + Math.cos(angle) * orbitR;
+        oy = pos.y + Math.sin(angle) * orbitR;
+      }
+
+      const subR = (ss[j] && ss[j].text) ? 16 : (ss[j] && ss[j].x != null ? 14 : (j < unlocked ? 14 : 6));
+
+      if (Math.hypot(mx - ox, my - oy) < subR + 4) {
+        return { sphereId: s.id, subIndex: j, unlocked: j < unlocked, filled: !!(ss[j] && ss[j].text) };
+      }
+    }
+  }
+  return null;
+}
+
+// T-627a: state machine для жестов.
+//   тап (без движения, <500мс)    → openPanel(sphere)
+//   long-press (≥500мс, без движения) → режим нити: connectingFrom=sphere, на release
+//                                       по другой сфере — создать связь
+//   drag (после движения >8px)    → перетаскивание сферы
+const LONG_PRESS_MS = 500;
+const DRAG_THRESHOLD_PX = 8;
+let pressStart = 0;
+let pressSphere = null;
+let pressStartX = 0, pressStartY = 0;
+let isLongPress = false;
+let longPressTimer = null;
+
+function _clearPressState() {
+  if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
+  pressStart = 0;
+  pressSphere = null;
+  isLongPress = false;
+}
+
+canvas.addEventListener('pointerdown', e => {
+  const mx = e.clientX, my = e.clientY;
+
+  // Сначала проверяем клик по подсфере
+  const sub = findSubsphere(mx, my);
+  if (sub) {
+    if (sub.filled) {
+      // Заполненная подсфера — запомнить для drag (начнём при движении)
+      const now = Date.now();
+      pressSubsphere = { sphereId: sub.sphereId, subIndex: sub.subIndex };
+      pressStart = now;
+      pressStartX = mx;
+      pressStartY = my;
+      return;
+    } else if (sub.unlocked) {
+      // Пустая созданная подсфера (ss[i].x != null) — открыть форму наполнения
+      const ss = subSpheres[sub.sphereId];
+      if (ss && ss[sub.subIndex] && ss[sub.subIndex].x != null) {
+        openPanel(sub.sphereId);
+        setTimeout(() => {
+          const entriesTab = document.querySelector('.sp-tab[data-tab="entries"]');
+          if (entriesTab) spTab('entries', entriesTab);
+          // Фокус на input
+          const input = document.getElementById('sp-input');
+          if (input) input.focus();
+        }, 100);
+      }
+      return;
+    } else {
+      // Клик на закрытую подсферу — показать сообщение
+      const needed = sub.subIndex === 1 ? 500 : 2000;
+      showToast(_lang==='en' ? `Need ${needed} ✦ to unlock` : `Нужно ${needed} ✦ чтобы открыть`);
+      return;
+    }
+  }
+
+  const id = findSphere(mx, my);
+
+  // Тап мимо сферы — закрыть текущую панель (если открыта) и сбросить нить.
+  if (!id) {
+    connectingFrom = null;
+    if (activePanel && document.getElementById('subpanel').classList.contains('open')) {
+      closePanel();
+    }
+    return;
+  }
+
+  // Запоминаем нажатие. drag / тап / long-press решим по таймауту или по pointermove/up.
+  pressStart = Date.now();
+  pressSphere = id;
+  pressStartX = mx; pressStartY = my;
+  isLongPress = false;
+
+  if (longPressTimer) clearTimeout(longPressTimer);
+  longPressTimer = setTimeout(() => {
+    // Палец удерживается на сфере без движения 500мс → режим нити.
+    if (pressSphere && !dragTarget) {
+      isLongPress = true;
+      connectingFrom = pressSphere;
+      showToast(_lang==='en' ? 'Drag thread to another sphere...' : 'Тяни нить к другой сфере...');
+      try { if (navigator.vibrate) navigator.vibrate(20); } catch(_) {}
+    }
+  }, LONG_PRESS_MS);
+
+  // Правая кнопка (десктоп) — сразу в режим нити, без ожидания.
+  if (e.button === 2) {
+    e.preventDefault();
+    clearTimeout(longPressTimer); longPressTimer = null;
+    isLongPress = true;
+    connectingFrom = id;
+    showToast(_lang==='en' ? 'Drag thread to another sphere...' : 'Тяни нить к другой сфере...');
+  }
+});
+
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+canvas.addEventListener('pointermove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+
+  // Тянем подсферу
+  if (dragSubsphere) {
+    const ss = subSpheres[dragSubsphere.sphereId];
+    if (ss && ss[dragSubsphere.subIndex]) {
+      ss[dragSubsphere.subIndex].x = e.clientX + dragSubsphere.offX;
+      ss[dragSubsphere.subIndex].y = e.clientY + dragSubsphere.offY;
+    }
+    return;
+  }
+
+  // Палец удерживается на подсфере: при достаточном смещении начинаем drag
+  if (pressSubsphere && !dragSubsphere) {
+    const dx = e.clientX - pressStartX;
+    const dy = e.clientY - pressStartY;
+    if (dx*dx + dy*dy > DRAG_THRESHOLD_PX * DRAG_THRESHOLD_PX) {
+      const ss = subSpheres[pressSubsphere.sphereId];
+      if (ss && ss[pressSubsphere.subIndex] && ss[pressSubsphere.subIndex].x != null && ss[pressSubsphere.subIndex].y != null) {
+        dragSubsphere = {
+          sphereId: pressSubsphere.sphereId,
+          subIndex: pressSubsphere.subIndex,
+          offX: ss[pressSubsphere.subIndex].x - e.clientX,
+          offY: ss[pressSubsphere.subIndex].y - e.clientY
+        };
+      }
+    }
+  }
+
+  // Уже тянем сферу — продолжаем drag.
+  if (dragTarget) {
+    const s = SPHERES.find(x => x.id === dragTarget);
+    if (s) {
+      s.x = Math.max(0.06, Math.min(0.94, (e.clientX + dragOffX) / W));
+      s.y = Math.max(0.06, Math.min(0.94, (e.clientY + dragOffY) / H));
+      if (typeof renderSpherePlusButtons === 'function') renderSpherePlusButtons();
+    }
+    return;
+  }
+
+  // Палец удерживается на сфере: при достаточном смещении начинаем drag,
+  // но только если ещё не вошли в режим нити (long-press).
+  if (pressSphere && !isLongPress && !connectingFrom) {
+    const dx = e.clientX - pressStartX;
+    const dy = e.clientY - pressStartY;
+    if (dx*dx + dy*dy > DRAG_THRESHOLD_PX * DRAG_THRESHOLD_PX) {
+      if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
+      const s = SPHERES.find(x => x.id === pressSphere);
+      if (s) {
+        dragTarget = pressSphere;
+        const pos = getPos(s);
+        dragOffX = pos.x - e.clientX;
+        dragOffY = pos.y - e.clientY;
+      }
+    }
+  }
+});
+
+canvas.addEventListener('pointerup', e => {
+  const id = findSphere(e.clientX, e.clientY);
+  if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
+
+  // Завершили drag подсферы — сохраняем позицию
+  if (dragSubsphere) {
+    save();
+    dragSubsphere = null;
+    pressSubsphere = null;
+    return;
+  }
+
+  // Простой тап на подсфере (без drag) — открыть форму наполнения
+  if (pressSubsphere && !dragSubsphere) {
+    const elapsed = pressStart ? (Date.now() - pressStart) : 0;
+    if (elapsed < 400) {
+      // Короткий тап — открыть панель для наполнения
+      openPanel(pressSubsphere.sphereId);
+      setTimeout(() => {
+        const entriesTab = document.querySelector('.sp-tab[data-tab="entries"]');
+        if (entriesTab) spTab('entries', entriesTab);
+      }, 100);
+    }
+    pressSubsphere = null;
+    return;
+  }
+
+  // Режим нити: тянули от sphereA, отпустили над sphereB → создать связь.
+  if (connectingFrom) {
+    if (id && id !== connectingFrom) {
+      const exists = threads.find(t =>
+        (t.from === connectingFrom && t.to === id) || (t.from === id && t.to === connectingFrom)
+      );
+      if (!exists) {
+        threads.push({ from: connectingFrom, to: id });
+        save();
+        const fromS = SPHERES.find(x => x.id === connectingFrom);
+        const toS   = SPHERES.find(x => x.id === id);
+        showToast((_lang==='en'?'Thread created: ':'Нить создана: ')+_n(fromS,'label')+' ↔ '+_n(toS,'label'));
+        checkAllConnected();
+      }
+    } else {
+      // Отпустили вне другой сферы — просто выходим из режима, без тоста-ошибки.
+    }
+    connectingFrom = null;
+    _clearPressState();
+    return;
+  }
+
+  // Завершили drag — сохраняем позиции.
+  if (dragTarget) {
+    save();
+    dragTarget = null;
+    _clearPressState();
+    return;
+  }
+
+  // Простой тап (короткое нажатие на сфере, без движения и без long-press) → открыть панель.
+  const elapsed = pressStart ? (Date.now() - pressStart) : 0;
+  if (pressSphere && id === pressSphere && elapsed < LONG_PRESS_MS) {
+    openPanel(pressSphere);
+  }
+  _clearPressState();
+});
+
+// pointercancel — например, прокрутка или потеря фокуса. Сбрасываем всё.
+canvas.addEventListener('pointercancel', () => {
+  _clearPressState();
+  dragTarget = null;
+  dragSubsphere = null;
+  connectingFrom = null;
+});
+
+// ══════════════════════════════════════════════
+// ПАНЕЛЬ ПОДСФЕР
+// ══════════════════════════════════════════════
+function getUnlocked(sphereId) {
+  // T-608: единое правило для всех сфер (включая Душу). На старте
+  // одна подсфера, дальше ×2 при 500 ✦ света и ×3 при 2000 ✦.
+  // «Одна подсфера ×3» — это её рост по уровням, а не три параллельных слота.
+  const s = SPHERES.find(x => x.id === sphereId);
+  if (!s) return 1;
+  if (s.light >= 2000) return 3;
+  if (s.light >= 500) return 2;
+  return 1;
+}
+
+function openPanel(sphereId) {
+  activePanel = sphereId;
+  const s = SPHERES.find(x => x.id === sphereId);
+  if (!s) return;
+  document.getElementById('sp-title').textContent = _n(s,'label');
+  document.getElementById('sp-sub').textContent = _n(s,'sub');
+  document.getElementById('sp-light').textContent = (_lang==='en'?'SPHERE LIGHT':'СВЕТ СФЕРЫ')+`: ${s.light} ✦ | `+(_lang==='en'?'SUBSPHERES':'ПОДСФЕР')+`: ${(subSpheres[sphereId]||[]).filter(x=>x&&x.text).length}/${getUnlocked(sphereId)}`;
+  // T-608 v2: guided Q&A — философский вопрос перед записью.
+  // Вопрос детерминированно ротируется по дню + длине истории, чтобы
+  // одну сессию не показывать тот же текст дважды, но и не быть случайным.
+  const promptEl = document.getElementById('sp-prompt');
+  if (promptEl && window.awaraPrompts && typeof window.awaraPrompts.getPromptForSphere === 'function') {
+    const histLen = (subSpheres[sphereId] || []).filter(x => x && x.text).length;
+    try {
+      promptEl.textContent = window.awaraPrompts.getPromptForSphere(sphereId, histLen);
+      promptEl.style.display = '';
+    } catch(e) {
+      promptEl.style.display = 'none';
+    }
+  } else if (promptEl) {
+    promptEl.style.display = 'none';
+  }
+  renderSubItems();
+  // T-626: вкладки и расширенный контент
+  spTab('entries', document.querySelector('.sp-tab[data-tab="entries"]'));
+  renderAura();
+  renderJournal();
+  renderPlans();
+  renderMedia();
+  renderSocialLinks();
+  clearPendingAttachments();
+  document.getElementById('subpanel').classList.add('open');
+  const backdrop = document.getElementById('subpanel-backdrop');
+  if (backdrop) backdrop.classList.add('open');
+}
+function closePanel() {
+  document.getElementById('subpanel').classList.remove('open');
+  const backdrop = document.getElementById('subpanel-backdrop');
+  if (backdrop) backdrop.classList.remove('open');
+  activePanel = null;
+  stopVoiceRec();
+}
+function renderSubItems() {
+  if (!activePanel) return;
+  const ss = subSpheres[activePanel] || [];
+  const unlocked = getUnlocked(activePanel);
+  const container = document.getElementById('sp-items');
+  let html = '';
+  for (let i = 0; i < 3; i++) {
+    if (i < unlocked) {
+      if (ss[i] && ss[i].text) {
+        var attachIcos = '';
+        if (ss[i].attachments && ss[i].attachments.length) {
+          ss[i].attachments.forEach(function(a) {
+            if (a.type === 'voice') attachIcos += '🎤';
+            else if (a.type === 'image') attachIcos += '📷';
+            else if (a.type === 'video') attachIcos += '🎬';
+            else if (a.type === 'link') attachIcos += '🔗';
+          });
+          attachIcos = '<span style="margin-left:4px;font-size:10px">' + attachIcos + '</span>';
+        }
+        html += `<div class="sp-item"><span class="dot active"></span><span>${ss[i].text}${attachIcos}</span><span style="margin-left:auto;font-size:9px;color:rgba(201,168,76,0.4)">+${ss[i].light||0}✦</span></div>`;
+      } else {
+        html += `<div class="sp-item"><span class="dot empty"></span><span style="color:rgba(201,168,76,0.3)">${_lang==='en'?'empty — write below':'пусто — напиши ниже'}</span></div>`;
+      }
+    } else {
+      html += `<div class="sp-item locked"><span class="dot locked"></span>🔒 ${i===1?'500 ✦':'2000 ✦'}</div>`;
+    }
+  }
+  container.innerHTML = html;
+}
+function addSubSphere() {
+  if (!activePanel) return;
+  const text = document.getElementById('sp-input').value.trim();
+  if (!text) return;
+
+  const ss = subSpheres[activePanel] || [];
+  const unlocked = getUnlocked(activePanel);
+  let slot = -1;
+  for (let i = 0; i < unlocked; i++) { if (!ss[i] || !ss[i].text) { slot = i; break; } }
+  if (slot === -1) { showToast(_lang==='en'?'All subspheres filled. Need more light!':'Все подсферы заполнены. Нужно больше света!'); return; }
+
+  if (!ss[slot]) ss[slot] = {};
+  ss[slot].text = text;
+  ss[slot].date = new Date().toISOString();
+  ss[slot].light = Math.floor(Math.random() * 30) + 15;
+  ss[slot].origin = ss[slot].origin || 'soul';
+
+  // Позиция подсферы: если не задана, вычисляем орбитальную позицию вокруг основной сферы
+  if (ss[slot].x == null || ss[slot].y == null) {
+    const parentSphere = SPHERES.find(x => x.id === activePanel);
+    if (parentSphere) {
+      const parentPos = getPos(parentSphere);
+      const angle = (slot / 3) * Math.PI * 2;
+      const orbitR = (parentSphere.radius + 25) * 1.8;
+      ss[slot].x = parentPos.x + Math.cos(angle) * orbitR;
+      ss[slot].y = parentPos.y + Math.sin(angle) * orbitR;
+    }
+  }
+
+  if (pendingAttachments.length > 0) {
+    ss[slot].attachments = (ss[slot].attachments || []).concat(pendingAttachments);
+  }
+  subSpheres[activePanel] = ss;
+  document.getElementById('sp-input').value = '';
+  clearPendingAttachments();
+  save();
+  if (window.awaraSync && typeof window.awaraSync.syncSoulToTigel === 'function') {
+    try { window.awaraSync.syncSoulToTigel(activePanel, ss[slot]); }
+    catch(e) { console.warn('T-603: syncSoulToTigel failed', e); }
+  }
+  renderSubItems();
+  document.getElementById('sp-light').textContent = (_lang==='en'?'SPHERE LIGHT':'СВЕТ СФЕРЫ')+`: ${SPHERES.find(x=>x.id===activePanel)?.light} ✦ | `+(_lang==='en'?'SUBSPHERES':'ПОДСФЕР')+`: ${ss.filter(x=>x&&x.text).length}/${unlocked}`;
+  // T-626: уровень ауры пересчитываем после новой записи
+  renderAura();
+
+  showToast(`+${ss[slot].light} ✦ → ${_n(SPHERES.find(x=>x.id===activePanel),'label')}`);
+  if (!onboarded) advanceStep(activePanel);
+  if (typeof renderSpherePlusButtons === 'function') renderSpherePlusButtons();
+}
+function removeSubSphere() {
+  if (!activePanel) return;
+  const ss = subSpheres[activePanel] || [];
+  const lastIdx = ss.length - 1;
+  if (lastIdx >= 0 && ss[lastIdx] && ss[lastIdx].text) {
+    ss[lastIdx] = {};
+    subSpheres[activePanel] = ss;
+    save();
+    renderSubItems();
+    renderAura();
+    showToast('Подсфера очищена');
+  }
+}
+
+// ══════════════════════════════════════════════
+// T-626: ВКЛАДКИ В ПАНЕЛИ СФЕРЫ
+// ══════════════════════════════════════════════
+function spTab(name, el) {
+  document.querySelectorAll('.sp-tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.sp-tab-body').forEach(b => b.classList.remove('on'));
+  if (el) el.classList.add('on');
+  const body = document.getElementById('sp-body-' + name);
+  if (body) body.classList.add('on');
+  if (name === 'style' && activePanel) {
+    const s = SPHERES.find(x => x.id === activePanel);
+    if (s) {
+      const c = document.getElementById('style-sphere-color');
+      const sz = document.getElementById('style-sphere-size');
+      const gl = document.getElementById('style-sphere-glow');
+      if (c) c.value = s.color;
+      if (sz) sz.value = s.radius;
+      if (gl) gl.value = s.glow != null ? s.glow : 50;
+      const sv = document.getElementById('style-size-val');
+      if (sv) sv.textContent = s.radius;
+      const gv = document.getElementById('style-glow-val');
+      if (gv) {
+        const g = s.glow != null ? s.glow : 50;
+        gv.textContent = g < 33 ? 'тихо' : g < 67 ? 'средне' : 'ярко';
+      }
+    }
+    renderSubsphereColors();
+  }
+}
+
+// ══════════════════════════════════════════════
+// СТИЛЬ: цвет, размер, свечение сферы и подсфер
+// ══════════════════════════════════════════════
+const SPHERE_DEFAULTS = {};
+SPHERES.forEach(s => { SPHERE_DEFAULTS[s.id] = { color: s.color, radius: s.radius, glow: 50 }; });
+
+function updateSphereStyle() {
+  if (!activePanel) return;
+  const s = SPHERES.find(x => x.id === activePanel);
+  if (!s) return;
+  const colorEl = document.getElementById('style-sphere-color');
+  const sizeEl = document.getElementById('style-sphere-size');
+  const glowEl = document.getElementById('style-sphere-glow');
+  if (colorEl) s.color = colorEl.value;
+  if (sizeEl) s.radius = parseInt(sizeEl.value);
+  if (glowEl) s.glow = parseInt(glowEl.value);
+  const sv = document.getElementById('style-size-val');
+  if (sv && sizeEl) sv.textContent = sizeEl.value;
+  const gv = document.getElementById('style-glow-val');
+  if (gv && glowEl) {
+    const g = parseInt(glowEl.value);
+    gv.textContent = g < 33 ? 'тихо' : g < 67 ? 'средне' : 'ярко';
+  }
+  if (typeof save === 'function') save();
+  if (typeof renderSpherePlusButtons === 'function') renderSpherePlusButtons();
+}
+
+function setStyleColor(c) {
+  const el = document.getElementById('style-sphere-color');
+  if (el) el.value = c;
+  updateSphereStyle();
+}
+
+function resetSphereStyle() {
+  if (!activePanel) return;
+  const d = SPHERE_DEFAULTS[activePanel];
+  if (!d) return;
+  const s = SPHERES.find(x => x.id === activePanel);
+  if (!s) return;
+  s.color = d.color; s.radius = d.radius; s.glow = d.glow;
+  const c = document.getElementById('style-sphere-color');
+  const sz = document.getElementById('style-sphere-size');
+  const gl = document.getElementById('style-sphere-glow');
+  if (c) c.value = d.color;
+  if (sz) sz.value = d.radius;
+  if (gl) gl.value = d.glow;
+  const sv = document.getElementById('style-size-val');
+  if (sv) sv.textContent = d.radius;
+  const gv = document.getElementById('style-glow-val');
+  if (gv) gv.textContent = 'средне';
+  if (typeof save === 'function') save();
+  if (typeof renderSpherePlusButtons === 'function') renderSpherePlusButtons();
+}
+
+function renderSubsphereColors() {
+  if (!activePanel) return;
+  const ss = subSpheres[activePanel] || [];
+  const filled = ss.filter(x => x && x.text);
+  const container = document.getElementById('style-subspheres-list');
+  if (!container) return;
+  if (filled.length === 0) {
+    container.innerHTML = '<div style="font-size:10px;color:rgba(201,168,76,0.4);font-style:italic;">Нет заполненных подсфер</div>';
+    return;
+  }
+  let html = '';
+  filled.forEach((sub, i) => {
+    const color = sub.color || '#c9a84c';
+    const text = (sub.text || '').replace(/"/g, '&quot;').slice(0, 40);
+    html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">'
+      + '<input type="color" value="' + color + '" onchange="setSubsphereColor(' + i + ', this.value)" '
+      + 'style="width:40px;height:28px;border-radius:4px;border:1px solid rgba(201,168,76,0.3);cursor:pointer;background:transparent;">'
+      + '<div style="flex:1;font-size:11px;color:#dcd2be;">' + text + '</div></div>';
+  });
+  container.innerHTML = html;
+}
+
+function setSubsphereColor(idx, color) {
+  if (!activePanel) return;
+  const ss = subSpheres[activePanel] || [];
+  const filled = ss.filter(x => x && x.text);
+  if (filled[idx]) {
+    filled[idx].color = color;
+    if (typeof save === 'function') save();
+  }
+}
+
+window.updateSphereStyle = updateSphereStyle;
+window.setStyleColor = setStyleColor;
+window.resetSphereStyle = resetSphereStyle;
+window.renderSubsphereColors = renderSubsphereColors;
+window.setSubsphereColor = setSubsphereColor;
+
+// ══════════════════════════════════════════════
+// T-626: УРОВНИ АУРЫ (○ / ◐ / ◑ / ●)
+//   аура = функция от собственного света сферы;
+//   пороги выровнены с tLight (brightAt=200/250):
+//     light < 25  → 0 (нет)
+//     25..99      → 1 (зарождается)
+//     100..249    → 2 (растёт)
+//     ≥ 250       → 3 (полная)
+// ══════════════════════════════════════════════
+function getAuraLevel(s) {
+  const L = (s && s.light) || 0;
+  if (L >= 250) return 3;
+  if (L >= 100) return 2;
+  if (L >= 25)  return 1;
+  return 0;
+}
+function _auraLabel(level) {
+  const ru = ['АУРА: ○ нет', 'АУРА: ◐ зарождается', 'АУРА: ◑ растёт', 'АУРА: ● полная'];
+  const en = ['AURA: ○ none',  'AURA: ◐ emerging',     'AURA: ◑ growing',  'AURA: ● full'];
+  const arr = (_lang === 'en') ? en : ru;
+  return arr[Math.max(0, Math.min(3, level))];
+}
+function renderAura() {
+  if (!activePanel) return;
+  const s = SPHERES.find(x => x.id === activePanel);
+  if (!s) return;
+  const el = document.getElementById('sp-aura');
+  if (!el) return;
+  el.textContent = _auraLabel(getAuraLevel(s));
+}
+
+// ══════════════════════════════════════════════
+// T-626: ЖУРНАЛ ОПЫТА СФЕРЫ
+//   типы: запись · переживание · инсайт · мантра
+//   хранение: localStorage 'awara_v2_jrn_<sphereId>'
+// ══════════════════════════════════════════════
+const JRN_TYPES = [
+  { id:'note',    ico:'📝', ru:'ЗАПИСЬ',     en:'NOTE'    },
+  { id:'feeling', ico:'💭', ru:'ПЕРЕЖИВАНИЕ', en:'FEELING' },
+  { id:'insight', ico:'✨', ru:'ИНСАЙТ',     en:'INSIGHT' },
+  { id:'mantra',  ico:'❉', ru:'МАНТРА',     en:'MANTRA'  },
+];
+let JRN_FILTER = 'all';
+let JRN_TYPE   = 'note';
+
+function _jrnKey(sid)  { return 'awara_v2_jrn_'  + sid; }
+function _planKey(sid) { return 'awara_v2_plan_' + sid; }
+function jrnGet(sid)  { try { return JSON.parse(localStorage.getItem(_jrnKey(sid))  || '[]'); } catch(e) { return []; } }
+function jrnSet(sid, arr)  { try { localStorage.setItem(_jrnKey(sid),  JSON.stringify(arr)); } catch(e) {} }
+function planGet(sid) { try { return JSON.parse(localStorage.getItem(_planKey(sid)) || '[]'); } catch(e) { return []; } }
+function planSet(sid, arr) { try { localStorage.setItem(_planKey(sid), JSON.stringify(arr)); } catch(e) {} }
+
+function _escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function _fmtDate(iso) {
+  try {
+    const d = new Date(iso);
+    const pad = n => String(n).padStart(2,'0');
+    return pad(d.getDate())+'.'+pad(d.getMonth()+1)+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+  } catch(e) { return ''; }
+}
+function _typeName(id) {
+  const t = JRN_TYPES.find(x => x.id === id) || JRN_TYPES[0];
+  return _lang === 'en' ? t.en : t.ru;
+}
+function _typeIco(id) {
+  const t = JRN_TYPES.find(x => x.id === id) || JRN_TYPES[0];
+  return t.ico;
+}
+
+function renderJournal() {
+  if (!activePanel) return;
+  const sid = activePanel;
+  const entries = jrnGet(sid);
+  const filtered = (JRN_FILTER === 'all') ? entries : entries.filter(e => e.type === JRN_FILTER);
+
+  // фильтр-строка над списком: ВСЕ + 4 типа
+  const filterRow = document.getElementById('jrn-filter-row');
+  if (filterRow) {
+    let fh = '<div class="jrn-type-btn'+(JRN_FILTER==='all'?' on':'')+'" onclick="jrnSetFilter(\'all\')">'+(_lang==='en'?'ALL':'ВСЕ')+'</div>';
+    JRN_TYPES.forEach(t => {
+      fh += '<div class="jrn-type-btn'+(JRN_FILTER===t.id?' on':'')+'" onclick="jrnSetFilter(\''+t.id+'\')" title="'+_escHtml(_lang==='en'?t.en:t.ru)+'">'+t.ico+'</div>';
+    });
+    filterRow.innerHTML = fh;
+  }
+
+  // тип-строка для формы добавления
+  const typeRow = document.getElementById('jrn-type-row');
+  if (typeRow) {
+    let th = '';
+    JRN_TYPES.forEach(t => {
+      th += '<div class="jrn-type-btn'+(JRN_TYPE===t.id?' on':'')+'" onclick="jrnSetType(\''+t.id+'\')">'+t.ico+' '+_escHtml(_lang==='en'?t.en:t.ru)+'</div>';
+    });
+    typeRow.innerHTML = th;
+  }
+
+  // список записей (новые сверху)
+  const list = document.getElementById('jrn-list');
+  if (!list) return;
+  if (!filtered.length) {
+    list.innerHTML = '<div class="jrn-empty">'+(_lang==='en'?'No entries yet':'Записей ещё нет')+'</div>';
+    return;
+  }
+  let html = '';
+  filtered.slice().reverse().forEach(e => {
+    const realIdx = entries.indexOf(e); // для удаления / комментариев
+    const coms = (e.comments || []).map(c =>
+      '<div class="jrn-com"><span class="jrn-com-author">'+_escHtml(c.author||'')+' · '+_fmtDate(c.date)+'</span>'+_escHtml(c.text||'')+'</div>'
+    ).join('');
+    html += '<div class="jrn-entry">' +
+      '<div class="jrn-entry-head">' +
+        '<div class="jrn-entry-ico">'+_typeIco(e.type)+'</div>' +
+        '<div class="jrn-entry-title">'+_escHtml(e.title || _typeName(e.type))+'</div>' +
+        '<div class="jrn-entry-date">'+_fmtDate(e.date)+'</div>' +
+        '<button class="jrn-del" title="'+(_lang==='en'?'delete':'удалить')+'" onclick="delJrnEntry('+realIdx+')">×</button>' +
+      '</div>' +
+      (e.body ? '<div class="jrn-entry-body">'+_escHtml(e.body)+'</div>' : '') +
+      ((e.comments && e.comments.length) ? ('<div class="jrn-entry-coms">'+coms+'</div>') : '') +
+      '<div class="jrn-com-row">' +
+        '<input type="text" placeholder="'+(_lang==='en'?'reply...':'ответ...')+'" id="jrn-com-'+realIdx+'" maxlength="240">' +
+        '<button onclick="addJrnComment('+realIdx+')">+</button>' +
+      '</div>' +
+    '</div>';
+  });
+  list.innerHTML = html;
+}
+function jrnSetFilter(id) { JRN_FILTER = id; renderJournal(); }
+function jrnSetType(id)   { JRN_TYPE   = id; renderJournal(); }
+
+function addJrnEntry() {
+  if (!activePanel) return;
+  const title = document.getElementById('jrn-title').value.trim();
+  const body  = document.getElementById('jrn-body').value.trim();
+  if (!title && !body) { showToast(_lang==='en'?'Empty entry — write something first':'Пустая запись — напиши что-нибудь'); return; }
+  const arr = jrnGet(activePanel);
+  arr.push({ type: JRN_TYPE, title: title, body: body, date: new Date().toISOString(), comments: [] });
+  jrnSet(activePanel, arr);
+  document.getElementById('jrn-title').value = '';
+  document.getElementById('jrn-body').value  = '';
+  renderJournal();
+  showToast(_lang==='en'?'Saved to journal':'Сохранено в журнал');
+}
+function delJrnEntry(idx) {
+  if (!activePanel) return;
+  const arr = jrnGet(activePanel);
+  if (idx < 0 || idx >= arr.length) return;
+  arr.splice(idx, 1);
+  jrnSet(activePanel, arr);
+  renderJournal();
+}
+function addJrnComment(idx) {
+  if (!activePanel) return;
+  const inp = document.getElementById('jrn-com-' + idx);
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  const arr = jrnGet(activePanel);
+  if (!arr[idx]) return;
+  arr[idx].comments = arr[idx].comments || [];
+  arr[idx].comments.push({ author: _lang==='en'?'you':'ты', text: text, date: new Date().toISOString() });
+  jrnSet(activePanel, arr);
+  renderJournal();
+}
+
+// ══════════════════════════════════════════════
+// T-626: ПЛАНЕР НАМЕРЕНИЙ
+//   чекбокс-лист; хранение 'awara_v2_plan_<sphereId>'
+// ══════════════════════════════════════════════
+function renderPlans() {
+  if (!activePanel) return;
+  const arr = planGet(activePanel);
+  const list = document.getElementById('plan-list');
+  if (!list) return;
+  if (!arr.length) {
+    list.innerHTML = '<div class="jrn-empty">'+(_lang==='en'?'No intentions yet':'Намерений пока нет')+'</div>';
+    return;
+  }
+  let html = '';
+  arr.forEach((p, i) => {
+    html += '<div class="plan-item">' +
+      '<div class="plan-check'+(p.done?' done':'')+'" onclick="togglePlan('+i+')"></div>' +
+      '<div class="plan-text'+(p.done?' done':'')+'">'+_escHtml(p.text||'')+'</div>' +
+      '<button class="jrn-del" onclick="delPlan('+i+')">×</button>' +
+    '</div>';
+  });
+  list.innerHTML = html;
+}
+function addPlan() {
+  if (!activePanel) return;
+  const inp = document.getElementById('plan-input');
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  const arr = planGet(activePanel);
+  arr.push({ text: text, done: false, date: new Date().toISOString() });
+  planSet(activePanel, arr);
+  inp.value = '';
+  renderPlans();
+}
+function togglePlan(idx) {
+  if (!activePanel) return;
+  const arr = planGet(activePanel);
+  if (!arr[idx]) return;
+  arr[idx].done = !arr[idx].done;
+  planSet(activePanel, arr);
+  renderPlans();
+}
+function delPlan(idx) {
+  if (!activePanel) return;
+  const arr = planGet(activePanel);
+  if (idx < 0 || idx >= arr.length) return;
+  arr.splice(idx, 1);
+  planSet(activePanel, arr);
+  renderPlans();
+}
+
+// ══════════════════════════════════════════════
+// ВЛОЖЕНИЯ / МЕДИА / СОЦСЕТИ
+// ══════════════════════════════════════════════
+let pendingAttachments = [];
+let _mediaRecorder = null;
+let _mediaChunks = [];
+let _isRecording = false;
+
+function _mediaKey(sid) { return 'awara_v2_media_' + sid; }
+function mediaGet(sid) { try { return JSON.parse(localStorage.getItem(_mediaKey(sid)) || '[]'); } catch(e) { return []; } }
+function mediaSet(sid, arr) { try { localStorage.setItem(_mediaKey(sid), JSON.stringify(arr)); } catch(e) {} }
+function socialGet() { try { return JSON.parse(localStorage.getItem('awara_social_links') || '[]'); } catch(e) { return []; } }
+function socialSet(arr) { try { localStorage.setItem('awara_social_links', JSON.stringify(arr)); } catch(e) {} }
+
+function clearPendingAttachments() {
+  pendingAttachments = [];
+  var el = document.getElementById('attach-preview');
+  if (el) el.innerHTML = '';
+  var lr = document.getElementById('attach-link-row');
+  if (lr) lr.style.display = 'none';
+  stopVoiceRec();
+}
+
+function toggleLinkInput() {
+  var lr = document.getElementById('attach-link-row');
+  if (lr) lr.style.display = lr.style.display === 'none' ? 'flex' : 'none';
+  if (lr && lr.style.display === 'flex') {
+    setTimeout(function(){ var inp = document.getElementById('attach-link-input'); if (inp) inp.focus(); }, 50);
+  }
+}
+
+function addLinkAttach() {
+  var inp = document.getElementById('attach-link-input');
+  if (!inp) return;
+  var url = inp.value.trim();
+  if (!url) return;
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+  pendingAttachments.push({ type: 'link', data: url, date: new Date().toISOString() });
+  inp.value = '';
+  renderPendingPreview();
+}
+
+function triggerFileUpload(type) {
+  var inp = document.getElementById('file-upload');
+  if (!inp) return;
+  inp.accept = type === 'video' ? 'video/*' : 'image/*';
+  inp.click();
+}
+
+function handleFileUpload(event) {
+  var file = event.target.files && event.target.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    showToast(_lang === 'en' ? 'File too large (max 2MB)' : 'Файл слишком большой (макс 2МБ)');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var isVideo = file.type.startsWith('video');
+    pendingAttachments.push({
+      type: isVideo ? 'video' : 'image',
+      data: e.target.result,
+      date: new Date().toISOString(),
+      name: file.name
+    });
+    renderPendingPreview();
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+
+function toggleVoiceRec() {
+  if (_isRecording) { stopVoiceRec(); return; }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showToast(_lang === 'en' ? 'Microphone not supported' : 'Микрофон не поддерживается');
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    _mediaRecorder = new MediaRecorder(stream);
+    _mediaChunks = [];
+    _mediaRecorder.ondataavailable = function(e) { if (e.data.size > 0) _mediaChunks.push(e.data); };
+    _mediaRecorder.onstop = function() {
+      var blob = new Blob(_mediaChunks, { type: 'audio/webm' });
+      stream.getTracks().forEach(function(t) { t.stop(); });
+      if (blob.size > 2 * 1024 * 1024) {
+        showToast(_lang === 'en' ? 'Recording too large (max 2MB)' : 'Запись слишком большая (макс 2МБ)');
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        pendingAttachments.push({ type: 'voice', data: ev.target.result, date: new Date().toISOString() });
+        renderPendingPreview();
+      };
+      reader.readAsDataURL(blob);
+    };
+    _mediaRecorder.start();
+    _isRecording = true;
+    var btn = document.getElementById('btn-voice');
+    if (btn) btn.classList.add('recording');
+    showToast(_lang === 'en' ? 'Recording... tap again to stop' : 'Запись... нажми ещё раз чтобы остановить');
+  }).catch(function() {
+    showToast(_lang === 'en' ? 'Microphone access denied' : 'Доступ к микрофону запрещён');
+  });
+}
+
+function stopVoiceRec() {
+  if (_mediaRecorder && _isRecording) {
+    _mediaRecorder.stop();
+    _isRecording = false;
+  }
+  _isRecording = false;
+  var btn = document.getElementById('btn-voice');
+  if (btn) btn.classList.remove('recording');
+  var btn2 = document.getElementById('btn-media-voice');
+  if (btn2) btn2.classList.remove('recording');
+}
+
+function renderPendingPreview() {
+  var el = document.getElementById('attach-preview');
+  if (!el) return;
+  if (!pendingAttachments.length) { el.innerHTML = ''; return; }
+  var html = '';
+  pendingAttachments.forEach(function(a, i) {
+    html += '<div class="attach-preview">';
+    html += '<button class="attach-remove" onclick="removePendingAttach(' + i + ')">×</button>';
+    if (a.type === 'image') html += '<img src="' + a.data + '">';
+    else if (a.type === 'video') html += '<video src="' + a.data + '" controls></video>';
+    else if (a.type === 'voice') html += '<audio src="' + a.data + '" controls></audio>';
+    else if (a.type === 'link') html += '<a href="' + _escHtml(a.data) + '" target="_blank" style="color:#c9a84c;font-size:11px;word-break:break-all">🔗 ' + _escHtml(a.data) + '</a>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function removePendingAttach(idx) {
+  pendingAttachments.splice(idx, 1);
+  renderPendingPreview();
+}
+
+function detectSocialIco(url) {
+  url = (url || '').toLowerCase();
+  if (url.indexOf('t.me') !== -1 || url.indexOf('telegram') !== -1) return '💬';
+  if (url.indexOf('instagram') !== -1) return '📸';
+  if (url.indexOf('vk.com') !== -1 || url.indexOf('vkontakte') !== -1) return '💙';
+  if (url.indexOf('twitter') !== -1 || url.indexOf('x.com') !== -1) return '🐦';
+  if (url.indexOf('youtube') !== -1) return '🎬';
+  if (url.indexOf('tiktok') !== -1) return '🎵';
+  if (url.indexOf('discord') !== -1) return '💜';
+  if (url.indexOf('github') !== -1) return '🐙';
+  return '🔗';
+}
+
+// --- Media tab ---
+function mediaVoiceRec() {
+  if (_isRecording) { stopMediaVoiceRec(); return; }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showToast(_lang === 'en' ? 'Microphone not supported' : 'Микрофон не поддерживается');
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    _mediaRecorder = new MediaRecorder(stream);
+    _mediaChunks = [];
+    _mediaRecorder.ondataavailable = function(e) { if (e.data.size > 0) _mediaChunks.push(e.data); };
+    _mediaRecorder.onstop = function() {
+      var blob = new Blob(_mediaChunks, { type: 'audio/webm' });
+      stream.getTracks().forEach(function(t) { t.stop(); });
+      if (!activePanel) return;
+      if (blob.size > 2 * 1024 * 1024) { showToast(_lang === 'en' ? 'Recording too large' : 'Запись слишком большая'); return; }
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var arr = mediaGet(activePanel);
+        arr.push({ type: 'voice', data: ev.target.result, date: new Date().toISOString() });
+        mediaSet(activePanel, arr);
+        renderMedia();
+        showToast(_lang === 'en' ? 'Voice saved' : 'Голос сохранён');
+      };
+      reader.readAsDataURL(blob);
+    };
+    _mediaRecorder.start();
+    _isRecording = true;
+    var btn = document.getElementById('btn-media-voice');
+    if (btn) btn.classList.add('recording');
+    showToast(_lang === 'en' ? 'Recording...' : 'Запись...');
+  }).catch(function() {
+    showToast(_lang === 'en' ? 'Microphone access denied' : 'Доступ к микрофону запрещён');
+  });
+}
+
+function stopMediaVoiceRec() {
+  if (_mediaRecorder && _isRecording) _mediaRecorder.stop();
+  _isRecording = false;
+  var btn = document.getElementById('btn-media-voice');
+  if (btn) btn.classList.remove('recording');
+}
+
+function mediaFileUpload(type) {
+  var inp = document.getElementById('media-file-upload');
+  if (!inp) return;
+  inp.accept = type === 'video' ? 'video/*' : (type === 'image' ? 'image/*' : 'image/*,video/*,audio/*');
+  inp.click();
+}
+
+function handleMediaFileUpload(event) {
+  var file = event.target.files && event.target.files[0];
+  if (!file || !activePanel) return;
+  if (file.size > 2 * 1024 * 1024) { showToast(_lang === 'en' ? 'File too large (max 2MB)' : 'Файл слишком большой (макс 2МБ)'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var t = file.type.startsWith('video') ? 'video' : (file.type.startsWith('audio') ? 'voice' : 'image');
+    var arr = mediaGet(activePanel);
+    arr.push({ type: t, data: e.target.result, date: new Date().toISOString(), name: file.name });
+    mediaSet(activePanel, arr);
+    renderMedia();
+    showToast(_lang === 'en' ? 'Saved' : 'Сохранено');
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+
+function addMediaLink() {
+  var inp = document.getElementById('media-link-input');
+  if (!inp || !activePanel) return;
+  var url = inp.value.trim();
+  if (!url) return;
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+  var arr = mediaGet(activePanel);
+  arr.push({ type: 'link', data: url, date: new Date().toISOString() });
+  mediaSet(activePanel, arr);
+  inp.value = '';
+  renderMedia();
+  showToast(_lang === 'en' ? 'Link added' : 'Ссылка добавлена');
+}
+
+function renderMedia() {
+  if (!activePanel) return;
+  var arr = mediaGet(activePanel);
+  var list = document.getElementById('media-list');
+  if (!list) return;
+  if (!arr.length) {
+    list.innerHTML = '<div class="jrn-empty">' + (_lang === 'en' ? 'No media yet' : 'Медиа пока нет') + '</div>';
+    return;
+  }
+  var html = '';
+  arr.slice().reverse().forEach(function(m, ri) {
+    var idx = arr.length - 1 - ri;
+    var ico = m.type === 'voice' ? '🎤' : (m.type === 'image' ? '📷' : (m.type === 'video' ? '🎬' : '🔗'));
+    var typeName = m.type === 'voice' ? (_lang === 'en' ? 'VOICE' : 'ГОЛОС') :
+                   m.type === 'image' ? (_lang === 'en' ? 'PHOTO' : 'ФОТО') :
+                   m.type === 'video' ? (_lang === 'en' ? 'VIDEO' : 'ВИДЕО') :
+                   (_lang === 'en' ? 'LINK' : 'ССЫЛКА');
+    html += '<div class="media-item"><div class="media-item-head">' +
+      '<div class="media-item-ico">' + ico + '</div>' +
+      '<div class="media-item-type">' + typeName + '</div>' +
+      '<div class="media-item-date">' + _fmtDate(m.date) + '</div>' +
+      '<button class="media-item-del" onclick="delMedia(' + idx + ')">×</button></div>';
+    if (m.type === 'image') html += '<img src="' + m.data + '">';
+    else if (m.type === 'video') html += '<video src="' + m.data + '" controls></video>';
+    else if (m.type === 'voice') html += '<audio src="' + m.data + '" controls></audio>';
+    else if (m.type === 'link') html += '<a class="media-link" href="' + _escHtml(m.data) + '" target="_blank">' + detectSocialIco(m.data) + ' ' + _escHtml(m.data) + '</a>';
+    if (m.caption) html += '<div class="media-caption">' + _escHtml(m.caption) + '</div>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function delMedia(idx) {
+  if (!activePanel) return;
+  var arr = mediaGet(activePanel);
+  if (idx < 0 || idx >= arr.length) return;
+  arr.splice(idx, 1);
+  mediaSet(activePanel, arr);
+  renderMedia();
+}
+
+// --- Social links ---
+function addSocialLink() {
+  var inp = document.getElementById('social-link-input');
+  if (!inp) return;
+  var url = inp.value.trim();
+  if (!url) return;
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+  var arr = socialGet();
+  arr.push({ url: url, ico: detectSocialIco(url), date: new Date().toISOString() });
+  socialSet(arr);
+  inp.value = '';
+  renderSocialLinks();
+  showToast(_lang === 'en' ? 'Social link added' : 'Соцсеть добавлена');
+}
+
+function renderSocialLinks() {
+  var list = document.getElementById('social-links-list');
+  if (!list) return;
+  var arr = socialGet();
+  if (!arr.length) { list.innerHTML = ''; return; }
+  var html = '';
+  arr.forEach(function(s, i) {
+    var label = s.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+    html += '<div class="social-link-item">' +
+      '<span class="social-ico">' + (s.ico || '🔗') + '</span>' +
+      '<a href="' + _escHtml(s.url) + '" target="_blank">' + _escHtml(label) + '</a>' +
+      '<button class="social-del" onclick="delSocialLink(' + i + ')">×</button></div>';
+  });
+  list.innerHTML = html;
+}
+
+function delSocialLink(idx) {
+  var arr = socialGet();
+  if (idx < 0 || idx >= arr.length) return;
+  arr.splice(idx, 1);
+  socialSet(arr);
+  renderSocialLinks();
+}
+
+function advanceStep(id) {
+  // Порядок из TUT_STEPS: foundation → mind → heart → connections
+  if (id === 'foundation' && step === 0) {
+    step = 1; revealSphere('foundation', 0.50, 0.80);
+    setTimeout(() => showToast(_lang==='en'?'Foundation active! Create a subsphere in Mind.':'Основа активна! Сотвори подсферу в Разуме.'), 600);
+  } else if (id === 'mind' && step === 1) {
+    step = 2; revealSphere('mind', 0.78, 0.30); autoThread();
+    setTimeout(() => showToast(_lang==='en'?'Mind active! Create a subsphere in Heart.':'Разум активен! Сотвори подсферу в Сердце.'), 600);
+  } else if (id === 'heart' && step === 2) {
+    step = 3; revealSphere('heart', 0.22, 0.30); autoThread();
+    setTimeout(() => showToast(_lang==='en'?'Heart active! Create connections.':'Сердце активно! Создай связи.'), 600);
+  } else if (id === 'connections' && step === 3) {
+    step = 4; revealSphere('connections', 0.82, 0.75); autoThread();
+    setTimeout(() => showToast(_lang==='en'?'All spheres active! Connect them with threads.':'Все сферы активны! Соедини их нитями.'), 600);
+    showTigelLink();
+  }
+  save();
+}
+
+function checkAllConnected() {
+  if (threads.length >= 3 && !onboarded) {
+    onboarded = true;
+    localStorage.setItem('awara_spheres_onboarded_v3', '1');
+    showToast('Все сферы связаны! Душа в гармонии ✦');
+  }
+}
+
+// ══════════════════════════════════════════════
+// UI
+// ══════════════════════════════════════════════
+function showToast(text) {
+  const t = document.getElementById('toast');
+  t.textContent = text; t.classList.add('on');
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(() => t.classList.remove('on'), 3500);
+}
+function updateHUD() {
+  totalLight = SPHERES.reduce((s, x) => s + x.light, 0);
+}
+
+// ══════════════════════════════════════════════
+// TIGEL LINK
+// ══════════════════════════════════════════════
+function showTigelLink() {
+  const el = document.getElementById('tigel-link');
+  if (el) el.classList.add('show');
+}
+function checkTigelLink() {
+  const filled = SPHERES.filter(s => s.id !== 'soul' && (subSpheres[s.id] || []).filter(x => x && x.text).length > 0).length;
+  if (filled >= 3) showTigelLink();
+}
+
+function goToTigel(event) {
+  event.preventDefault();
+  console.log('🔥 goToTigel called');
+  // Собрать все записи подсфер за сегодня
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const dayContext = {
+    date: today,
+    spheres: []
+  };
+
+  SPHERES.forEach(s => {
+    const ss = subSpheres[s.id] || [];
+    const todayEntries = ss.filter(entry => entry && entry.text && entry.date && entry.date.slice(0, 10) === today);
+    if (todayEntries.length > 0) {
+      dayContext.spheres.push({
+        id: s.id,
+        label: s.label,
+        entries: todayEntries.map(e => ({
+          text: e.text,
+          date: e.date,
+          light: e.light,
+          attachments: e.attachments || []
+        }))
+      });
+    }
+  });
+
+  console.log('📊 Day context:', dayContext);
+
+  // Показать уведомление о том, что собрано
+  const totalEntries = dayContext.spheres.reduce((sum, s) => sum + s.entries.length, 0);
+  const msg = _lang === 'en'
+    ? `Collected ${totalEntries} entries from ${dayContext.spheres.length} spheres for today`
+    : `Собрано ${totalEntries} записей из ${dayContext.spheres.length} сфер за сегодня`;
+  showToast(msg);
+
+  // Сохранить в localStorage для tigel.html
+  try {
+    localStorage.setItem('awara_soul_day_context', JSON.stringify(dayContext));
+    console.log('✅ День передан в Тигель:', dayContext);
+  } catch(e) {
+    console.warn('⚠️ Не удалось сохранить контекст дня:', e);
+  }
+
+  // Перейти в Тигель через 1.5 сек (чтобы увидеть тост)
+  setTimeout(() => {
+    window.location.href = 'tigel.html';
+  }, 1500);
+}
+
+// ══════════════════════════════════════════════
+// EVENING SPARK (вечерняя искра-ритуал)
+// ══════════════════════════════════════════════
+let SPARK_MODE = 'evening'; // morning | evening | full
+let SPARK_BUSY = false;
+
+function showSparkBtn() {
+  const btn = document.getElementById('spark-btn');
+  const lbl = document.getElementById('spark-btn-lbl');
+  const h = new Date().getHours();
+  console.log('🔥 showSparkBtn called, hour:', h);
+  if (h >= 17 || h < 5) {
+    lbl.textContent = _lang === 'en' ? 'EVENING SPARK' : 'ВЕЧЕРНЯЯ ИСКРА';
+    SPARK_MODE = 'evening';
+  } else if (h < 12) {
+    lbl.textContent = _lang === 'en' ? 'MORNING SPARK' : 'УТРЕННЯЯ ИСКРА';
+    SPARK_MODE = 'morning';
+  } else {
+    lbl.textContent = '✦ ' + (_lang === 'en' ? 'SPARK' : 'ИСКРА');
+    SPARK_MODE = 'full';
+  }
+  btn.classList.add('show');
+  console.log('✅ Spark button shown, mode:', SPARK_MODE);
+}
+
+function openSpark() {
+  updateSparkMeta();
+  document.getElementById('spark-panel').classList.add('show');
+  // Проверить, не показывали ли уже сегодня
+  const today = new Date().toISOString().slice(0, 10);
+  const key = 'awara_evening_ritual_' + today;
+  const shown = localStorage.getItem(key);
+  if (!shown || document.getElementById('spark-result').innerHTML.trim() === '') {
+    setTimeout(runSpark, 350);
+  }
+}
+
+function closeSpark() {
+  document.getElementById('spark-panel').classList.remove('show');
+}
+
+function quickAddEntry() {
+  // Открыть панель первой доступной сферы (кроме Души)
+  const availableSphere = SPHERES.find(s => s.id !== 'soul' && s.revealed);
+  if (availableSphere) {
+    openPanel(availableSphere.id);
+  } else {
+    // Если нет раскрытых сфер — открыть Душу
+    openPanel('soul');
+  }
+}
+
+function resetSoul() {
+  const confirmMsg = _lang === 'en'
+    ? 'Reset Soul completely?\n\nAll spheres, entries, plans, journal will be deleted.\nOnboarding will start from scratch.'
+    : 'Полностью сбросить Душу?\n\nВсе сферы, записи, планы, журнал будут удалены.\nОнбординг начнётся заново.';
+  if (!confirm(confirmMsg)) return;
+
+  // Список ключей для очистки
+  const exactKeys = [
+    'awara_subspheres_v3',
+    'awara_threads_v3',
+    'awara_sphere_step_v3',
+    'awara_spheres_onboarded_v3',
+    'awara_tutorial_completed_v2',
+    'awara_v258_state',
+    'awara_soul_day_context',
+    'awara_social_links',
+    'awara_sphere_styles_v1'
+  ];
+
+  // Префиксные ключи (для подсфер: awara_v2_jrn_*, awara_v2_plan_*, awara_v2_media_*, awara_evening_ritual_*)
+  const prefixes = ['awara_v2_jrn_', 'awara_v2_plan_', 'awara_v2_media_', 'awara_evening_ritual_'];
+
+  let removed = 0;
+
+  // Удаляем точные ключи
+  exactKeys.forEach(k => {
+    if (localStorage.getItem(k) !== null) {
+      localStorage.removeItem(k);
+      removed++;
+    }
+  });
+
+  // Удаляем префиксные
+  const allKeys = Object.keys(localStorage);
+  allKeys.forEach(k => {
+    if (prefixes.some(p => k.startsWith(p))) {
+      localStorage.removeItem(k);
+      removed++;
+    }
+  });
+
+  console.log(`✅ Сброс Души: удалено ${removed} ключей`);
+  alert((_lang === 'en' ? 'Soul reset complete. ' : 'Душа сброшена. ') + (_lang === 'en' ? 'Reloading...' : 'Перезагрузка...'));
+  location.reload();
+}
+
+function updateSparkMeta() {
+  const modes = {
+    morning: _lang === 'en' ? 'MORNING MIRROR · STRUCTURE' : 'УТРЕННЕЕ ЗЕРКАЛО · СТРУКТУРА',
+    evening: _lang === 'en' ? 'EVENING FIRE · DAY' : 'ВЕЧЕРНИЙ ОГОНЬ · ДЕНЬ',
+    full: _lang === 'en' ? 'FULL ANALYSIS · CONSCIOUSNESS MAP' : 'ПОЛНЫЙ АНАЛИЗ · КАРТА СОЗНАНИЯ'
+  };
+  const times = {
+    morning: _lang === 'en' ? 'Analysis of sphere map and connections' : 'Анализ карты сфер и связей',
+    evening: _lang === 'en' ? 'Analysis of the day lived and tasks' : 'Анализ прожитого дня и задач',
+    full: _lang === 'en' ? 'Deep analysis of the entire structure' : 'Глубокий анализ всей структуры'
+  };
+  document.getElementById('spark-mode-lbl').textContent = modes[SPARK_MODE];
+  document.getElementById('spark-time-lbl').textContent = times[SPARK_MODE];
+}
+
+function buildSparkContext() {
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+
+  // Собрать записи за сегодня
+  const todayEntries = [];
+  SPHERES.forEach(s => {
+    const ss = subSpheres[s.id] || [];
+    ss.filter(e => e && e.text && e.date && e.date.slice(0, 10) === today)
+      .forEach(e => todayEntries.push({
+        sphere: _n(s, 'label'),
+        text: e.text,
+        light: e.light || 0
+      }));
+  });
+
+  // Собрать планы за сегодня (из localStorage)
+  const todayPlans = [];
+  SPHERES.forEach(s => {
+    const key = 'awara_v2_plan_' + s.id;
+    try {
+      const plans = JSON.parse(localStorage.getItem(key) || '[]');
+      plans.forEach(p => todayPlans.push({
+        sphere: _n(s, 'label'),
+        text: p.text,
+        done: p.done
+      }));
+    } catch(e) {}
+  });
+
+  // Собрать журнал за сегодня
+  const todayJournal = [];
+  SPHERES.forEach(s => {
+    const key = 'awara_v2_jrn_' + s.id;
+    try {
+      const jrn = JSON.parse(localStorage.getItem(key) || '[]');
+      jrn.filter(j => j.date && j.date.slice(0, 10) === today)
+        .forEach(j => todayJournal.push({
+          sphere: _n(s, 'label'),
+          text: j.text
+        }));
+    } catch(e) {}
+  });
+
+  return {
+    date: now.toLocaleDateString(_lang === 'en' ? 'en' : 'ru', {weekday:'long', day:'numeric', month:'long'}),
+    time: now.toLocaleTimeString(_lang === 'en' ? 'en' : 'ru', {hour:'2-digit', minute:'2-digit'}),
+    totalSpheres: SPHERES.length,
+    totalLight: totalLight,
+    todayEntries: todayEntries,
+    todayPlans: todayPlans,
+    todayJournal: todayJournal,
+    threads: threads.length
+  };
+}
+
+function buildSparkPrompt(ctx) {
+  const entriesSummary = ctx.todayEntries.length
+    ? ctx.todayEntries.map(e => `${e.sphere}: ${e.text} (+${e.light}✦)`).join('\n')
+    : (_lang === 'en' ? 'no entries' : 'записей нет');
+
+  const plansSummary = ctx.todayPlans.length
+    ? ctx.todayPlans.map(p => `[${p.done ? 'v' : 'o'}] ${p.sphere}: ${p.text}`).join('\n')
+    : (_lang === 'en' ? 'no plans' : 'планов нет');
+
+  const journalSummary = ctx.todayJournal.length
+    ? ctx.todayJournal.map(j => `${j.sphere}: ${j.text}`).join('\n')
+    : (_lang === 'en' ? 'no journal' : 'журнала нет');
+
+  let modeInstruction = '';
+  if (SPARK_MODE === 'morning') {
+    modeInstruction = _lang === 'en'
+      ? 'You are Spark, morning observer of the player\'s consciousness map in AWARA.\nTASK: Read the map structure and give guidance for the day.\n1. INSIGHT — main observation about the map\n2. ADVICES — 3 concrete actions for today\n3. QUESTION — for day reflection'
+      : 'Ты — Искра, утренний наблюдатель карты сознания игрока в AWARA.\nЗАДАЧА: Прочитай структуру карты и дай ориентиры на день.\n1. ИНСАЙТ — главное наблюдение о карте\n2. СОВЕТЫ — 3 конкретных действия на сегодня\n3. ВОПРОС — для рефлексии дня';
+  } else if (SPARK_MODE === 'evening') {
+    modeInstruction = _lang === 'en'
+      ? 'You are Spark, evening witness of the day lived in AWARA.\nTASK: Reflect on the day, tasks, entries.\n1. INSIGHT — what was valuable today\n2. ADVICES — 3 actions for sphere growth\n3. QUESTION — for evening meditation'
+      : 'Ты — Искра, вечерний свидетель прожитого дня в AWARA.\nЗАДАЧА: Отрефлексируй день, задачи, записи.\n1. ИНСАЙТ — что было ценным сегодня\n2. СОВЕТЫ — 3 действия для роста сфер\n3. ВОПРОС — для вечерней медитации';
+  } else {
+    modeInstruction = _lang === 'en'
+      ? 'You are Spark, analyst of the entire consciousness map in AWARA.\nTASK: Full analysis — structure, connections, patterns.\n1. INSIGHT — key discovery about the map as a system\n2. ADVICES — 3 strategic actions\n3. QUESTION — transformative'
+      : 'Ты — Искра, аналитик всей карты сознания в AWARA.\nЗАДАЧА: Полный анализ — структура, связи, паттерны.\n1. ИНСАЙТ — ключевое открытие о карте как системе\n2. СОВЕТЫ — 3 стратегических действия\n3. ВОПРОС — трансформирующий';
+  }
+
+  let prompt = modeInstruction + '\n\n';
+  prompt += (_lang === 'en' ? 'MAP' : 'КАРТА') + ': ' + ctx.date + ', ' + ctx.time + '\n';
+  prompt += (_lang === 'en' ? 'Total spheres' : 'Всего сфер') + ': ' + ctx.totalSpheres + '\n';
+  prompt += (_lang === 'en' ? 'Total light' : 'Всего света') + ': ' + ctx.totalLight + '✦\n';
+  prompt += (_lang === 'en' ? 'Connections' : 'Связи') + ': ' + ctx.threads + '\n\n';
+  prompt += (_lang === 'en' ? 'TODAY' : 'СЕГОДНЯ') + ':\n';
+  prompt += (_lang === 'en' ? 'Entries' : 'Записи') + ':\n' + entriesSummary + '\n\n';
+  prompt += (_lang === 'en' ? 'Plans' : 'Планы') + ':\n' + plansSummary + '\n\n';
+  prompt += (_lang === 'en' ? 'Journal' : 'Журнал') + ':\n' + journalSummary + '\n\n';
+  prompt += (_lang === 'en' ? 'RESPONSE FORMAT — JSON only, no markdown' : 'ФОРМАТ ОТВЕТА — только JSON без markdown') + ':\n';
+  prompt += '{"insight":"...","advices":[{"ico":"emoji","text":"..."},{"ico":"emoji","text":"..."},{"ico":"emoji","text":"..."}],"question":"..."}\n\n';
+  prompt += (_lang === 'en' ? 'Style: poetic, warm, concrete. Short sentences.' : 'Стиль: поэтично, тепло, конкретно. Короткие предложения.');
+
+  return prompt;
+}
+
+async function runSpark() {
+  if (SPARK_BUSY) return;
+  SPARK_BUSY = true;
+
+  const resultEl = document.getElementById('spark-result');
+  resultEl.innerHTML = '<div class="spark-loading">' + (_lang === 'en' ? 'Spark is analyzing...' : 'Искра анализирует...') + '</div>';
+
+  const ctx = buildSparkContext();
+  const prompt = buildSparkPrompt(ctx);
+
+  // Получить или запросить OpenRouter API key
+  let apiKey = localStorage.getItem('awara_openrouter_key');
+  if (!apiKey) {
+    apiKey = window.prompt(_lang === 'en'
+      ? 'Enter OpenRouter API key (starts with sk-or-v1-...).\nGet one: https://openrouter.ai/keys\n\nKey is stored only in your browser (localStorage).'
+      : 'Введите OpenRouter API key (начинается на sk-or-v1-...).\nПолучить: https://openrouter.ai/keys\n\nКлюч сохранится только в вашем браузере (localStorage).');
+    if (!apiKey) {
+      resultEl.innerHTML = '<div style="color:#ff6666;padding:14px;">' + (_lang === 'en'
+        ? 'API key required. <a href="https://openrouter.ai/keys" target="_blank" style="color:#ffe080">Get one here</a>.'
+        : 'Нужен API ключ. <a href="https://openrouter.ai/keys" target="_blank" style="color:#ffe080">Получить здесь</a>.') + '</div>';
+      SPARK_BUSY = false;
+      return;
+    }
+    localStorage.setItem('awara_openrouter_key', apiKey);
+  }
+
+  try {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey,
+        'HTTP-Referer': window.location.origin || 'http://localhost',
+        'X-Title': 'AWARA Spark'
+      },
+      body: JSON.stringify({
+        model: 'meta-llama/llama-3.1-70b-instruct',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.85,
+        max_tokens: 1200
+      })
+    });
+
+    const data = await response.json();
+
+    // Невалидный ключ
+    if (data.error) {
+      const code = data.error.code || data.error.status;
+      if (code === 401 || code === 403 || /unauthor|invalid.+key/i.test(data.error.message || '')) {
+        localStorage.removeItem('awara_openrouter_key');
+        resultEl.innerHTML = '<div style="color:#ff6666;padding:14px;">' + (_lang === 'en'
+          ? 'Invalid API key. <a href="https://openrouter.ai/keys" target="_blank" style="color:#ffe080">Get a new one</a> and try again.'
+          : 'Невалидный API ключ. <a href="https://openrouter.ai/keys" target="_blank" style="color:#ffe080">Получите новый</a> и попробуйте снова.') + '</div>';
+        SPARK_BUSY = false;
+        return;
+      }
+      throw new Error(data.error.message || JSON.stringify(data.error));
+    }
+
+    if (!data.choices || !data.choices.length) {
+      throw new Error('Empty response from AI');
+    }
+
+    let raw = data.choices[0].message.content || '';
+    // Очистить markdown-обёртки если есть
+    raw = raw.replace(/```json\s*|\s*```/gi, '').trim();
+    // Найти JSON в строке
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON in AI response');
+
+    const parsed = JSON.parse(jsonMatch[0]);
+    renderSparkResult(parsed);
+
+    // Сохранить, что показали сегодня
+    const today = new Date().toISOString().slice(0, 10);
+    localStorage.setItem('awara_evening_ritual_' + today, 'shown');
+  } catch(err) {
+    console.error('Spark AI error:', err);
+    resultEl.innerHTML = '<div style="color:#ff6666;padding:14px;">'
+      + (_lang === 'en' ? 'AI error: ' : 'Ошибка AI: ') + (err.message || 'unknown')
+      + '<br><br><button onclick="runSpark()" style="padding:8px 16px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);border-radius:6px;color:#ffd700;cursor:pointer;font-family:Cinzel,serif;">'
+      + (_lang === 'en' ? 'Retry' : 'Повторить') + '</button></div>';
+  } finally {
+    SPARK_BUSY = false;
+  }
+}
+
+function renderSparkResult(data) {
+  let html = '';
+  html += '<div class="spark-insight">';
+  html += '<div class="spark-insight-label">' + (_lang === 'en' ? 'INSIGHT' : 'ИНСАЙТ') + '</div>';
+  html += data.insight;
+  html += '</div>';
+
+  html += '<div class="spark-advices">';
+  html += '<div class="spark-insight-label">' + (_lang === 'en' ? 'ADVICES' : 'СОВЕТЫ') + '</div>';
+  data.advices.forEach(a => {
+    html += '<div class="spark-advice">';
+    html += '<div class="spark-advice-ico">' + a.ico + '</div>';
+    html += '<div>' + a.text + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  html += '<div class="spark-question">';
+  html += '<div class="spark-question-label">' + (_lang === 'en' ? 'QUESTION' : 'ВОПРОС') + '</div>';
+  html += data.question;
+  html += '</div>';
+
+  document.getElementById('spark-result').innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+// SPARK HELPER (искра-подсказчик)
+// ══════════════════════════════════════════════
+const SPARK_HINTS = {
+  ru: [
+    'Каждый образ излучает свет. Это созидание из себя.',
+    'Свет здесь — золото во тьме. Намывай по крупице.',
+    'Все сферы ведут к Центру. К Себе. Домой.',
+    'Заполни сферы — и Тигель откроет ключи генерации.',
+    'Даймон усиливает глубину. Создай его в Натальной карте.',
+    'Вечерняя искра анализирует глубину ответов и начисляет свет.',
+    'Душа — зеркало ума. Что ты в нём видишь?',
+    'Связи с другими — мост между мирами.',
+  ],
+  en: [
+    'Every image radiates light. This is creation from within.',
+    'Light here is gold in darkness. Pan for it grain by grain.',
+    'All spheres lead to the Center. To Self. Home.',
+    'Fill the spheres — and the Crucible reveals generation keys.',
+    'The Daimon deepens generation. Create it via Natal Chart.',
+    'The evening spark analyzes depth and awards light.',
+    'The Soul is the mirror of the mind. What do you see?',
+    'Connections with others — a bridge between worlds.',
+  ]
+};
+let sparkX = 100, sparkY = 100;
+let sparkTargetX = 200, sparkTargetY = 200;
+let sparkVisible = false;
+let sparkHintTimer = null;
+let lastSparkHint = -1;
+
+function initSpark() {
+  sparkVisible = true;
+  const el = document.getElementById('spark-helper');
+  if (el) el.style.display = '';
+  sparkTargetX = W * 0.3; sparkTargetY = H * 0.4;
+  sparkX = sparkTargetX; sparkY = sparkTargetY;
+  moveSparkRandom();
+  sparkHintTimer = setInterval(showSparkHint, 25000);
+  setTimeout(showSparkHint, 5000);
+}
+
+function moveSparkRandom() {
+  if (!sparkVisible) return;
+  const revealed = SPHERES.filter(s => s.revealed);
+  if (revealed.length > 0) {
+    const target = revealed[Math.floor(Math.random() * revealed.length)];
+    const pos = getPos(target);
+    const scale = Math.min(1, W / 600);
+    const r = (target.radius + Math.min(25, target.light / 40)) * scale;
+    const angle = Math.random() * Math.PI * 2;
+    sparkTargetX = pos.x + Math.cos(angle) * (r * 2 + 30);
+    sparkTargetY = pos.y + Math.sin(angle) * (r * 2 + 30);
+  } else {
+    sparkTargetX = W * (0.2 + Math.random() * 0.6);
+    sparkTargetY = H * (0.2 + Math.random() * 0.6);
+  }
+  setTimeout(moveSparkRandom, 4000 + Math.random() * 6000);
+}
+
+function updateSpark() {
+  if (!sparkVisible) return;
+  sparkX += (sparkTargetX - sparkX) * 0.015;
+  sparkY += (sparkTargetY - sparkY) * 0.015;
+  const wobbleX = Math.sin(Date.now() / 800) * 3;
+  const wobbleY = Math.cos(Date.now() / 600) * 2;
+  const el = document.getElementById('spark-helper');
+  if (el) {
+    el.style.left = (sparkX + wobbleX - 10) + 'px';
+    el.style.top = (sparkY + wobbleY - 10) + 'px';
+  }
+}
+
+function showSparkHint() {
+  if (!sparkVisible) return;
+  const hints = SPARK_HINTS[_lang] || SPARK_HINTS.ru;
+  let idx = Math.floor(Math.random() * hints.length);
+  if (idx === lastSparkHint) idx = (idx + 1) % hints.length;
+  lastSparkHint = idx;
+  const tooltip = document.getElementById('spark-tooltip');
+  if (tooltip) {
+    tooltip.textContent = hints[idx];
+    tooltip.style.left = Math.min(W - 240, Math.max(10, sparkX - 100)) + 'px';
+    tooltip.style.top = (sparkY - 50) + 'px';
+    tooltip.classList.add('show');
+    setTimeout(() => tooltip.classList.remove('show'), 5000);
+  }
+}
+
+// ══════════════════════════════════════════════
+// ONBOARDING TUTORIAL
+// ══════════════════════════════════════════════
+const TUT_KEY = 'awara_tutorial_completed_v2';
+let tutStep = 0;
+let tutEntries = {};
+
+const TUT_STEPS = [
+  {
+    id: 'welcome',
+    glyph: '✦',
+    title_ru: 'ДОБРО ПОЖАЛОВАТЬ',
+    title_en: 'WELCOME',
+    text_ru: 'Это Пространство Ума и Души.\nЗдесь ты можешь рассмотреть прошлое, увидеть будущее и насладиться настоящим.\n\nСейчас мы создадим твои первые сферы — четыре грани твоего внутреннего мира.',
+    text_en: 'This is the Space of Mind and Soul.\nHere you can explore the past, envision the future and enjoy the present.\n\nNow we will create your first spheres — four facets of your inner world.',
+  },
+  {
+    id: 'foundation',
+    glyph: '🏔',
+    sphereId: 'foundation',
+    title_ru: 'СФЕРА 1 — МОЙ ФУНДАМЕНТ',
+    title_en: 'SPHERE 1 — MY FOUNDATION',
+    desc_ru: 'Кто я? Чем я занимаюсь по жизни? Что составляет мою основу?\nОпиши себя — кто ты, что ты есть.',
+    desc_en: 'Who am I? What do I do in life? What is my foundation?\nDescribe yourself — who you are, what you are.',
+    placeholder_ru: 'Опиши себя... кто ты, чем живёшь',
+    placeholder_en: 'Describe yourself... who you are, what drives you',
+    maxEntries: 3,
+  },
+  {
+    id: 'future',
+    glyph: '🔮',
+    sphereId: 'mind',
+    title_ru: 'СФЕРА 2 — МОЁ БУДУЩЕЕ',
+    title_en: 'SPHERE 2 — MY FUTURE',
+    desc_ru: 'Как ты видишь будущее? Какие мечты и планы?\nЧто ты хочешь в игре и в жизни?',
+    desc_en: 'How do you see the future? What dreams and plans?\nWhat do you want in game and in life?',
+    placeholder_ru: 'Мои мечты, планы, видение...',
+    placeholder_en: 'My dreams, plans, vision...',
+    maxEntries: 3,
+  },
+  {
+    id: 'present',
+    glyph: '💎',
+    sphereId: 'heart',
+    title_ru: 'СФЕРА 3 — МОЁ НАСТОЯЩЕЕ',
+    title_en: 'SPHERE 3 — MY PRESENT',
+    desc_ru: 'Что ты пережил сегодня? Что есть сейчас?\nКакие переживания, осмысления, осознания — твои ключи и коды в настоящем.',
+    desc_en: 'What did you experience today? What is here now?\nWhat realizations, insights — your keys and codes in the present.',
+    placeholder_ru: 'Мои переживания, осознания, ключи...',
+    placeholder_en: 'My experiences, realizations, keys...',
+    maxEntries: 3,
+  },
+  {
+    id: 'connections',
+    glyph: '🌐',
+    sphereId: 'connections',
+    title_ru: 'СФЕРА 4 — СВЯЗИ И ВЗАИМОДЕЙСТВИЯ',
+    title_en: 'SPHERE 4 — CONNECTIONS',
+    desc_ru: 'Хочешь общаться или строить с другими игроками?\nСоздай сферы взаимодействий — пригласи других, добавь ботов-агентов, играй с собой или другими.',
+    desc_en: 'Want to connect or build with other players?\nCreate interaction spheres — invite others, add bot agents, play with yourself or others.',
+    placeholder_ru: 'С кем хочу взаимодействовать, что строить...',
+    placeholder_en: 'Who I want to connect with, what to build...',
+    maxEntries: 3,
+  },
+  {
+    id: 'complete',
+    glyph: '🌟',
+    title_ru: 'СФЕРЫ СОЗДАНЫ',
+    title_en: 'SPHERES CREATED',
+    text_ru: 'Все четыре сферы наполнены. Твои записи сохранены и улетели в Тигель — в общий сценарий.\n\nТеперь ты можешь:\n• Перейти в Тигель и сгенерировать Смысл Дня + карты\n• Зарегистрироваться по натальной карте\n• Создать Даймона — это сила и глубина генерации\n\nКаждый образ осмыслен и излучает свет.\nЭто созидание света из себя.',
+    text_en: 'All four spheres are filled. Your entries are saved and sent to the Crucible.\n\nNow you can:\n• Go to the Crucible and generate Meaning of the Day + cards\n• Register via natal chart\n• Create a Daimon — the power and depth of generation\n\nEvery image is meaningful and radiates light.\nThis is creating light from within.',
+  },
+];
+
+function tutRender() {
+  const s = TUT_STEPS[tutStep];
+  const content = document.getElementById('tut-content');
+  if (!content) return;
+
+  let dotsHtml = '<div class="tut-step-dots">';
+  for (let i = 0; i < TUT_STEPS.length; i++) {
+    const cls = i < tutStep ? 'done' : (i === tutStep ? 'active' : '');
+    dotsHtml += '<div class="tut-step-dot ' + cls + '"></div>';
+  }
+  dotsHtml += '</div>';
+
+  let html = dotsHtml;
+  html += '<div class="tut-glyph">' + s.glyph + '</div>';
+  html += '<div class="tut-title">' + (_lang === 'en' ? s.title_en : s.title_ru) + '</div>';
+
+  if (s.id === 'welcome') {
+    html += '<div class="tut-text">' + (_lang === 'en' ? s.text_en : s.text_ru).replace(/\n/g, '<br>') + '</div>';
+    html += '<div class="tut-btn-row"><button class="tut-btn primary" onclick="tutNext()">' + (_lang === 'en' ? 'BEGIN ✦' : 'НАЧАТЬ ✦') + '</button></div>';
+  } else if (s.id === 'complete') {
+    html += '<div class="tut-text">' + (_lang === 'en' ? s.text_en : s.text_ru).replace(/\n/g, '<br>') + '</div>';
+    html += '<div class="tut-btn-row">';
+    html += '<a href="tigel.html" class="tut-btn primary" style="text-decoration:none">' + (_lang === 'en' ? '✦ GO TO CRUCIBLE' : '✦ ПЕРЕЙТИ В ТИГЕЛЬ') + '</a>';
+    html += '<button class="tut-btn" onclick="tutFinish()">' + (_lang === 'en' ? 'EXPLORE SPACE' : 'ИССЛЕДОВАТЬ ПРОСТРАНСТВО') + '</button>';
+    html += '</div>';
+  } else {
+    html += '<div class="tut-sphere-desc">' + (_lang === 'en' ? s.desc_en : s.desc_ru).replace(/\n/g, '<br>') + '</div>';
+
+    const entries = tutEntries[s.id] || [];
+    html += '<div class="tut-counter">' + entries.length + '/' + s.maxEntries + '</div>';
+
+    if (entries.length > 0) {
+      html += '<div class="tut-entries">';
+      entries.forEach(function(e) {
+        html += '<div class="tut-entry"><span class="tut-dot"></span><span>' + _escHtml(e) + '</span></div>';
+      });
+      html += '</div>';
+    }
+
+    if (entries.length < s.maxEntries) {
+      html += '<textarea class="tut-input" id="tut-input" placeholder="' + (_lang === 'en' ? s.placeholder_en : s.placeholder_ru) + '" rows="2"></textarea>';
+      html += '<div class="tut-btn-row">';
+      html += '<button class="tut-btn" onclick="tutAddEntry()">' + (_lang === 'en' ? '✦ ADD' : '✦ ДОБАВИТЬ') + '</button>';
+      if (entries.length >= 1) {
+        html += '<button class="tut-btn primary" onclick="tutNext()">' + (_lang === 'en' ? 'NEXT ▸' : 'ДАЛЕЕ ▸') + '</button>';
+      }
+      html += '</div>';
+    } else {
+      html += '<div class="tut-btn-row"><button class="tut-btn primary" onclick="tutNext()">' + (_lang === 'en' ? 'NEXT ▸' : 'ДАЛЕЕ ▸') + '</button></div>';
+    }
+  }
+
+  content.innerHTML = html;
+  if (document.getElementById('tut-input')) {
+    setTimeout(function() { var inp = document.getElementById('tut-input'); if (inp) inp.focus(); }, 100);
+  }
+}
+
+function tutAddEntry() {
+  var s = TUT_STEPS[tutStep];
+  var inp = document.getElementById('tut-input');
+  if (!inp) return;
+  var text = inp.value.trim();
+  if (!text) return;
+  if (!tutEntries[s.id]) tutEntries[s.id] = [];
+  if (tutEntries[s.id].length >= s.maxEntries) return;
+  tutEntries[s.id].push(text);
+
+  if (s.sphereId) {
+    var ss = subSpheres[s.sphereId] || [];
+    var slot = -1;
+    for (var i = 0; i < 3; i++) { if (!ss[i] || !ss[i].text) { slot = i; break; } }
+    if (slot >= 0) {
+      if (!ss[slot]) ss[slot] = {};
+      ss[slot].text = text;
+      ss[slot].date = new Date().toISOString();
+      ss[slot].light = Math.floor(Math.random() * 30) + 15;
+      ss[slot].origin = 'tutorial';
+      subSpheres[s.sphereId] = ss;
+      save();
+      if (window.awaraSync && typeof window.awaraSync.syncSoulToTigel === 'function') {
+        try { window.awaraSync.syncSoulToTigel(s.sphereId, ss[slot]); } catch(e) {}
+      }
+    }
+  }
+  tutRender();
+}
+
+function tutNext() {
+  var s = TUT_STEPS[tutStep];
+  if (s.sphereId && tutStep > 0 && tutStep < TUT_STEPS.length - 1) {
+    advanceStep(s.sphereId);
+  }
+  tutStep++;
+  if (tutStep >= TUT_STEPS.length) {
+    tutFinish();
+    return;
+  }
+  tutRender();
+}
+
+function tutSkip() {
+  tutFinish();
+}
+
+function tutFinish() {
+  localStorage.setItem(TUT_KEY, '1');
+  var overlay = document.getElementById('tutorial-overlay');
+  if (overlay) overlay.classList.remove('show');
+  enterSpace();
+  checkTigelLink();
+  showSparkBtn();
+  setTimeout(initSpark, 2000);
+}
+
+function tutStart() {
+  tutStep = 0;
+  tutEntries = {};
+  var overlay = document.getElementById('tutorial-overlay');
+  if (overlay) overlay.classList.add('show');
+  tutRender();
+}
+
+// ══════════════════════════════════════════════
+// СТАРТ
+// ══════════════════════════════════════════════
+load();
+updateHUD();
+
+var _sparkFrame = function(ts) {
+  draw(ts);
+  updateSpark();
+  requestAnimationFrame(_sparkFrame);
+};
+requestAnimationFrame(_sparkFrame);
+
+// Запуск: обучалка если первый визит, иначе авто-вход
+var tutCompleted = localStorage.getItem(TUT_KEY) === '1';
+if (!tutCompleted && step === 0 && !onboarded) {
+  tutStart();
+} else if (step >= 1 || onboarded) {
+  setTimeout(function() {
+    enterSpace();
+    checkTigelLink();
+    showSparkBtn();
+    setTimeout(initSpark, 2000);
+  }, 400);
+}
+</script>
+<script type="module">
+  import { applyTranslations } from './js/i18n.js';
+  import { syncSoulToTigel, syncTigelToSoul, getCauldronLastResultSphereSlug, SPHERE_MAP } from './js/soulTigelSync.js';
+  import { getPromptForSphere, SPHERE_PROMPTS } from './js/soulPrompts.js';
+  window.awaraSync = { syncSoulToTigel, syncTigelToSoul, getCauldronLastResultSphereSlug, SPHERE_MAP };
+  window.awaraPrompts = { getPromptForSphere, SPHERE_PROMPTS };
+  applyTranslations();
+</script>
+<!-- M-033: RU/EN переключатель -->
+<div style="position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px">
+  <button id="lang-ru" onclick="localStorage.setItem('awara_lang','ru');if(window.switchLang)window.switchLang('ru');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">RU</button>
+  <button id="lang-en" onclick="localStorage.setItem('awara_lang','en');if(window.switchLang)window.switchLang('en');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">EN</button>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang } from './js/i18n.js';
+window.switchLang = function(lang) {
+  setLang(lang);
+  _lang = lang;
+  translatePage();
+  document.querySelectorAll('#lang-ru,#lang-en').forEach(function(b){
+    b.style.borderColor = b.textContent === lang.toUpperCase() ? '#ffd700' : 'rgba(201,168,76,.2)';
+    b.style.color = b.textContent === lang.toUpperCase() ? '#ffd700' : '#c9a84c';
+  });
+  if (activePanel) {
+    var s = SPHERES.find(function(x){ return x.id === activePanel; });
+    if (s) {
+      document.getElementById('sp-title').textContent = _n(s,'label');
+      document.getElementById('sp-sub').textContent = _n(s,'sub');
+    }
+  }
+};
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  var cur = getLang();
+  if (window.switchLang) window.switchLang(cur);
+});
+</script>
+</body>
+</html>

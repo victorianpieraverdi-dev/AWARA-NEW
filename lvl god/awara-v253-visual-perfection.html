@@ -1,0 +1,2421 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AWARA v255.0 | WISDOM OF TRIMURTI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000;
+            --accent: #ffd700;
+            --panel-bg: rgba(5, 5, 25, 0.85);
+            --modal-bg: rgba(5, 5, 15, 0.97);
+            --xp-bar: #00faff;
+            --shiva-color: #ff4444;
+            --vishnu-color: #4488ff;
+            --brahma-color: #ffaa00;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+            touch-action: none;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #view {
+            width: 100%; height: 100%;
+            position: relative;
+            background: radial-gradient(ellipse at center, #0a0015 0%, #000000 100%);
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        canvas { position: absolute; top: 0; left: 0; pointer-events: none; }
+        #starfield { z-index: 0; opacity: 0.8; }
+        #yggdrasil-canvas { z-index: 1; }
+        #bg-arch-canvas { z-index: 2; }
+        #particles-canvas { z-index: 4; mix-blend-mode: screen; }
+        #fx-canvas { z-index: 10; mix-blend-mode: screen; }
+        #cosmic-dust { z-index: 3; mix-blend-mode: screen; opacity: 0.6; }
+
+        /* ЛОКИ-ОБОЛОЧКИ */
+        .loka-shell {
+            position: absolute; border-radius: 50%; pointer-events: none; z-index: 3;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: shell-breathe 10s infinite ease-in-out;
+        }
+        @keyframes shell-breathe {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.015); opacity: 0.4; }
+        }
+        #shell-inner { width: 280px; height: 280px; background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 70%); }
+        #shell-middle { width: 550px; height: 550px; background: radial-gradient(circle, rgba(0, 200, 255, 0.06) 0%, transparent 70%); }
+        #shell-outer { width: 850px; height: 850px; background: radial-gradient(circle, rgba(138, 43, 226, 0.04) 0%, transparent 70%); }
+
+        /* ИСТОЧНИК РА */
+        #ra-anchor {
+            position: absolute; z-index: 4800;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: transform 0.3s;
+        }
+        #ra-anchor:hover { transform: scale(1.15); }
+
+        #ra-core {
+            width: 60px; height: 60px;
+            background: radial-gradient(circle at 30% 30%, #fff, #ffd700, #ff8800);
+            border-radius: 50%;
+            box-shadow: 0 0 40px #ffd700, 0 0 80px rgba(255, 215, 0, 0.5), 0 0 120px rgba(255, 136, 0, 0.3);
+            animation: ra-breathe 4s infinite ease-in-out;
+        }
+        @keyframes ra-breathe {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 40px #ffd700, 0 0 80px rgba(255, 215, 0, 0.5); }
+            50% { transform: scale(1.1); box-shadow: 0 0 60px #ffd700, 0 0 120px rgba(255, 215, 0, 0.7), 0 0 180px rgba(255, 136, 0, 0.4); }
+        }
+
+        #ra-wings {
+            position: absolute;
+            width: 140px; height: 50px;
+            pointer-events: none;
+        }
+        .wing {
+            position: absolute;
+            width: 50px; height: 20px;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.6), transparent);
+            border-radius: 50%;
+            animation: wing-flutter 2s infinite ease-in-out;
+        }
+        .wing.left { left: 0; transform-origin: right center; }
+        .wing.right { right: 0; transform-origin: left center; }
+        @keyframes wing-flutter {
+            0%, 100% { transform: scaleY(1) rotate(-5deg); }
+            50% { transform: scaleY(0.3) rotate(5deg); }
+        }
+
+        /* ИНДИКАТОР СВЕТА РА */
+        #ra-light-indicator {
+            position: fixed;
+            top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 99999;
+            text-align: center;
+        }
+        #ra-light-ring {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            margin: 0 auto 10px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+        }
+        #ra-light-fill {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #ffd700 0%, #ff8800 var(--progress), transparent var(--progress));
+            transition: all 0.5s;
+        }
+        #ra-light-value {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px; font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 20px #ffd700;
+        }
+        #ra-light-label {
+            font-size: 9px;
+            color: var(--xp-bar);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* СФЕРЫ МЕРНОСТЕЙ */
+        .s-core {
+            position: absolute;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1), clip-path 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+        }
+        .s-core:hover {
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.9)) brightness(1.4);
+            z-index: 5001;
+            transform: scale(1.2);
+        }
+        .s-core.dragging { opacity: 0.8; transform: scale(1.1); cursor: grabbing; box-shadow: 0 0 30px #fff !important; }
+
+        /* СТАТУС ОТКРЫТОСТИ */
+        .s-core.is-open { box-shadow: 0 0 20px #fff, inset 0 0 10px #fff !important; }
+        .s-core.is-open::after {
+            content: '👁️';
+            position: absolute; top: -15px; right: -15px;
+            font-size: 10px; opacity: 0.6;
+        }
+
+        /* ЭВОЛЮЦИЯ ФОРМ С ОБЪЁМОМ И МОРФИНГОМ */
+        .s-core {
+            transition:
+                border-radius 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                clip-path 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                background 0.8s ease,
+                box-shadow 0.8s ease,
+                transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .form-1 { /* Круг - Семя (База) */
+            border-radius: 50%;
+            clip-path: circle(50% at 50% 50%);
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, var(--sphere-color) 40%, rgba(0,0,0,0.8) 100%);
+            box-shadow: inset -5px -5px 15px rgba(0,0,0,0.7), 0 0 20px var(--sphere-color);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .form-2 { /* Ромб - Кристаллизация (Уровень 4+) */
+            border-radius: 15%;
+            clip-path: polygon(50% 0%, 95% 50%, 50% 100%, 5% 50%);
+            background: linear-gradient(135deg, #fff 0%, var(--sphere-color) 40%, #000 70%, var(--sphere-color) 100%);
+            box-shadow: 0 0 30px var(--sphere-color), inset 0 0 10px rgba(255,255,255,0.5);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .form-3 { /* Звезда - Излучение (Уровень 7+) */
+            border-radius: 0;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            background: radial-gradient(circle at center, #ffffff 0%, var(--sphere-color) 30%, #000 60%, var(--sphere-color) 100%);
+            box-shadow: 0 0 40px var(--sphere-color), 0 0 60px rgba(255,255,255,0.2);
+            animation: star-pulse 4s infinite ease-in-out;
+        }
+
+        .form-4 { /* Гексагон - Кристалл Космоса (Уровень 9 / Максимум) */
+            border-radius: 0;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            background: linear-gradient(45deg, rgba(255,255,255,0.9) 0%, var(--sphere-color) 30%, rgba(0,0,0,0.4) 50%, var(--sphere-color) 70%, #fff 100%);
+            box-shadow: 0 0 50px var(--sphere-color), 0 0 80px #fff;
+            animation: crystal-shine 6s infinite linear;
+            border: 1.5px solid rgba(255,255,255,0.8);
+        }
+
+        @keyframes star-pulse {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 10px var(--sphere-color)); }
+            50% { filter: brightness(1.3) drop-shadow(0 0 25px var(--sphere-color)); }
+        }
+
+        @keyframes crystal-shine {
+            0% { filter: hue-rotate(0deg) brightness(1); }
+            50% { filter: hue-rotate(10deg) brightness(1.4); }
+            100% { filter: hue-rotate(0deg) brightness(1); }
+        }
+        @keyframes crystal-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes crystal-glow {
+            0%, 100% { filter: drop-shadow(0 0 20px var(--sphere-color)) drop-shadow(0 0 40px var(--sphere-color)); }
+            50% { filter: drop-shadow(0 0 30px #fff) drop-shadow(0 0 60px var(--sphere-color)); }
+        }
+
+        /* ТРИМУРТИ - МУДРЕЦЫ */
+        .trimurti-sage {
+            position: absolute;
+            z-index: 2000;
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+        .trimurti-sage:hover { transform: scale(1.15); }
+
+        .sage-avatar {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+            position: relative;
+            border: 2px solid;
+        }
+        .sage-avatar::before {
+            content: '';
+            position: absolute;
+            top: -8px; left: -8px; right: -8px; bottom: -8px;
+            border-radius: 50%;
+            background: conic-gradient(var(--sage-color), transparent, var(--sage-color));
+            z-index: -1;
+            animation: sage-aura 4s infinite linear;
+            opacity: 0.6;
+        }
+        @keyframes sage-aura { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .sage-name {
+            position: absolute;
+            bottom: -20px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--sage-color);
+            text-shadow: 0 0 10px var(--sage-color);
+            white-space: nowrap;
+        }
+
+        #sage-shiva { --sage-color: #ff4444; }
+        #sage-shiva .sage-avatar { background: radial-gradient(circle, #1a0000, #000); border-color: #ff4444; }
+
+        #sage-vishnu { --sage-color: #4488ff; }
+        #sage-vishnu .sage-avatar { background: radial-gradient(circle, #000a1a, #000); border-color: #4488ff; }
+
+        #sage-brahma { --sage-color: #ffaa00; }
+        #sage-brahma .sage-avatar { background: radial-gradient(circle, #1a1000, #000); border-color: #ffaa00; }
+
+        /* СИНГУЛЯРНОСТЬ */
+        .dark-monolith {
+            background: radial-gradient(circle, #000 0%, #1a0033 50%, #4a0080 100%);
+            box-shadow: 0 0 50px #4a0080, inset 0 0 30px rgba(138, 43, 226, 0.5);
+            animation: void-spin 20s infinite linear;
+        }
+        @keyframes void-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* СОЛНЦЕ И ЛУНА */
+        #great-sun {
+            position: absolute; width: 180px; height: 180px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff, #ffcc00, #ff6600);
+            box-shadow: 0 0 80px #ffcc00, 0 0 150px #ff880066;
+            z-index: 1; opacity: 0.5; pointer-events: none;
+        }
+        #great-moon {
+            position: absolute; width: 20px; height: 20px; border-radius: 50%;
+            background: linear-gradient(135deg, #e0e0e0, #888);
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+            z-index: 1; opacity: 0.7; pointer-events: none;
+        }
+
+        /* ПАНЕЛИ */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(15px);
+        }
+
+        #side-panel {
+            position: fixed; left: 15px; top: 50%; transform: translateY(-50%);
+            width: 150px; z-index: 90001; padding: 15px;
+            display: flex; flex-direction: column; max-height: 75vh;
+        }
+
+        #progress-panel {
+            position: fixed; right: 15px; top: 50%; transform: translateY(-50%);
+            width: 180px; z-index: 90001; padding: 15px;
+            max-height: 80vh; overflow-y: auto;
+        }
+
+        .progress-section {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .progress-section:last-child { border-bottom: none; margin-bottom: 0; }
+
+        .progress-title {
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--xp-bar);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            margin-bottom: 6px;
+        }
+        .stat-value {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .stage-indicator {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .stage-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+        .stage-dot.active { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        .stage-dot.tree { background: #22c55e; box-shadow: 0 0 10px #22c55e; }
+        .stage-dot.crystal { background: #3b82f6; box-shadow: 0 0 10px #3b82f6; }
+        .stage-dot.cosmos { background: #a855f7; box-shadow: 0 0 10px #a855f7; }
+
+        #chat-win {
+            position: fixed; bottom: 15px; right: 15px;
+            width: 320px; height: 350px;
+            z-index: 90001; display: flex; flex-direction: column;
+            overflow: hidden; transition: all 0.3s ease;
+        }
+        #chat-win.minimized { height: 40px; }
+
+        .adm-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 6px 10px; border-radius: 8px;
+            font-size: 9px; cursor: pointer; color: #fff;
+            transition: all 0.2s; font-family: inherit;
+        }
+        .adm-btn:hover { background: rgba(255,255,255,0.12); border-color: var(--xp-bar); }
+
+        .modal-win {
+            display: none; position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 25px; border-radius: 20px; z-index: 900010;
+            min-width: 360px; max-width: 90vw; max-height: 85vh; overflow-y: auto;
+            border: 1px solid rgba(0, 250, 255, 0.3);
+            background: var(--modal-bg);
+            backdrop-filter: blur(25px);
+        }
+
+        #gene-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            margin-top: 15px;
+        }
+        .gene-cell {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 8px; cursor: pointer; transition: all 0.2s;
+            position: relative;
+        }
+        .gene-cell:hover {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: var(--accent);
+            z-index: 10; transform: scale(1.1);
+        }
+        .gene-cell.active {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 10px var(--accent);
+        }
+        .gene-tooltip {
+            position: fixed; background: var(--modal-bg); border: 1px solid var(--accent);
+            padding: 10px; border-radius: 8px; z-index: 999999; width: 220px;
+            pointer-events: none; opacity: 0; transition: opacity 0.2s;
+            font-size: 10px; line-height: 1.4;
+        }
+
+        /* DECAY EFFECT OVERRIDE */
+        .s-core {
+            opacity: var(--decay-opacity, 1);
+            filter: grayscale(var(--decay-gray, 0)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+        }
+
+        /* ДИАЛОГ С МУДРЕЦОМ */
+        #sage-dialog {
+            display: none;
+            position: fixed;
+            bottom: 100px; left: 50%; transform: translateX(-50%);
+            width: 400px; max-width: 90vw;
+            z-index: 900020;
+            animation: dialog-appear 0.3s ease-out;
+        }
+        @keyframes dialog-appear {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .sage-dialog-header {
+            display: flex; align-items: center; gap: 12px;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sage-dialog-avatar {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+            border: 2px solid var(--sage-color);
+            background: rgba(0,0,0,0.5);
+        }
+        .sage-dialog-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--sage-color);
+        }
+        .sage-dialog-title {
+            font-size: 9px;
+            opacity: 0.6;
+        }
+        .sage-dialog-close {
+            margin-left: auto;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        .sage-dialog-close:hover { opacity: 1; }
+
+        .sage-dialog-content {
+            padding: 15px;
+            font-size: 12px;
+            line-height: 1.6;
+            min-height: 80px;
+        }
+
+        .sage-dialog-input {
+            display: flex; gap: 10px;
+            padding: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .sage-dialog-input input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 10px 15px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 11px;
+            outline: none;
+        }
+        .sage-dialog-input input:focus {
+            border-color: var(--sage-color);
+        }
+
+        /* ЗАПИСЬ АУДИО */
+        .record-btn {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            border: 2px solid #ff4444;
+            background: transparent;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+        .record-btn:hover { background: rgba(255, 68, 68, 0.15); }
+        .record-btn.recording { background: #ff4444; animation: rec-pulse 1s infinite; }
+        .record-btn.recording .rec-icon { background: #fff; width: 14px; height: 14px; border-radius: 2px; }
+        .rec-icon { width: 16px; height: 16px; background: #ff4444; border-radius: 50%; }
+        @keyframes rec-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.4); } 50% { box-shadow: 0 0 0 12px transparent; } }
+
+        .file-drop-zone {
+            border: 1px dashed rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        .file-drop-zone:hover { border-color: var(--xp-bar); background: rgba(0, 250, 255, 0.03); }
+        .file-drop-zone input { display: none; }
+
+        .attachment-item {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 9px;
+            margin: 3px;
+        }
+
+        #sound-indicator {
+            position: fixed; bottom: 15px; left: 15px;
+            z-index: 90002; padding: 10px 15px; border-radius: 12px;
+            display: flex; align-items: center; gap: 8px;
+            cursor: pointer; transition: all 0.3s;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+        }
+        #sound-indicator:hover { border-color: var(--accent); }
+        #sound-indicator.muted { border-color: rgba(255, 100, 100, 0.3); }
+
+        .sound-bars { display: flex; gap: 2px; align-items: flex-end; height: 14px; }
+        .sound-bar { width: 3px; background: var(--accent); border-radius: 1px; animation: sbar 0.7s ease-in-out infinite; }
+        .sound-bar:nth-child(1) { height: 5px; }
+        .sound-bar:nth-child(2) { height: 10px; animation-delay: 0.1s; }
+        .sound-bar:nth-child(3) { height: 14px; animation-delay: 0.2s; }
+        .sound-bar:nth-child(4) { height: 8px; animation-delay: 0.15s; }
+        @keyframes sbar { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.35); } }
+        #sound-indicator.muted .sound-bar { animation: none; height: 3px !important; background: rgba(255,100,100,0.5); }
+
+        #frequency-display {
+            position: fixed; top: 140px; left: 50%; transform: translateX(-50%);
+            z-index: 90000; text-align: center;
+            opacity: 0; transition: opacity 0.3s; pointer-events: none;
+        }
+        #frequency-display.active { opacity: 1; }
+        #freq-value { font-size: 28px; font-weight: 700; color: var(--accent); text-shadow: 0 0 25px var(--accent); }
+        #freq-chakra { font-size: 10px; color: var(--xp-bar); letter-spacing: 2px; margin-top: 3px; }
+    </style>
+</head>
+<body>
+
+<div id="view">
+    <canvas id="starfield"></canvas>
+    <canvas id="cosmic-dust"></canvas>
+    <canvas id="yggdrasil-canvas"></canvas>
+    <canvas id="torus-canvas"></canvas>
+    <canvas id="bg-arch-canvas"></canvas>
+    <canvas id="trails-canvas"></canvas>
+    <canvas id="particles-canvas"></canvas>
+    <canvas id="fx-canvas"></canvas>
+
+    <div id="shell-outer" class="loka-shell"></div>
+    <div id="shell-middle" class="loka-shell"></div>
+    <div id="shell-inner" class="loka-shell"></div>
+
+    <!-- ИСТОЧНИК РА -->
+    <div id="ra-anchor" onclick="window.checkAscension()">
+        <div id="ra-wings">
+            <div class="wing left"></div>
+            <div class="wing right"></div>
+        </div>
+        <div id="ra-core"></div>
+    </div>
+
+    <!-- ТРИМУРТИ - МУДРЕЦЫ -->
+    <div id="sage-shiva" class="trimurti-sage" onclick="window.openSageDialog('shiva')">
+        <div class="sage-avatar">🔱</div>
+        <div class="sage-name">ШИВА</div>
+    </div>
+    <div id="sage-vishnu" class="trimurti-sage" onclick="window.openSageDialog('vishnu')">
+        <div class="sage-avatar">🪷</div>
+        <div class="sage-name">ВИШНУ</div>
+    </div>
+    <div id="sage-brahma" class="trimurti-sage" onclick="window.openSageDialog('brahma')">
+        <div class="sage-avatar">📿</div>
+        <div class="sage-name">БРАХМА</div>
+    </div>
+
+    <div id="spheres-container"></div>
+
+    <div id="vestnik" style="position:absolute; width:12px; height:12px; background:#fff; border-radius:50%; box-shadow:0 0 20px #fff, 0 0 40px var(--xp-bar); z-index:5000; cursor:pointer;" onclick="window.sparkHint()"></div>
+
+    <div id="great-sun"></div>
+    <div id="great-moon"></div>
+</div>
+
+<!-- ИНДИКАТОР СВЕТА РА -->
+<div id="ra-light-indicator">
+    <div id="ra-light-ring">
+        <div id="ra-light-fill" style="--progress: 0%"></div>
+        <div id="ra-light-value">0%</div>
+    </div>
+    <div id="ra-light-label">Свет РА</div>
+</div>
+
+<!-- ЛЕВАЯ ПАНЕЛЬ -->
+<div id="side-panel" class="panel">
+    <div class="text-[9px] text-[#ffd700] tracking-[3px] mb-3">АРХИТЕКТОР</div>
+    <div class="text-base font-bold mb-4" style="background: linear-gradient(45deg, #ffd700, #00faff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">v255.0</div>
+    <div class="flex gap-1 mb-3">
+        <button class="adm-btn flex-1" title="Диагностика" onclick="window.toggleDiagnostics()">📊</button>
+        <button class="adm-btn flex-1" title="Хроника" onclick="window.toggleChronicle()">📜</button>
+        <button class="adm-btn flex-1 !text-yellow-400" title="Прокачать всё" onclick="window.admLevelUpAll()">✨</button>
+        <button class="adm-btn flex-1 !text-cyan-400" title="Создать сферу" onclick="window.spawnSphere()">➕</button>
+        <button class="adm-btn flex-1 !text-red-400" title="Сброс" onclick="window.resetState()">🧹</button>
+        <button class="adm-btn flex-1 !text-purple-400" title="Портал" onclick="window.switchUniverse()">🌀</button>
+    </div>
+    <div class="flex gap-1 mb-4">
+        <button class="adm-btn flex-1 !text-[8px]" onclick="window.setSpeed(0.3)">×0.3</button>
+        <button class="adm-btn flex-1 !text-[8px]" onclick="window.setSpeed(1)">×1</button>
+        <button class="adm-btn flex-1 !text-[8px]" onclick="window.setSpeed(2)">×2</button>
+    </div>
+    <div id="sphere-stats" class="flex-1 overflow-y-auto space-y-1 pr-1" style="scrollbar-width: none;"></div>
+</div>
+
+<!-- ПРАВАЯ ПАНЕЛЬ - ПРОГРЕСС -->
+<div id="progress-panel" class="panel">
+    <div class="progress-section">
+        <div class="progress-title">⚡ Общий прогресс</div>
+        <div class="stat-row">
+            <span>Уровень сознания</span>
+            <span class="stat-value" id="consciousness-level">1</span>
+        </div>
+        <div class="stat-row">
+            <span>Накоплено света</span>
+            <span class="stat-value" id="total-light">0</span>
+        </div>
+        <div class="stage-indicator" id="stage-dots"></div>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-title">🌳 Стадия эволюции</div>
+        <div class="stat-row">
+            <span id="current-stage-name">Древо</span>
+            <span class="stat-value" id="stage-progress">0/12</span>
+        </div>
+        <div class="w-full h-1.5 bg-white/10 rounded-full mt-2 overflow-hidden">
+            <div id="stage-bar" class="h-full bg-gradient-to-r from-green-500 to-emerald-400" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-title">✨ Стихии</div>
+        <div id="elements-stats"></div>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-title">🧘 Качества духа</div>
+        <div id="spirit-stats"></div>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-title">🏆 Достижения</div>
+        <div id="achievements" class="text-[10px] opacity-70">
+            <div class="flex items-center gap-2 mb-1"><span>🔓</span> Пробуждение</div>
+            <div class="flex items-center gap-2 mb-1 opacity-40"><span>🔒</span> Первый кристалл</div>
+            <div class="flex items-center gap-2 opacity-40"><span>🔒</span> Космическое видение</div>
+        </div>
+    </div>
+</div>
+
+<!-- ЗВУКОВОЙ ИНДИКАТОР -->
+<div id="sound-indicator" class="panel" onclick="window.toggleSound()">
+    <div class="sound-bars"><div class="sound-bar"></div><div class="sound-bar"></div><div class="sound-bar"></div><div class="sound-bar"></div></div>
+    <span class="text-[9px] text-white/60" id="sound-label">🔊</span>
+</div>
+
+<!-- ЧАСТОТА -->
+<div id="frequency-display">
+    <div id="freq-value">528 Hz</div>
+    <div id="freq-chakra">ЕДИНСТВО • ЛЮБОВЬ</div>
+</div>
+
+<!-- ДИАЛОГ С МУДРЕЦОМ -->
+<div id="sage-dialog" class="panel">
+    <div class="sage-dialog-header">
+        <div class="sage-dialog-avatar" id="sage-dialog-avatar">🔱</div>
+        <div>
+            <div class="sage-dialog-name" id="sage-dialog-name">ШИВА</div>
+            <div class="sage-dialog-title" id="sage-dialog-title">Разрушитель иллюзий</div>
+        </div>
+        <div class="sage-dialog-close" onclick="window.closeSageDialog()">✕</div>
+    </div>
+    <div class="sage-dialog-content" id="sage-dialog-content">
+        Приветствую тебя, искатель истины...
+    </div>
+    <div class="sage-dialog-input">
+        <input type="text" id="sage-input" placeholder="Задай вопрос мудрецу..." onkeydown="if(event.key==='Enter')window.askSage()">
+        <button class="adm-btn" onclick="window.askSage()">➔</button>
+    </div>
+</div>
+
+<!-- ЧАТ -->
+<div id="chat-win" class="panel">
+    <div class="p-3 px-4 bg-cyan-500/10 cursor-pointer flex justify-between items-center text-[9px] font-bold text-[#00faff]" onclick="document.getElementById('chat-win').classList.toggle('minimized')">
+        <span>✨ ЭФИРНЫЙ КАНАЛ</span><span>▼</span>
+    </div>
+    <div id="msgs" class="flex-1 overflow-y-auto p-3 text-[11px]"></div>
+    <div class="p-3 border-t border-white/10 flex gap-2">
+        <input id="inp" class="flex-1 bg-transparent border-none outline-none text-xs text-white placeholder-cyan-300/30" placeholder="Намерение..." onkeydown="if(event.key==='Enter')window.send()">
+        <button onclick="window.send()" class="text-[#ffd700] hover:scale-110 transition-transform">➔</button>
+    </div>
+</div>
+
+<!-- МОДАЛКИ -->
+<div id="diag-win" class="modal-win panel">
+    <div class="text-center font-bold mb-4 text-sm" style="color: var(--xp-bar);">ДИАГНОСТИКА</div>
+    <div id="diag-content" class="space-y-3"></div>
+    <button class="adm-btn w-full mt-4" onclick="window.toggleDiagnostics(false)">ЗАКРЫТЬ</button>
+</div>
+
+<div id="chronicle-win" class="modal-win panel">
+    <div class="text-center font-bold mb-4 text-sm" style="color: var(--xp-bar);">ПАМЯТЬ МАТРИЦЫ</div>
+    <div id="chronicle-list" class="space-y-1 text-[10px] h-[280px] overflow-y-auto"></div>
+    <button class="adm-btn w-full mt-4" onclick="window.toggleChronicle(false)">ЗАКРЫТЬ</button>
+</div>
+
+<div id="sphere-modal" class="modal-win panel">
+    <div id="modal-title" class="text-center font-bold mb-1 text-sm" style="color: var(--accent);">СФЕРА</div>
+    <div id="modal-privacy-status" class="text-[9px] text-center mb-2 opacity-50 uppercase tracking-widest">ЛИЧНОЕ</div>
+    <textarea id="s-note" class="w-full bg-white/5 p-3 rounded-lg border border-white/10 outline-none mb-3 text-white text-xs" rows="3" placeholder="Запечатай осознание..."></textarea>
+
+    <div class="flex gap-2 mb-3">
+        <button class="adm-btn flex-1 !text-[10px]" id="privacy-toggle-btn" onclick="window.toggleSpherePrivacy()">👀 ОТКРЫТЬ МИРУ</button>
+    </div>
+
+    <div class="flex items-center justify-center gap-3 mb-3 p-3 bg-white/5 rounded-lg">
+        <button id="record-btn" class="record-btn" onclick="window.toggleRecording()"><div class="rec-icon"></div></button>
+        <div class="text-center">
+            <div id="record-status" class="text-[10px] text-white/50">Записать голос</div>
+            <div id="record-time" class="text-[12px] font-bold text-[#ff4444] hidden">00:00</div>
+        </div>
+    </div>
+
+    <div id="recorded-audio-container" class="hidden mb-3">
+        <audio id="recorded-audio" controls class="w-full h-9"></audio>
+        <button class="adm-btn w-full mt-1 !text-red-400" onclick="window.deleteRecording()">🗑️ Удалить</button>
+    </div>
+
+    <div class="file-drop-zone" onclick="document.getElementById('file-input').click()">
+        <input type="file" id="file-input" multiple>
+        <div class="text-[10px] text-white/40">📎 Прикрепить файлы</div>
+    </div>
+    <div id="attachments-container" class="mt-2"></div>
+
+    <button class="adm-btn w-full mt-3 !bg-gradient-to-r !from-yellow-500/80 !to-orange-500/80 !text-black !font-bold" onclick="window.saveSphereData()">✨ ЗАПЕЧАТАТЬ</button>
+    <button class="adm-btn w-full mt-2" onclick="window.closeModal()">ЗАКРЫТЬ</button>
+</div>
+
+    <div id="metrics-win" class="modal-win panel">
+        <div class="text-center font-bold mb-4 text-sm" style="color: var(--xp-bar);">СИСТЕМЫ ПИТАНИЯ СФЕР</div>
+        <div class="space-y-2">
+            <button class="adm-btn w-full text-left py-2" onclick="window.selectMetric('Генные Ключи')">🧬 Генные Ключи & Тотемы</button>
+            <button class="adm-btn w-full text-left py-2" onclick="window.selectMetric('Джойтиш')">🔭 Джойтиш (Планеты)</button>
+            <button class="adm-btn w-full text-left py-2" onclick="window.selectMetric('Майя')">🌽 Календарь Майя</button>
+            <button class="adm-btn w-full text-left py-2" onclick="window.selectMetric('Даосизм')">☯️ Даосская Алхимия</button>
+            <button class="adm-btn w-full text-left py-2 !text-white/40" onclick="window.selectMetric('Нейтраль')">✨ Нейтральная Энергия</button>
+        </div>
+        <button class="adm-btn w-full mt-4" onclick="document.getElementById('metrics-win').style.display='none'">ЗАКРЫТЬ</button>
+    </div>
+
+    <div id="gene-keys-win" class="modal-win panel !min-w-[450px]">
+        <div class="text-center font-bold mb-1 text-sm" style="color: var(--accent);">🧬 МАТРИЦА ГЕННЫХ КЛЮЧЕЙ</div>
+        <div class="text-[8px] text-center opacity-50 uppercase tracking-widest mb-4">64 ГЕКСАГРАММЫ СОЗНАНИЯ</div>
+
+        <div id="gene-grid"></div>
+
+        <div id="gene-info" class="mt-6 p-4 bg-white/5 rounded-xl border border-white/10 hidden">
+            <div class="flex justify-between items-center mb-2">
+                <div id="gene-name" class="font-bold text-yellow-400">???</div>
+                <div id="gene-num" class="text-[10px] opacity-50">КЛЮЧ #0</div>
+            </div>
+            <div class="space-y-2 text-[11px]">
+                <div class="flex gap-2"><b>🌑 ТЕНЬ:</b> <span id="gene-shadow" class="text-red-400">...</span></div>
+                <div class="flex gap-2"><b>✨ ДАР:</b> <span id="gene-gift" class="text-blue-400">...</span></div>
+                <div class="flex gap-2"><b>💎 СИДДХИ:</b> <span id="gene-siddhi" class="text-purple-400">...</span></div>
+            </div>
+        </div>
+
+        <button class="adm-btn w-full mt-6" onclick="document.getElementById('gene-keys-win').style.display='none'">ВЕРНУТЬСЯ</button>
+    </div>
+
+    <div id="gene-tooltip" class="gene-tooltip"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// 🎵 ЗВУКОВАЯ СИСТЕМА
+// ═══════════════════════════════════════════════════════════════
+
+const Audio = {
+    ctx: null, masterGain: null, activeTones: new Map(), isMuted: false, ready: false,
+    ambiance: { wind: null, cosmos: null, binaural: null, gain: null },
+
+    CHAKRA: {
+        1: { hz: 256, name: 'МУЛАДХАРА', desc: 'КОРЕНЬ' },
+        2: { hz: 288, name: 'СВАДХИСТАНА', desc: 'ТВОРЕНИЕ' },
+        3: { hz: 320, name: 'МАНИПУРА', desc: 'СИЛА' },
+        4: { hz: 341, name: 'АНАХАТА', desc: 'СЕРДЦЕ' },
+        5: { hz: 384, name: 'ВИШУДХА', desc: 'ИСТИНА' },
+        6: { hz: 426, name: 'АДЖНА', desc: 'ВИДЕНИЕ' },
+        7: { hz: 480, name: 'САХАСРАРА', desc: 'КОРОНА' },
+        8: { hz: 512, name: 'ТРАНСЦЕНДЕНЦИЯ', desc: 'ВЫХОД' },
+        9: { hz: 528, name: 'ЕДИНСТВО', desc: 'ЛЮБОВЬ' }
+    },
+
+    init() {
+        if (this.ready) return;
+        try {
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.value = 0.35;
+            this.masterGain.connect(this.ctx.destination);
+            this.initAmbiance();
+            this.ready = true;
+        } catch(e) { console.error(e); }
+    },
+
+    initAmbiance() {
+        // Генератор розового шума для ветра/космоса
+        const bufferSize = 2 * this.ctx.sampleRate;
+        const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
+
+        const noiseSrc = this.ctx.createBufferSource();
+        noiseSrc.buffer = noiseBuffer;
+        noiseSrc.loop = true;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 400;
+
+        const ambGain = this.ctx.createGain();
+        ambGain.gain.value = 0.05;
+
+        noiseSrc.connect(filter);
+        filter.connect(ambGain);
+        ambGain.connect(this.masterGain);
+        noiseSrc.start();
+
+        // Бинауральный ритм (Тета 6Hz)
+        const oscL = this.ctx.createOscillator();
+        const oscR = this.ctx.createOscillator();
+        const pL = this.ctx.createPanner();
+        const pR = this.ctx.createPanner();
+
+        oscL.frequency.value = 100;
+        oscR.frequency.value = 106; // Разница 6Hz
+        pL.setPosition(-1, 0, 0);
+        pR.setPosition(1, 0, 0);
+
+        const bGain = this.ctx.createGain();
+        bGain.gain.value = 0.02;
+
+        oscL.connect(pL); pL.connect(bGain);
+        oscR.connect(pR); pR.connect(bGain);
+        bGain.connect(this.masterGain);
+
+        oscL.start(); oscR.start();
+
+        this.ambiance = { noise: noiseSrc, filter: filter, gain: ambGain, bGain: bGain };
+    },
+
+    updateAmbiance(lvl) {
+        if (!this.ready || this.isMuted) return;
+        const targetFreq = 200 + (lvl * 150);
+        this.ambiance.filter.frequency.exponentialRampToValueAtTime(targetFreq, this.ctx.currentTime + 2);
+        this.ambiance.gain.gain.linearRampToValueAtTime(0.02 + (lvl * 0.01), this.ctx.currentTime + 2);
+    },
+
+    play(id, lvl) {
+        if (this.isMuted || !this.ready) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        this.stop(id);
+
+        const freq = this.CHAKRA[lvl]?.hz || 256;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+
+        gain.connect(this.masterGain);
+        osc.connect(gain);
+
+        const now = this.ctx.currentTime;
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.2, now + 0.2); // Плавный вход
+
+        osc.start();
+        this.activeTones.set(id, { osc, gain });
+        this.showFreq(this.CHAKRA[lvl]);
+        this.updateAmbiance(lvl);
+    },
+
+    stop(id) {
+        const t = this.activeTones.get(id);
+        if (!t || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        t.gain.gain.linearRampToValueAtTime(0, now + 0.5); // Плавное затухание
+        t.osc.stop(now + 0.6);
+        this.activeTones.delete(id);
+        this.hideFreq();
+    },
+
+    chord() {
+        if (this.isMuted || !this.ready) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const now = this.ctx.currentTime;
+        [264, 330, 396, 528].forEach((f, i) => {
+            const o = this.ctx.createOscillator();
+            const g = this.ctx.createGain();
+            o.type = 'sine'; o.frequency.value = f;
+            g.gain.setValueAtTime(0, now + i*0.08);
+            g.gain.linearRampToValueAtTime(0.12, now + i*0.08 + 0.08);
+            g.gain.linearRampToValueAtTime(0, now + 2.2);
+            o.connect(g); g.connect(this.masterGain);
+            o.start(now + i*0.08); o.stop(now + 2.5);
+        });
+        this.showFreq({ hz: 528, name: 'РА', desc: 'ГАРМОНИЯ' });
+        setTimeout(() => this.hideFreq(), 2000);
+    },
+
+    bell(f = 880) {
+        if (this.isMuted || !this.ready) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        const now = this.ctx.currentTime;
+        o.type = 'sine'; o.frequency.value = f;
+        g.gain.setValueAtTime(0.2, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+        o.connect(g); g.connect(this.masterGain);
+        o.start(); o.stop(now + 1.3);
+    },
+
+    levelUp(lvl) {
+        if (this.isMuted || !this.ready) return;
+        const f = this.CHAKRA[lvl]?.hz || 440;
+        [f, f*1.25, f*1.5, f*2].forEach((freq, i) => {
+            setTimeout(() => this.bell(freq), i * 100);
+        });
+    },
+
+    showFreq(d) {
+        if (!d) return;
+        document.getElementById('freq-value').textContent = `${d.hz} Hz`;
+        document.getElementById('freq-chakra').textContent = `${d.name} • ${d.desc}`;
+        document.getElementById('frequency-display').classList.add('active');
+    },
+    hideFreq() { document.getElementById('frequency-display')?.classList.remove('active'); },
+
+    toggle() {
+        this.isMuted = !this.isMuted;
+        if (this.masterGain && this.ctx) {
+            this.masterGain.gain.linearRampToValueAtTime(this.isMuted ? 0 : 0.35, this.ctx.currentTime + 0.1);
+        }
+        document.getElementById('sound-indicator').classList.toggle('muted', this.isMuted);
+        document.getElementById('sound-label').textContent = this.isMuted ? '🔇' : '🔊';
+    }
+};
+
+// 🎙️ ЗАПИСЬ АУДИО
+// ═══════════════════════════════════════════════════════════════
+
+const Recorder = {
+    mr: null, chunks: [], recording: false, blob: null, timer: null, start: 0,
+
+    async begin() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            this.mr = new MediaRecorder(stream);
+            this.chunks = [];
+            this.mr.ondataavailable = e => { if (e.data.size > 0) this.chunks.push(e.data); };
+            this.mr.onstop = () => {
+                this.blob = new Blob(this.chunks, { type: 'audio/webm' });
+                document.getElementById('recorded-audio').src = URL.createObjectURL(this.blob);
+                document.getElementById('recorded-audio-container').classList.remove('hidden');
+                stream.getTracks().forEach(t => t.stop());
+            };
+            this.mr.start();
+            this.recording = true;
+            this.start = Date.now();
+            this.tick();
+            this.timer = setInterval(() => this.tick(), 1000);
+            document.getElementById('record-btn').classList.add('recording');
+            document.getElementById('record-status').textContent = 'Запись...';
+            document.getElementById('record-time').classList.remove('hidden');
+        } catch(e) { log('СИСТЕМА', '⚠️ Нет доступа к микрофону'); }
+    },
+
+    end() {
+        if (this.mr && this.recording) {
+            this.mr.stop();
+            this.recording = false;
+            clearInterval(this.timer);
+            document.getElementById('record-btn').classList.remove('recording');
+            document.getElementById('record-status').textContent = 'Готово';
+        }
+    },
+
+    tick() {
+        const s = Math.floor((Date.now() - this.start) / 1000);
+        document.getElementById('record-time').textContent =
+            `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+    },
+
+    clear() {
+        this.blob = null;
+        document.getElementById('recorded-audio').src = '';
+        document.getElementById('recorded-audio-container').classList.add('hidden');
+        document.getElementById('record-status').textContent = 'Записать голос';
+        document.getElementById('record-time').classList.add('hidden');
+        document.getElementById('record-time').textContent = '00:00';
+    }
+};
+
+window.toggleRecording = () => Recorder.recording ? Recorder.end() : Recorder.begin();
+window.deleteRecording = () => Recorder.clear();
+
+// 📎 ФАЙЛЫ
+// ═══════════════════════════════════════════════════════════════
+
+const Files = {
+    list: [],
+    add(files) {
+        for (const f of files) {
+            if (this.list.length >= 10) break;
+            this.list.push(f);
+        }
+        this.render();
+    },
+    remove(i) { this.list.splice(i, 1); this.render(); },
+    render() {
+        document.getElementById('attachments-container').innerHTML = this.list.map((f, i) =>
+            `<div class="attachment-item">${f.type.startsWith('image')?'🖼️':f.type.startsWith('audio')?'🎵':'📄'} ${f.name.slice(0,15)}... <span onclick="Files.remove(${i})" style="cursor:pointer;opacity:0.5">✕</span></div>`
+        ).join('');
+    },
+    clear() { this.list = []; this.render(); }
+};
+window.Files = Files;
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('file-input')?.addEventListener('change', e => Files.add(e.target.files));
+    const dz = document.getElementById('file-drop-zone');
+    if (dz) {
+        dz.ondragover = e => { e.preventDefault(); dz.style.borderColor = 'var(--xp-bar)'; };
+        dz.ondragleave = () => dz.style.borderColor = '';
+        dz.ondrop = e => { e.preventDefault(); dz.style.borderColor = ''; Files.add(e.dataTransfer.files); };
+    }
+});
+
+// 🔮 МУДРЕЦЫ ТРИМУРТИ
+// ═══════════════════════════════════════════════════════════════
+
+const Sages = {
+    shiva: {
+        name: 'ШИВА', title: 'Разрушитель иллюзий', avatar: '🔱', color: '#ff4444',
+        greetings: [
+            "Разрушение — это не конец, а освобождение от оков иллюзии.",
+            "Ты ищешь ответы снаружи, но они танцуют внутри твоего сердца.",
+            "Пепел старого мира — почва для нового сознания.",
+            "Я — танцующее пламя, превращающее тьму в свет."
+        ],
+        responses: [
+            "Отпусти то, что держит тебя. В пустоте рождается полнота.",
+            "Страх — это иллюзия. За ним скрывается безграничная свобода.",
+            "Разрушь ограничения ума, и увидишь бесконечность.",
+            "Каждый вдох — смерть прошлого. Каждый выдох — рождение нового."
+        ]
+    },
+    vishnu: {
+        name: 'ВИШНУ', title: 'Хранитель равновесия', avatar: '🪷', color: '#4488ff',
+        greetings: [
+            "Баланс — это не застой, а гармоничное движение между полюсами.",
+            "Я храню порядок не силой, а любовью ко всему сущему.",
+            "В каждом существе живёт частица вечного света.",
+            "Терпение и сострадание — мои главные инструменты."
+        ],
+        responses: [
+            "Найди точку равновесия внутри хаоса — там твоя сила.",
+            "Защищай то, что любишь, не сражаясь, а излучая свет.",
+            "Когда мир теряет баланс, вернись к сердцу — там истина.",
+            "Служение другим — кратчайший путь к себе."
+        ]
+    },
+    brahma: {
+        name: 'БРАХМА', title: 'Творец миров', avatar: '📿', color: '#ffaa00',
+        greetings: [
+            "Каждая мысль — семя вселенной. Что ты сеешь сегодня?",
+            "Творение бесконечно, как и твой потенциал.",
+            "Я — голос тишины, из которой рождаются все звуки.",
+            "Четыре лика смотрят во все стороны, но видят одно — единство."
+        ],
+        responses: [
+            "Твори из любви, и созданное тобой будет вечным.",
+            "Каждое слово — заклинание. Выбирай их с мудростью.",
+            "Мир — это твоя кисть, сознание — холст, любовь — краски.",
+            "Начни с малого, и великое проявится само."
+        ]
+    },
+    current: null
+};
+
+window.openSageDialog = (sage) => {
+    Audio.init();
+    const s = Sages[sage];
+    if (!s) return;
+    Sages.current = sage;
+
+    document.getElementById('sage-dialog-avatar').textContent = s.avatar;
+    document.getElementById('sage-dialog-name').textContent = s.name;
+    document.getElementById('sage-dialog-title').textContent = s.title;
+    document.getElementById('sage-dialog-content').textContent = s.greetings[Math.floor(Math.random() * s.greetings.length)];
+    document.getElementById('sage-dialog').style.setProperty('--sage-color', s.color);
+    document.getElementById('sage-dialog').style.display = 'block';
+    document.getElementById('sage-input').focus();
+
+    Audio.bell(sage === 'shiva' ? 220 : sage === 'vishnu' ? 330 : 440);
+    addChronicle(`🙏 Беседа с ${s.name}`);
+};
+
+window.closeSageDialog = () => {
+    document.getElementById('sage-dialog').style.display = 'none';
+    Sages.current = null;
+};
+
+window.askSage = () => {
+    const input = document.getElementById('sage-input');
+    const q = input.value.trim();
+    if (!q || !Sages.current) return;
+
+    const s = Sages[Sages.current];
+    const response = s.responses[Math.floor(Math.random() * s.responses.length)];
+    document.getElementById('sage-dialog-content').textContent = response;
+    input.value = '';
+
+    Audio.bell(Sages.current === 'shiva' ? 330 : Sages.current === 'vishnu' ? 440 : 550);
+    addChronicle(`💬 Ответ ${s.name}: ${response.substring(0, 30)}...`);
+};
+
+// 🌌 STATE
+// ═══════════════════════════════════════════════════════════════
+
+const state = {
+    activeSystem: 'none',
+    t: 0, speed: 1.0, targetSpeed: 1.0, progress: 0,
+    spark: { x: 200, y: 200, tx: 300, ty: 300 },
+    sphereData: {}, ringTilt: 0.4, chronicle: [], waves: [], dust: [],
+    spirit: { 'Дисциплина': 15, 'Воля': 10, 'Мудрость': 25, 'Любовь': 18 },
+    elements: { 'Земля': 12, 'Огонь': 20, 'Воздух': 15, 'Вода': 18, 'Эфир': 8 },
+    totalLight: 0,
+    sphereTrails: {},
+    universeOwner: 'ВЫ',
+    drag: { target: null, startX: 0, startY: 0 },
+    isInitialized: false,
+    theme: {
+        bg: 'radial-gradient(ellipse at center, #0a0015 0%, #000000 100%)',
+        tilt: 0.4,
+        starAlpha: 0.8
+    }
+};
+
+const RADII = [420, 370, 320, 270, 220, 170, 120, 80, 45];
+const COLORS = ["#ff3333", "#ff8833", "#ffdd33", "#33ff66", "#33ddff", "#3366ff", "#9933ff", "#ffffff", "#ffd700"];
+
+// 🔧 ГЛОБАЛЬНЫЕ ФУНКЦИИ
+// ═══════════════════════════════════════════════════════════════
+
+const log = (s, m) => {
+    const ms = document.getElementById('msgs'); if(!ms) return;
+    const d = document.createElement('div'); d.className = "mb-2";
+    d.innerHTML = `<b style="color:${s==='ИСКРА'?'var(--xp-bar)':'var(--accent)'}">${s}:</b> ${m}`;
+    ms.appendChild(d); ms.scrollTop = ms.scrollHeight;
+};
+window.log = log;
+
+const addChronicle = (msg) => {
+    const time = new Date().toLocaleTimeString();
+    state.chronicle.unshift(`[${time}] ${msg}`);
+    if (state.chronicle.length > 50) state.chronicle.pop();
+    const list = document.getElementById('chronicle-list');
+    if (list) list.innerHTML = state.chronicle.map(l => `<div class="py-1 border-b border-white/5 opacity-70">${l}</div>`).join('');
+};
+window.addChronicle = addChronicle;
+
+window.toggleSound = () => { Audio.init(); Audio.toggle(); };
+window.setSpeed = (v) => { state.targetSpeed = v; addChronicle(`⚡ Скорость: ${v}x`); };
+
+window.toggleDiagnostics = (s) => {
+    const w = document.getElementById('diag-win');
+    w.style.display = s === undefined ? (w.style.display === 'block' ? 'none' : 'block') : (s ? 'block' : 'none');
+    if (w.style.display === 'block') renderDiagnostics();
+};
+
+window.toggleChronicle = (s) => {
+    const w = document.getElementById('chronicle-win');
+    w.style.display = s === undefined ? (w.style.display === 'block' ? 'none' : 'block') : (s ? 'block' : 'none');
+};
+
+window.closeModal = () => {
+    document.getElementById('sphere-modal').style.display = 'none';
+    Recorder.clear(); Files.clear();
+    document.getElementById('s-note').value = '';
+};
+
+window.selectMetric = (m) => {
+    const sysMap = {
+        'Генные Ключи': 'gene-keys',
+        'Джойтиш': 'jyotish',
+        'Майя': 'maya',
+        'Даосизм': 'dao',
+        'Нейтраль': 'none'
+    };
+    state.activeSystem = sysMap[m] || 'none';
+    log("СИНГУЛЯРНОСТЬ", `✨ Система ${m} развернута в Мерностях`);
+    document.getElementById('metrics-win').style.display = 'none';
+
+    render();
+    updateStatsAndProgress();
+    window.syncState();
+
+    Audio.bell(660);
+};
+
+window.sparkHint = () => { Audio.init(); log("ИСКРА", "✨ Гармония..."); Audio.bell(1200); };
+window.checkAscension = () => { Audio.init(); log("РА", "Свет внутри тебя ищет выход..."); Audio.chord(); };
+window.send = async () => {
+    const inp = document.getElementById('inp');
+    const val = inp.value.trim();
+    if (!val) return;
+
+    if (val.startsWith('/send ')) {
+        const parts = val.split(' ');
+        const amount = parseInt(parts[1]);
+        if (!isNaN(amount) && amount > 0 && state.totalLight >= amount) {
+            state.totalLight -= amount;
+            log("ЭКОНОМИКА", `✨ Ты передал <b>${amount}</b> света игроку ${parts[2] || 'Аватару'}`);
+            addChronicle(`💸 Передано ${amount} света`);
+            updateProgressPanel();
+        } else {
+            log("СИСТЕМА", "⚠️ Недостаточно света или неверная сумма");
+        }
+    } else {
+        log("ВЫ", val);
+        try {
+            const r = await fetch('/api/chat', {
+                method: 'POST',
+                body: JSON.stringify({ msg: val, sage: 'ГЛАС РА' })
+            });
+            const d = await r.json();
+            log("РА", d.reply);
+
+            if (d.lux) {
+                state.totalLight += d.lux;
+                updateProgressPanel();
+                if (d.lux > 15) log("СИСТЕМА", `🌟 Глубина осознания: +${d.lux} света`);
+            }
+        } catch(e) {
+            // Эхо если сервер молчит
+            setTimeout(() => log("РА", "Твои слова услышаны вселенной..."), 1000);
+        }
+    }
+    inp.value = '';
+};
+
+	// 🔮 ТОТЕМЫ И СТИХИИ (АРХЕТИПЫ ЭВОЛЮЦИИ)
+	const Totems = {
+	    getTotem(lvl, id) {
+	        const s = configs.find(c => c.id === id);
+	        if(!s) return '✨';
+
+            // 1. СТАТИЧНЫЙ РЕЖИМ (ГЕННЫЕ КЛЮЧИ)
+            if (state.activeSystem === 'gene-keys' && s.type === 'ring') {
+                const geneIndex = s.index + 1;
+                const data = GENE_DATA[geneIndex];
+                return data && data.totem ? data.totem.split(' ')[0] : '🧬';
+            }
+
+            // 2. ДЖОЙТИШ (ПЛАНЕТЫ)
+            if (state.activeSystem === 'jyotish' && s.type === 'ring') {
+                const planets = ['☀️ Солнце', '🌙 Луна', '♂️ Марс', '☿️ Меркурий', '♃ Юпитер', '♀️ Венера', '♄ Сатурн', '🐲 Раху', '🦂 Кету', '✨ Звезда', '🌌 Эфир', '🧿 Око'];
+                return planets[s.index % 12].split(' ')[0];
+            }
+
+            // 3. МАЙЯ (ПЕЧАТИ)
+            if (state.activeSystem === 'maya' && s.type === 'ring') {
+                const seals = ['🔴 Дракон', '⚪ Ветер', '🔵 Ночь', '🟡 Зерно', '🦎 Змей', '🐍 Соединитель', '💀 Рука', '🖐️ Звезда', '⭐ Луна', '🐾 Собака', '🐵 Обезьяна', '🧘 Человек'];
+                return seals[s.index % 12].split(' ')[0];
+            }
+
+            // 4. ДАО (СТИХИИ)
+            if (state.activeSystem === 'dao' && s.type === 'ring') {
+                const elements = ['🌳 Дерево', '🔥 Огонь', '🌍 Земля', '⚔️ Металл', '💧 Вода', '☯️ Инь', '☯️ Ян', '🐉 Дракон', '🐯 Тигр', '🐢 Черепаха', '🦅 Феникс', '✨ Пустота'];
+                return elements[s.index % 12].split(' ')[0];
+            }
+
+            // 5. НЕЙТРАЛЬ (ЧИСТАЯ ЭНЕРГИЯ)
+	        const typeIdx = (s.index || 0) % 5;
+	        const archetypes = [
+	            /* Fire  */ ['🔥', '🐅', '🦊'],
+	            /* Water */ ['💧', '🐋', '🦌'],
+	            /* Air   */ ['🌪️', '🦉', '🦋'],
+	            /* Earth */ ['🌍', '🐻', '🐘'],
+	            /* Ether */ ['✨', '🐺', '🦄']
+	        ];
+	        const set = archetypes[typeIdx];
+	        if (lvl <= 3) return set[0];
+	        if (lvl <= 6) return set[1];
+	        return set[2];
+	    }
+	};
+
+const configs = [
+    { id: 'void', n: 'СИНГУЛЯРНОСТЬ', type: 'void' },
+    { id: 'destiny', n: 'СУДЬБА', type: 'personal', pos: { x: 0.82, y: -0.82 } },
+];
+
+const NOW = Date.now();
+for (let i = 0; i < 12; i++) {
+    state.sphereData['ring-' + i] = { lvl: 1, circle: 1, lastActivity: NOW };
+    configs.push({ id: 'ring-' + i, n: 'Мерность ' + (i + 1), type: 'ring', index: i });
+}
+state.sphereData['void'] = { lvl: 1, circle: 1, lastActivity: NOW };
+state.sphereData['destiny'] = { lvl: 5, circle: 2, lastActivity: NOW };
+
+// --- ДИНАМИЧЕСКОЕ СОЗДАНИЕ СФЕР ---
+window.spawnSphere = () => {
+    const cost = 1000;
+    if (state.totalLight < cost) {
+        log("РА", `Для материализации новой сферы нужно ${cost} света (у тебя ${state.totalLight})`);
+        return;
+    }
+
+    state.totalLight -= cost;
+    const id = 'custom-' + Date.now();
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 500 + Math.random() * 200; // За пределами основного круга
+
+    const newSphere = {
+        id: id,
+        n: 'Творение ' + (configs.filter(c => (c.id && c.id.startsWith('custom'))).length + 1),
+        type: 'personal',
+        pos: { x: Math.cos(angle) * 0.8, y: Math.sin(angle) * 0.8 }, // Позиция в относительных координатах
+        isCustom: true
+    };
+
+    configs.push(newSphere);
+    state.sphereData[id] = { lvl: 1, circle: 1, isOpen: false, lastActivity: Date.now() };
+
+    log("РА", "✨ Из твоего света материализовалась новая сфера!");
+    addChronicle("🌟 Создана новая сфера");
+    render();
+    window.syncState();
+};
+
+window.toggleSpherePrivacy = () => {
+    const id = state.currentSId;
+    const data = state.sphereData[id];
+    if (!data) return;
+
+    data.isOpen = !data.isOpen;
+    const el = document.getElementById('s-' + id);
+    const btn = document.getElementById('privacy-toggle-btn');
+    const status = document.getElementById('modal-privacy-status');
+
+    if (el) el.classList.toggle('is-open', data.isOpen);
+
+    if (data.isOpen) {
+        btn.textContent = '🔒 ЗАКРЫТЬ ОТ МИРА';
+        btn.classList.add('!text-red-400');
+        status.textContent = 'ОТКРЫТО';
+        status.classList.remove('opacity-50');
+        status.classList.add('text-green-400', 'font-bold');
+        log("СФЕРА", `🌐 Сфера ${id} теперь видна другим игрокам`);
+    } else {
+        btn.textContent = '👀 ОТКРЫТЬ МИРУ';
+        btn.classList.remove('!text-red-400');
+        status.textContent = 'ЛИЧНОЕ';
+        status.classList.add('opacity-50');
+        status.classList.remove('text-green-400', 'font-bold');
+    }
+    Audio.bell(data.isOpen ? 880 : 440);
+};
+
+window.admLevelUp = (id) => {
+    Audio.init();
+    const d = state.sphereData[id]; if (!d) return;
+    d.lvl = d.lvl < 9 ? d.lvl + 1 : 1;
+    state.totalLight += d.lvl * 10;
+
+    // Эффект обновления без пересоздания DOM
+    const el = document.getElementById('s-' + id);
+    if (el) {
+        el.classList.add('upgrading');
+        setTimeout(() => el.classList.remove('upgrading'), 800);
+        const col = COLORS[d.lvl - 1] || '#fff';
+        el.style.setProperty('--sphere-color', col);
+        el.className = `s-core form-${d.circle} upgrading ${d.isOpen ? 'is-open' : ''}`;
+
+        // Обновляем тотем при смене стадии
+        const totemEl = document.getElementById('totem-' + id);
+        if (totemEl) {
+            totemEl.textContent = Totems.getTotem(d.lvl, id);
+        }
+    }
+
+    addChronicle(`⬆️ ${id} → У${d.lvl}`);
+    Audio.levelUp(d.lvl);
+    updateStatsAndProgress();
+};
+
+window.admLevelUpAll = async () => {
+    const ids = configs.filter(c => c.type === 'ring').map(c => c.id);
+    for (let i = 0; i < ids.length; i++) {
+        setTimeout(() => window.admLevelUp(ids[i]), i * 200);
+    }
+    const bh = configs.find(c => c.id === 'void');
+    if (bh) setTimeout(() => window.admLevelUp(bh.id), ids.length * 200);
+};
+
+window.admCircleUp = (id) => {
+    Audio.init();
+    const d = state.sphereData[id]; if (!d) return;
+    d.circle = d.circle < 4 ? d.circle + 1 : 1;
+
+    const el = document.getElementById('s-' + id);
+    if (el) {
+        el.className = `s-core form-${d.circle}`;
+    }
+
+    addChronicle(`🔄 ${id} → К${d.circle}`);
+    Audio.bell(880);
+    updateStatsAndProgress();
+};
+
+const updateStatsAndProgress = () => {
+    updateProgressPanel();
+    // Обновляем текст в боковой панели без перерисовки всего контейнера
+    configs.filter(c => c.type === 'ring').forEach(s => {
+        const d = state.sphereData[s.id];
+        const hzEl = document.querySelector(`.hz-${s.id}`);
+        if (hzEl) hzEl.textContent = `${Audio.CHAKRA[d.lvl]?.hz || 256}Hz`;
+    });
+    updateProgressPanel();
+};
+
+// --- МЕХАНИКА МЕЖВСЕЛЕНСКИХ ПУТЕШЕСТВИЙ ---
+const originalConfigs = [...configs]; // Сохраняем оригинал один раз
+let universes = [
+    {
+        owner: 'МАСТЕР РА',
+        theme: {
+            bg: 'radial-gradient(ellipse at center, #1b0033 0%, #000000 100%)',
+            tilt: 0.2,
+            starAlpha: 0.9
+        }
+    },
+    {
+        owner: 'АВАТАР 01',
+        theme: {
+            bg: 'radial-gradient(ellipse at center, #001a1a 0%, #000000 100%)',
+            tilt: 0.6,
+            starAlpha: 0.5
+        }
+    },
+    {
+        owner: 'БУДДА-ЦАРЬ',
+        theme: {
+            bg: 'radial-gradient(ellipse at center, #2e1a00 0%, #000000 100%)',
+            tilt: 0.4,
+            starAlpha: 1.0
+        }
+    }
+];
+
+window.switchUniverse = () => {
+    Audio.init();
+    const portal = universes[Math.floor(Math.random() * universes.length)];
+    const isReturning = state.universeOwner !== 'ВЫ';
+
+    // Вспышка (Big Bang effect)
+    state.waves.push({ x: window.innerWidth/2, y: window.innerHeight/2, r: 10, a: 1.0, col: '255, 255, 255', thick: 100, type: 'light' });
+
+    if (isReturning) {
+        state.universeOwner = 'ВЫ';
+        state.theme = {
+            bg: 'radial-gradient(ellipse at center, #0a0015 0%, #000000 100%)',
+            tilt: 0.4,
+            starAlpha: 0.8
+        };
+        log("ПОРТАЛ", "🪐 Ты вернулся в свою обитель");
+        configs.length = originalConfigs.length;
+        originalConfigs.forEach((c, i) => configs[i] = c);
+    } else {
+        state.universeOwner = portal.owner;
+        state.theme = portal.theme;
+        log("ПОРТАЛ", `🌀 Переход во вселенную игрока <b>${portal.owner}</b>...`);
+
+        // В чужой вселенной видим только часть сфер (для симуляции)
+        configs.forEach((c, i) => {
+            if (c.type === 'ring' && i % 2 !== 0) {
+                const data = state.sphereData[c.id];
+                if (data) data.isOpen = true; // Симулируем открытость
+            }
+        });
+    }
+
+    // Применяем фон
+    document.getElementById('view').style.background = state.theme.bg;
+    state.ringTilt = state.theme.tilt;
+
+    Audio.chord();
+    render();
+    addChronicle(`🌌 Переход: ${state.universeOwner}`);
+};
+
+// --- DRAG AND DROP ---
+const startDrag = (e, id) => {
+    e.preventDefault();
+    if (state.universeOwner !== 'ВЫ') return; // Нельзя двигать сферы в чужой вселенной
+
+    state.drag.target = id;
+    const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+    state.drag.startX = clientX;
+    state.drag.startY = clientY;
+
+    const el = document.getElementById('s-' + id);
+    if (el) el.classList.add('dragging');
+
+    window.onmousemove = window.ontouchmove = (e) => onDrag(e);
+    window.onmouseup = window.ontouchend = () => stopDrag();
+};
+
+const onDrag = (e) => {
+    if (!state.drag.target) return;
+
+    const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+    const dx = clientX - window.innerWidth / 2;
+    const dy = clientY - window.innerHeight / 2;
+
+    const s = configs.find(c => c.id === state.drag.target);
+    if (s && s.pos) {
+        // Преобразуем экранные координаты обратно в относительные (0.0 - 1.0)
+        s.pos.x = dx / (window.innerWidth / 2 - 80);
+        s.pos.y = dy / (window.innerHeight / 2 - 80);
+    }
+};
+
+const stopDrag = () => {
+    if (state.drag.target) {
+        const el = document.getElementById('s-' + state.drag.target);
+        if (el) el.classList.remove('dragging');
+    }
+    state.drag.target = null;
+    window.onmousemove = window.ontouchmove = null;
+    window.onmouseup = window.ontouchend = null;
+};
+
+window.openSphereModal = (id) => {
+    state.currentSId = id;
+    const s = configs.find(c => c.id === id);
+    if (s) {
+        const data = state.sphereData[id];
+        if (data) data.lastActivity = Date.now(); // Сброс затухания
+
+        let title = s.n;
+        let subInfo = "";
+
+        // Динамическая информация в зависимости от системы
+        if (state.activeSystem === 'gene-keys' && s.type === 'ring') {
+            const gk = GENE_DATA[s.index + 1];
+            if (gk) {
+                title = `#${s.index + 1} ${gk.name}`;
+                subInfo = `<div class="text-[10px] mt-2 space-y-1">
+                    <div class="text-red-400">🌑 ТЕНЬ: ${gk.shadow}</div>
+                    <div class="text-blue-400">✨ ДАР: ${gk.gift}</div>
+                    <div class="text-purple-400">💎 СИДДХИ: ${gk.siddhi}</div>
+                    <div class="text-yellow-400">🐾 ТОТЕМ: ${gk.totem}</div>
+                </div>`;
+            }
+        } else if (state.activeSystem === 'jyotish' && s.type === 'ring') {
+            const planets = ['Солнце (Атма)', 'Луна (Манас)', 'Марс (Шакти)', 'Меркурий (Буддхи)', 'Юпитер (Гуру)', 'Венера (Шукра)', 'Сатурн (Шани)', 'Раху', 'Кету', 'Уран', 'Нептун', 'Плутон'];
+            title = planets[s.index % 12];
+        } else if (state.activeSystem === 'maya' && s.type === 'ring') {
+            const seals = ['Красный Дракон', 'Белый Ветер', 'Синяя Ночь', 'Желтое Зерно', 'Красный Змей', 'Белый Соединитель Миров', 'Синяя Рука', 'Желтая Звезда', 'Красная Луна', 'Белая Собака', 'Синяя Обезьяна', 'Желтый Человек'];
+            title = seals[s.index % 12];
+        }
+
+        document.getElementById('modal-title').innerHTML = title + (subInfo ? subInfo : "");
+        document.getElementById('sphere-modal').style.display = 'block';
+    }
+};
+
+window.saveSphereData = () => {
+    const id = state.currentSId;
+    if (state.sphereData[id]) {
+        state.sphereData[id].lastActivity = Date.now();
+        log("РА", `✨ Сфера ${id} наполнилась жизнью!`);
+    }
+    addChronicle(`💾 ${id} обновлена`);
+    Audio.bell(1046);
+    window.closeModal();
+    window.syncState(); // Сохраняем в БД
+};
+
+// 📊 РЕНДЕРИНГ
+// ═══════════════════════════════════════════════════════════════
+
+const renderDiagnostics = () => {
+    const cont = document.getElementById('diag-content');
+    let tree = 0, crystal = 0, cosmos = 0;
+    configs.filter(c => c.type === 'ring').forEach(s => {
+        const d = state.sphereData[s.id];
+        if (d.lvl <= 3) tree++; else if (d.lvl <= 6) crystal++; else cosmos++;
+    });
+    cont.innerHTML = `
+        <div class="bg-green-500/10 p-3 rounded-lg text-xs border border-green-500/30">
+            <div class="text-green-400 font-bold mb-1">🌳 ДРЕВО (У1-3)</div>
+            <div class="flex justify-between"><span>Сферы:</span><span>${tree}/12</span></div>
+        </div>
+        <div class="bg-blue-500/10 p-3 rounded-lg text-xs border border-blue-500/30">
+            <div class="text-blue-400 font-bold mb-1">💎 КРИСТАЛЛ (У4-6)</div>
+            <div class="flex justify-between"><span>Сферы:</span><span>${crystal}/12</span></div>
+        </div>
+        <div class="bg-purple-500/10 p-3 rounded-lg text-xs border border-purple-500/30">
+            <div class="text-purple-400 font-bold mb-1">🌌 КОСМОС (У7-9)</div>
+            <div class="flex justify-between"><span>Сферы:</span><span>${cosmos}/12</span></div>
+        </div>
+    `;
+};
+
+const updateProgressPanel = () => {
+    let tree = 0, crystal = 0, cosmos = 0, totalLvl = 0;
+    configs.filter(c => c.type === 'ring').forEach(s => {
+        const d = state.sphereData[s.id];
+        totalLvl += d.lvl;
+        if (d.lvl <= 3) tree++; else if (d.lvl <= 6) crystal++; else cosmos++;
+    });
+
+    const avgLvl = totalLvl / 12;
+    const consciousness = Math.floor(avgLvl);
+    state.progress = Math.round((totalLvl / (12 * 9)) * 100);
+
+    document.getElementById('consciousness-level').textContent = consciousness || 1;
+    document.getElementById('total-light').textContent = state.totalLight;
+
+    // Стадия
+    let stageName = '🌳 Древо', stageProgress = tree, stageColor = 'from-green-500 to-emerald-400';
+    if (crystal > tree && crystal >= cosmos) { stageName = '💎 Кристалл'; stageProgress = crystal; stageColor = 'from-blue-500 to-cyan-400'; }
+    if (cosmos > tree && cosmos > crystal) { stageName = '🌌 Космос'; stageProgress = cosmos; stageColor = 'from-purple-500 to-pink-400'; }
+
+    document.getElementById('current-stage-name').textContent = stageName;
+    document.getElementById('stage-progress').textContent = `${stageProgress}/12`;
+    document.getElementById('stage-bar').style.width = `${(stageProgress / 12) * 100}%`;
+    document.getElementById('stage-bar').className = `h-full bg-gradient-to-r ${stageColor}`;
+
+    // Точки стадий
+    document.getElementById('stage-dots').innerHTML = [
+        { n: tree, c: 'tree' }, { n: crystal, c: 'crystal' }, { n: cosmos, c: 'cosmos' }
+    ].map(s => `<div class="stage-dot ${s.n > 0 ? s.c : ''}"></div>`).join('');
+
+    // Стихии
+    document.getElementById('elements-stats').innerHTML = Object.entries(state.elements).map(([k, v]) =>
+        `<div class="stat-row"><span>${k}</span><span class="stat-value">${v}</span></div>`
+    ).join('');
+
+    // Дух
+    document.getElementById('spirit-stats').innerHTML = Object.entries(state.spirit).map(([k, v]) =>
+        `<div class="stat-row"><span>${k}</span><span class="stat-value">${v}</span></div>`
+    ).join('');
+
+    // Индикатор РА
+    document.getElementById('ra-light-fill').style.setProperty('--progress', `${state.progress}%`);
+    document.getElementById('ra-light-value').textContent = `${state.progress}%`;
+};
+
+const render = () => {
+    const cont = document.getElementById('spheres-container'); if (!cont) return;
+    cont.innerHTML = '';
+    const cX = window.innerWidth / 2, cY = window.innerHeight / 2;
+    const bhPos = { x: -(cX - 140) * 0.7, y: (cY - 140) * 0.7 };
+
+    configs.forEach(s => {
+        const data = state.sphereData[s.id] || { lvl: 1, circle: 1 };
+        const col = COLORS[data.lvl - 1] || '#fff';
+        const div = document.createElement('div');
+        div.id = 's-' + s.id;
+        div.className = `s-core form-${data.circle}`;
+        div.style.setProperty('--sphere-color', col);
+
+        // DRAG & DROP
+        if (s.isCustom) {
+            div.onmousedown = (e) => startDrag(e, s.id);
+            div.ontouchstart = (e) => startDrag(e, s.id);
+        }
+
+        // Статус открытости (классы)
+        if (data.isOpen) div.classList.add('is-open');
+
+        // Добавляем иконку тотема
+        if (s.type === 'ring' || s.isCustom) {
+            const totem = document.createElement('div');
+            totem.className = 'totem-icon';
+            totem.id = 'totem-' + s.id;
+            totem.textContent = Totems.getTotem(data.lvl, s.id);
+            div.appendChild(totem);
+        }
+
+        if (s.type === 'void') {
+            div.classList.add('dark-monolith');
+            div.style.borderRadius = '50%';
+        }
+
+        div.addEventListener('mouseenter', () => { Audio.init(); Audio.play(s.id, data.lvl); });
+        div.addEventListener('mouseleave', () => Audio.stop(s.id));
+        div.onclick = () => {
+            if (s.type === 'void') { window.showGeneKeys(); Audio.bell(220); }
+            else window.openSphereModal(s.id);
+        };
+        cont.appendChild(div);
+    });
+
+    // Оболочки
+    ['shell-inner', 'shell-middle', 'shell-outer'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            const size = parseInt(getComputedStyle(el).width);
+            el.style.left = (cX - size / 2) + 'px';
+            el.style.top = (cY - size / 2) + 'px';
+        }
+    });
+
+    // РА
+    const ra = document.getElementById('ra-anchor');
+    ra.style.left = cX + 'px'; ra.style.top = cY + 'px';
+    ra.style.marginLeft = '-30px'; ra.style.marginTop = '-30px';
+
+    // Панель сфер
+    document.getElementById('sphere-stats').innerHTML = configs.filter(c => c.type === 'ring').map(s => {
+        const d = state.sphereData[s.id];
+        const col = COLORS[d.lvl - 1];
+        const hz = Audio.CHAKRA[d.lvl]?.hz || 256;
+        return `<div class="bg-black/40 p-1.5 rounded text-[8px]">
+            <div class="flex justify-between mb-1"><span style="color:${col}">М${s.index + 1}</span><span class="opacity-40 hz-${s.id}">${hz}Hz</span></div>
+            <div class="flex gap-0.5">
+                <button class="flex-1 bg-white/10 rounded py-0.5 hover:bg-white/20" onclick="window.admLevelUp('${s.id}')">У</button>
+                <button class="flex-1 bg-white/10 rounded py-0.5 hover:bg-white/20" onclick="window.admCircleUp('${s.id}')">К</button>
+            </div>
+        </div>`;
+    }).join('');
+
+    updateProgressPanel();
+};
+
+// 🎨 CANVAS
+// ═══════════════════════════════════════════════════════════════
+
+const initCanvases = () => {
+    ['bg-arch-canvas', 'fx-canvas', 'particles-canvas', 'yggdrasil-canvas', 'cosmic-dust', 'trails-canvas', 'torus-canvas'].forEach(id => {
+        const c = document.getElementById(id);
+        if (c) {
+            c.width = window.innerWidth;
+            c.height = window.innerHeight;
+        }
+    });
+};
+window.addEventListener('resize', () => { initCanvases(); render(); });
+initCanvases();
+
+// 🌳 ЗВЕЗДНОЕ ДРЕВО ИГГДРАСИЛЬ
+const drawYggdrasil = (ctx, w, h, t) => {
+    ctx.clearRect(0, 0, w, h);
+    const cX = w / 2, cY = h / 2;
+
+    const drawStarTree = (x, y, len, angle, depth, isReflection) => {
+        if (depth <= 0) return;
+        const endX = x + Math.cos(angle) * len;
+        const endY = y + Math.sin(angle) * len;
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = isReflection ? `rgba(255, 215, 0, ${0.1 * depth/8})` : `rgba(255, 215, 0, ${0.3 * depth/8})`;
+        ctx.lineWidth = depth * 0.4;
+        ctx.stroke();
+
+        if (depth < 6) {
+            ctx.fillStyle = isReflection ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.7)';
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.arc(endX, endY, (6-depth)*1.2 * (0.8 + Math.sin(t*2+depth)*0.2), 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        const nextLen = len * 0.76;
+        drawStarTree(endX, endY, nextLen, angle - 0.45 + Math.sin(t)*0.05, depth - 1, isReflection);
+        drawStarTree(endX, endY, nextLen, angle + 0.45 - Math.sin(t)*0.05, depth - 1, isReflection);
+    };
+
+    drawStarTree(cX, cY, 110, -Math.PI/2, 8, false); // Крона
+    drawStarTree(cX, cY, 110, Math.PI/2, 8, true);  // Корни
+};
+
+// 🌀 ТОРСИОННОЕ ПОЛЕ (ТОР)
+const drawTorus = (ctx, w, h, t) => {
+    ctx.clearRect(0, 0, w, h);
+    const cX = w / 2, cY = h / 2;
+    // Настраиваем радиусы так, чтобы тор проходил ЧЕРЕЗ центр сфер (средний радиус орбит)
+    const majorRadius = 240;
+    const minorRadius = 160;
+    const rings = 32;
+    const segments = 40;
+
+    ctx.save();
+    ctx.translate(cX, cY);
+    ctx.rotate(t * 0.03);
+
+    for (let i = 0; i < rings; i++) {
+        const phi = (i / rings) * Math.PI * 2;
+        let ringAlpha = 0.03;
+        ctx.beginPath();
+
+        for (let j = 0; j <= segments; j++) {
+            const theta = (j / segments) * Math.PI * 2 + t * 0.4;
+
+            const r = majorRadius + minorRadius * Math.cos(theta);
+            const tx = r * Math.cos(phi);
+            const ty = minorRadius * Math.sin(theta);
+            const tz = r * Math.sin(phi);
+
+            // ИСПОЛЬЗУЕМ СТРОГО state.ringTilt для синхронизации с орбитами
+            const x = tx;
+            const y = (ty + tz) * state.ringTilt;
+
+            ringAlpha = 0.03 + (tz / (majorRadius + minorRadius) + 1) * 0.08;
+
+            if (j === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+
+        ctx.strokeStyle = `rgba(0, 250, 255, ${ringAlpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+    }
+
+    // Рисуем меридианы для объема
+    for (let j = 0; j < rings; j += 2) {
+        const theta = (j / rings) * Math.PI * 2 + t * 0.5;
+        ctx.beginPath();
+        for (let i = 0; i <= segments; i++) {
+            const phi = (i / segments) * Math.PI * 2;
+            const r = majorRadius + minorRadius * Math.cos(theta);
+            const tx = r * Math.cos(phi);
+            const ty = minorRadius * Math.sin(theta);
+            const tz = r * Math.sin(phi);
+
+            const x = tx;
+            const y = ty * 0.5 + tz * state.ringTilt;
+
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(255, 215, 0, 0.08)`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+    }
+
+    ctx.restore();
+};
+
+	// 🧬 ГЕННЫЕ КЛЮЧИ (DATA)
+	const GENE_DATA = {
+		1: { name: "Энтузиазм", shadow: "Энтропия", gift: "Свежесть", siddhi: "Красота" },
+		2: { name: "Единство", shadow: "Потерянность", gift: "Ориентация", siddhi: "Единство" },
+		3: { name: "Инновация", shadow: "Хаос", gift: "Инновация", siddhi: "Невинность" },
+		4: { name: "Понимание", shadow: "Нетерпимость", gift: "Понимание", siddhi: "Прощение" },
+		5: { name: "Терпение", shadow: "Нетерпение", gift: "Терпение", siddhi: "Вневременность" },
+		6: { name: "Дипломатия", shadow: "Конфликт", gift: "Дипломатия", siddhi: "Мир" },
+		7: { name: "Руководство", shadow: "Дивизия", gift: "Руководство", siddhi: "Добродетель" },
+		8: { name: "Стиль", shadow: "Посредственность", gift: "Стиль", siddhi: "Изысканность" },
+		9: { name: "Целеустремленность", shadow: "Инертность", gift: "Целеустремленность", siddhi: "Непобедимость" },
+		10: { name: "Бытие", shadow: "Самоодержимость", gift: "Естественность", siddhi: "Бытие" },
+		11: { name: "Свет", shadow: "Мрак", gift: "Идеализм", siddhi: "Свет" },
+		12: { name: "Чистота", shadow: "Тщеславие", gift: "Различение", siddhi: "Чистота" },
+		13: { name: "Сопереживание", shadow: "Диссонанс", gift: "Сопереживание", siddhi: "Сострадание" },
+		14: { name: "Компетентность", shadow: "Компромисс", gift: "Компетентность", siddhi: "Щедрость" },
+		15: { name: "Цветение", shadow: "Скука", gift: "Магнетизм", siddhi: "Цветение" },
+		16: { name: "Мастерство", shadow: "Индифферентность", gift: "Усердие", siddhi: "Мастерство" },
+		17: { name: "Всеведение", shadow: "Мнение", gift: "Дальновидность", siddhi: "Всеведение" },
+		18: { name: "Совершенство", shadow: "Суждение", gift: "Целостность", siddhi: "Совершенство" },
+		19: { name: "Жертвенность", shadow: "Созависимость", gift: "Чувствительность", siddhi: "Жертвенность" },
+		20: { name: "Присутствие", shadow: "Поверхностность", gift: "Уверенность", siddhi: "Присутствие" },
+		21: { name: "Доблесть", shadow: "Контроль", gift: "Авторитет", siddhi: "Доблесть" },
+		22: { name: "Благодать", shadow: "Благосклонность", gift: "Милосердие", siddhi: "Благодать" },
+		23: { name: "Квинтэссенция", shadow: "Сложность", gift: "Простота", siddhi: "Квинтэссенция" },
+		24: { name: "Тишина", shadow: "Зависимость", gift: "Изобретательность", siddhi: "Тишина" },
+		25: { name: "Любовь", shadow: "Ограниченность", gift: "Принятие", siddhi: "Универсальная Любовь" },
+		26: { name: "Невидимость", shadow: "Гордыня", gift: "Ловкость", siddhi: "Невидимость" },
+		27: { name: "Альтруизм", shadow: "Эгоизм", gift: "Альтруизм", siddhi: "Самоотверженность" },
+		28: { name: "Бессмертие", shadow: "Бессмысленность", gift: "Тотальность", siddhi: "Бессмертие" },
+		29: { name: "Преданность", shadow: "Половинчатость", gift: "Обязательство", siddhi: "Преданность" },
+		30: { name: "Восторг", shadow: "Желание", gift: "Легкость", siddhi: "Восторг" },
+		31: { name: "Смирение", shadow: "Надменность", gift: "Лидерство", siddhi: "Смирение" },
+		32: { name: "Почтение", shadow: "Неудача", gift: "Настойчивость", siddhi: "Почтение" },
+		33: { name: "Откровение", shadow: "Забывчивость", gift: "Сдержанность", siddhi: "Откровение" },
+		34: { name: "Величие", shadow: "Форс", gift: "Сила", siddhi: "Величие" },
+		35: { name: "Безграничность", shadow: "Голод", gift: "Приключение", siddhi: "Безграничность" },
+		36: { name: "Сострадание", shadow: "Турбулентность", gift: "Гуманность", siddhi: "Сострадание" },
+		37: { name: "Нежность", shadow: "Слабость", gift: "Равенство", siddhi: "Нежность" },
+		38: { name: "Честь", shadow: "Борьба", gift: "Стойкость", siddhi: "Честь" },
+		39: { name: "Освобождение", shadow: "Провокация", gift: "Динамизм", siddhi: "Освобождение" },
+		40: { name: "Воля", shadow: "Истощение", gift: "Решительность", siddhi: "Божественная Воля" },
+		41: { name: "Эманация", shadow: "Фантазия", gift: "Предчувствие", siddhi: "Эманация" },
+		42: { name: "Празднование", shadow: "Ожидание", gift: "Отстраненность", siddhi: "Празднование" },
+		43: { name: "Богоявление", shadow: "Глухота", gift: "Прозрение", siddhi: "Богоявление" },
+		44: { name: "Иерархия", shadow: "Помеха", gift: "Взаимодействие", siddhi: "Иерархия" },
+		45: { name: "Причастие", shadow: "Доминирование", gift: "Синергия", siddhi: "Причастие" },
+		46: { name: "Экстаз", shadow: "Серьезность", gift: "Удача", siddhi: "Экстаз" },
+		47: { name: "Преображение", shadow: "Подавленность", gift: "Трансмутация", siddhi: "Преображение" },
+		48: { name: "Блаженство", shadow: "Неадекватность", gift: "Мудрость", siddhi: "Блаженство" },
+		49: { name: "Возрождение", shadow: "Реакция", gift: "Революция", siddhi: "Возрождение" },
+		50: { name: "Гармония", shadow: "Коррупция", gift: "Равновесие", siddhi: "Гармония" },
+		51: { name: "Пробуждение", shadow: "Ажиотаж", gift: "Инициатива", siddhi: "Пробуждение" },
+		52: { name: "Покой", shadow: "Стресс", gift: "Сдержанность", siddhi: "Покой" },
+		53: { name: "Изобилие", shadow: "Незрелость", gift: "Расширение", siddhi: "Изобилие" },
+		54: { name: "Благодать", shadow: "Жадность", gift: "Стремление", siddhi: "Благодать" },
+		55: { name: "Свобода", shadow: "Виктимность", gift: "Свобода", siddhi: "Свобода" },
+		56: { name: "Опьянение", shadow: "Отвлечение", gift: "Обогащение", siddhi: "Опьянение" },
+		57: { name: "Ясность", shadow: "Беспокойство", gift: "Интуиция", siddhi: "Ясность" },
+		58: { name: "Блаженство", shadow: "Недовольство", gift: "Жизнелюбие", siddhi: "Блаженство" },
+		59: { name: "Прозрачность", shadow: "Нечестность", gift: "Интимность", siddhi: "Прозрачность" },
+		60: { name: "Справедливость", shadow: "Ограниченность", gift: "Реализм", siddhi: "Справедливость" },
+		61: { name: "Святость", shadow: "Психоз", gift: "Вдохновение", siddhi: "Святость" },
+		62: { name: "Безупречность", shadow: "Интеллект", gift: "Точность", siddhi: "Безупречность" },
+		63: { name: "Истина", shadow: "Сомнение", gift: "Исследование", siddhi: "Истина" },
+		64: { name: "Озарение", shadow: "Замешательство", gift: "Воображение", siddhi: "Озарение" }
+	};
+
+	window.showGeneKeys = () => {
+		const win = document.getElementById('gene-keys-win');
+		const grid = document.getElementById('gene-grid');
+		if (!win || !grid) return;
+
+		grid.innerHTML = '';
+		for (let i = 1; i <= 64; i++) {
+			const cell = document.createElement('div');
+			cell.className = 'gene-cell';
+			cell.textContent = i;
+			cell.onclick = (e) => { e.stopPropagation(); window.selectGeneKey(i); };
+			cell.onmouseenter = (e) => window.showGeneTooltip(e, i);
+			cell.onmouseleave = () => window.hideGeneTooltip();
+			grid.appendChild(cell);
+		}
+
+		win.style.display = 'block';
+		Audio.bell(440);
+	};
+
+	window.selectGeneKey = (num) => {
+		const data = GENE_DATA[num];
+		if (!data) return;
+
+		document.getElementById('gene-info').classList.remove('hidden');
+		document.getElementById('gene-name').textContent = data.name;
+		document.getElementById('gene-num').textContent = `КЛЮЧ #${num}`;
+		document.getElementById('gene-shadow').textContent = data.shadow;
+		document.getElementById('gene-gift').textContent = data.gift;
+		document.getElementById('gene-siddhi').textContent = data.siddhi;
+
+		// Снимаем активность со всех и ставим на этот
+		document.querySelectorAll('.gene-cell').forEach(c => c.classList.remove('active'));
+		document.querySelectorAll('.gene-cell')[num-1].classList.add('active');
+
+		Audio.bell(220 + num * 5);
+	};
+
+	window.showGeneTooltip = (e, num) => {
+		const t = document.getElementById('gene-tooltip');
+		const data = GENE_DATA[num];
+		if (!t || !data) return;
+
+		t.innerHTML = `<b class="text-yellow-400">#${num} ${data.name}</b><br>
+					   <span class="text-red-400">🌑 ${data.shadow}</span><br>
+					   <span class="text-blue-400">✨ ${data.gift}</span><br>
+					   <span class="text-purple-400">💎 ${data.siddhi}</span>`;
+		t.style.left = (e.clientX + 15) + 'px';
+		t.style.top = (e.clientY + 15) + 'px';
+		t.style.opacity = 1;
+	};
+
+	window.hideGeneTooltip = () => {
+		const t = document.getElementById('gene-tooltip');
+		if (t) t.style.opacity = 0;
+	};
+
+	// ⏳ МЕХАНИКА ЗАТУХАНИЯ (DECAY)
+	window.updateDecay = () => {
+		const DECAY_MS = 24 * 60 * 60 * 1000; // 24 часа до 100% затухания
+		const now = Date.now();
+
+		configs.forEach(s => {
+			const data = state.sphereData[s.id];
+			if (!data || !data.lastActivity) return;
+
+			const elapsed = now - data.lastActivity;
+			const factor = Math.min(1, elapsed / DECAY_MS); // 0 (свежая) -> 1 (мертвая)
+
+			const el = document.getElementById('s-' + s.id);
+			if (el) {
+				// Уменьшаем прозрачность и насыщенность
+				el.style.setProperty('--decay-opacity', 0.2 + (1 - factor) * 0.8);
+				el.style.setProperty('--decay-gray', factor);
+			}
+		});
+	};
+
+	// 🌳 ЭВОЛЮЦИЯ ФОРМ
+	window.updateEvolution = () => {
+		configs.forEach(s => {
+			const data = state.sphereData[s.id];
+			if (!data) return;
+
+			let targetCircle = 1;
+			if (data.lvl >= 4) targetCircle = 2;
+			if (data.lvl >= 7) targetCircle = 3;
+			if (data.lvl >= 9) targetCircle = 4;
+
+			if (data.circle !== targetCircle) {
+				data.circle = targetCircle;
+				const el = document.getElementById('s-' + s.id);
+				if (el) {
+					el.className = `s-core form-${data.circle} ${data.isOpen ? 'is-open' : ''}`;
+					addChronicle(`✨ Эволюция ${s.n}: Форма ${data.circle}`);
+					Audio.levelUp(data.lvl);
+				}
+			}
+		});
+	};
+
+	// 💾 СИНХРОНИЗАЦИЯ С СЕРВЕРОМ
+	// 💾 СИНХРОНИЗАЦИЯ С ЛОКАЛЬНЫМ ХРАНИЛИЩЕМ (Байпас CORS)
+	window.syncState = async () => {
+		const dataToSave = {
+			totalLight: state.totalLight,
+			sphereData: state.sphereData,
+			spirit: state.spirit,
+			elements: state.elements,
+			activeSystem: state.activeSystem
+		};
+		localStorage.setItem('awara_v255_state', JSON.stringify(dataToSave));
+
+		// Попытка сохранить на сервер
+		try {
+			await fetch('/api/save', {
+				method: 'POST',
+				body: JSON.stringify(dataToSave)
+			});
+		} catch(e) { }
+	};
+
+	window.loadState = async () => {
+		// 1. Сначала пробуем загрузить из localStorage
+		const localData = localStorage.getItem('awara_v255_state');
+		if (localData) {
+			try {
+				const d = JSON.parse(localData);
+				state.totalLight = d.totalLight ?? state.totalLight;
+				state.sphereData = { ...state.sphereData, ...d.sphereData };
+				state.spirit = d.spirit || state.spirit;
+				state.elements = d.elements || state.elements;
+				state.activeSystem = d.activeSystem || state.activeSystem;
+				log("СИСТЕМА", "🌌 Состояние восстановлено из локальной памяти");
+			} catch(e) { }
+		}
+
+		// 2. Затем пробуем сервер (если доступен)
+		try {
+			const r = await fetch('/api/load');
+			const d = await r.json();
+			if (d && d.totalLight !== undefined) {
+				state.totalLight = d.totalLight;
+				state.sphereData = { ...state.sphereData, ...d.sphereData };
+				state.spirit = d.spirit || state.spirit;
+				state.elements = d.elements || state.elements;
+				state.activeSystem = d.activeSystem || state.activeSystem;
+				log("СИСТЕМА", "📡 Синхронизировано с облаком");
+			}
+		} catch(e) { }
+
+		render();
+	};
+
+	window.resetState = () => {
+		if(confirm("Сбросить весь прогресс?")) {
+			localStorage.removeItem('awara_v255_state');
+			location.reload();
+		}
+	};
+
+	window.onload = () => {
+		window.loadState();
+	};
+
+	// 🔄 ГЛАВНЫЙ ЦИКЛ
+// ═══════════════════════════════════════════════════════════════
+
+const loop = () => {
+    state.speed += (state.targetSpeed - state.speed) * 0.05;
+    state.t += 0.016 * state.speed;
+
+    window.updateDecay();
+    window.updateEvolution();
+
+    const w = window.innerWidth, h = window.innerHeight;
+    const cX = w / 2, cY = h / 2;
+    // Позиция сингулярности (относительно центра)
+    const bhPos = { x: -(cX - 140) * 0.7, y: (cY - 140) * 0.7 };
+
+    const bgCtx = document.getElementById('bg-arch-canvas')?.getContext('2d');
+    const fctx = document.getElementById('fx-canvas')?.getContext('2d');
+    const pctx = document.getElementById('particles-canvas')?.getContext('2d');
+    const yggCtx = document.getElementById('yggdrasil-canvas')?.getContext('2d');
+    const dustCtx = document.getElementById('cosmic-dust')?.getContext('2d');
+    const trctx = document.getElementById('trails-canvas')?.getContext('2d');
+    const tctx = document.getElementById('torus-canvas')?.getContext('2d');
+
+    if (!bgCtx || !fctx || !pctx) {
+        requestAnimationFrame(loop);
+        return;
+    }
+
+    // 1. Очистка канвасов эффектов
+    fctx.clearRect(0, 0, w, h);
+    if (trctx) trctx.clearRect(0, 0, w, h);
+    if (pctx) pctx.clearRect(0, 0, w, h);
+
+    // 2. Торроид (Энергетическое поле)
+    if (tctx) drawTorus(tctx, w, h, state.t);
+
+    // 3. Орбитальные кольца
+    if (bgCtx) {
+        bgCtx.clearRect(0, 0, w, h);
+        RADII.forEach((rad, i) => {
+            bgCtx.beginPath();
+            bgCtx.ellipse(cX, cY, rad, rad * state.ringTilt, 0, 0, Math.PI * 2);
+            bgCtx.strokeStyle = COLORS[i] + '25';
+            bgCtx.lineWidth = 1.2;
+            bgCtx.stroke();
+        });
+    }
+
+    // 4. Иггдрасиль
+    if (yggCtx) drawYggdrasil(yggCtx, w, h, state.t);
+
+    // 5. Пыль
+    if (dustCtx) {
+        if (state.dust.length === 0) {
+            for (let i = 0; i < 120; i++) {
+                state.dust.push({
+                    x: Math.random() * w, y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.2,
+                    s: Math.random() * 1.5 + 0.5, hue: 180 + Math.random() * 80
+                });
+            }
+        }
+        dustCtx.clearRect(0, 0, w, h);
+        state.dust.forEach(p => {
+            p.x += p.vx * state.speed; p.y += p.vy * state.speed;
+            if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+            if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+            dustCtx.beginPath();
+            dustCtx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
+            dustCtx.fillStyle = `hsla(${p.hue}, 70%, 65%, 0.4)`;
+            dustCtx.fill();
+        });
+    }
+
+    // 6. СВЕТОВЫЕ ЭФФЕКТЫ РА
+    if (fctx) {
+        // Тонкие игольчатые лучи
+        fctx.save();
+        fctx.translate(cX, cY);
+        fctx.rotate(state.t * 0.12);
+        const rayCount = 24;
+        const rayPulse = 0.92 + Math.sin(state.t * 1.2) * 0.08;
+        for (let i = 0; i < rayCount; i++) {
+            const angle = (i / rayCount) * Math.PI * 2;
+            const rayLen = 750 * rayPulse;
+            const grad = fctx.createLinearGradient(0, 0, Math.cos(angle) * rayLen, Math.sin(angle) * rayLen);
+            grad.addColorStop(0, 'rgba(255, 215, 0, 0.35)');
+            grad.addColorStop(0.3, 'rgba(255, 180, 0, 0.1)');
+            grad.addColorStop(1, 'transparent');
+            fctx.beginPath();
+            fctx.moveTo(0, 0);
+            fctx.lineTo(Math.cos(angle - 0.006) * rayLen, Math.sin(angle - 0.006) * rayLen);
+            fctx.lineTo(Math.cos(angle + 0.006) * rayLen, Math.sin(angle + 0.006) * rayLen);
+            fctx.closePath();
+            fctx.fillStyle = grad;
+            fctx.fill();
+        }
+        fctx.restore();
+
+        // Волны РА (Золотые)
+        if (Math.random() < 0.008 * state.speed) {
+            state.waves.push({ x: cX, y: cY, r: 35, a: 0.45, col: '255, 215, 0', thick: 7, type: 'light' });
+        }
+        // Волны МЕТРИК (Фиолетовые)
+        if (Math.random() < 0.005 * state.speed) {
+            state.waves.push({ x: cX + bhPos.x, y: cY + bhPos.y, r: 15, a: 0.55, col: '138, 43, 226', thick: 4, type: 'void' });
+        }
+
+        state.waves.forEach((wv, i) => {
+            const isVoid = wv.type === 'void';
+            wv.r += (isVoid ? 2.6 : 3.4) * state.speed;
+            wv.a -= (isVoid ? 0.006 : 0.004);
+            if (wv.a <= 0 || wv.r > Math.max(w, h)) { state.waves.splice(i, 1); return; }
+            fctx.beginPath();
+            fctx.arc(wv.x, wv.y, wv.r, 0, Math.PI * 2);
+            const g = fctx.createRadialGradient(wv.x, wv.y, wv.r - wv.thick, wv.x, wv.y, wv.r + wv.thick);
+            g.addColorStop(0, 'transparent');
+            g.addColorStop(0.5, `rgba(${wv.col}, ${wv.a})`);
+            g.addColorStop(1, 'transparent');
+            fctx.strokeStyle = g;
+            fctx.lineWidth = wv.thick;
+            fctx.stroke();
+        });
+
+        // Центральное свечение РА
+        const raG = fctx.createRadialGradient(cX, cY, 0, cX, cY, 90);
+        raG.addColorStop(0, 'rgba(255, 255, 255, 0.5)');
+        raG.addColorStop(0.4, 'rgba(255, 215, 0, 0.2)');
+        raG.addColorStop(1, 'transparent');
+        fctx.fillStyle = raG;
+        fctx.beginPath();
+        fctx.arc(cX, cY, 90, 0, Math.PI * 2);
+        fctx.fill();
+    }
+
+    // 7. ОБНОВЛЕНИЕ ПОЗИЦИЙ СФЕР И ТРЕЙЛОВ
+    configs.forEach(s => {
+        const el = document.getElementById('s-' + s.id); if (!el) return;
+        const data = state.sphereData[s.id] || { lvl: 1, circle: 1 };
+        let x, y, size = 36;
+
+        if (s.type === 'ring') {
+            const rad = RADII[data.lvl - 1];
+            const angle = (s.index / 12) * Math.PI * 2 + state.t * 0.1;
+            const breath = Math.sin(state.t * 2.5 + s.index) * 4;
+            x = Math.cos(angle) * (rad + breath);
+            y = Math.sin(angle) * (rad + breath) * state.ringTilt;
+            size = 22 + data.circle * 8;
+        } else if (s.type === 'void') {
+            x = bhPos.x; y = bhPos.y; size = 48;
+            // Частицы вокруг сингулярности (для pctx)
+            for (let p = 0; p < 6; p++) {
+                const pa = state.t * 1.8 + p * Math.PI / 3;
+                const pd = 42 + Math.sin(state.t * 3.5 + p) * 6;
+                pctx.beginPath();
+                pctx.arc(cX + x + Math.cos(pa) * pd, cY + y + Math.sin(pa) * pd, 1.8, 0, Math.PI * 2);
+                pctx.fillStyle = '#9933ff';
+                pctx.fill();
+            }
+        } else if (s.type === 'personal') {
+            x = s.pos.x * (cX - 80); y = s.pos.y * (cY - 80); size = 48;
+        }
+
+        // Применяем позицию к DOM-сфере
+        el.style.left = (cX + x) + 'px';
+        el.style.top = (cY + y) + 'px';
+        el.style.width = size + 'px';
+        el.style.height = size + 'px';
+        el.style.marginLeft = (-size / 2) + 'px';
+        el.style.marginTop = (-size / 2) + 'px';
+
+        // РИСУЕМ ХВОСТЫ (TRAILS)
+        if (trctx) {
+            if (!state.sphereTrails) state.sphereTrails = {};
+            if (!state.sphereTrails[s.id]) state.sphereTrails[s.id] = [];
+            const trails = state.sphereTrails[s.id];
+
+            // Точные координаты центра сферы
+            const curX = cX + x;
+            const curY = cY + y;
+
+            trails.unshift({ x: curX, y: curY });
+            if (trails.length > 18) trails.pop();
+
+            if (trails.length > 1) {
+                const col = COLORS[data.lvl - 1] || '#fff';
+                trctx.beginPath();
+                trctx.moveTo(trails[0].x, trails[0].y);
+                for (let j = 1; j < trails.length; j++) {
+                    const alpha = 1 - (j / trails.length);
+                    trctx.lineTo(trails[j].x, trails[j].y);
+                    trctx.strokeStyle = col + Math.floor(alpha * 90).toString(16).padStart(2, '0');
+                    trctx.lineWidth = (size / 3) * alpha;
+                    trctx.lineCap = 'round';
+                    trctx.stroke();
+                    trctx.beginPath();
+                    trctx.moveTo(trails[j].x, trails[j].y);
+                }
+            }
+        }
+    });
+
+    // 8. Мудрецы Тримурти
+    const sages = ['shiva', 'vishnu', 'brahma'];
+    sages.forEach((sage, i) => {
+        const el = document.getElementById('sage-' + sage); if (!el) return;
+        const angle = (i / 3) * Math.PI * 2 + state.t * 0.15;
+        const r = 115;
+        const sx = cX + Math.cos(angle) * r;
+        const sy = cY + Math.sin(angle) * r * 0.35;
+        el.style.left = sx + 'px';
+        el.style.top = sy + 'px';
+        el.style.marginLeft = '-28px'; el.style.marginTop = '-28px';
+    });
+
+    // 9. Солнце и Луна
+    const sunAngle = state.t * 0.035;
+    const sunX = cX + Math.cos(sunAngle) * w * 0.44 - 90;
+    const sunY = cY + Math.sin(sunAngle) * h * 0.38 - 90;
+    const moonX = cX + Math.cos(sunAngle + Math.PI) * w * 0.44 - 10;
+    const moonY = cY + Math.sin(sunAngle + Math.PI) * h * 0.38 - 10;
+    document.getElementById('great-sun').style.transform = `translate(${sunX}px, ${sunY}px)`;
+    document.getElementById('great-moon').style.transform = `translate(${moonX}px, ${moonY}px)`;
+
+    // 10. Искра (Вестник)
+    const vest = document.getElementById('vestnik');
+    if (vest) {
+        state.spark.x += (state.spark.tx - state.spark.x) * 0.012;
+        state.spark.y += (state.spark.ty - state.spark.y) * 0.012;
+        vest.style.left = state.spark.x + 'px';
+        vest.style.top = state.spark.y + 'px';
+    }
+
+    // 11. Синхронизация (редкая)
+    if (Math.round(state.t * 60) % 300 === 0) {
+        window.syncState();
+    }
+
+    requestAnimationFrame(loop);
+};
+
+// ⭐ ЗВЁЗДЫ
+// ═══════════════════════════════════════════════════════════════
+
+const initStars = () => {
+    const c = document.getElementById('starfield'); if (!c) return;
+    const ctx = c.getContext('2d');
+    const resize = () => { c.width = window.innerWidth; c.height = window.innerHeight; };
+    window.addEventListener('resize', resize); resize();
+
+    const stars = Array.from({ length: 700 }, () => ({
+        x: Math.random() * c.width, y: Math.random() * c.height,
+        s: Math.random() * 2, o: Math.random(), sp: 0.0004 + Math.random() * 0.0006,
+        hue: Math.random() > 0.75 ? 200 + Math.random() * 50 : 0
+    }));
+
+    const draw = () => {
+        ctx.clearRect(0, 0, c.width, c.height);
+        const alphaFactor = state.theme ? state.theme.starAlpha : 0.8;
+        stars.forEach(s => {
+            ctx.globalAlpha = (0.3 + Math.abs(Math.sin(Date.now() * s.sp + s.o)) * 0.6) * alphaFactor;
+            ctx.fillStyle = s.hue ? `hsl(${s.hue}, 70%, 70%)` : '#fff';
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.s, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        requestAnimationFrame(draw);
+    };
+    draw();
+};
+
+// 🚀 ЗАПУСК
+// ═══════════════════════════════════════════════════════════════
+
+render();
+loop();
+initStars();
+
+setInterval(() => {
+    state.spark.tx = 120 + Math.random() * (window.innerWidth - 240);
+    state.spark.ty = 120 + Math.random() * (window.innerHeight - 240);
+}, 4500);
+
+document.addEventListener('click', () => Audio.init(), { once: true });
+
+log("РА", "✨ AWARA v255.0 — WISDOM OF TRIMURTI ✨");
+addChronicle("🌌 Матрица активирована");
+
+setTimeout(() => log("ИСКРА", "🔱🪷📿 Кликни на Мудреца для беседы"), 2500);
+setTimeout(() => log("РА", "Наблюдай за эволюцией форм — круг становится кристаллом"), 5000);
+</script>
+</body>
+</html>

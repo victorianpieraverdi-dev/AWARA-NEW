@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARA — Test Hints Module (M-006)</title>
+<style>
+  body { background:#0a0a14; color:#c9a84c; font-family:'JetBrains Mono',monospace; padding:20px; }
+  h1 { font-family:'Cinzel',serif; color:#ffd700; font-size:18px; letter-spacing:0.2em; }
+  h2 { font-family:'Cinzel',serif; color:#c9a84c; font-size:14px; margin-top:20px; }
+  .pass { color:#4ade80; } .fail { color:#ef4444; }
+  .test { margin:4px 0; font-size:12px; }
+  .hints-list { margin:8px 0; padding:8px; background:rgba(201,168,76,0.05); border:1px solid rgba(201,168,76,0.15); border-radius:8px; font-size:11px; }
+  .hint-text { color:rgba(220,210,190,0.7); margin:2px 0; }
+  button { background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); color:#c9a84c; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:11px; margin:4px; }
+  button:hover { background:rgba(201,168,76,0.2); }
+</style>
+</head>
+<body>
+<h1>HINTS MODULE TEST</h1>
+<div id="results"></div>
+<div style="margin-top:20px;">
+  <button onclick="testToast()">Toast</button>
+  <button onclick="testModal()">Modal (tigel)</button>
+  <button onclick="resetAll()">Reset All Hints</button>
+</div>
+
+<script type="module">
+import { HINTS, getHints, isFirstVisit, markHintsSeen, resetAllHints, showHintToast, showHintsModal } from './hints-module.js';
+
+var out = document.getElementById('results');
+var passed = 0, failed = 0;
+
+function assert(name, condition) {
+  if (condition) {
+    passed++;
+    out.innerHTML += '<div class="test pass">OK: ' + name + '</div>';
+  } else {
+    failed++;
+    out.innerHTML += '<div class="test fail">FAIL: ' + name + '</div>';
+  }
+}
+
+// Тест 1: HINTS содержит все 12 экранов
+var expectedPages = ['tigel','initiation','passport','cards','matrix','universe','oracle','earth','dashboard','natal','daimon','milost'];
+assert('HINTS содержит 12 экранов', Object.keys(HINTS).length === 12);
+expectedPages.forEach(function(p) {
+  assert('HINTS[' + p + '] существует', !!HINTS[p]);
+  assert('HINTS[' + p + '] имеет подсказки', HINTS[p] && HINTS[p].length > 0);
+});
+
+// Тест 2: getHints возвращает массив
+assert('getHints("tigel") возвращает массив', Array.isArray(getHints('tigel')));
+assert('getHints("tigel") имеет 3 подсказки', getHints('tigel').length === 3);
+assert('getHints("unknown") возвращает пустой массив', getHints('unknown').length === 0);
+
+// Тест 3: isFirstVisit / markHintsSeen
+resetAllHints();
+assert('isFirstVisit("tigel") = true (после сброса)', isFirstVisit('tigel'));
+markHintsSeen('tigel');
+assert('isFirstVisit("tigel") = false (после markHintsSeen)', !isFirstVisit('tigel'));
+assert('isFirstVisit("passport") = true (не отмечен)', isFirstVisit('passport'));
+
+// Тест 4: resetAllHints сбрасывает всё
+resetAllHints();
+assert('После resetAllHints tigel снова first visit', isFirstVisit('tigel'));
+
+// Все подсказки (переведённые через getHints)
+out.innerHTML += '<h2>ВСЕ ПОДСКАЗКИ (переведённые)</h2>';
+for (var pageId of Object.keys(HINTS)) {
+  var translated = getHints(pageId);
+  out.innerHTML += '<div class="hints-list"><b>' + pageId + '</b>';
+  translated.forEach(function(h) { out.innerHTML += '<div class="hint-text">' + h + '</div>'; });
+  out.innerHTML += '</div>';
+}
+
+// Итог
+out.innerHTML += '<h2>ИТОГ: ' + passed + ' passed, ' + failed + ' failed</h2>';
+
+// Экспорт для кнопок
+window._showHintToast = showHintToast;
+window._showHintsModal = showHintsModal;
+window._resetAllHints = resetAllHints;
+</script>
+<script>
+function testToast() { window._showHintToast('Тестовая подсказка AWARA'); }
+function testModal() { window._showHintsModal('tigel'); }
+function resetAll() { window._resetAllHints(); alert('Все подсказки сброшены'); }
+</script>
+</body>
+</html>

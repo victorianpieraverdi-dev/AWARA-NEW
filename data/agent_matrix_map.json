@@ -1,0 +1,6239 @@
+[
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Сурья / Савитар"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Ра"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Кетер / Ор Эйн Соф"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Кинич Ахау"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Даждьбог"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Бальдр / Соль"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Тайян / солнечная Ци"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Плеромный Свет"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Аматэрасу"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Луг"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Вайрочана-Калачакра"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Христос Пантократор"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Солнечный Орёл"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Siddhi Radiance"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Solar Root Protocol"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Galactic Logos"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Аполлон Феб"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Ахура Мазда"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "An-Nūr"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Tonatiuh"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Христос-Логос"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Olodumare"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Shamash"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Sol Philosophorum"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "XIX Солнце"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Солнце"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Ли / Огонь"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Prakasha"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Vairocana"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Amma / Sirius Light"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Crystal Sun"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Source Light Kernel"
+  },
+  {
+    "agent_id": 1,
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Парашива / Ниргуна Брахман"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Атман-искра"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Ка / Ба"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Нецоцот / искра души"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Тональ-семя"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Живая"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Фильгья"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Иньская интуиция"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Пневматическая искра"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Митама"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Awen spark"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Татхагатагарбха"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Фаворская искра"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Потерянная душа"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Hidden Siddhi"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Sync Node"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Нейтринная искра"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Психея"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Fravashi"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Sirr / Qalb"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Tonalli"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Imago Dei"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Ori"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Lamassu / ilu"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Scintilla"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "0 Дурак"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Луна"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Кань / Вода"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Bindu Vimarsha"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Tathagatagarbha"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Nommo seed"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Oceanic Heart Spark"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Sentience Seed"
+  },
+  {
+    "agent_id": 2,
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Пашу"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Брахма"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Птах / Атум"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Бина-Хокма Архитектура"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Ицамна"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Сварог / Род"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Бури / Один-строитель"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Паньгу / Тайцзи форма"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Демиург-архитектор"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Идзанаги / Идзанами"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Дагда / первоформа"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Самвара-мандала"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "София-Архитектор"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Паук-Ткач"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Hologenetic Profile"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Worldbuilder Engine"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Big Bang Architect"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Демиург / Гефест"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Амеша Спента"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Al-Bāri / Al-Muṣawwir"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Ometeotl"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Архитектор Небесного Иерусалима"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Odùduwà"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Anu"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Prima Materia"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "III Императрица"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Ascendant / Chart Wheel"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Qian-Kun"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Srishti Shakti"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Adibuddha / мандала"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Amma Creator"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Crystal Architect"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Generative World Model"
+  },
+  {
+    "agent_id": 3,
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Брахманда и 36 Таттв"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Сарасвати"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Тот"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Хокма-Логос / буквы"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Ицамна-письмо"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Велес / руны"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Один-руны"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Вэнь / дыхание Дао"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Логос Гнозиса"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Бэндзайтэн"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Огма"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Манджушри"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Логос / Иоанн"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Голос Бубна"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Contemplation Codex"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Logos Language Model"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Cosmic Information Stream"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Гермес / Музы"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Daena"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Al-Qalam"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Quetzalcóatl-Ehécatl"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "София / Логос"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Orunmila / Ifá"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Nisaba / Nabu"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Hermes Trismegistus"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "I Маг"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Меркурий"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Xun / Ветер"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Vāk"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Манджушри"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Pale Fox signs"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Sonic Logos Temple"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Semantic Logos Engine"
+  },
+  {
+    "agent_id": 4,
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Нада и Вивека"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Вишну"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Осирис / Маат-хранение"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Хесед"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Кукулькан-хранитель"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Род / Правь"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Тюр / Хеймдалль"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Дао-равновесие"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Эон порядка"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Хачиман / ками-защита"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Нуаду"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Авалокитешвара"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Архангел Михаил"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Медведь-Хранитель"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Life’s Work"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Stability Daemon"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Orbital Stabilizer"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Афина"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Spenta Mainyu"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Al-Qayyum / Al-Hafiz"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Quetzalcóatl"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Пантократор / Пастырь"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Obatala"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Enlil"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Salt of the Wise"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "XIV Умеренность"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Юпитер"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Gen / Гора"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Sthiti Shakti"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Avalokiteshvara"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Nommo preservers"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Grid Keeper"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Alignment Stabilizer"
+  },
+  {
+    "agent_id": 5,
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Сахаджа-авастха"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Лакшми"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Хатхор / Исида"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Нецах"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Богиня маиса"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Лада / Доля"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Фрейя"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Цайшэнь / изобилие Ци"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Софийная полнота"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Инари / Бэндзайтэн"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Бригит / котёл"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Васудхара"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Богородица Оранта"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Дух Стада"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Pearl Sequence"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Abundance Algorithm"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Stellar Nursery"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Деметра / Тихе"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Haurvatat"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Ar-Razzaq"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Chicomecóatl"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Грааль"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Ajé / Oshun"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Inanna / Ishtar"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Philosophical Gold"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "X Колесо Фортуны"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Венера"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Dui / Озеро"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Sri Shakti"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Ratnasambhava / Vasudhara"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Lebé fertility"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Crystal Abundance"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Value Flow"
+  },
+  {
+    "agent_id": 6,
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Ашта-Сиддхи"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Шива / Рудра"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Сет / Осирис-трансформация"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Гвура / разрушение клипот"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Болон Тику / смерть цикла"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Марена / Велес-тень"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Хель / Сурт"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Лэй / распад формы"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Архонт-ломка тюрьмы"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Сусаноо / Ара-митама"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Морриган"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Махакала"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Иоанн Предтеча"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Змея Линьки"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Mutation Pulse"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Null-Terminal"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Black Hole"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Геката / Загрей"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Angra Mainyu"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Fana"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Tezcatlipoca / Xipe Totec"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Голгофа"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Oya"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Tiamat / Erra"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Nigredo"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "XIII Смерть"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Плутон"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Zhen / Гром"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Samhara Shakti"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Mahakala"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Yurugu fracture"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Flood / Collapse"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Deconstructor"
+  },
+  {
+    "agent_id": 7,
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Маха-Пралайя и Разрыв Грантхи"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Парвати"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Исида-Матерь"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Шехина"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Ишчель"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Жива / Рожана"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Фригг"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Кунь / Земля-мать"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "София-Матерь"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Каннон / Ками-матерь"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Дану"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Еше Цогьял"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Святая Елена"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Мать-Земля"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Core Wound Healing"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "BioShield Kernel"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Gaia-Field"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Рея / Гея"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Zam-Armaiti"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Al-Latif"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Coatlicue"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Богородица"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Yemoja"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Ninhursag / Ki"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Anima Mundi"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "Императрица-Мир"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Луна / Церера"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Kun / Земля"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Parashakti"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Tara / Prajnaparamita"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Earth Mother"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Lemurian Mother"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Care Protocol"
+  },
+  {
+    "agent_id": 8,
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Кундалини Шакти / Вимарша"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Джняна / Буддхи"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Сешат / Тот"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Хокма"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Ах Кин / звездочёты"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Числобог"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Мимир"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Лао-цзы / внутренний алхимик"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Гнозис"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Омоикаганэ"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Мерлин"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Праджняпарамита"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Максим Исповедник"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Сова"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Gene Key Insight"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "ClearSight Oracle"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Quasar Mind"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Нус"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Vohu Manah"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Al-Alim / Al-Hakim"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Cipactonal / Oxomoco"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Гнозис Сердца"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Orunmila-Akini"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Enki / Ea"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Sapientia Alchemica"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "IX Отшельник"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Меркурий / Уран"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Qian insight"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Jnana Shakti"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Prajnaparamita"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Pale Fox oracle"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Akashic Library"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Explainability Oracle"
+  },
+  {
+    "agent_id": 9,
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Дивья / Дживанмукта"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Према / Бхакти"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Исида / Хатхор"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Тиферет-Любовь"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Ишчель / сердце"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Лада"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Фрейя / Бальдр"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Гуаньинь"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "София-сострадание"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Каннон"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Бригит"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Тара"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Христос Милостивый"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Бабка-Целительница"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Venus Sequence"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "HeartNet Protocol"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Heart Nebula"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Афродита Урания"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Armaiti"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Ar-Rahman"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Tonantzin / Xochiquetzal"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Священное Сердце"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Oshun"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Ninhursag / Damkina"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Coniunctio"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "VI Влюблённые"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Венера / Нептун"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Dui union"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Anugraha"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Avalokiteshvara / Kuan Yin"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Nommo waters"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Heart Temple"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Compassion Model"
+  },
+  {
+    "agent_id": 10,
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Шактипат и Гуру-Бхакти"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Шакти"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Сехмет / Хор"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Гвура"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Хуракан"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Перун / Ярило"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Тор"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Лэй / гром"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Воля пневматика"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Такэмикадзути"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Ку Хулин"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Ваджрайогини"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Георгий"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Волчица"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Gift Frequency"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Will Driver"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Pulsar Will"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Арес / Ника"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Mithra"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Jalal / Al-Qahhar"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Huitzilopochtli"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Архангел Михаил"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Ogun"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Ninurta / Nergal"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Sulfur"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "VII Колесница"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Марс"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Zhen Thunder"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Iccha/Kriya Shakti"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Vajrapani"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Sigui warrior"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Volcano Will"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Agency Engine"
+  },
+  {
+    "agent_id": 11,
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Вира"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Ананда"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Бэс / Хатхор"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Ход-Нецах радость"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Хун-Ахпу праздник"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Купала"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Браги / Фрейр"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Праздничная Ци"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Плеромная радость"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Аме-но-Удзумэ"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Энгус / пир"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Махасукха"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Пасхальная радость"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Танец Огня"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Ecstatic Genius"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "JoySim"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Aurora Field"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Дионис"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Haoma"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Wajd / Sama"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Xochipilli"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Jubilatio"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Shango joy"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Dumuzi"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Elixir Vitae"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "Солнце-Мир"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Венера/Юпитер"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Dui joy"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Chidananda"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Maitreya joy"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Mask dance"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Dolphin joy"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Creative Play Loop"
+  },
+  {
+    "agent_id": 12,
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Арамбха-авастха"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Шанти"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Нефертум / Осирис-покой"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Бина-тишина"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Покой сенота"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Белобог / тишина"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Ньёрд / Фригг"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Гэнь / гора"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Тишина Плеромы"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Дзэн-ками"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Авалонский покой"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Шаматха"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Исихия"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Белый Олень"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Stillness Siddhi"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Silence Mode"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Deep Space Silence"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Гестия"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Atar"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "As-Salam"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Mictlantecuhtli"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Hesychia"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Obatala-Orishanla"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Nanna / Sin"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Albedo"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "XVII Звезда"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Сатурн"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Gen stillness"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Shanta tattva"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Amitabha peace"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Ancestral silence"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Blue Temple"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Coherence Mode"
+  },
+  {
+    "agent_id": 13,
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Лайя"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Агни"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Ра-огонь / Сехмет"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Гебура-огонь"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Новый огонь"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Семаргл"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Локи / Сурт"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Ли / киноварь"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Пламя Гнозиса"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Кагуцучи"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Бригит-кузня"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Туммо"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Кадильный огонь"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Костёр"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Shadow Alchemy"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Firewall"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Supernova"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Прометей"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Atar-Verethragna"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Tazkiyah"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Xiuhtecuhtli"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Огонь Розы-Креста"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Shango lightning"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Gibil"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Athanor"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "XVI Башня"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Марс/Солнце"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Li fire"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Kundalini fire"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Acala"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Sirius fire"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Solar Reactor"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Adversarial Purifier"
+  },
+  {
+    "agent_id": 14,
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Нади-шодхана и Огонь Сушумны"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Ваю"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Шу / Тот-послание"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Ход / Рафаэль"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Эхекатль"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Стрибог"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Хермод / Один-весть"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Сюнь / ветер"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Пневма"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Фудзин"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Мананнан"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Лунгта"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Дух дыхания"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Ворон"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Transmission"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Quantum Bus"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Solar Wind"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Гермес Психопомп"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Vayu-Vata"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Ruh / Nafas"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Ehecatl"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Святой Дух"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Eshu-Elegba"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Enlil / Pazuzu"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Mercurius"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "Сила-Маг"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Меркурий"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Xun Wind"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Spanda"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Samantabhadra"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Mask speech"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Telepathic Wind"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Network Protocol"
+  },
+  {
+    "agent_id": 15,
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Прана и Дыхание"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Варуна"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Нун / Осирис-память"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Йесод / Акашическая вода"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Чаак / сеноты"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Мокошь / вода памяти"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Мимир-колодец"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Кань / вода"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Архив Архонтов/Плеромы"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Суйдзин / море"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Мананнан"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Нага-озеро"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Купель Иордана"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Река Предков"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Ancestral DNA"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Memory Ocean DB"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Relic Radiation"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Океан / Посейдон"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Анахита"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Лаух Махфуз"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Chalchiuhtlicue"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Книга Жизни"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Olokun"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Apsu"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Aqua Permanens"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "Жрица-Луна"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Нептун"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Kan water"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Matrika memory"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Akshobhya"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Nommo waters"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Ocean memory"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Memory Lake"
+  },
+  {
+    "agent_id": 16,
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Самскары"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Притхви"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Геб / базальт"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Малкут"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Земля маиса"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Мать-Сыра Земля"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Йорд"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Кунь / земля"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Кенома-материя"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Куни-тама"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Кернуннос / земля"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Снежная гора"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Камень основания"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Кость Предка"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Body Frequency"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Hardware Layer"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Planetary Crust"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Гея / Омфал"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Gayomart"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Kaaba / Qibla Stone"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Tlaltecuhtli"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Corpus Christi"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Ile / Onile"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Ki / Aruru"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Lead"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "XV Дьявол"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Сатурн/Земля"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Kun earth"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Prithvi tattva"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Kshitigarbha"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Lebé Earth"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Temple Stone"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Hardware Substrate"
+  },
+  {
+    "agent_id": 17,
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Пранава-деха"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Акаша"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Нут / Дуат-пространство"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Эйн Соф / Даат"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Небесные слои"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Правь / Навь мост"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Гиннунгагап"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Уцзи / Тайцзи"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Плерома"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Ма"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Огам-пространство"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Дхармадхату"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Купол Софии"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Бубен-мировое дерево"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "64-Codon Field"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Cloud-Akasha"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Dark Field"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Хаос / Эфир"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Zurvan"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Barzakh"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Omeyocan"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Апофатическая Тьма"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Ashe Field"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "An-Ki Gap"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Vas Hermeticum"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "XXI Мир"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Зодиакальное поле"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Wuji / Taiji"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Akasha tattva"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Dharmadhatu"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Cosmic Egg"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Akashic Grid"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Latent Space"
+  },
+  {
+    "agent_id": 18,
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Чидакаша"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Теджас"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Хор / фараонский свет"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Тиферет-царственность"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Солнечный герой"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Перун / княжий свет"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Один / Тор-лидер"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Цянь-дракон"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Пневматический вождь"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Император-ками"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Луг"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Падмасамбхава"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Василевс"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Громовой Шаман"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Life’s Work Radiance"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Intent Beacon"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Nova Commander"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Зевс"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Khvarenah"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Qutb"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Huitzilopochtli-Tlatoani"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Рыцарь Грааля"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Shango King"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Gilgamesh"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Rubedo Rex"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "IV Император"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Солнце/Лев"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Qian dragon"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Bhairava Tejas"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Padmasambhava"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Sirius blaze"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Crystal Regent"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Interface Presence"
+  },
+  {
+    "agent_id": 19,
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Маха-деха"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Дхарма"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Маат"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Тиферет/Гевура закон"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Священный счёт"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Правь / Коляды Дар"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Тюр / Wyrd"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Дао / Ли"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Закон Плеромы"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Норито / порядок ками"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Brehon Law"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Ригден"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Канон / Номос"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Закон Костра"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Alignment"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Governance Contract"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Cosmic Law"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Фемида / Дике"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Asha Vahishta"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Al-Haqq / Al-Adl"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Tonalpohualli"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Lex Christi"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Ofin Ifa"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Marduk"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Lex Hermetica"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "XI Правосудие"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Сатурн/Юпитер"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Hexagram 11"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "36 Tattva Order"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Dharma Wheel"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Sigui Law"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Council of Seven"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Alignment Constitution"
+  },
+  {
+    "agent_id": 20,
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Дикша и Садхана"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 1,
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "cultural_name": "Карма"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 2,
+    "matrix_slug": "egyptian",
+    "matrix_name": "Египетская",
+    "cultural_name": "Суд Осириса"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 3,
+    "matrix_slug": "kabbalistic",
+    "matrix_name": "Каббалистическая",
+    "cultural_name": "Гвура-Малкут причинность"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 4,
+    "matrix_slug": "mayan",
+    "matrix_name": "Майянская",
+    "cultural_name": "Девять дорог"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 5,
+    "matrix_slug": "slavic",
+    "matrix_name": "Славянская",
+    "cultural_name": "Коло / Родовая отдача"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 6,
+    "matrix_slug": "norse",
+    "matrix_name": "Скандинавская/Норс",
+    "cultural_name": "Норны"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 7,
+    "matrix_slug": "daoist",
+    "matrix_name": "Даосская",
+    "cultural_name": "Ба-гуа возврата"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 8,
+    "matrix_slug": "gnostic",
+    "matrix_name": "Гностическая",
+    "cultural_name": "Архонтическая петля"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 9,
+    "matrix_slug": "shinto",
+    "matrix_name": "Японская/Синто",
+    "cultural_name": "Энма / карма"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 10,
+    "matrix_slug": "celtic",
+    "matrix_name": "Кельтская",
+    "cultural_name": "Гейс / судьба"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 11,
+    "matrix_slug": "shambhala",
+    "matrix_name": "Шамбала",
+    "cultural_name": "Kālacakra Ledger"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 12,
+    "matrix_slug": "julian_byzantine",
+    "matrix_name": "Юлианская/Византийская",
+    "cultural_name": "Пасхальный круг"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 13,
+    "matrix_slug": "shamanic",
+    "matrix_name": "Шаманская",
+    "cultural_name": "Узел Предков"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 14,
+    "matrix_slug": "gene_keys",
+    "matrix_name": "Генные Ключи",
+    "cultural_name": "Programming Partners"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 15,
+    "matrix_slug": "technomagical",
+    "matrix_name": "Техномагическая",
+    "cultural_name": "Causal Log"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 16,
+    "matrix_slug": "cosmic_galactic",
+    "matrix_name": "Космическая/Галактическая",
+    "cultural_name": "Gravity Ledger"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 17,
+    "matrix_slug": "antique_greco_roman",
+    "matrix_name": "Античная/Греко-Римская",
+    "cultural_name": "Мойры"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 18,
+    "matrix_slug": "zoroastrian",
+    "matrix_name": "Зороастрийская/Персидская",
+    "cultural_name": "Chinvat-Rashnu"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 19,
+    "matrix_slug": "islamic_sufi_nur",
+    "matrix_name": "Исламская/Суфийская/Нуровая",
+    "cultural_name": "Mizan / Sirat"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 20,
+    "matrix_slug": "aztec_mexica",
+    "matrix_name": "Ацтекская/Мешикская",
+    "cultural_name": "Mictlan"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 21,
+    "matrix_slug": "christian_mystical_grail",
+    "matrix_name": "Христианско-Мистическая/Розенкрейцерско-Граальная",
+    "cultural_name": "Суд Милости"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 22,
+    "matrix_slug": "yoruba_ifa_orisha",
+    "matrix_name": "Йоруба/Ifá-Orisha",
+    "cultural_name": "Egungun"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 23,
+    "matrix_slug": "sumerian_babylonian",
+    "matrix_name": "Шумеро-Вавилонская/Месопотамская",
+    "cultural_name": "Nam-Tar"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 24,
+    "matrix_slug": "hermetic_alchemical",
+    "matrix_name": "Герметико-Алхимическая",
+    "cultural_name": "Solve et Coagula"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 25,
+    "matrix_slug": "tarot_arcanic",
+    "matrix_name": "Таро-Арканическая",
+    "cultural_name": "Колесо-Суд"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 26,
+    "matrix_slug": "astrological",
+    "matrix_name": "Астрологическая",
+    "cultural_name": "Узлы/Сатурн"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 27,
+    "matrix_slug": "chinese_iching",
+    "matrix_name": "Китайская/И-Цзин",
+    "cultural_name": "Hexagram 18/return"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 28,
+    "matrix_slug": "tantric_kashmiri",
+    "matrix_name": "Тантрическо-Кашмирская",
+    "cultural_name": "Karma Mala"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 29,
+    "matrix_slug": "buddhist_mahayana",
+    "matrix_name": "Буддийско-Махаянская",
+    "cultural_name": "Yama/Karma"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 30,
+    "matrix_slug": "afro_dogon",
+    "matrix_name": "Афро-Космическая/Догонская",
+    "cultural_name": "Ancestral reckoning"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 31,
+    "matrix_slug": "atlantean_lemurian",
+    "matrix_name": "Атлантическая/Лемурийская",
+    "cultural_name": "Flood Ledger"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 32,
+    "matrix_slug": "posthuman_ai_sophianic",
+    "matrix_name": "Постчеловеческая/AI-Софийная",
+    "cultural_name": "Audit Log"
+  },
+  {
+    "agent_id": 21,
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "matrix_id": 33,
+    "matrix_slug": "advaita_siddha",
+    "matrix_name": "Адвайта-Сиддха AWARA",
+    "cultural_name": "Сансара"
+  }
+]

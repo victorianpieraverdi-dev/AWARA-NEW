@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · Древо Пути</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100%;background:#02010a;color:#c9a84c;font-family:'Cormorant Garamond',serif}
+body{overflow-x:hidden;background:radial-gradient(ellipse at 50% 20%,rgba(34,120,60,.12),transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(201,168,76,.08),transparent 40%),#02010a}
+
+.hud-top{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px;background:linear-gradient(180deg,rgba(2,1,10,.92),transparent)}
+.hud-top a{color:#c9a84c;text-decoration:none;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.1em}
+.hud-top h1{font-family:'Cinzel Decorative',serif;font-size:clamp(12px,3vw,16px);color:#ffd700;letter-spacing:.15em;text-shadow:0 0 24px rgba(255,215,0,.3)}
+.lang-switch{display:flex;gap:4px}
+.lang-switch button{padding:3px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:8px;cursor:pointer;border-radius:4px}
+
+.page{position:relative;z-index:1;min-height:100vh;padding:68px 16px 100px;display:flex;flex-direction:column;align-items:center}
+
+.kicker{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;color:rgba(201,168,76,.4);text-transform:uppercase;margin-bottom:8px;text-align:center}
+.subtitle{font-size:clamp(13px,3.5vw,16px);color:rgba(201,168,76,.6);font-style:italic;text-align:center;margin-bottom:28px;max-width:400px}
+
+.tree-trunk{position:relative;width:2px;background:linear-gradient(to bottom,rgba(201,168,76,.4),rgba(201,168,76,.08));margin:0 auto}
+
+.timeline{display:flex;flex-direction:column;align-items:center;gap:0;width:100%;max-width:420px}
+
+.branch{position:relative;display:flex;align-items:flex-start;width:100%;padding:16px 0}
+.branch:nth-child(odd){flex-direction:row}
+.branch:nth-child(even){flex-direction:row-reverse}
+
+.branch-line{position:absolute;top:28px;width:28px;height:1px;background:rgba(201,168,76,.25)}
+.branch:nth-child(odd) .branch-line{left:50%;margin-left:1px}
+.branch:nth-child(even) .branch-line{right:50%;margin-right:1px}
+
+.branch-dot{position:absolute;left:50%;transform:translateX(-50%);top:22px;width:10px;height:10px;border-radius:50%;border:1px solid rgba(201,168,76,.4);background:rgba(201,168,76,.1)}
+.branch-dot.active{background:#c9a84c;border-color:#ffd700;box-shadow:0 0 12px rgba(255,215,0,.4)}
+
+.branch-card{width:calc(50% - 36px);padding:12px 14px;border:1px solid rgba(201,168,76,.15);border-radius:10px;background:rgba(2,1,10,.7);backdrop-filter:blur(6px)}
+.branch:nth-child(odd) .branch-card{margin-left:auto;margin-right:0}
+.branch:nth-child(even) .branch-card{margin-right:auto;margin-left:0}
+
+.branch-num{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,.3);letter-spacing:.1em;margin-bottom:3px}
+.branch-title{font-family:'Cinzel',serif;font-size:12px;color:#ffd700;letter-spacing:.06em;margin-bottom:4px}
+.branch-desc{font-size:11px;color:rgba(201,168,76,.55);line-height:1.5}
+.branch-status{font-family:'JetBrains Mono',monospace;font-size:8px;margin-top:6px;padding:3px 8px;border-radius:4px;display:inline-block}
+.branch-status.locked{color:rgba(201,168,76,.3);background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1)}
+.branch-status.open{color:#4ade80;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2)}
+.branch-status.done{color:#ffd700;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2)}
+
+.tree-root{text-align:center;margin-top:20px;padding:16px;border:1px solid rgba(201,168,76,.12);border-radius:12px;background:rgba(2,1,10,.6);max-width:280px}
+.tree-root .root-icon{font-size:28px;margin-bottom:6px}
+.tree-root .root-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,.35);letter-spacing:.15em}
+
+.layer-nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:20;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:min(94vw,480px)}
+.layer-link{padding:8px 14px;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.25);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.08em;text-decoration:none;white-space:nowrap;backdrop-filter:blur(8px)}
+.layer-link:hover{border-color:#ffd700;color:#ffd700}
+
+@media(max-width:480px){
+  .branch-card{width:calc(50% - 24px);padding:10px 10px}
+  .branch-title{font-size:11px}
+  .branch-desc{font-size:10px}
+}
+@media(max-width:375px){
+  .branch{padding:12px 0}
+  .branch-card{padding:8px 8px}
+  .branch-title{font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<div class="hud-top">
+  <a href="index.html" id="t-back">← ЛОББИ</a>
+  <h1 id="t-title">ДРЕВО ПУТИ</h1>
+  <div class="lang-switch">
+    <button onclick="localStorage.setItem('awara_lang','ru');location.reload()">RU</button>
+    <button onclick="localStorage.setItem('awara_lang','en');location.reload()">EN</button>
+  </div>
+</div>
+
+<main class="page">
+  <div class="kicker" id="t-kicker">ХРОНИКА · ИСТОРИЯ РОСТА</div>
+  <div class="subtitle" id="t-subtitle">Каждый шаг — ветвь. Каждый выбор — узел. Дерево растёт вместе с тобой.</div>
+
+  <div class="timeline">
+
+    <div class="branch">
+      <div class="branch-dot active"></div>
+      <div class="branch-line"></div>
+      <div class="branch-card">
+        <div class="branch-num">I</div>
+        <div class="branch-title" id="t-b1">ПРОБУЖДЕНИЕ</div>
+        <div class="branch-desc" id="t-b1d">Вход в игру. Первый выбор матрицы. Семя посажено.</div>
+        <div class="branch-status done" id="t-b1s">✦ ПРОЙДЕНО</div>
+      </div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-dot active"></div>
+      <div class="branch-line"></div>
+      <div class="branch-card">
+        <div class="branch-num">II</div>
+        <div class="branch-title" id="t-b2">ИНИЦИАЦИЯ</div>
+        <div class="branch-desc" id="t-b2d">13 шагов коридора. Первый агент. Первый ключ.</div>
+        <div class="branch-status open" id="t-b2s">◈ В ПРОЦЕССЕ</div>
+      </div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-dot"></div>
+      <div class="branch-line"></div>
+      <div class="branch-card">
+        <div class="branch-num">III</div>
+        <div class="branch-title" id="t-b3">ПРАКТИКА</div>
+        <div class="branch-desc" id="t-b3d">Ежедневные квесты. Тигель. Накопление световой пыли.</div>
+        <div class="branch-status locked" id="t-b3s">🔒 ЗАБЛОКИРОВАНО</div>
+      </div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-dot"></div>
+      <div class="branch-line"></div>
+      <div class="branch-card">
+        <div class="branch-num">IV</div>
+        <div class="branch-title" id="t-b4">КЛЮЧИ</div>
+        <div class="branch-desc" id="t-b4d">6 ключей инициации. Ковка в горниле. Открытие кейсов.</div>
+        <div class="branch-status locked" id="t-b4s">🔒 ЗАБЛОКИРОВАНО</div>
+      </div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-dot"></div>
+      <div class="branch-line"></div>
+      <div class="branch-card">
+        <div class="branch-num">V</div>
+        <div class="branch-title" id="t-b5">МАСТЕРСТВО</div>
+        <div class="branch-desc" id="t-b5d">Все 33 матрицы. Полная колода. Архетип раскрыт.</div>
+        <div class="branch-status locked" id="t-b5s">🔒 ЗАБЛОКИРОВАНО</div>
+      </div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-dot"></div>
+      <div class="branch-line"></div>
+      <div class="branch-card">
+        <div class="branch-num">VI</div>
+        <div class="branch-title" id="t-b6">ДЕРЖАВА</div>
+        <div class="branch-desc" id="t-b6d">Создание державы. Социум. Топ-рейтинг.</div>
+        <div class="branch-status locked" id="t-b6s">🔒 ЗАБЛОКИРОВАНО</div>
+      </div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-dot"></div>
+      <div class="branch-line"></div>
+      <div class="branch-card">
+        <div class="branch-num">VII</div>
+        <div class="branch-title" id="t-b7">ЭПИЛОГ</div>
+        <div class="branch-desc" id="t-b7d">Возврат к началу. Все слои пройдены. Дерево цветёт.</div>
+        <div class="branch-status locked" id="t-b7s">🔒 ЗАБЛОКИРОВАНО</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tree-root">
+    <div class="root-icon">🌳</div>
+    <div class="root-label" id="t-root">КОРЕНЬ · НАЧАЛО ПУТИ</div>
+  </div>
+
+</main>
+
+<nav class="layer-nav">
+  <a class="layer-link" href="passport.html" id="t-nav1">ПАСПОРТ</a>
+  <a class="layer-link" href="archetype.html" id="t-nav2">АРХЕТИП</a>
+  <a class="layer-link" href="index.html" id="t-nav3">ЛОББИ</a>
+</nav>
+
+<script>
+const _lang=localStorage.getItem('awara_lang')||'ru';
+if(_lang==='en'){
+  document.getElementById('t-back').textContent='← LOBBY';
+  document.getElementById('t-title').textContent='PATH TREE';
+  document.getElementById('t-kicker').textContent='CHRONICLE · GROWTH HISTORY';
+  document.getElementById('t-subtitle').textContent='Each step is a branch. Each choice is a node. The tree grows with you.';
+  document.getElementById('t-b1').textContent='AWAKENING';
+  document.getElementById('t-b1d').textContent='Entry into the game. First matrix choice. The seed is planted.';
+  document.getElementById('t-b1s').textContent='✦ COMPLETED';
+  document.getElementById('t-b2').textContent='INITIATION';
+  document.getElementById('t-b2d').textContent='13 corridor steps. First agent. First key.';
+  document.getElementById('t-b2s').textContent='◈ IN PROGRESS';
+  document.getElementById('t-b3').textContent='PRACTICE';
+  document.getElementById('t-b3d').textContent='Daily quests. Crucible. Accumulating light dust.';
+  document.getElementById('t-b3s').textContent='🔒 LOCKED';
+  document.getElementById('t-b4').textContent='KEYS';
+  document.getElementById('t-b4d').textContent='6 initiation keys. Forging in the furnace. Opening cases.';
+  document.getElementById('t-b4s').textContent='🔒 LOCKED';
+  document.getElementById('t-b5').textContent='MASTERY';
+  document.getElementById('t-b5d').textContent='All 33 matrices. Full deck. Archetype revealed.';
+  document.getElementById('t-b5s').textContent='🔒 LOCKED';
+  document.getElementById('t-b6').textContent='DOMINION';
+  document.getElementById('t-b6d').textContent='Creating dominion. Society. Top ranking.';
+  document.getElementById('t-b6s').textContent='🔒 LOCKED';
+  document.getElementById('t-b7').textContent='EPILOGUE';
+  document.getElementById('t-b7d').textContent='Return to the beginning. All layers traversed. The tree blooms.';
+  document.getElementById('t-b7s').textContent='🔒 LOCKED';
+  document.getElementById('t-root').textContent='ROOT · PATH BEGINNING';
+  document.getElementById('t-nav1').textContent='PASSPORT';
+  document.getElementById('t-nav2').textContent='ARCHETYPE';
+  document.getElementById('t-nav3').textContent='LOBBY';
+}
+</script>
+</body>
+</html>

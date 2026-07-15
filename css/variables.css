@@ -1,0 +1,96 @@
+:root {
+  --awara-gold: #c9a84c;
+  --awara-gold-bright: #ffd700;
+  --awara-gold-light: #fff8d6;
+  --awara-gold-warm: #ffe080;
+  --awara-gold-soft: #f0d48a;
+  --awara-gold-deep: #6a5428;
+  --awara-gold-dim: #38281a;
+
+  --awara-bg-black: #000;
+  --awara-bg-void: #0a0a14;
+  --awara-bg-deep: #1a1430;
+  --awara-bg-legacy: #020108;
+  --awara-bg-panel: rgba(5, 5, 25, 0.85);
+  --awara-bg-modal: rgba(5, 5, 15, 0.97);
+  --awara-bg-glass: rgba(10, 8, 24, 0.68);
+
+  --awara-text: #d4c9a8;
+  --awara-text-soft: rgba(255, 248, 214, 0.9);
+  --awara-text-muted: #8a7a5a;
+  --awara-text-faint: rgba(201, 168, 76, 0.4);
+
+  --awara-font-heading: 'Cinzel', serif;
+  --awara-font-heading-decorative: 'Cinzel Decorative', serif;
+  --awara-font-body: 'Cormorant Garamond', serif;
+  --awara-font-mono: 'JetBrains Mono', monospace;
+
+  --awara-space-2xs: 2px;
+  --awara-space-xs: 4px;
+  --awara-space-sm: 8px;
+  --awara-space-md: 12px;
+  --awara-space-lg: 16px;
+  --awara-space-xl: 24px;
+  --awara-space-2xl: 32px;
+  --awara-space-3xl: 48px;
+  --awara-space-screen-x: clamp(16px, 5vw, 28px);
+  --awara-space-screen-y: clamp(20px, 6vw, 40px);
+
+  --awara-radius-xs: 4px;
+  --awara-radius-sm: 8px;
+  --awara-radius-md: 12px;
+  --awara-radius-lg: 16px;
+  --awara-radius-xl: 24px;
+  --awara-radius-2xl: 34px;
+  --awara-radius-phone: 48px;
+  --awara-radius-round: 999px;
+
+  --awara-border-faint: rgba(201, 168, 76, 0.12);
+  --awara-border-soft: rgba(201, 168, 76, 0.18);
+  --awara-border-medium: rgba(201, 168, 76, 0.35);
+  --awara-border-strong: rgba(201, 168, 76, 0.55);
+
+  --awara-shadow-gold-sm: 0 0 10px rgba(201, 168, 76, 0.25);
+  --awara-shadow-gold-md: 0 0 24px rgba(201, 168, 76, 0.28);
+  --awara-shadow-gold-lg: 0 0 80px rgba(201, 168, 76, 0.18);
+  --awara-shadow-panel: 0 18px 60px rgba(0, 0, 0, 0.55);
+  --awara-shadow-phone: 0 40px 140px rgba(0, 0, 0, 0.85);
+  --awara-inset-gold: inset 0 0 44px rgba(201, 168, 76, 0.06);
+
+  --awara-blur-sm: blur(3px);
+  --awara-blur-md: blur(8px);
+  --awara-blur-lg: blur(18px);
+
+  --awara-duration-fast: 0.2s;
+  --awara-duration-base: 0.3s;
+  --awara-duration-slow: 0.8s;
+  --awara-duration-cosmic: 1.2s;
+  --awara-ease-standard: ease;
+  --awara-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --awara-transition-fast: all var(--awara-duration-fast) var(--awara-ease-standard);
+  --awara-transition-base: all var(--awara-duration-base) var(--awara-ease-standard);
+  --awara-transition-slow: all var(--awara-duration-slow) var(--awara-ease-standard);
+
+  --awara-letter-tight: 0.05em;
+  --awara-letter-base: 0.1em;
+  --awara-letter-wide: 0.18em;
+  --awara-letter-wider: 0.25em;
+  --awara-letter-ritual: 0.3em;
+
+  --awara-z-bg: 0;
+  --awara-z-screen: 10;
+  --awara-z-hud: 100;
+  --awara-z-modal: 500;
+  --awara-z-overlay: 9999;
+
+  --gold: #c9a84c;
+  --gold2: #f0d48a;
+  --gold3: #ffe090;
+  --dim: #6a5428;
+  --dimmer: #38281a;
+  --void: #020108;
+  --text: #d4c9a8;
+  --muted: #8a7a5a;
+  --faint: rgba(201, 168, 76, 0.07);
+  --border: rgba(201, 168, 76, 0.18);
+}

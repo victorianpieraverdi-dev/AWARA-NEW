@@ -1,0 +1,181 @@
+{
+  "version": "1.0.0",
+  "doshas": {
+    "Vata": {
+      "favorable": {
+        "grains": ["rice", "wheat", "oats (cooked)"],
+        "proteins": ["chicken", "eggs", "tofu", "mung beans"],
+        "vegetables": ["beets", "carrots", "sweet potatoes", "asparagus", "zucchini"],
+        "fruits": ["bananas", "mangoes", "avocados", "grapes", "dates"],
+        "spices": ["ginger", "cinnamon", "cumin", "cardamom", "turmeric", "black pepper"],
+        "beverages": ["warm water", "ginger tea", "warm milk", "herbal chai"]
+      },
+      "unfavorable": {
+        "grains": ["barley", "corn", "buckwheat", "millet"],
+        "proteins": ["red meat (excess)", "raw legumes"],
+        "vegetables": ["raw salads", "cabbage", "broccoli (raw)", "mushrooms"],
+        "fruits": ["dried fruits (excess)", "unripe fruits", "cranberries"],
+        "spices": ["excessive chili"],
+        "beverages": ["cold drinks", "caffeine (excess)", "carbonated water"]
+      },
+      "eating_habits": {
+        "ru": "Ешьте в тёплой, спокойной обстановке. Избегайте еды на ходу. Предпочитайте горячую, маслянистую, питательную пищу. Регулярное расписание приёмов пищи стабилизирует Вату.",
+        "en": "Eat in a warm, calm environment. Avoid eating on the go. Prefer hot, oily, nourishing food. Regular meal schedule stabilizes Vata."
+      },
+      "recipes": [
+        {
+          "name": { "ru": "Кичари (маш + рис)", "en": "Kitchari (mung + rice)" },
+          "description": { "ru": "Лёгкое аюрведическое блюдо: рис басмати с машем, куркумой, кумином и топлёным маслом. Идеальное успокоение для Ваты.", "en": "Light Ayurvedic dish: basmati rice with mung beans, turmeric, cumin and ghee. Perfect Vata pacifier." },
+          "ingredients": ["basmati rice", "mung beans", "ghee", "turmeric", "cumin", "coriander", "salt"]
+        },
+        {
+          "name": { "ru": "Тёплое молоко с куркумой", "en": "Golden milk (turmeric latte)" },
+          "description": { "ru": "Согревающий напиток перед сном: молоко с куркумой, корицей и щепоткой чёрного перца.", "en": "Warming bedtime drink: milk with turmeric, cinnamon and a pinch of black pepper." },
+          "ingredients": ["milk", "turmeric", "cinnamon", "black pepper", "honey"]
+        },
+        {
+          "name": { "ru": "Суп из сладкого картофеля", "en": "Sweet potato soup" },
+          "description": { "ru": "Густой крем-суп из батата с имбирём и кокосовым молоком. Заземляет и согревает.", "en": "Thick cream soup from sweet potato with ginger and coconut milk. Grounding and warming." },
+          "ingredients": ["sweet potato", "coconut milk", "ginger", "cumin", "ghee"]
+        }
+      ],
+      "seasonal_adjustments": {
+        "summer": {
+          "ru": "Летом Вата облегчается. Можно добавить чуть больше свежих фруктов и прохладных напитков, но избегайте ледяного.",
+          "en": "Summer eases Vata. You can add more fresh fruits and cool drinks, but avoid ice-cold."
+        },
+        "winter": {
+          "ru": "Зимой Вата усиливается. Налегайте на горячие супы, каши, топлёное масло. Согревающие специи обязательны.",
+          "en": "Winter aggravates Vata. Focus on hot soups, porridge, ghee. Warming spices are essential."
+        },
+        "spring": {
+          "ru": "Весной переходите к более лёгкой пище, но сохраняйте тепло. Добавьте свежую зелень к тёплым блюдам.",
+          "en": "In spring transition to lighter food but keep it warm. Add fresh greens to warm dishes."
+        },
+        "autumn": {
+          "ru": "Осень -- сезон Ваты. Максимально увлажняйте и согревайте: масла, тёплые блюда, корнеплоды.",
+          "en": "Autumn is Vata season. Maximize moisture and warmth: oils, warm dishes, root vegetables."
+        }
+      }
+    },
+    "Pitta": {
+      "favorable": {
+        "grains": ["basmati rice", "wheat", "oats", "barley"],
+        "proteins": ["chicken (moderate)", "tofu", "mung beans", "lentils"],
+        "vegetables": ["cucumbers", "zucchini", "leafy greens", "broccoli", "celery", "cauliflower"],
+        "fruits": ["sweet apples", "pears", "melons", "pomegranates", "coconut", "grapes"],
+        "spices": ["coriander", "fennel", "cardamom", "turmeric (moderate)", "mint"],
+        "beverages": ["coconut water", "mint tea", "aloe vera juice", "cool water"]
+      },
+      "unfavorable": {
+        "grains": ["corn", "millet", "rye"],
+        "proteins": ["red meat", "seafood (excess)", "egg yolks (excess)"],
+        "vegetables": ["tomatoes", "hot peppers", "onions (raw)", "garlic (excess)", "beets"],
+        "fruits": ["sour citrus", "unripe bananas", "papaya"],
+        "spices": ["chili", "cayenne", "mustard seed", "cloves (excess)"],
+        "beverages": ["alcohol", "coffee", "hot spicy drinks"]
+      },
+      "eating_habits": {
+        "ru": "Не пропускайте приёмы пищи -- голод обостряет Питту. Ешьте в прохладной обстановке. Избегайте острого и кислого. Основной приём -- обед.",
+        "en": "Never skip meals -- hunger aggravates Pitta. Eat in a cool environment. Avoid hot and sour. Main meal is lunch."
+      },
+      "recipes": [
+        {
+          "name": { "ru": "Салат из огурцов с мятой", "en": "Cucumber mint salad" },
+          "description": { "ru": "Освежающий салат: огурцы, мята, кинза, лайм и кокосовая стружка. Охлаждает Питту.", "en": "Refreshing salad: cucumbers, mint, cilantro, lime and coconut flakes. Cools Pitta." },
+          "ingredients": ["cucumber", "mint", "cilantro", "lime", "coconut flakes", "olive oil"]
+        },
+        {
+          "name": { "ru": "Рис с кокосом и кориандром", "en": "Coconut coriander rice" },
+          "description": { "ru": "Ароматный рис басмати с кокосовым молоком, кориандром и кардамоном.", "en": "Fragrant basmati rice with coconut milk, coriander and cardamom." },
+          "ingredients": ["basmati rice", "coconut milk", "coriander", "cardamom", "ghee"]
+        },
+        {
+          "name": { "ru": "Смузи из алоэ и дыни", "en": "Aloe melon smoothie" },
+          "description": { "ru": "Охлаждающий смузи: дыня, сок алоэ, мята и немного розовой воды.", "en": "Cooling smoothie: melon, aloe juice, mint and a touch of rose water." },
+          "ingredients": ["melon", "aloe vera juice", "mint", "rose water"]
+        },
+        {
+          "name": { "ru": "Запечённая цветная капуста", "en": "Roasted cauliflower" },
+          "description": { "ru": "Цветная капуста запечённая с куркумой, кориандром и топлёным маслом.", "en": "Cauliflower roasted with turmeric, coriander and ghee." },
+          "ingredients": ["cauliflower", "turmeric", "coriander", "ghee", "salt"]
+        }
+      ],
+      "seasonal_adjustments": {
+        "summer": {
+          "ru": "Лето обостряет Питту. Максимум прохладной пищи: салаты, кокос, мята, арбуз. Избегайте острого.",
+          "en": "Summer aggravates Pitta. Maximize cool foods: salads, coconut, mint, watermelon. Avoid spicy."
+        },
+        "winter": {
+          "ru": "Зимой Питта успокаивается. Можно добавить немного согревающих специй и масел.",
+          "en": "Winter calms Pitta. You can add a few warming spices and oils."
+        },
+        "spring": {
+          "ru": "Весной Питта нарастает. Переходите к прохладной, горьковатой пище. Хороши листовая зелень и горькие травы.",
+          "en": "Pitta rises in spring. Transition to cool, slightly bitter foods. Leafy greens and bitter herbs are good."
+        },
+        "autumn": {
+          "ru": "Осень сбрасывает летнюю Питту. Умеренные специи возвращаются. Хороши тыква и сладкие фрукты.",
+          "en": "Autumn releases summer Pitta. Moderate spices return. Pumpkin and sweet fruits are good."
+        }
+      }
+    },
+    "Kapha": {
+      "favorable": {
+        "grains": ["barley", "millet", "buckwheat", "corn"],
+        "proteins": ["chicken", "turkey", "lentils", "chickpeas"],
+        "vegetables": ["leafy greens", "peppers", "radishes", "onions", "garlic", "ginger root"],
+        "fruits": ["apples", "pears", "pomegranates", "berries", "dried fruits"],
+        "spices": ["ginger", "black pepper", "turmeric", "cayenne", "mustard seed", "cloves"],
+        "beverages": ["ginger tea", "green tea", "hot water with lemon", "spiced chai"]
+      },
+      "unfavorable": {
+        "grains": ["wheat", "white rice (excess)", "oats (excess)"],
+        "proteins": ["red meat", "pork", "excess dairy"],
+        "vegetables": ["potatoes (excess)", "tomatoes (excess)", "cucumbers (excess)"],
+        "fruits": ["bananas", "dates", "figs", "coconut (excess)"],
+        "spices": ["salt (excess)"],
+        "beverages": ["cold milk", "sweet juices", "iced drinks", "alcohol"]
+      },
+      "eating_habits": {
+        "ru": "Ешьте лёгкую, тёплую, сухую пищу. Самый плотный приём -- обед. Можно пропускать завтрак или делать его минимальным. Острые специи ускоряют метаболизм.",
+        "en": "Eat light, warm, dry food. Heaviest meal is lunch. You can skip breakfast or keep it minimal. Hot spices speed up metabolism."
+      },
+      "recipes": [
+        {
+          "name": { "ru": "Суп из чечевицы с имбирём", "en": "Ginger lentil soup" },
+          "description": { "ru": "Острый чечевичный суп с большим количеством имбиря, чёрного перца и куркумы. Разжигает огонь Капхи.", "en": "Spicy lentil soup with plenty of ginger, black pepper and turmeric. Ignites Kapha fire." },
+          "ingredients": ["red lentils", "ginger", "black pepper", "turmeric", "cumin", "lemon"]
+        },
+        {
+          "name": { "ru": "Гречка с овощами", "en": "Buckwheat stir-fry" },
+          "description": { "ru": "Гречневая каша с обжаренными овощами, чесноком и острым перцем.", "en": "Buckwheat with stir-fried vegetables, garlic and hot pepper." },
+          "ingredients": ["buckwheat", "bell pepper", "onion", "garlic", "hot pepper", "olive oil"]
+        },
+        {
+          "name": { "ru": "Чай масала", "en": "Masala chai" },
+          "description": { "ru": "Крепкий чай с имбирём, корицей, гвоздикой и чёрным перцем. Без сахара или с мёдом.", "en": "Strong tea with ginger, cinnamon, cloves and black pepper. No sugar or with honey." },
+          "ingredients": ["black tea", "ginger", "cinnamon", "cloves", "black pepper", "cardamom"]
+        }
+      ],
+      "seasonal_adjustments": {
+        "summer": {
+          "ru": "Лето облегчает Капху. Хороши свежие овощи, ягоды, лёгкие салаты. Но не переохлаждайтесь.",
+          "en": "Summer eases Kapha. Fresh vegetables, berries, light salads are good. But avoid overcooling."
+        },
+        "winter": {
+          "ru": "Зима может усилить тяжесть Капхи. Острые специи, горячие супы и минимум сладкого.",
+          "en": "Winter can increase Kapha heaviness. Hot spices, warm soups and minimal sweets."
+        },
+        "spring": {
+          "ru": "Весна -- сезон Капхи. Максимально лёгкая, острая, горькая пища. Детокс и очищение.",
+          "en": "Spring is Kapha season. Maximize light, spicy, bitter foods. Detox and cleansing."
+        },
+        "autumn": {
+          "ru": "Осень переходная. Сочетайте тёплые блюда с острыми специями. Избегайте тяжёлой пищи вечером.",
+          "en": "Autumn is transitional. Combine warm dishes with hot spices. Avoid heavy food in the evening."
+        }
+      }
+    }
+  }
+}

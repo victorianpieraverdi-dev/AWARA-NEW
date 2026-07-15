@@ -1,0 +1,11 @@
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+cards_generated/
+screenshots-T054b/
+.test-build/
+*.exe
+.DS_Store
+Thumbs.db
+*.key

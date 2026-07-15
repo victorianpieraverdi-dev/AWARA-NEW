@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AWARA — i18n Module Tests (M-007)</title>
+  <style>
+    body { background:#0a0a14; color:#ddd; font-family:'JetBrains Mono',monospace; padding:20px; font-size:13px; }
+    h1 { color:#ffd700; font-family:'Cinzel',serif; letter-spacing:0.2em; font-size:18px; }
+    .pass { color:#4caf50; }
+    .fail { color:#ff5252; }
+    .section { color:#c9a84c; margin-top:16px; font-size:14px; letter-spacing:0.1em; }
+    .result { margin:2px 0; padding:2px 0; }
+    #summary { margin-top:20px; padding:12px; border:1px solid rgba(201,168,76,0.3); border-radius:8px; }
+  </style>
+</head>
+<body>
+  <h1>AWARA i18n Module Tests</h1>
+  <div id="output"></div>
+  <div id="summary"></div>
+
+  <script type="module">
+    import { LANGS, DICT, getLang, setLang, t, translatePage } from './i18n-module.js';
+    import { HINTS, getHints } from './hints-module.js';
+
+    var out = document.getElementById('output');
+    var passed = 0, failed = 0, total = 0;
+
+    function assert(name, condition) {
+      total++;
+      if (condition) {
+        passed++;
+        out.innerHTML += '<div class="result pass">PASS: ' + name + '</div>';
+      } else {
+        failed++;
+        out.innerHTML += '<div class="result fail">FAIL: ' + name + '</div>';
+      }
+    }
+
+    // === 1. LANGS ===
+    out.innerHTML += '<div class="section">1. LANGS</div>';
+    assert('LANGS has ru', LANGS.ru === 'Русский');
+    assert('LANGS has en', LANGS.en === 'English');
+
+    // === 2. DICT completeness ===
+    out.innerHTML += '<div class="section">2. DICT completeness</div>';
+    var dictKeys = Object.keys(DICT);
+    assert('DICT has 100+ keys', dictKeys.length >= 100);
+    assert('Every key has ru', dictKeys.every(function(k) { return typeof DICT[k].ru === 'string'; }));
+    assert('Every key has en', dictKeys.every(function(k) { return typeof DICT[k].en === 'string'; }));
+
+    // === 3. setLang / getLang ===
+    out.innerHTML += '<div class="section">3. setLang / getLang</div>';
+    setLang('ru');
+    assert('getLang() returns ru', getLang() === 'ru');
+    setLang('en');
+    assert('getLang() returns en after switch', getLang() === 'en');
+    assert('setLang returns true for valid lang', setLang('ru') === true);
+    assert('setLang returns false for invalid lang', setLang('xx') === false);
+    assert('getLang() still ru after invalid', getLang() === 'ru');
+
+    // === 4. localStorage persistence ===
+    out.innerHTML += '<div class="section">4. localStorage persistence</div>';
+    setLang('en');
+    assert('localStorage stores en', localStorage.getItem('awara_lang') === 'en');
+    setLang('ru');
+    assert('localStorage stores ru', localStorage.getItem('awara_lang') === 'ru');
+
+    // === 5. t() function ===
+    out.innerHTML += '<div class="section">5. t() function</div>';
+    setLang('ru');
+    assert('t(app.name) in ru', t('app.name') === 'AWARA · Держава РА');
+    setLang('en');
+    assert('t(app.name) in en', t('app.name') === 'AWARA · Dominion of RA');
+    assert('t(unknown.key) returns key', t('unknown.key.test') === 'unknown.key.test');
+
+    // === 6. Parameter substitution ===
+    out.innerHTML += '<div class="section">6. Parameter substitution</div>';
+    setLang('en');
+    var lockText = t('lock.hint', { level: 'SAGE', light: '7000' });
+    assert('lock.hint with params (en)', lockText === 'Unlocks at SAGE (7000 ✦)');
+    setLang('ru');
+    var lockTextRu = t('lock.hint', { level: 'МУДРЕЦ', light: '7000' });
+    assert('lock.hint with params (ru)', lockTextRu === 'Откроется на уровне МУДРЕЦ (7000 ✦)');
+    var lightText = t('status.light.count', { count: 42 });
+    assert('status.light.count with count', lightText === '42 света');
+
+    // === 7. Fallback: en missing → ru ===
+    out.innerHTML += '<div class="section">7. Fallback</div>';
+    setLang('en');
+    assert('Fallback for known key always has en', typeof DICT['app.name'].en === 'string');
+    setLang('ru');
+    assert('Default lang is ru', getLang() === 'ru');
+
+    // === 8. All HINTS keys exist in DICT ===
+    out.innerHTML += '<div class="section">8. HINTS keys in DICT</div>';
+    var missingKeys = [];
+    for (var pageId in HINTS) {
+      HINTS[pageId].forEach(function(key) {
+        if (!DICT[key]) missingKeys.push(key);
+      });
+    }
+    assert('All HINTS keys exist in DICT (' + (missingKeys.length === 0 ? 'none missing' : 'missing: ' + missingKeys.join(', ')) + ')', missingKeys.length === 0);
+
+    // === 9. getHints returns translated strings ===
+    out.innerHTML += '<div class="section">9. getHints() translated</div>';
+    setLang('ru');
+    var tigelHints = getHints('tigel');
+    assert('getHints(tigel) returns 3 hints', tigelHints.length === 3);
+    assert('getHints(tigel)[0] is translated ru', tigelHints[0].indexOf('Здесь ты записываешь') !== -1);
+    setLang('en');
+    var tigelHintsEn = getHints('tigel');
+    assert('getHints(tigel)[0] is translated en', tigelHintsEn[0].indexOf('Write about your day') !== -1);
+
+    // === 10. All hint pages ===
+    out.innerHTML += '<div class="section">10. All hint pages have entries</div>';
+    var pages = ['tigel','initiation','passport','cards','matrix','universe','oracle','earth','dashboard','natal','daimon','milost'];
+    pages.forEach(function(p) {
+      assert('HINTS.' + p + ' has 3 entries', HINTS[p] && HINTS[p].length === 3);
+    });
+
+    // === 11. Alpha Gate keys ===
+    out.innerHTML += '<div class="section">11. Alpha Gate keys</div>';
+    var alphaKeys = ['alpha.title','alpha.subtitle','alpha.prompt','alpha.placeholder','alpha.enter','alpha.error'];
+    alphaKeys.forEach(function(k) {
+      assert(k + ' exists', !!DICT[k]);
+    });
+
+    // === 12. Category keys ===
+    out.innerHTML += '<div class="section">12. Category keys</div>';
+    var catIds = ['initiation','tigel','matrix','earth','universe','creation','passport','cards','natal','tree','archetype','svetcoin','milost','daimon','artifacts','exchange','oracle','chat','society','festivals'];
+    catIds.forEach(function(id) {
+      assert('cat.' + id + ' exists', !!DICT['cat.' + id]);
+      assert('cat.' + id + '.desc exists', !!DICT['cat.' + id + '.desc']);
+    });
+
+    // Reset to ru
+    setLang('ru');
+
+    // === Summary ===
+    var sumEl = document.getElementById('summary');
+    var cls = failed === 0 ? 'pass' : 'fail';
+    sumEl.innerHTML = '<span class="' + cls + '">' + passed + '/' + total + ' passed</span>' +
+      (failed > 0 ? '<span class="fail"> (' + failed + ' failed)</span>' : ' — ALL PASS');
+  </script>
+</body>
+</html>

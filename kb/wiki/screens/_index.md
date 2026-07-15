@@ -1,0 +1,68 @@
+# Экраны проекта
+
+Создано: 2026-05-24
+
+### cards.html (20 KB)
+**Тайтл:** Card Deck — AWARA
+
+### chat.html (21 KB)
+**Тайтл:** AWARA · Чат Матрицы
+
+### cosmic-forces.html (24 KB)
+**Тайтл:** AWARA · Космические Силы · Тримурти
+
+### cosmic-map.html (9 KB)
+**Тайтл:** AWARA · Cosmic Map · Карта Космоса
+
+### daimon.html (21 KB)
+**Тайтл:** Daimon Guardian · AWARA
+
+### dashboard.html (32 KB)
+**Тайтл:** Dashboard · AWARA
+
+### earth-player.html (37 KB)
+**Тайтл:** Player's Earth · Dominion of RA · AWARA
+
+### egg-3d.html (13 KB)
+**Тайтл:** AWARA · Золотое Яйцо 3D
+**i18n-ключи:** egg3d.title, egg3d.hint, common.back.lobby
+
+### festivals.html (37 KB)
+**Тайтл:** AWARA · Места Силы · Додекаэдр Земли
+
+### index.html (1108 KB)
+**Тайтл:** AWARA
+
+### initiation-corridor.html (886 KB)
+**Тайтл:** Дань Благоденствия (ДБД)
+
+### initiation-space.html (439 KB)
+**Тайтл:** AWARA · Initiation Space
+
+### matrix.html (17 KB)
+**Тайтл:** 33 Matrices · AWARA
+
+### milost.html (12 KB)
+**Тайтл:** Sources of Grace — AWARA
+
+### natal.html (25 KB)
+**Тайтл:** Natal Chart · AWARA
+
+### oracle.html (24 KB)
+**Тайтл:** Oracle · AWARA
+
+### passport.html (29 KB)
+**Тайтл:** Soul Passport · AWARA
+
+### spheres-v2.html (29 KB)
+**Тайтл:** AWARA · Пространство Души v2
+
+### tigel.html (106 KB)
+**Тайтл:** Evening Crucible · AWARA
+
+### universe.html (18 KB)
+**Тайтл:** Universe · AWARA
+
+### vedic-cosmos.html (22 KB)
+**Тайтл:** AWARA · Ведическая Вселенная · 14 Лок
+

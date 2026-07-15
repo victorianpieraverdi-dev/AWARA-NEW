@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AWARA · Лобби 3D</title>
+<!-- ЭКСПЕРИМЕНТ: 3D-яйцо (Three.js) крутится в центре (декор), 4 раздела — фиксированные кнопки по углам.
+     Обвязка = lobby.html. lobby.html и index.html НЕ трогаем — это отдельный превью. -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c; --gold-bright:#ffd700; --gold-light:#fff8d6; --gold-warm:#ffe080;
+  --bg-void:#0a0a14; --bg-deep:#1a1430; --bg-legacy:#020108;
+  --text:#d4c9a8; --muted:#8a7a5a;
+  --f-dec:'Cinzel Decorative',serif; --f-head:'Cinzel',serif; --f-body:'Cormorant Garamond',serif; --f-mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100%;-webkit-user-select:none;user-select:none}
+body{background:
+    radial-gradient(ellipse at 50% 18%, rgba(48,36,104,0.45) 0%, rgba(18,14,46,0.4) 34%, rgba(6,5,18,0.7) 64%, #000 100%),
+    radial-gradient(ellipse at 84% 86%, rgba(30,60,120,0.22) 0%, rgba(0,0,0,0) 55%),
+    radial-gradient(ellipse at 14% 84%, rgba(90,40,110,0.20) 0%, rgba(0,0,0,0) 55%),
+    #000;
+  color:var(--gold);font-family:var(--f-body);
+  display:flex;flex-direction:column;align-items:center;
+  padding:16px 14px 30px;overflow-x:hidden;min-height:100vh}
+#cosmos{position:fixed;inset:0;z-index:0;pointer-events:none}
+.shell{position:relative;z-index:1;width:100%;max-width:760px;display:flex;flex-direction:column;align-items:center}
+
+/* Шапка */
+.badge{font-family:var(--f-mono);font-size:8px;letter-spacing:0.45em;color:rgba(201,168,76,0.4);margin-bottom:10px}
+.brand{font-family:var(--f-dec);font-weight:700;font-size:clamp(32px,7.5vw,58px);letter-spacing:0.28em;
+  background:linear-gradient(180deg,#fffbe0 0%,#e8cc7a 55%,#c9a84c 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 30px rgba(201,168,76,0.42));line-height:1}
+.ruler{font-family:var(--f-body);font-style:italic;font-size:clamp(10px,1.8vw,14px);
+  color:rgba(255,220,150,0.42);letter-spacing:0.22em;margin:11px 0 2px}
+.light-top{font-family:var(--f-mono);font-size:clamp(13px,2.6vw,16px);color:var(--gold-bright);letter-spacing:0.06em;margin-top:8px;
+  filter:drop-shadow(0 0 12px rgba(255,215,0,0.3))}
+
+/* Сцена — 3D-яйцо + угловые кнопки */
+.stage{position:relative;width:min(92vw,600px);height:min(92vw,600px);margin:14px 0 6px}
+#hiranya{position:absolute;inset:0;width:100%;height:100%;z-index:1;cursor:grab;touch-action:none}
+#hiranya:active{cursor:grabbing}
+/* Виньетка погружения — появляется при «входе в сферу» (ИГРА) */
+.dive-veil{position:absolute;inset:-22%;z-index:2;pointer-events:none;opacity:0;
+  background:radial-gradient(circle at 50% 47%, rgba(0,0,0,0) 28%, rgba(3,2,16,0.0) 50%, rgba(3,2,16,0.55) 86%);
+  transition:opacity .8s ease}
+.stage.diving .dive-veil{opacity:1}
+
+/* Разделы — единая панель, выезжает из-под яйца по нажатию */
+.egg-hint{font-family:var(--f-mono);font-size:10px;letter-spacing:0.18em;color:rgba(201,168,76,0.5);
+  margin:2px 0 0;transition:opacity .4s;text-align:center}
+.egg-hint.hide{opacity:0;pointer-events:none}
+.gates-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:560px;
+  margin:8px 0 2px;
+  max-height:0;opacity:0;transform:translateY(-16px);overflow:hidden;pointer-events:none;
+  transition:max-height .55s cubic-bezier(.22,1,.36,1),opacity .4s,transform .55s}
+.gates-panel.open{max-height:240px;opacity:1;transform:translateY(0);pointer-events:auto}
+.gate{text-align:center;cursor:pointer;padding:14px 8px;border-radius:15px;
+  border:1px solid rgba(201,168,76,0.18);
+  background:rgba(12,9,28,0.4);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+  transition:transform .3s,border-color .3s,box-shadow .3s,background .3s}
+.gate:hover{transform:translateY(-3px);border-color:var(--glow,var(--gold-bright));box-shadow:0 0 22px var(--glow,rgba(255,215,0,0.2));background:rgba(20,15,44,0.5)}
+.gate .ico{font-size:26px;display:block;color:var(--gold-bright);filter:drop-shadow(0 0 12px var(--glow,rgba(255,215,0,0.45)));transition:transform .3s,filter .3s}
+.gate:hover .ico{transform:scale(1.12)}
+.gate .nm{font-family:var(--f-head);font-weight:600;letter-spacing:0.16em;font-size:13px;color:var(--gold-light);display:block;margin-top:8px}
+.gate .ds{font-family:var(--f-body);font-style:italic;font-size:12px;color:rgba(201,168,76,0.6);display:block;margin-top:2px;transition:color .35s}
+.gate:hover .ds{color:rgba(255,220,150,0.85)}
+.gate.g-game{--glow:rgba(120,170,255,0.6)}
+.gate.g-chronicle{--glow:rgba(255,215,0,0.6)}
+.gate.g-exchange{--glow:rgba(100,220,230,0.55)}
+.gate.g-social{--glow:rgba(150,120,255,0.6)}
+.gate.g-game .ico{color:#9bbcff}
+.gate.g-chronicle .ico{color:#ffe27a}
+.gate.g-exchange .ico{color:#7fe6ef}
+.gate.g-social .ico{color:#b49bff}
+
+/* Нижняя панель — лёгкое стекло */
+.statusbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;
+  font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;color:rgba(201,168,76,0.82);
+  border:1px solid rgba(201,168,76,0.14);border-radius:14px;
+  background:rgba(12,9,28,0.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  padding:11px 16px;margin-top:4px;width:100%;max-width:540px}
+.statusbar .sep{color:rgba(201,168,76,0.3)}
+.statusbar b{color:var(--gold-bright);font-weight:400}
+.lang{display:flex;gap:4px;margin-left:auto}
+.lang button{font-family:var(--f-mono);font-size:10px;letter-spacing:0.1em;background:transparent;
+  border:1px solid rgba(201,168,76,0.3);color:rgba(201,168,76,0.7);border-radius:6px;padding:3px 8px;cursor:pointer;transition:all .3s}
+.lang button.on{color:var(--gold-bright);border-color:var(--gold-bright)}
+
+.actions{display:flex;gap:14px;margin-top:18px;flex-wrap:wrap;justify-content:center}
+.act{font-family:var(--f-mono);font-size:11px;letter-spacing:0.2em;color:rgba(201,168,76,0.82);
+  text-transform:uppercase;background:rgba(12,9,28,0.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(201,168,76,0.4);
+  border-radius:11px;padding:10px 18px;cursor:pointer;transition:all .3s;text-decoration:none}
+.act:hover{color:var(--gold-bright);border-color:var(--gold-bright);box-shadow:0 0 18px rgba(255,215,0,0.2);transform:translateY(-1px)}
+.footer{font-family:var(--f-mono);font-size:9px;letter-spacing:0.34em;color:rgba(201,168,76,0.4);margin-top:24px}
+.version{position:fixed;bottom:9px;right:11px;z-index:2;font-family:var(--f-mono);font-size:8px;color:rgba(255,255,255,0.16);letter-spacing:0.1em}
+
+@media (max-width:560px){
+  .stage{width:min(94vw,440px);height:min(94vw,440px)}
+  .gates-panel{grid-template-columns:repeat(2,1fr);max-width:360px}
+  .gates-panel.open{max-height:360px}
+  .gate{padding:11px 6px}
+  .gate .ico{font-size:22px}
+  .gate .nm{font-size:11px;letter-spacing:0.1em}
+  .gate .ds{font-size:10px}
+}
+
+/* Модалка / тост (ui-module) — стекло */
+.awara-modal-overlay{position:fixed;inset:0;background:rgba(2,1,10,0.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}
+.awara-modal{background:rgba(16,12,36,0.55);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);
+  border:1px solid rgba(201,168,76,0.45);border-radius:20px;padding:24px 28px;max-width:460px;width:100%;
+  box-shadow:0 0 80px rgba(201,168,76,0.22),inset 0 1px 0 rgba(255,255,255,0.08);max-height:82vh;overflow-y:auto}
+.awara-modal h2,.awara-modal h3{font-family:var(--f-dec);color:var(--gold-bright);margin-bottom:14px;letter-spacing:0.08em}
+.awara-modal .mcat{border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:11px 13px;margin-bottom:9px;background:rgba(201,168,76,0.04)}
+.awara-modal .mcat .cl{font-family:var(--f-head);color:var(--gold-bright);font-size:13px;letter-spacing:0.06em}
+.awara-modal .mcat .it{font-family:var(--f-body);font-size:14px;color:rgba(201,168,76,0.88);margin-top:4px;line-height:1.5}
+.awara-modal .mcat .locked,.awara-modal .mcat .cl.locked{color:rgba(201,168,76,0.32)}
+.awara-toast{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);z-index:520;
+  background:rgba(12,9,28,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--gold);color:var(--gold-bright);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:0.06em;padding:11px 20px;border-radius:12px;box-shadow:0 0 26px rgba(255,215,0,0.2)}
+
+/* ✦ ГЛАЗ МИРОЗДАНИЯ — вступительный портал-зрачок */
+.eye-gate{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;cursor:pointer;overflow:hidden;
+  background:#01010a;
+  transition:opacity 1.1s ease, transform 1.1s ease;will-change:opacity,transform}
+.eye-gate::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-repeat:no-repeat;
+  background:radial-gradient(circle at 50% 50%, rgba(28,20,60,0.5) 0%, rgba(6,4,18,0.86) 52%, #01010a 100%), radial-gradient(1px 1px at 12% 22%, #fff 50%, transparent), radial-gradient(1px 1px at 82% 16%, #cfe0ff 50%, transparent), radial-gradient(1px 1px at 24% 74%, #ffe0b0 50%, transparent), radial-gradient(1px 1px at 68% 82%, #fff 50%, transparent), radial-gradient(1px 1px at 90% 54%, #e0d0ff 50%, transparent), radial-gradient(1px 1px at 6% 52%, #fff 50%, transparent), radial-gradient(2px 2px at 46% 12%, #ffd0a0 50%, transparent), radial-gradient(1px 1px at 54% 92%, #cfe0ff 50%, transparent), radial-gradient(1px 1px at 36% 40%, #fff 50%, transparent), radial-gradient(1px 1px at 74% 64%, #cfe0ff 50%, transparent)}
+.eye-gate.diving{opacity:0;transform:scale(1.18);pointer-events:none}
+.eye-gate.gone{display:none}
+.eye-stage{position:relative;z-index:2;width:min(78vw,520px);height:min(78vw,520px);border-radius:50%;display:flex;align-items:center;justify-content:center;
+  filter:drop-shadow(0 0 60px rgba(120,80,200,0.35));animation:eyeBreath 7s ease-in-out infinite}
+@keyframes eyeBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+/* космическая паутина по краю (плазменное кольцо) — вращается */
+.eye-web{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, transparent 62%, rgba(255,150,70,0.45) 78%, rgba(255,80,40,0.85) 87%, rgba(150,30,70,0.45) 94%, transparent 100%), repeating-conic-gradient(from 0deg, rgba(255,210,150,0.10) 0deg 2deg, transparent 2deg 5deg);
+  -webkit-mask:radial-gradient(circle at 50% 50%, transparent 70%, #000 80%, #000 96%, transparent 100%);mask:radial-gradient(circle at 50% 50%, transparent 70%, #000 80%, #000 96%, transparent 100%);
+  animation:eyeSpin 64s linear infinite;opacity:0.92}
+@keyframes eyeSpin{to{transform:rotate(360deg)}}
+/* радужка — галактики и тёмная материя */
+.eye-iris{position:absolute;inset:8%;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 38% 36%, rgba(120,150,255,0.18), transparent 42%), radial-gradient(circle at 66% 60%, rgba(180,110,255,0.16), transparent 44%), radial-gradient(circle at 50% 50%, rgba(40,30,80,0.95) 0%, rgba(22,16,48,0.96) 46%, rgba(10,8,28,0.98) 70%, #06040f 100%);
+  box-shadow:inset 0 0 80px rgba(90,60,160,0.5), inset 0 0 30px rgba(0,0,0,0.8)}
+.eye-iris::after{content:"";position:absolute;inset:0;border-radius:50%;opacity:0.85;animation:eyeSpin 96s linear infinite reverse;
+  background-image:radial-gradient(1.5px 1.5px at 20% 30%, #fff8e0 50%, transparent), radial-gradient(1.5px 1.5px at 70% 25%, #cfe0ff 50%, transparent), radial-gradient(1px 1px at 35% 70%, #ffe0b0 50%, transparent), radial-gradient(1.5px 1.5px at 80% 65%, #fff 50%, transparent), radial-gradient(1px 1px at 55% 45%, #e0d0ff 50%, transparent), radial-gradient(2px 2px at 60% 80%, #ffd0a0 50%, transparent), radial-gradient(1px 1px at 25% 55%, #fff 50%, transparent), radial-gradient(1.5px 1.5px at 45% 18%, #cfe0ff 50%, transparent)}
+/* зрачок — врата, тёмный центр с искрой жизни */
+.eye-pupil{position:absolute;width:30%;height:30%;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 50% 50%, #000 0%, #050310 60%, rgba(20,12,40,0.9) 100%);
+  box-shadow:0 0 50px 6px rgba(0,0,0,0.9), inset 0 0 24px rgba(0,0,0,0.95);transition:transform .9s cubic-bezier(.6,0,.2,1)}
+.eye-core{width:14%;height:14%;border-radius:50%;background:#fff6d8;box-shadow:0 0 14px 4px rgba(255,230,160,0.9),0 0 34px 10px rgba(255,180,90,0.55);animation:corePulse 3.4s ease-in-out infinite}
+@keyframes corePulse{0%,100%{transform:scale(1);opacity:0.9}50%{transform:scale(1.5);opacity:1}}
+/* лимбальное кольцо — золотой ободок взгляда */
+.eye-ring{position:absolute;inset:6%;border-radius:50%;pointer-events:none;border:1px solid rgba(255,210,140,0.35);box-shadow:0 0 40px rgba(255,180,100,0.25), inset 0 0 50px rgba(255,170,90,0.18);transition:box-shadow .5s}
+.eye-gate:hover .eye-pupil{transform:scale(1.12)}
+.eye-gate:hover .eye-ring{box-shadow:0 0 70px rgba(255,200,120,0.5), inset 0 0 70px rgba(255,180,100,0.3)}
+.eye-gate.diving .eye-pupil{transform:scale(9)}
+.eye-title{position:relative;z-index:2;font-family:var(--f-dec);font-weight:700;font-size:clamp(20px,4.5vw,34px);letter-spacing:0.4em;text-indent:0.4em;color:#fff3cf;filter:drop-shadow(0 0 22px rgba(255,200,120,0.45))}
+.eye-hint{position:relative;z-index:2;font-family:var(--f-mono);font-size:11px;letter-spacing:0.28em;color:rgba(255,220,160,0.6);animation:hintPulse 3s ease-in-out infinite}
+/* иные мироздания — вселенные других игроков (будущее) — пока далёкие и тусклые */
+.eye-others{position:absolute;inset:0;z-index:1;pointer-events:none}
+.eye-other{position:absolute;width:46px;height:46px;border-radius:50%;opacity:0.45;background:radial-gradient(circle at 50% 50%, rgba(180,150,255,0.55) 0%, rgba(80,60,150,0.22) 46%, transparent 72%);box-shadow:0 0 22px rgba(140,110,220,0.3);animation:otherFloat 9s ease-in-out infinite}
+.eye-other::after{content:"";position:absolute;inset:36%;border-radius:50%;background:rgba(255,240,210,0.8);box-shadow:0 0 9px rgba(255,220,170,0.7)}
+.eye-other.o1{top:14%;left:13%}
+.eye-other.o2{top:18%;right:12%;width:34px;height:34px;animation-delay:-2s}
+.eye-other.o3{bottom:20%;left:16%;width:38px;height:38px;animation-delay:-4s}
+.eye-other.o4{bottom:15%;right:14%;animation-delay:-1s}
+.eye-other.o5{top:46%;right:6%;width:30px;height:30px;animation-delay:-3s}
+.eye-other.o6{top:50%;left:7%;width:30px;height:30px;animation-delay:-5s}
+@keyframes otherFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.eye-others-label{position:absolute;left:50%;bottom:5%;transform:translateX(-50%);z-index:1;font-family:var(--f-mono);font-size:9px;letter-spacing:0.3em;color:rgba(180,160,220,0.4);text-align:center}
+@keyframes hintPulse{0%,100%{opacity:0.45}50%{opacity:0.9}}
+@media (max-width:560px){.eye-stage{width:min(86vw,420px);height:min(86vw,420px)}.eye-other.o5,.eye-other.o6{display:none}.eye-others-label{bottom:3%}}
+</style>
+</head>
+<body>
+<canvas id="cosmos"></canvas>
+<script>
+/* ✦ ПРИЁМ ГИПЕРПРЫЖКА из cosmos-eye.html: лобби проявляется из бело-золотой вспышки, глаз-гейт пропускаем */
+(function(){ try{
+  if(sessionStorage.getItem('awara_warp_in')!=='1') return;
+  sessionStorage.removeItem('awara_warp_in');
+  try{ sessionStorage.setItem('awara_eye_entered','1'); }catch(e){}
+  /* мгновенно прячем глаз-гейт ещё ДО его отрисовки — не ждём DOMContentLoaded (тяжёлые module-скрипты грузятся 1-2с) */
+  try{ var hideStyle=document.createElement('style'); hideStyle.textContent='#eye-gate{display:none!important}'; (document.head||document.documentElement).appendChild(hideStyle); }catch(e){}
+  var v=document.createElement('div');
+  v.style.cssText='position:fixed;inset:0;z-index:999;pointer-events:none;background:radial-gradient(circle,#fff,#ffe9b0 45%,#6a86ff 90%);opacity:1;transition:opacity 1.1s ease';
+  (document.body||document.documentElement).appendChild(v);
+  function hideGate(){ var g=document.getElementById('eye-gate'); if(g){ g.classList.add('gone'); } }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',hideGate); else hideGate();
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ v.style.opacity='0'; }); });
+  setTimeout(function(){ if(v&&v.parentNode) v.parentNode.removeChild(v); },1300);
+}catch(e){} })();
+</script>
+
+<!-- ✦ ГЛАЗ МИРОЗДАНИЯ удалён — погружение открывает лобби сразу -->
+
+<div class="shell">
+  <div class="badge">✦ A W A R A · A L P H A · B U I L D ✦</div>
+  <div class="brand">AWARA</div>
+  <div class="ruler">✦ путь к золотому веку · sapta yoga ✦</div>
+  <div class="light-top"><span data-light-counter>0.0000000000</span> света</div>
+  <div data-central-sun style="display:none"></div>
+
+  <div class="stage">
+    <canvas id="hiranya"></canvas>
+    <div class="dive-veil" id="dive-veil"></div>
+  </div>
+
+  <div class="egg-hint" id="egg-hint" data-ru="✦ нажми на яйцо, чтобы открыть разделы ✦" data-en="✦ tap the egg to open sections ✦">✦ нажми на яйцо, чтобы открыть разделы ✦</div>
+
+  <div class="gates-panel" id="gates-panel" aria-hidden="true">
+    <div class="gate g-game" data-section="game">
+      <span class="ico">◉</span><span class="nm" data-ru="ИГРА" data-en="GAME">ИГРА</span>
+      <span class="ds" data-ru="творение и рост" data-en="creation &amp; growth">творение и рост</span>
+    </div>
+    <div class="gate g-chronicle" data-section="chronicle">
+      <span class="ico">△</span><span class="nm" data-ru="ХРОНИКА" data-en="CHRONICLE">ХРОНИКА</span>
+      <span class="ds" data-ru="путь и летопись" data-en="path &amp; collection">путь и летопись</span>
+    </div>
+    <div class="gate g-exchange" data-section="exchange">
+      <span class="ico">⚜</span><span class="nm" data-ru="ОБМЕН" data-en="EXCHANGE">ОБМЕН</span>
+      <span class="ds" data-ru="банк и дары" data-en="bank &amp; gifts">банк и дары</span>
+    </div>
+    <div class="gate g-social" data-section="social">
+      <span class="ico">🌐</span><span class="nm" data-ru="ОБЩЕНИЕ" data-en="SOCIAL">ОБЩЕНИЕ</span>
+      <span class="ds" data-ru="союзы душ" data-en="connection &amp; souls">союзы душ</span>
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <span><b data-light-counter>0.0000000000</b> света</span>
+    <span class="sep">·</span>
+    <span><b data-level-name>—</b></span>
+    <span class="sep">·</span>
+    <span>Агент: <b data-agent-name>—</b></span>
+    <span class="lang">
+      <button data-lang="ru">RU</button>
+      <button data-lang="en">EN</button>
+    </span>
+  </div>
+
+  <div class="actions">
+    <button class="act" id="btn-menu">☰ Меню</button>
+    <button class="act" id="btn-passport">Паспорт души</button>
+    <a class="act" href="entry.html">← Исток</a>
+  </div>
+
+  <div class="footer">✦ ПУТЬ К ЗОЛОТОМУ ВЕКУ ✦</div>
+</div>
+
+<div class="version">AWARA · лобби 3D · ✦ сферы (O) · панели (P)</div>
+
+<!-- Космос: спокойный фон — звёзды + лёгкие туманности -->
+<script>
+(function(){
+  var c=document.getElementById('cosmos'),x=c.getContext('2d'),W,H,st=[],neb=[];
+  function rz(){W=c.width=innerWidth;H=c.height=innerHeight;}
+  addEventListener('resize',rz);rz();
+  for(var i=0;i<190;i++)st.push({x:Math.random(),y:Math.random(),p:Math.random()*6.28,s:Math.random()*1.2+0.3,sp:Math.random()*0.5+0.3,h:Math.random()<0.1});
+  var cols=[[120,95,200],[70,110,190],[180,150,90]];
+  for(var j=0;j<3;j++)neb.push({x:[0.5,0.83,0.15][j],y:[0.2,0.85,0.83][j],r:Math.random()*0.26+0.24,c:cols[j],p:Math.random()*6.28});
+  function f(t){
+    var ft=t/1000;x.clearRect(0,0,W,H);
+    for(var j=0;j<neb.length;j++){var n=neb[j];var pulse=0.55+Math.sin(ft*0.1+n.p)*0.45;
+      var g=x.createRadialGradient(n.x*W,n.y*H,0,n.x*W,n.y*H,Math.min(W,H)*n.r);
+      g.addColorStop(0,'rgba('+n.c[0]+','+n.c[1]+','+n.c[2]+','+(0.06*pulse)+')');
+      g.addColorStop(1,'rgba('+n.c[0]+','+n.c[1]+','+n.c[2]+',0)');
+      x.fillStyle=g;x.fillRect(0,0,W,H);}
+    for(var i=0;i<st.length;i++){var s=st[i],tw=0.15+Math.sin(ft*s.sp+s.p)*0.13;
+      x.fillStyle=s.h?'rgba(190,205,255,'+Math.max(0,tw)+')':'rgba(255,248,220,'+Math.max(0,tw)+')';
+      x.fillRect(s.x*W,s.y*H,s.s,s.s);}
+    requestAnimationFrame(f);
+  }
+  requestAnimationFrame(f);
+})();
+
+// Язык RU/EN
+function applyLang(lang){
+  document.querySelectorAll('[data-ru][data-en]').forEach(function(el){el.innerHTML=el.getAttribute('data-'+lang)||el.textContent;});
+  document.querySelectorAll('.lang button').forEach(function(b){b.classList.toggle('on',b.dataset.lang===lang);});
+  try{localStorage.setItem('awara_lang',lang);}catch(e){}
+  if(window.__awaraRelabel3D){ try{ window.__awaraRelabel3D(lang); }catch(e){} }
+}
+(function(){var lang='ru';try{lang=localStorage.getItem('awara_lang')||'ru';}catch(e){}if(lang!=='ru'&&lang!=='en')lang='ru';
+  applyLang(lang);document.querySelectorAll('.lang button').forEach(function(b){b.onclick=function(){applyLang(b.dataset.lang);};});})();
+</script>
+
+<!-- GSAP — драйвер камеры/рождения (panels focusOnPanel + u_birth) -->
+<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<!-- Three.js -->
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.157.0/examples/jsm/"
+} }
+</script>
+
+<!-- 3D ЯЙЦО ХИРАНЬЯГАРБХА — декоративное, медленное вращение -->
+<script type="module">
+import * as THREE from 'three';
+
+const canvas = document.getElementById('hiranya');
+const stage  = canvas.parentElement;
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+function boxSize(){return Math.max(160, Math.min(stage.clientWidth||340, stage.clientHeight||340));}
+let S = boxSize();
+renderer.setSize(S, S, false);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 20);
+camera.position.set(0, 0.18, 4.3);
+const CAM_Z = 4.3;
+
+/* ════ FX-РЕЖИМ (?fx=1): настоящий пост-процесс UnrealBloomPass + BokehPass ════
+   По умолчанию ВЫКЛ — основной рендер остаётся прозрачным над CSS-космосом.
+   В fx-режиме фон становится непрозрачным (composer не умеет alpha), и включается
+   кинематографическая глубина резкости: при фокусе на узле фон размывается. */
+const FX_MODE = new URLSearchParams(location.search).has('fx');
+let composer=null, bloomPass=null, bokehPass=null;
+if(FX_MODE){
+  scene.background = new THREE.Color(0x05030f);   // composer рисует в непрозрачный буфер
+  renderer.setClearColor(0x05030f,1);
+  (async()=>{
+    try{
+      const m = await Promise.all([
+        import('three/addons/postprocessing/EffectComposer.js'),
+        import('three/addons/postprocessing/RenderPass.js'),
+        import('three/addons/postprocessing/UnrealBloomPass.js'),
+        import('three/addons/postprocessing/BokehPass.js'),
+        import('three/addons/postprocessing/OutputPass.js')
+      ]);
+      const EffectComposer=m[0].EffectComposer, RenderPass=m[1].RenderPass,
+            UnrealBloomPass=m[2].UnrealBloomPass, BokehPass=m[3].BokehPass, OutputPass=m[4].OutputPass;
+      const c=new EffectComposer(renderer); c.setSize(S,S); c.__w=S;
+      c.addPass(new RenderPass(scene,camera));
+      bloomPass=new UnrealBloomPass(new THREE.Vector2(S,S), 0.6, 0.4, 0.85); // strength, radius, threshold — плазма, не взрыв
+      c.addPass(bloomPass);
+      bokehPass=new BokehPass(scene,camera,{ focus:CAM_Z, aperture:0.0002, maxblur:0.012 });
+      c.addPass(bokehPass);
+      c.addPass(new OutputPass());
+      composer=c;
+    }catch(err){ console.warn('FX composer init failed — fallback to plain render', err); }
+  })();
+}
+// Чем больше света у игрока — тем «круче» лобби: глубже наезд, ярче ядро и волна
+let LIGHT = 0; try{ const _st = JSON.parse(localStorage.getItem('awara_v255_state')||'{}'); LIGHT = +_st.totalLight || 0; }catch(e){}
+const lightF = Math.max(0, Math.min(1, Math.log10(1+LIGHT)/4));
+
+function eggGeo(scaleMult){
+  const g = new THREE.SphereGeometry(1, 64, 48);
+  g.scale(1, 1.35*scaleMult, 0.75*scaleMult);
+  return g;
+}
+function eggPt(lat,lng,r){
+  const phi=(90-lat)*Math.PI/180, th=lng*Math.PI/180;
+  return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(th), r*Math.cos(phi)*1.35, r*Math.sin(phi)*Math.sin(th)*0.75);
+}
+
+const eggGroup = new THREE.Group();
+scene.add(eggGroup);
+
+// СЛОЙ 4 — внешняя золотая скорлупа
+const shell = new THREE.Mesh(eggGeo(1.05), new THREE.MeshStandardMaterial({roughness:0.35,metalness:0.6,color:0xffd700,transparent:true,opacity:0.3,depthWrite:false}));
+eggGroup.add(shell);
+
+/* ===== AAA ХИРАНЬЯГАРБХА: плазменное золотое ядро (Fresnel + жидкое золото) + орбитальные частицы ===== */
+function __eggGlowTex(){ const s=64,cv=document.createElement('canvas'); cv.width=cv.height=s; const g=cv.getContext('2d');
+  const gr=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2); gr.addColorStop(0,'rgba(255,255,255,1)'); gr.addColorStop(0.35,'rgba(255,240,200,0.6)'); gr.addColorStop(1,'rgba(255,220,150,0)');
+  g.fillStyle=gr; g.fillRect(0,0,s,s); const t=new THREE.CanvasTexture(cv); t.needsUpdate=true; return t; }
+function createGoldenEgg(opts){ opts=opts||{};
+  const colorDeep=new THREE.Color(opts.colorDeep||0x3a1d05), colorGold=new THREE.Color(opts.colorBright||0xffd27a);
+  const pCount=opts.particles||700;
+  const SIMPLEX=`
+  vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x,289.0);}
+  vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+  float snoise(vec3 v){ const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);
+    vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
+    vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
+    vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+2.0*C.xxx; vec3 x3=x0-1.0+3.0*C.xxx;
+    i=mod(i,289.0);
+    vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+    float n_=1.0/7.0; vec3 ns=n_*D.wyz-D.xzx;
+    vec4 j=p-49.0*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_);
+    vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y);
+    vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
+    vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0));
+    vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+    vec3 pp0=vec3(a0.xy,h.x); vec3 pp1=vec3(a0.zw,h.y); vec3 pp2=vec3(a1.xy,h.z); vec3 pp3=vec3(a1.zw,h.w);
+    vec4 norm=taylorInvSqrt(vec4(dot(pp0,pp0),dot(pp1,pp1),dot(pp2,pp2),dot(pp3,pp3)));
+    pp0*=norm.x;pp1*=norm.y;pp2*=norm.z;pp3*=norm.w;
+    vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m;
+    return 42.0*dot(m*m,vec4(dot(pp0,x0),dot(pp1,x1),dot(pp2,x2),dot(pp3,x3))); }
+  float fbm3(vec3 p){ float s=0.0,a=0.5; for(int i=0;i<5;i++){ s+=a*snoise(p); p*=2.0; a*=0.5; } return s; }`;
+  const material=new THREE.ShaderMaterial({ transparent:true, depthWrite:false, side:THREE.DoubleSide, blending:THREE.AdditiveBlending,
+    uniforms:{ uTime:{value:0}, uColorDeep:{value:colorDeep}, uColorGold:{value:colorGold}, uFresnelPow:{value:opts.fresnelPow||2.6}, uIntensity:{value:opts.intensity||1.15} },
+    vertexShader:'uniform float uTime; varying vec3 vPos; varying vec3 vNormalW; varying vec3 vViewDir; '+SIMPLEX+' void main(){ vPos=position; float d=fbm3(position*1.4+vec3(0.0,uTime*0.25,0.0)); vec3 tp=position+normal*d*0.05; vec4 wp=modelMatrix*vec4(tp,1.0); vNormalW=normalize(mat3(modelMatrix)*normal); vViewDir=normalize(cameraPosition-wp.xyz); gl_Position=projectionMatrix*viewMatrix*wp; }',
+    fragmentShader:'precision highp float; uniform float uTime,uFresnelPow,uIntensity; uniform vec3 uColorDeep,uColorGold; varying vec3 vPos; varying vec3 vNormalW; varying vec3 vViewDir; '+SIMPLEX+' void main(){ vec3 q=vPos*1.8; float flow=fbm3(q+vec3(0.0,uTime*0.18,0.0)); float flow2=fbm3(q*2.1-vec3(uTime*0.12)); float energy=0.5+0.5*sin(flow*3.1416+uTime*0.6+flow2*2.5); float fres=pow(1.0-clamp(dot(normalize(vNormalW),normalize(vViewDir)),0.0,1.0),uFresnelPow); vec3 col=mix(uColorDeep,uColorGold,energy); col+=uColorGold*fres*1.8; col+=vec3(1.0,0.9,0.6)*smoothstep(0.75,1.0,energy)*0.6; float alpha=clamp(energy*0.45+fres*0.95,0.0,1.0); gl_FragColor=vec4(col*uIntensity,alpha); }' });
+  const group=new THREE.Group();
+  const egg=new THREE.Mesh(new THREE.SphereGeometry(1,96,96), material);
+  egg.scale.set(1.0,1.35,0.75); group.add(egg);
+  const pos=new Float32Array(pCount*3), pcol=new Float32Array(pCount*3); const cc=new THREE.Color();
+  for(let i=0;i<pCount;i++){ const a=Math.random()*Math.PI*2, rad=1.7+Math.random()*1.8, yy=(Math.random()-0.5)*1.6;
+    pos[i*3]=Math.cos(a)*rad; pos[i*3+1]=yy; pos[i*3+2]=Math.sin(a)*rad*0.8;
+    cc.setHSL(0.12+Math.random()*0.05,0.85,0.5+Math.random()*0.35); pcol[i*3]=cc.r; pcol[i*3+1]=cc.g; pcol[i*3+2]=cc.b; }
+  const pg=new THREE.BufferGeometry(); pg.setAttribute('position',new THREE.BufferAttribute(pos,3)); pg.setAttribute('color',new THREE.BufferAttribute(pcol,3));
+  const particles=new THREE.Points(pg,new THREE.PointsMaterial({size:0.05,map:__eggGlowTex(),vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true}));
+  group.add(particles);
+  function update(t){ material.uniforms.uTime.value=t; egg.rotation.y=t*0.15; particles.rotation.y=-t*0.1; particles.rotation.x=Math.sin(t*0.05)*0.25; }
+  return { group, material, egg, particles, update };
+}
+const goldEgg = createGoldenEgg({});
+eggGroup.add(goldEgg.group);
+goldEgg.group.visible = false; // ✦ временно скрыта жёлтая плазменная субстанция внутри сферы
+
+// Меридианы + экватор
+const merMat = new THREE.LineBasicMaterial({color:0xffd700,transparent:true,opacity:0.0,depthWrite:false});
+/* wireframe-меридианы и экватор УДАЛЕНЫ — заменены AAA-плазменным ядром Хираньягарбхи (goldEgg). merMat оставлен для совместимости ссылок в animate(). */
+
+// СЛОЙ 3 — средняя геометрия + кольца
+eggGroup.add(new THREE.Mesh(eggGeo(0.8), new THREE.MeshStandardMaterial({roughness:0.2,metalness:0.8,color:0xc9a84c,transparent:true,opacity:0.15,depthWrite:false})));
+const ringGeo3 = new THREE.TorusGeometry(0.6,0.003,8,100);
+const ring3a = new THREE.Mesh(ringGeo3, new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:0.12,depthWrite:false}));
+ring3a.rotation.x=Math.PI/2; ring3a.scale.set(1,1.35,0.75); eggGroup.add(ring3a);
+const ring3b = new THREE.Mesh(ringGeo3, new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:0.1,depthWrite:false}));
+ring3b.rotation.x=Math.PI/3; ring3b.rotation.y=Math.PI/4; ring3b.scale.set(1,1.35,0.75); eggGroup.add(ring3b);
+
+// СЛОЙ 2 — внутренняя геометрия + кольца
+eggGroup.add(new THREE.Mesh(eggGeo(0.5), new THREE.MeshStandardMaterial({roughness:0.15,metalness:0.9,color:0xffaa00,transparent:true,opacity:0.12,depthWrite:false})));
+const ringGeo2 = new THREE.TorusGeometry(0.3,0.004,8,64);
+const ring2 = new THREE.Mesh(ringGeo2, new THREE.MeshBasicMaterial({color:0xffcc00,transparent:true,opacity:0.2,depthWrite:false}));
+ring2.rotation.x=Math.PI/2; ring2.scale.set(1,1.35,0.75); eggGroup.add(ring2);
+const ring2b = new THREE.Mesh(ringGeo2, new THREE.MeshBasicMaterial({color:0xffaa00,transparent:true,opacity:0.14,depthWrite:false}));
+ring2b.rotation.x=Math.PI/2.5; ring2b.rotation.y=Math.PI/3; ring2b.scale.set(1,1.35,0.75); eggGroup.add(ring2b);
+
+// СЛОЙ 1 — ядро
+const coreMat = new THREE.ShaderMaterial({
+  vertexShader:'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:'varying vec3 vN;void main(){float i=pow(.55-dot(vN,vec3(0,0,1)),3.);gl_FragColor=vec4(1.,.85,.15,1.)*i*1.3+vec4(1.,.7,.1,1.)*.15;}',
+  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false
+});
+eggGroup.add(new THREE.Mesh(eggGeo(0.25), coreMat));
+
+// 4 цветные узлы-маячка на яйце (под цвет разделов, декор)
+const NODES = [
+  {lat:20,  lng:0,   hex:0x78aaff},
+  {lat:20,  lng:180, hex:0xffd700},
+  {lat:-20, lng:90,  hex:0x64dce6},
+  {lat:-20, lng:-90, hex:0x9a78ff}
+];
+NODES.forEach(n=>{
+  const dot=new THREE.Mesh(new THREE.SphereGeometry(0.03,8,8), new THREE.MeshBasicMaterial({color:n.hex}));
+  dot.position.copy(eggPt(n.lat,n.lng,1.06)); eggGroup.add(dot);
+  const glow=new THREE.Mesh(new THREE.SphereGeometry(0.07,8,8), new THREE.MeshBasicMaterial({color:n.hex,transparent:true,opacity:0.3,depthWrite:false}));
+  glow.position.copy(dot.position); eggGroup.add(glow);
+});
+
+// ══ RA В ЦЕНТРЕ ══
+const raGroup = new THREE.Group();
+const raMat = new THREE.ShaderMaterial({
+  uniforms:{ uBoost:{value:0} },
+  vertexShader:'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:'uniform float uBoost;varying vec3 vN;void main(){float i=pow(.55-dot(vN,vec3(0,0,1)),2.);vec3 base=vec3(1.,.92,.2)*i*3.+vec3(1.,.84,0.)*.5;vec3 boosted=base*(1.+uBoost*2.5)+vec3(uBoost)*0.6;gl_FragColor=vec4(boosted,1.);}',
+  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false
+});
+const raCore = new THREE.Mesh(new THREE.SphereGeometry(0.15,32,32), raMat); raGroup.add(raCore);
+const raHalo = new THREE.Mesh(new THREE.SphereGeometry(0.3,32,32), new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:0.15,depthWrite:false})); raGroup.add(raHalo);
+const raRingGeo = new THREE.TorusGeometry(0.22,0.006,16,80);
+const raRing1 = new THREE.Mesh(raRingGeo, new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:0.6})); raRing1.rotation.x=Math.PI/2; raGroup.add(raRing1);
+const raRing2 = new THREE.Mesh(raRingGeo, new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:0.35})); raRing2.rotation.x=Math.PI/3; raRing2.rotation.y=Math.PI/4; raGroup.add(raRing2);
+scene.add(raGroup);
+
+// Свет
+scene.add(new THREE.AmbientLight(0x332211,3));
+const sun=new THREE.DirectionalLight(0xffeedd,4); sun.position.set(5,3,5); scene.add(sun);
+
+// ══ АУРА (Хроника) — ореол вокруг всего яйца ══
+const auraMat = new THREE.ShaderMaterial({
+  uniforms:{ uOpacity:{value:0} },
+  vertexShader:'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:'uniform float uOpacity;varying vec3 vN;void main(){float i=pow(1.0-abs(dot(vN,vec3(0,0,1))),2.5);gl_FragColor=vec4(0.62,0.82,1.0,1.0)*i*uOpacity;}',
+  transparent:true, blending:THREE.AdditiveBlending, side:THREE.BackSide, depthWrite:false
+});
+const aura = new THREE.Mesh(eggGeo(1.32), auraMat); scene.add(aura);
+
+// ══ МАГИЧЕСКОЕ СВЕЧЕНИЕ всей сферы (при наведении) — тёплый золотой ореол ══
+const magicMat = new THREE.ShaderMaterial({
+  uniforms:{ uOpacity:{value:0} },
+  vertexShader:'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:'uniform float uOpacity;varying vec3 vN;void main(){float i=pow(1.0-abs(dot(vN,vec3(0,0,1))),1.8);gl_FragColor=vec4(1.0,0.9,0.55,1.0)*i*uOpacity;}',
+  transparent:true, blending:THREE.AdditiveBlending, side:THREE.BackSide, depthWrite:false
+});
+const magicGlow = new THREE.Mesh(eggGeo(1.14), magicMat); scene.add(magicGlow);
+
+// ══ РАДУЖНОЕ ВНУТРЕННЕЕ ГАЛО — радуга от центра к периферии вокруг яйца ══
+const rainbowMat = new THREE.ShaderMaterial({
+  uniforms:{ uTime:{value:0}, uOpacity:{value:0.45} },
+  vertexShader:'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:`uniform float uTime; uniform float uOpacity; varying vec3 vN;
+    vec3 hue(float h){ return clamp(abs(mod(h*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0,0.0,1.0); }
+    void main(){ float fres=pow(1.0-abs(dot(vN,vec3(0,0,1))),1.4); float h=fract(fres*1.0 - uTime*0.04); vec3 col=hue(h); gl_FragColor=vec4(col,1.0)*fres*uOpacity; }`,
+  transparent:true, blending:THREE.AdditiveBlending, side:THREE.BackSide, depthWrite:false
+});
+const rainbowHalo = new THREE.Mesh(eggGeo(1.22), rainbowMat); scene.add(rainbowHalo);
+
+// ══ ЗОЛОТАЯ ПЫЛЬ — парящие искры магии вокруг яйца (постоянный фон) ══
+const MOTES=70;
+const motePos=new Float32Array(MOTES*3), moteSpd=new Float32Array(MOTES);
+for(let i=0;i<MOTES;i++){
+  const a=Math.random()*6.28, rad=0.9+Math.random()*1.7;
+  motePos[i*3]=Math.cos(a)*rad; motePos[i*3+1]=(Math.random()-0.5)*3.4; motePos[i*3+2]=Math.sin(a)*rad*0.8;
+  moteSpd[i]=0.15+Math.random()*0.45;
+}
+const moteGeo=new THREE.BufferGeometry(); moteGeo.setAttribute('position',new THREE.Float32BufferAttribute(motePos,3));
+const moteMat=new THREE.PointsMaterial({color:0xffe3a0,size:0.035,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
+const motes=new THREE.Points(moteGeo,moteMat); scene.add(motes);
+
+// ══ РОЖДЕНИЕ ЯЙЦА — туманная сфера проявляется из пустоты (u_birth 0→1) ══
+const birthMat = new THREE.ShaderMaterial({
+  uniforms:{ u_time:{value:0}, u_birth:{value:0}, u_light:{value:lightF} },
+  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.FrontSide,
+  vertexShader:`varying vec3 vN; varying vec3 vP;
+    void main(){ vN=normalize(normalMatrix*normal); vP=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader:`
+    uniform float u_time; uniform float u_birth; uniform float u_light;
+    varying vec3 vN; varying vec3 vP;
+    float hash(vec3 p){ p=fract(p*0.3183099+0.1); p*=17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+    float noise(vec3 x){ vec3 i=floor(x), f=fract(x); f=f*f*(3.0-2.0*f);
+      return mix(mix(mix(hash(i+vec3(0,0,0)),hash(i+vec3(1,0,0)),f.x), mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),
+                 mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x), mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y), f.z); }
+    float fbm(vec3 p){ float v=0.0, a=0.5; for(int i=0;i<4;i++){ v+=a*noise(p); p*=2.02; a*=0.5; } return v; }
+    void main(){
+      float fres = pow(1.0-abs(dot(vN,vec3(0,0,1))), mix(2.2,4.0,u_birth));      // мягкий Fresnel, острее к финалу
+      float n = fbm(vP*1.8 + vec3(0.0, u_time*0.12, u_time*0.05));                // глубокий медленный 3D-шум (дыхание)
+      float fog = smoothstep(0.25,0.95,n) * (1.0 - u_birth*0.55);                  // туман гуще в начале
+      float bindu = smoothstep(0.34,0.0,length(vP.xy)) * u_birth;                  // свет стягивается в Бинду
+      float i = (fres*0.85 + fog*0.5 + bindu*1.7) * u_birth;
+      vec3 col = mix(vec3(1.0,0.86,0.5), vec3(1.0,0.97,0.85), bindu) * (0.8+0.5*u_light);
+      gl_FragColor = vec4(col*i, clamp(i,0.0,1.0));
+    }`
+});
+const birthShell = new THREE.Mesh(eggGeo(1.0), birthMat); eggGroup.add(birthShell);
+
+// ══ НЕЙРОННАЯ СЕТЬ (Обмен / Общение) ══
+const neural = new THREE.Group(); eggGroup.add(neural);
+// Симметричная сеть по икосаэдру — занимает больше пространства внутри яйца
+const EGG_FILL = new THREE.Vector3(0.8,1.08,0.6);
+const PHI=1.61803;
+const icoRaw=[
+  [0,1,PHI],[0,1,-PHI],[0,-1,PHI],[0,-1,-PHI],
+  [1,PHI,0],[-1,PHI,0],[1,-PHI,0],[-1,-PHI,0],
+  [PHI,0,1],[-PHI,0,1],[PHI,0,-1],[-PHI,0,-1]
+];
+const icoDir = icoRaw.map(c=> new THREE.Vector3(c[0],c[1],c[2]).normalize());
+const neurons = icoDir.map(d=> d.clone().multiply(EGG_FILL));
+neurons.push(new THREE.Vector3(0,0,0)); // центральный нейрон
+const CENTER = neurons.length-1;
+const neuronMeshes = neurons.map((p,i)=>{
+  const m=new THREE.Mesh(new THREE.SphereGeometry(i===CENTER?0.03:0.02,12,12), new THREE.MeshBasicMaterial({color:0x9a78ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
+  m.position.copy(p); neural.add(m); return m;
+});
+const edges=[];
+// симметричные рёбра икосаэдра (соседние вершины)
+for(let i=0;i<icoDir.length;i++){
+  for(let j=i+1;j<icoDir.length;j++){
+    const dot=icoDir[i].dot(icoDir[j]);
+    if(dot>0.43 && dot<0.9) edges.push({a:i,b:j});
+  }
+}
+// спицы от центра к вершинам
+for(let i=0;i<icoDir.length;i++){ edges.push({a:CENTER,b:i}); }
+const edgePos=[]; edges.forEach(e=>{ edgePos.push(neurons[e.a].x,neurons[e.a].y,neurons[e.a].z, neurons[e.b].x,neurons[e.b].y,neurons[e.b].z); });
+const edgeGeo=new THREE.BufferGeometry(); edgeGeo.setAttribute('position', new THREE.Float32BufferAttribute(edgePos,3));
+const edgeMat=new THREE.LineBasicMaterial({color:0x7fd6ef,transparent:true,opacity:0,depthWrite:false});
+const neuralLines=new THREE.LineSegments(edgeGeo, edgeMat); neural.add(neuralLines);
+const pulses = edges.map(e=>{
+  const m=new THREE.Mesh(new THREE.SphereGeometry(0.018,8,8), new THREE.MeshBasicMaterial({color:0xeaffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
+  neural.add(m); return { mesh:m, a:neurons[e.a], b:neurons[e.b], t:Math.random(), spd:0.4+Math.random()*0.5 };
+});
+
+// ══ ИГРА — тонкая электрическая волна по всей сфере ══
+const waveMat = new THREE.ShaderMaterial({
+  uniforms:{ uWave:{value:0}, uOpacity:{value:0} },
+  vertexShader:'varying float vy; varying vec3 vN; void main(){ vy=position.y; vN=normalize(normalMatrix*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:'uniform float uWave; uniform float uOpacity; varying float vy; varying vec3 vN; void main(){ float d=abs(vy-uWave); float band=smoothstep(0.03,0.0,d); float core=smoothstep(0.012,0.0,d); float rim=pow(1.0-abs(dot(vN,vec3(0,0,1))),1.3); float i=band*(0.22+rim*0.6); vec3 col=mix(vec3(0.55,0.82,1.0),vec3(0.9,0.96,1.0),core); gl_FragColor=vec4(col,1.0)*i*uOpacity; }',
+  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false
+});
+const waveMesh = new THREE.Mesh(eggGeo(1.06), waveMat); eggGroup.add(waveMesh);
+
+// ══ ИГРА — ПОРТАЛ: раскрывающаяся светящаяся горловина-туннель в центре яйца ══
+const portalMat = new THREE.ShaderMaterial({
+  uniforms:{ uTime:{value:0}, uOpen:{value:0}, uLight:{value:lightF} },
+  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, depthTest:false, side:THREE.DoubleSide,
+  vertexShader:'varying vec2 vUv; void main(){ vUv=uv-0.5; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+  fragmentShader:'uniform float uTime; uniform float uOpen; uniform float uLight; varying vec2 vUv; void main(){ float r=length(vUv)*2.0; float a=atan(vUv.y,vUv.x); float swirl=0.5+0.5*sin(r*16.0 - uTime*4.0 + a*2.0); float edge=smoothstep(0.045,0.0,abs(r-uOpen)); float throat=smoothstep(uOpen,0.0,r)*(0.55+0.45*swirl); float glow=edge*1.3+throat*0.85; glow*=smoothstep(1.0,0.55,r); vec3 col=mix(vec3(0.4,0.7,1.0),vec3(0.9,0.97,1.0),throat); col+=vec3(0.6,0.85,1.0)*edge; gl_FragColor=vec4(col, glow*uOpen*(0.8+uLight*0.5)); }'
+});
+const portal = new THREE.Mesh(new THREE.PlaneGeometry(2.2,2.2), portalMat);
+portal.position.set(0,0.05,0); scene.add(portal);
+
+// ══ ХРОНИКА — спутники в ауре, собирающие информацию со сферы ══
+const SAT=5; const sats=[];
+const Y=new THREE.Vector3(0,1,0), X=new THREE.Vector3(1,0,0);
+for(let i=0;i<SAT;i++){
+  const m=new THREE.Mesh(new THREE.SphereGeometry(0.026,10,10), new THREE.MeshBasicMaterial({color:0xcfe6ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
+  scene.add(m);
+  const axis=new THREE.Vector3(Math.random()-0.5,Math.random()-0.5,Math.random()-0.5).normalize();
+  const u=new THREE.Vector3().crossVectors(axis, Math.abs(axis.dot(Y))>0.9?X:Y).normalize();
+  const v=new THREE.Vector3().crossVectors(axis,u).normalize();
+  sats.push({ mesh:m, u, v, r:1.16+Math.random()*0.16, spd:0.25+Math.random()*0.35, phase:Math.random()*6.28 });
+}
+const satBeamGeo=new THREE.BufferGeometry(); satBeamGeo.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(SAT*6),3));
+const satBeamMat=new THREE.LineBasicMaterial({color:0x9ec8ff,transparent:true,opacity:0,depthWrite:false});
+const satBeams=new THREE.LineSegments(satBeamGeo,satBeamMat); scene.add(satBeams);
+const _satScale=new THREE.Vector3(1.0,1.18,0.72);
+
+// ══ Состояние интерактива ══
+window.__awaraFx = { hover:null, base:null };
+let cur = { game:0, chronicle:0, exchange:0, social:0 };
+function targetFor(name){ const f=window.__awaraFx.hover||window.__awaraFx.base; return f===name?1:0; }
+const lerp=(a,b,t)=>a+(b-a)*t;
+
+// ══ УПРАВЛЕНИЕ: медленное авто-вращение + drag (без кликов по разделам — это делают угловые кнопки) ══
+let rotY=0, rotX=0.22, autoRotate=true, isDown=false, prevX=0, prevY=0, downX=0, downY=0, moved=0, resumeT=null;
+canvas.addEventListener('pointerdown',e=>{isDown=true;autoRotate=false;prevX=e.clientX;prevY=e.clientY;downX=e.clientX;downY=e.clientY;moved=0;if(resumeT)clearTimeout(resumeT);});
+window.addEventListener('pointermove',e=>{ if(!isDown)return; rotY+=(e.clientX-prevX)*0.005; rotX=Math.max(-1,Math.min(1,rotX+(e.clientY-prevY)*0.005)); prevX=e.clientX; prevY=e.clientY; moved=Math.max(moved,Math.abs(e.clientX-downX)+Math.abs(e.clientY-downY)); });
+window.addEventListener('pointerup',e=>{ if(!isDown)return; isDown=false; resumeT=setTimeout(()=>autoRotate=true,3500);
+  if(moved<6){
+    // тап: раскаст в точке касания (тач — без hover)
+    let hitPanel=null;
+    try{ const r=canvas.getBoundingClientRect();
+      if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom){
+        _pt.x=((e.clientX-r.left)/r.width)*2-1; _pt.y=-((e.clientY-r.top)/r.height)*2+1;
+        _ray.setFromCamera(_pt,camera);
+        const h=_ray.intersectObjects(Object.values(portalPanels).map(p=>p.mesh),false);
+        if(h.length) hitPanel=h[0].object.userData.id;
+      } }catch(_){}
+    if(hitPanel){
+      if(_focusedPanel===hitPanel){ window.dispatchEvent(new CustomEvent('awara:section',{detail:{section:hitPanel}})); }
+      else { _hoverPanel=hitPanel; Object.entries(portalPanels).forEach(([k,p])=>p._hoverTarget=(k===hitPanel)?1:0); focusOnPanel(hitPanel); }
+    } else if(_focusedPanel){ _hoverPanel=null; Object.values(portalPanels).forEach(p=>p._hoverTarget=0); resetFocus(); }
+    else { window.dispatchEvent(new CustomEvent('awara:eggtap')); }
+  }
+});
+// Наведение на саму сферу — приглашение войти (тизер портала)
+let hoverTarget=0, eggHover=0;
+canvas.addEventListener('pointerenter',()=>{ hoverTarget=1; });
+canvas.addEventListener('pointerleave',()=>{ hoverTarget=0; });
+
+// ══════ ЭКСПЕРИМЕНТ: 3D-ПОРТАЛ-ПАНЕЛИ (Шаг 2 — 4 портала) ══════
+// Панели — настоящие Mesh в сцене (PlaneGeometry + ShaderMaterial + CanvasTexture-текст).
+// Наведение → камера фокусируется так, что Исток вписывается во фрейм панели (эффект портала).
+const PORTAL_CFG = {
+  // нижний-левый — ИГРА (портал-горловина)
+  game: {
+    title:'ИГРА', subtitle:'Войди в Хираньягарбху', title_en:'GAME', subtitle_en:'Enter Hiranyagarbha',
+    pos:new THREE.Vector3(-1.15, -0.66, 0.5), rot:new THREE.Euler(0, 0.34, 0),
+    size:[0.9,1.2], mode:0,
+    cam:new THREE.Vector3(-0.5, -0.28, 2.95), look:new THREE.Vector3(-0.12,-0.06,0), fov:40
+  },
+  // нижний-правый — ХРОНИКА (аура + спутники)
+  chronicle: {
+    title:'ХРОНИКА', subtitle:'Путь и летопись души', title_en:'CHRONICLE', subtitle_en:'Path & chronicle of the soul',
+    pos:new THREE.Vector3(1.15, -0.66, 0.5), rot:new THREE.Euler(0, -0.34, 0),
+    size:[0.9,1.2], mode:1,
+    cam:new THREE.Vector3(0.5, -0.28, 2.95), look:new THREE.Vector3(0.12,-0.06,0), fov:40
+  },
+  // верхний-левый — ОБМЕН (нейросеть, искры)
+  exchange: {
+    title:'ОБМЕН', subtitle:'Банк света и дары', title_en:'EXCHANGE', subtitle_en:'Bank of light & gifts',
+    pos:new THREE.Vector3(-1.15, 0.78, 0.5), rot:new THREE.Euler(0, 0.34, 0),
+    size:[0.9,1.2], mode:2,
+    cam:new THREE.Vector3(-0.5, 0.4, 2.95), look:new THREE.Vector3(-0.12,0.1,0), fov:40
+  },
+  // верхний-правый — ОБЩЕНИЕ (нейроны)
+  social: {
+    title:'ОБЩЕНИЕ', subtitle:'Союзы душ', title_en:'SOCIAL', subtitle_en:'Unions of souls',
+    pos:new THREE.Vector3(1.15, 0.78, 0.5), rot:new THREE.Euler(0, -0.34, 0),
+    size:[0.9,1.2], mode:3,
+    cam:new THREE.Vector3(0.5, 0.4, 2.95), look:new THREE.Vector3(0.12,0.1,0), fov:40
+  }
+};
+function makePanelTexture(title, subtitle){
+  const cv=document.createElement('canvas'); cv.width=1024; cv.height=1024;
+  const g=cv.getContext('2d'); g.clearRect(0,0,1024,1024); g.textAlign='center';
+  g.font='600 70px Cinzel, serif'; g.fillStyle='rgba(255,232,150,0.95)'; g.fillText(title, 512, 470);
+  g.font='400 40px "Cormorant Garamond", serif'; g.fillStyle='rgba(255,248,214,0.72)'; g.fillText(subtitle, 512, 545);
+  const tx=new THREE.CanvasTexture(cv); tx.colorSpace=THREE.SRGBColorSpace;
+  tx.minFilter=THREE.LinearFilter; tx.magFilter=THREE.LinearFilter;
+  tx.anisotropy=renderer.capabilities.getMaxAnisotropy(); tx.needsUpdate=true; return tx;
+}
+const PANEL_VS=`varying vec2 vUv; varying vec3 vN; varying vec3 vView;
+  void main(){ vUv=uv; vN=normalize(normalMatrix*normal);
+    vec4 mv=modelViewMatrix*vec4(position,1.0); vView=normalize(-mv.xyz);
+    gl_Position=projectionMatrix*mv; }`;
+const PANEL_FS=`precision highp float;
+  uniform float uTime; uniform float uHover; uniform float uActive; uniform int uMode;
+  uniform sampler2D uText; uniform vec3 uGold; uniform vec3 uDeep;
+  varying vec2 vUv; varying vec3 vN; varying vec3 vView;
+  float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+  float frame(vec2 uv,float th){ vec2 p=abs(uv-0.5);
+    float o=smoothstep(0.5,0.485,max(p.x,p.y)); float i=smoothstep(0.5-th,0.485-th,max(p.x,p.y));
+    return clamp(o-i,0.0,1.0); }
+  float lens(vec2 uv){ vec2 p=uv-0.5; float d=length(p/vec2(0.72,1.0)); return smoothstep(0.52,0.10,d); }
+  void main(){
+    vec2 uv=vUv; float L=lens(uv); float F=frame(uv,0.035);
+    float hv=max(uHover,uActive); float pulse=0.5+0.5*sin(uTime*2.6);
+    float fres=pow(1.0-max(dot(vN,vView),0.0),2.4);
+    vec3 col=uDeep; float a=0.16+L*0.16;
+    float glass=h21(floor(uv*40.0)+floor(uTime*2.0));
+    col+=uGold*(0.07+L*hv*0.18)+vec3(0.04)*glass*L;
+    float pull=smoothstep(0.5,0.0,length(uv-0.5)); col+=uGold*pull*hv*(0.12+pulse*0.1);
+    a+=L*hv*0.2;
+    vec4 t=texture2D(uText,uv); col=mix(col,t.rgb,t.a); a+=t.a*0.8;
+    col+=uGold*F*(0.7+hv*1.4+pulse*hv*0.5); a+=F*(0.45+hv*0.35);
+    col+=uGold*fres*(0.25+hv*0.5);
+    a*=smoothstep(0.0,0.04,uv.x)*smoothstep(0.0,0.04,1.0-uv.x);
+    a*=smoothstep(0.0,0.04,uv.y)*smoothstep(0.0,0.04,1.0-uv.y);
+    gl_FragColor=vec4(col, clamp(a,0.0,0.92));
+  }`;
+const portalUI=new THREE.Group(); portalUI.name='AWARA_PORTAL_UI'; scene.add(portalUI);
+let panelsOrbit=false; // false=фиксированный HUD (scene), true=на орбите (eggGroup)
+const portalPanels={};
+Object.entries(PORTAL_CFG).forEach(([id,cfg])=>{
+  const mat=new THREE.ShaderMaterial({ transparent:true, depthWrite:false, side:THREE.DoubleSide,
+    uniforms:{ uTime:{value:0}, uHover:{value:0}, uActive:{value:0}, uMode:{value:cfg.mode},
+      uText:{value:makePanelTexture(cfg.title,cfg.subtitle)},
+      uGold:{value:new THREE.Color(0xc9a84c)}, uDeep:{value:new THREE.Color(0x05030a)} },
+    vertexShader:PANEL_VS, fragmentShader:PANEL_FS });
+  const mesh=new THREE.Mesh(new THREE.PlaneGeometry(cfg.size[0],cfg.size[1],1,1), mat);
+  mesh.position.copy(cfg.pos); mesh.rotation.copy(cfg.rot); mesh.userData.id=id;
+  portalUI.add(mesh); portalPanels[id]={panelMesh:mesh,mesh,mat,cfg,hover:0,_hoverTarget:0};
+});
+function setHoverFx(s){ if(window.__awaraFx) window.__awaraFx.hover = s; }
+
+// ══ ОРБЫ-ПОРТАЛЫ (вариант: сферы вокруг яйца вместо плоских панелей) ══
+const SECTION_COLOR={ game:0x78aaff, chronicle:0xffd700, exchange:0x64dce6, social:0x9a78ff };
+function makeOrbLabel(title){
+  const cv=document.createElement('canvas'); cv.width=512; cv.height=160;
+  const g=cv.getContext('2d'); g.clearRect(0,0,512,160); g.textAlign='center';
+  g.shadowColor='rgba(0,0,0,0.65)'; g.shadowBlur=14;
+  g.font='600 64px Cinzel, serif'; g.fillStyle='rgba(255,244,210,0.97)'; g.fillText(title,256,104);
+  const tx=new THREE.CanvasTexture(cv); tx.colorSpace=THREE.SRGBColorSpace;
+  tx.minFilter=THREE.LinearFilter; tx.anisotropy=renderer.capabilities.getMaxAnisotropy(); tx.needsUpdate=true; return tx;
+}
+const ORB_VS=`varying vec3 vN; varying vec3 vView; varying vec3 vObj;
+  void main(){ vN=normalize(normalMatrix*normal); vObj=normalize(position); vec4 mv=modelViewMatrix*vec4(position,1.0); vView=normalize(-mv.xyz); gl_Position=projectionMatrix*mv; }`;
+// Каждая сфера = отдельный мир-глобус (поверхность ветвится по разделу uMode)
+const ORB_CORE_FS=`precision highp float;
+  uniform vec3 uColor; uniform float uTime; uniform float uHover; uniform int uMode; uniform float uSeed;
+  varying vec3 vN; varying vec3 vView; varying vec3 vObj;
+  float hash(vec3 p){ p=fract(p*0.3183099+0.1); p*=17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+  float noise(vec3 x){ vec3 i=floor(x), f=fract(x); f=f*f*(3.0-2.0*f);
+    return mix(mix(mix(hash(i+vec3(0,0,0)),hash(i+vec3(1,0,0)),f.x), mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),
+               mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x), mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y), f.z); }
+  float fbm(vec3 p){ float v=0.0, a=0.5; for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.03; a*=0.5; } return v; }
+  void main(){
+    vec3 n=normalize(vObj);
+    float c=max(dot(vN,vView),0.0);
+    float fres=pow(1.0-c,2.2);
+    float pulse=0.5+0.5*sin(uTime*1.6+uSeed);
+    vec3 surf=vec3(0.05); float emit=0.0;
+    if(uMode==0){
+      // ИГРА — живая планета творения
+      vec3 q=n; float a=uTime*0.05; float s=sin(a), co=cos(a); q.xz=mat2(co,-s,s,co)*q.xz;
+      float land=fbm(q*2.6+uSeed);
+      float sea=smoothstep(0.46,0.53,land);
+      vec3 ocean=vec3(0.04,0.16,0.40);
+      vec3 landc=mix(vec3(0.10,0.40,0.24),vec3(0.55,0.70,0.40),smoothstep(0.52,0.78,land));
+      surf=mix(ocean,landc,sea);
+      surf=mix(surf,vec3(0.88,0.95,1.0),smoothstep(0.80,0.92,abs(n.y)));
+      float grow=smoothstep(0.60,0.63,fbm(q*6.0+vec3(0.0,uTime*0.2,0.0)));
+      emit+=grow*0.45*(0.5+pulse);
+    } else if(uMode==1){
+      // ХРОНИКА — мир-летопись, полосы слоёв времени
+      float bands=sin(n.y*10.0+fbm(n*3.0+vec3(uTime*0.06,0.0,0.0))*4.0);
+      float b=0.5+0.5*bands;
+      surf=mix(vec3(0.32,0.20,0.05),vec3(0.95,0.78,0.35),b);
+      surf=mix(surf,vec3(1.0,0.92,0.62),smoothstep(0.82,1.0,b)*0.7);
+      emit+=pow(b,3.0)*0.28;
+    } else if(uMode==2){
+      // ОБМЕН — кристаллический мир света, вены-потоки энергии
+      vec3 q=n*4.0+vec3(0.0,0.0,uTime*0.15);
+      float v=fbm(q);
+      float veins=smoothstep(0.47,0.5,abs(fract(v*3.0)-0.5));
+      surf=mix(vec3(0.02,0.12,0.16),vec3(0.18,0.66,0.78),1.0-veins);
+      float flow=smoothstep(0.45,0.5,fract(v*2.0-uTime*0.3));
+      emit+=flow*0.6+(1.0-veins)*0.18;
+    } else {
+      // ОБЩЕНИЕ — мир-созвездие душ, ночные огни-связи
+      vec3 q=n*5.0;
+      float cities=pow(noise(q+uSeed),8.0);
+      float twink=0.5+0.5*sin(uTime*3.0+hash(floor(q))*6.28);
+      surf=vec3(0.07,0.05,0.15)+uColor*0.12;
+      emit+=cities*twink*2.6;
+    }
+    vec3 col=surf*(0.35+c*0.75)+uColor*fres*(0.5+uHover*0.8)+uColor*emit;
+    col+=uColor*pulse*0.05*(0.5+uHover);
+    gl_FragColor=vec4(col,1.0);
+  }`;
+const ORB_HALO_FS=`precision highp float; uniform vec3 uColor; uniform float uHover;
+  varying vec3 vN; varying vec3 vView;
+  void main(){ float i=pow(1.0-abs(dot(vN,vView)),2.6); gl_FragColor=vec4(uColor,1.0)*i*(0.22+uHover*0.5); }`;
+// Светящаяся аура (Хроника) — мягкий пульсирующий ореол
+const ORB_AURA_FS=`precision highp float; uniform vec3 uColor; uniform float uTime; uniform float uSeed;
+  varying vec3 vN; varying vec3 vView;
+  void main(){ float i=pow(1.0-abs(dot(vN,vView)),1.55); float p=0.55+0.45*sin(uTime*1.2+uSeed); gl_FragColor=vec4(uColor,1.0)*i*(0.62*p); }`;
+// ══════════ TASK 1 — КАСТОМНЫЕ ШЕЙДЕРЫ УЗЛОВ (эзотерика/кибер-сакрал вместо планет) ══════════
+const NODE_NOISE=`
+  float h3(vec3 p){ p=fract(p*0.3183099+0.1); p*=17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+  float vn3(vec3 x){ vec3 i=floor(x),f=fract(x); f=f*f*(3.0-2.0*f);
+    return mix(mix(mix(h3(i+vec3(0,0,0)),h3(i+vec3(1,0,0)),f.x),mix(h3(i+vec3(0,1,0)),h3(i+vec3(1,1,0)),f.x),f.y),
+               mix(mix(h3(i+vec3(0,0,1)),h3(i+vec3(1,0,1)),f.x),mix(h3(i+vec3(0,1,1)),h3(i+vec3(1,1,1)),f.x),f.y),f.z); }
+  float fbm3n(vec3 p){ float v=0.0,a=0.5; for(int i=0;i<5;i++){ v+=a*vn3(p); p*=2.03; a*=0.5; } return v; }`;
+const NODE_BODY={
+  game:`void main(){ vec3 n=normalize(vObj); float c=max(dot(vN,vView),0.0); float fres=pow(1.0-c,2.0);
+    float f=fbm3n(n*3.0+vec3(0.0,uTime*0.4,uTime*0.2)); float plasma=0.5+0.5*sin(f*6.28+uTime*1.5);
+    vec3 fire=mix(vec3(0.5,0.06,0.0),vec3(1.0,0.75,0.2),plasma); fire=mix(fire,vec3(1.0,0.97,0.7),smoothstep(0.7,1.0,plasma));
+    float lat=asin(clamp(n.y,-1.0,1.0)); float lon=atan(n.z,n.x); float grid=0.0;
+    grid+=smoothstep(0.045,0.0,abs(fract(lon*3.0/3.14159+uTime*0.05)-0.5)-0.46);
+    grid+=smoothstep(0.045,0.0,abs(fract(lat*6.0/3.14159)-0.5)-0.46);
+    float tri=abs(sin(lon*3.0)+sin(lat*6.0)); grid+=smoothstep(0.07,0.0,abs(tri-1.0))*0.7;
+    vec3 col=fire*(0.5+c*0.6)+vec3(1.0,0.85,0.4)*grid*(0.7+uHover*1.2); col+=uColor*fres*(0.6+uHover*1.2);
+    gl_FragColor=vec4(col,1.0); }`,
+  chronicle:`void main(){ vec3 n=normalize(vObj); float c=max(dot(vN,vView),0.0); float fres=pow(1.0-c,1.8);
+    vec3 q=n*4.0; float cell=fbm3n(q+uSeed); float facet=abs(fract(cell*5.0+uTime*0.05)-0.5)*2.0; float edge=smoothstep(0.12,0.0,facet);
+    vec3 crystal=mix(vec3(0.22,0.16,0.04),vec3(1.0,0.85,0.45),smoothstep(0.3,0.9,cell));
+    float strata=0.5+0.5*sin(n.y*16.0+fbm3n(n*2.0)*5.0); crystal=mix(crystal,vec3(1.0,0.92,0.6),smoothstep(0.7,1.0,strata)*0.4);
+    vec3 col=crystal*(0.4+c*0.7)+vec3(1.0,0.96,0.72)*edge*(0.6+uHover); col+=uColor*fres*(0.5+uHover);
+    gl_FragColor=vec4(col,1.0); }`,
+  social:`void main(){ vec3 n=normalize(vObj); float c=max(dot(vN,vView),0.0); float fres=pow(1.0-c,2.2);
+    vec3 q=n*3.0+vec3(0.0,0.0,uTime*0.1); float f=fbm3n(q); float f2=fbm3n(q*1.7+vec3(uTime*0.15));
+    float threads=smoothstep(0.035,0.0,abs(fract(f*6.0+uTime*0.3)-0.5)-0.47);
+    threads+=smoothstep(0.03,0.0,abs(fract(f2*5.0-uTime*0.2)-0.5)-0.47)*0.8;
+    float pulse=0.5+0.5*sin(uTime*4.0+f*12.0); vec3 deep=vec3(0.05,0.03,0.12);
+    vec3 col=deep*(0.4+c*0.5)+uColor*threads*(1.2+pulse*1.6)*(0.6+uHover); col+=uColor*fres*(0.4+uHover);
+    gl_FragColor=vec4(col,1.0); }`,
+  exchange:`void main(){ vec3 n=normalize(vObj); float c=max(dot(vN,vView),0.0); float fres=pow(1.0-c,2.6);
+    vec3 q=n*5.0+vec3(uTime*0.2,uTime*0.15,0.0); float w=fbm3n(q)*0.6+fbm3n(q*2.1-uTime*0.1)*0.4;
+    float caustic=pow(0.5+0.5*sin(w*9.0+uTime*1.2),3.0);
+    float hue=fract(fres*1.5+uTime*0.05+w*0.3); vec3 holo=clamp(abs(mod(hue*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0,0.0,1.0);
+    vec3 water=mix(vec3(0.0,0.18,0.22),vec3(0.4,0.85,0.95),caustic);
+    vec3 col=water*(0.35+c*0.6)+holo*fres*(0.9+uHover)+vec3(0.6,0.95,1.0)*caustic*0.35;
+    gl_FragColor=vec4(col,1.0); }`
+};
+// type: 'game' | 'chronicle' | 'social'(='neural'/ОБЩЕНИЕ) | 'exchange'
+function createNodeMaterial(type, color, seed){
+  const key=(type==='neural')?'social':type; const body=NODE_BODY[key]||NODE_BODY.game;
+  const frag='precision highp float; uniform vec3 uColor; uniform float uTime,uHover,uSeed; varying vec3 vN; varying vec3 vView; varying vec3 vObj; '+NODE_NOISE+' '+body;
+  return new THREE.ShaderMaterial({
+    uniforms:{ uColor:{value:(color&&color.isColor)?color:new THREE.Color(color||0xffd700)}, uTime:{value:0}, uHover:{value:0}, uSeed:{value:seed||0} },
+    vertexShader:ORB_VS, fragmentShader:frag, transparent:false, depthWrite:true });
+}
+
+const orbUI=new THREE.Group(); orbUI.name='AWARA_ORB_UI'; orbUI.rotation.x=0.16; scene.add(orbUI);
+const _lq=new THREE.Quaternion(); const ORB_R=1.45; const _orbKeys=Object.keys(PORTAL_CFG);
+_orbKeys.forEach((id,idx)=>{
+  const cfg=PORTAL_CFG[id]; const col=new THREE.Color(SECTION_COLOR[id]||0xffd700);
+  const ang=idx/_orbKeys.length*Math.PI*2;
+  const grp=new THREE.Group(); grp.position.set(Math.cos(ang)*ORB_R, 0, Math.sin(ang)*ORB_R);
+  const coreMat=createNodeMaterial(id, col, idx*13.7); // TASK 1: уникальный шейдер раздела вместо планеты
+  const core=new THREE.Mesh(new THREE.SphereGeometry(0.17,28,28),coreMat); grp.add(core);
+  const haloMat=new THREE.ShaderMaterial({uniforms:{uColor:{value:col},uHover:{value:0}},vertexShader:ORB_VS,fragmentShader:ORB_HALO_FS,transparent:true,blending:THREE.AdditiveBlending,side:THREE.BackSide,depthWrite:false});
+  const halo=new THREE.Mesh(new THREE.SphereGeometry(0.17,24,24),haloMat); halo.scale.setScalar(1.55); grp.add(halo);
+  const hit=new THREE.Mesh(new THREE.SphereGeometry(0.36,12,12), new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false})); hit.userData.id=id; grp.add(hit);
+  const label=new THREE.Mesh(new THREE.PlaneGeometry(0.92,0.29), new THREE.MeshBasicMaterial({map:makeOrbLabel(cfg.title),transparent:true,opacity:0.6,depthWrite:false,blending:THREE.AdditiveBlending}));
+  label.position.set(0,0.42,0); grp.add(label);
+  // луч-нить от сферы к Истоку (яркая при наведении)
+  const bdir=grp.position.clone().multiplyScalar(-1).normalize();
+  const beamMat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
+  const beam=new THREE.Mesh(new THREE.CylinderGeometry(0.004,0.032,0.5,8,1,true), beamMat);
+  beam.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), bdir);
+  beam.position.copy(bdir).multiplyScalar(0.43);
+  grp.add(beam);
+  orbUI.add(grp);
+  const P=portalPanels[id]; P.orb=grp; P.orbCore=core; P.orbCoreMat=coreMat; P.orbHalo=halo; P.orbHaloMat=haloMat; P.orbHit=hit; P.label=label; P.beamMat=beamMat; P.phase=idx*1.7;
+  // ⚡ TASK 2 — ЭНЕРГЕТИЧЕСКАЯ СВЯЗЬ: поток света от Истока (центр Яйца) к узлу
+  const TET=22; const tetPos=new Float32Array(TET*3); const tetT=new Float32Array(TET);
+  const tetCenter=bdir.clone().multiplyScalar(ORB_R); // центр Яйца в локальных координатах узла
+  for(let s=0;s<TET;s++) tetT[s]=Math.random();
+  const tetGeo=new THREE.BufferGeometry(); tetGeo.setAttribute('position',new THREE.Float32BufferAttribute(tetPos,3));
+  const tetMat=new THREE.PointsMaterial({color:col,size:0.028,map:__eggGlowTex(),transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
+  const tether=new THREE.Points(tetGeo,tetMat); grp.add(tether);
+  P.tether={geo:tetGeo,mat:tetMat,t:tetT,center:tetCenter,n:TET};
+  // ── ДЕКОР МИРА: спутник / орбиты / аура согласно разделу ──
+  if(cfg.mode===0){
+    // ИГРА — Луна вращается вокруг планеты
+    const moonPivot=new THREE.Group(); moonPivot.rotation.z=0.22;
+    const moon=new THREE.Mesh(new THREE.SphereGeometry(0.034,16,16), new THREE.MeshStandardMaterial({color:0xcfcabc,roughness:1.0,metalness:0.0,emissive:0x20201c}));
+    moon.position.set(0.32,0,0); moonPivot.add(moon);
+    const moonGlow=new THREE.Mesh(new THREE.SphereGeometry(0.05,12,12), new THREE.MeshBasicMaterial({color:0xbcd0ff,transparent:true,opacity:0.18,blending:THREE.AdditiveBlending,depthWrite:false}));
+    moonGlow.position.copy(moon.position); moonPivot.add(moonGlow);
+    grp.add(moonPivot);
+    // ══ 62 УЗЛА ДОДЕКАЭДРА ЗЕМЛИ (как festivals.html) — каркас поверх планеты, постоянный (не исчезает при фокусе) ══
+    const dodeNet=new THREE.Group();
+    const GN=[[31.7,31.15,1],[52.6,31.15,1],[58.3,67.15,1],[52.6,103.15,1],[58.3,139.15,1],[52.6,175.15,0],[58.3,-148.85,1],[52.6,-112.85,1],[58.3,-76.85,1],[52.6,-40.85,1],[58.3,-4.85,1],[26.5,67.15,0],[31.7,103.15,0],[26.5,139.15,1],[31.7,175.15,0],[26.5,-148.85,0],[31.7,-112.85,0],[26.5,-76.85,1],[31.7,-40.85,1],[26.5,-4.85,0],[10.8,31.15,1],[0,49.15,0],[-10.8,67.15,0],[0,85.15,1],[10.8,103.15,1],[0,121.15,0],[-10.8,139.15,0],[0,157.15,0],[10.8,175.15,1],[0,-166.85,0],[-10.8,-148.85,0],[0,-130.85,0],[10.8,-112.85,0],[0,-94.85,0],[-10.8,-76.85,1],[0,-58.85,0],[10.8,-40.85,0],[0,-22.85,0],[-10.8,-4.85,0],[0,13.15,0],[-26.5,31.15,1],[-31.7,67.15,1],[-26.5,103.15,1],[-31.7,139.15,1],[-26.5,175.15,1],[-31.7,-148.85,1],[-26.5,-112.85,1],[-31.7,-76.85,1],[-26.5,-40.85,1],[-31.7,-4.85,1],[-58.3,31.15,0],[-52.6,67.15,0],[-58.3,103.15,0],[-52.6,139.15,0],[-58.3,175.15,0],[-52.6,-148.85,0],[-58.3,-112.85,0],[-52.6,-76.85,0],[-58.3,-40.85,0],[-52.6,-4.85,0],[90,0,0],[-90,0,0]];
+    const DR=0.2;
+    const gv=(lat,lng)=>{ const phi=(90-lat)*Math.PI/180, th=(lng+180)*Math.PI/180; return new THREE.Vector3(-DR*Math.sin(phi)*Math.cos(th), DR*Math.cos(phi), DR*Math.sin(phi)*Math.sin(th)); };
+    const gPts=GN.map(n=>gv(n[0],n[1]));
+    const goldPos=[],bluePos=[];
+    GN.forEach((n,i)=>{ const v=gPts[i]; (n[2]?goldPos:bluePos).push(v.x,v.y,v.z); });
+    const gpGeo=new THREE.BufferGeometry(); gpGeo.setAttribute('position',new THREE.Float32BufferAttribute(goldPos,3));
+    dodeNet.add(new THREE.Points(gpGeo,new THREE.PointsMaterial({color:0xffd86a,size:0.018,transparent:true,opacity:0.95,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true})));
+    const bpGeo=new THREE.BufferGeometry(); bpGeo.setAttribute('position',new THREE.Float32BufferAttribute(bluePos,3));
+    dodeNet.add(new THREE.Points(bpGeo,new THREE.PointsMaterial({color:0x9ec8ff,size:0.013,transparent:true,opacity:0.8,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true})));
+    const gdist=(a,b)=>{ const al=a[0]*Math.PI/180,bl=b[0]*Math.PI/180,dl=(a[1]-b[1])*Math.PI/180; return Math.acos(Math.min(1,Math.sin(al)*Math.sin(bl)+Math.cos(al)*Math.cos(bl)*Math.cos(dl))); };
+    const goldLine=[],blueLine=[]; const eset=new Set();
+    for(let i=0;i<GN.length;i++){ const nb=[]; for(let j=0;j<GN.length;j++){ if(i!==j){const d=gdist(GN[i],GN[j]); if(d<0.65)nb.push({j,d});} } nb.sort((a,b)=>a.d-b.d); nb.slice(0,i<20?5:4).forEach(o=>{ const k=Math.min(i,o.j)+'-'+Math.max(i,o.j); if(!eset.has(k)){ eset.add(k); const bg=GN[i][2]&&GN[o.j][2]; const arr=bg?goldLine:blueLine; const a=gPts[i],b=gPts[o.j]; arr.push(a.x,a.y,a.z,b.x,b.y,b.z);} }); }
+    const glGeo=new THREE.BufferGeometry(); glGeo.setAttribute('position',new THREE.Float32BufferAttribute(goldLine,3));
+    dodeNet.add(new THREE.LineSegments(glGeo,new THREE.LineBasicMaterial({color:0xffcf5a,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending,depthWrite:false})));
+    const blGeo=new THREE.BufferGeometry(); blGeo.setAttribute('position',new THREE.Float32BufferAttribute(blueLine,3));
+    dodeNet.add(new THREE.LineSegments(blGeo,new THREE.LineBasicMaterial({color:0x6fa8e6,transparent:true,opacity:0.38,blending:THREE.AdditiveBlending,depthWrite:false})));
+    core.add(dodeNet); // дочерний к ядру: масштабируется вместе с планетой при наведении/фокусе (не поглощается)
+    P.deco={type:'moon', pivot:moonPivot, dodeNet};
+  } else if(cfg.mode===1){
+    // ХРОНИКА — светящаяся аура + созвездие искр-летописи + золотой нимб
+    const auraMat2=new THREE.ShaderMaterial({uniforms:{uColor:{value:col},uTime:{value:0},uSeed:{value:idx*7.0}},vertexShader:ORB_VS,fragmentShader:ORB_AURA_FS,transparent:true,blending:THREE.AdditiveBlending,side:THREE.BackSide,depthWrite:false});
+    const aura2=new THREE.Mesh(new THREE.SphereGeometry(0.17,28,28), auraMat2); aura2.scale.setScalar(2.2); grp.add(aura2);
+    const SC=26; const scGeo=new THREE.BufferGeometry(); const scPos=new Float32Array(SC*3); const scOrb=[];
+    for(let s=0;s<SC;s++){ const ax=new THREE.Vector3(Math.random()-0.5,Math.random()-0.5,Math.random()-0.5).normalize(); const u=new THREE.Vector3().crossVectors(ax,Math.abs(ax.y)>0.9?new THREE.Vector3(1,0,0):new THREE.Vector3(0,1,0)).normalize(); const v=new THREE.Vector3().crossVectors(ax,u).normalize(); scOrb.push({u,v,r:0.24+Math.random()*0.12,spd:0.3+Math.random()*0.5,ph:Math.random()*6.28}); }
+    scGeo.setAttribute('position',new THREE.Float32BufferAttribute(scPos,3));
+    const sparks=new THREE.Points(scGeo,new THREE.PointsMaterial({color:0xfff0b0,size:0.02,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true})); grp.add(sparks);
+    const chRing=new THREE.Mesh(new THREE.TorusGeometry(0.27,0.004,8,100), new THREE.MeshBasicMaterial({color:0xffd86a,transparent:true,opacity:0.4,blending:THREE.AdditiveBlending,depthWrite:false})); chRing.rotation.x=Math.PI/2.3; grp.add(chRing);
+    P.deco={type:'aura', mesh:aura2, mat:auraMat2, sparks, scGeo, scOrb, chRing};
+  } else if(cfg.mode===2){
+    // ОБМЕН — всё сразу: кольца-дары (Сатурн) + спутники-кристаллы + поток искр к центру + золотой нимб транзакций
+    const exGrp=new THREE.Group(); grp.add(exGrp);
+    const ringDar=new THREE.Mesh(new THREE.RingGeometry(0.26,0.40,64), new THREE.MeshBasicMaterial({color:0xffe08a,transparent:true,opacity:0.22,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,depthWrite:false}));
+    ringDar.rotation.x=Math.PI/2.1; ringDar.rotation.z=0.3; exGrp.add(ringDar);
+    const ringDar2=new THREE.Mesh(new THREE.RingGeometry(0.42,0.48,64), new THREE.MeshBasicMaterial({color:0x9ff0ff,transparent:true,opacity:0.16,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,depthWrite:false}));
+    ringDar2.rotation.x=Math.PI/2.1; ringDar2.rotation.z=0.3; exGrp.add(ringDar2);
+    const crystals=[];
+    for(let c=0;c<5;c++){ const cm=new THREE.Mesh(new THREE.OctahedronGeometry(0.026,0), new THREE.MeshBasicMaterial({color:0x9ff0ff,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false})); exGrp.add(cm); crystals.push({mesh:cm,r:0.34,spd:0.5+c*0.12,ph:c*1.256}); }
+    const FL=30; const flGeo=new THREE.BufferGeometry(); const flPos=new Float32Array(FL*3); const flT=[];
+    for(let f=0;f<FL;f++){ flT.push({a:Math.random()*6.28,r0:0.5+Math.random()*0.3,t:Math.random(),spd:0.4+Math.random()*0.5,h:(Math.random()-0.5)*0.4}); }
+    flGeo.setAttribute('position',new THREE.Float32BufferAttribute(flPos,3));
+    const flow=new THREE.Points(flGeo, new THREE.PointsMaterial({color:0xfff0c0,size:0.018,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true})); exGrp.add(flow);
+    const nimb=new THREE.Mesh(new THREE.TorusGeometry(0.23,0.0045,8,120), new THREE.MeshBasicMaterial({color:0xffd86a,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending,depthWrite:false})); nimb.rotation.x=Math.PI/2; exGrp.add(nimb);
+    const nfMeshes=[];
+    for(let f=0;f<6;f++){ const fm=new THREE.Mesh(new THREE.SphereGeometry(0.014,8,8), new THREE.MeshBasicMaterial({color:0xfff6d0,transparent:true,opacity:0.95,blending:THREE.AdditiveBlending,depthWrite:false})); nimb.add(fm); nfMeshes.push({mesh:fm,off:f/6}); }
+    P.deco={type:'exchange', crystals, flGeo, flT, nfMeshes, ringDar, ringDar2};
+  } else if(cfg.mode===3){
+    // ОБЩЕНИЕ — электроны на светящихся орбитах (как атом)
+    const orbits=[];
+    for(let e=0;e<3;e++){
+      const o=new THREE.Group(); o.rotation.set(e*1.2+0.3, e*2.1, e*0.7);
+      const ringMat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.38,blending:THREE.AdditiveBlending,depthWrite:false});
+      o.add(new THREE.Mesh(new THREE.TorusGeometry(0.30,0.0035,6,90), ringMat));
+      const el=new THREE.Mesh(new THREE.SphereGeometry(0.024,10,10), new THREE.MeshBasicMaterial({color:0xf0e6ff,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
+      o.add(el); grp.add(o); orbits.push({el, r:0.30, spd:0.9+e*0.6, phase:e*2.0});
+    }
+    P.deco={type:'atom', orbits};
+  }
+});
+// тонкое орбитальное кольцо — траектория сфер
+const orbRing=new THREE.Mesh(new THREE.TorusGeometry(ORB_R,0.005,8,160), new THREE.MeshBasicMaterial({color:0xc9a84c,transparent:true,opacity:0.2,blending:THREE.AdditiveBlending,depthWrite:false}));
+orbRing.rotation.x=Math.PI/2; orbUI.add(orbRing);
+const _wp=new THREE.Vector3();
+// мягкий звон-щелчок на фокусе (WebAudio, без ассетов; частоты Сольфеджио)
+const SECTION_HZ={ game:528, chronicle:396, exchange:639, social:741 };
+let _ac=null;
+function playFocusChime(freq){
+  try{ _ac=_ac||new (window.AudioContext||window.webkitAudioContext)(); const t=_ac.currentTime;
+    const o=_ac.createOscillator(), o2=_ac.createOscillator(), g=_ac.createGain();
+    o.type='sine'; o2.type='sine'; o.frequency.value=freq||528; o2.frequency.value=(freq||528)*2;
+    o.connect(g); o2.connect(g); g.connect(_ac.destination);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.15,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.55);
+    o.start(t); o2.start(t); o.stop(t+0.58); o2.stop(t+0.58);
+  }catch(e){}
+}
+let uiMode='orbs', orbitPaused=false;
+function applyUiMode(){
+  const orbs = uiMode==='orbs';
+  portalUI.visible=!orbs; orbUI.visible=orbs;
+  portal.visible=!orbs; // центральная плоскость-портал мешает сферам — прячем в режиме сфер
+  for(const k in portalPanels){ const p=portalPanels[k]; p.mesh = orbs ? p.orbHit : p.panelMesh; }
+}
+applyUiMode();
+
+// ══ ЯЗЫК: перерисовка 3D-надписей (орбы + панели) при переключении RU/EN ══
+function relabel3D(lang){
+  const L=(lang==='en')?'en':'ru';
+  for(const k in portalPanels){ const p=portalPanels[k]; const cfg=p.cfg; if(!cfg) continue;
+    const title=(L==='en'&&cfg.title_en)?cfg.title_en:cfg.title;
+    const sub=(L==='en'&&cfg.subtitle_en)?cfg.subtitle_en:cfg.subtitle;
+    if(p.mat&&p.mat.uniforms&&p.mat.uniforms.uText){ const old=p.mat.uniforms.uText.value; p.mat.uniforms.uText.value=makePanelTexture(title,sub); if(old&&old.dispose)old.dispose(); }
+    if(p.label&&p.label.material){ const oldm=p.label.material.map; p.label.material.map=makeOrbLabel(title); p.label.material.needsUpdate=true; if(oldm&&oldm.dispose)oldm.dispose(); }
+  }
+}
+window.__awaraRelabel3D=relabel3D;
+try{ relabel3D(localStorage.getItem('awara_lang')||'ru'); }catch(e){ relabel3D('ru'); }
+
+window.__camLock=false; window.__lookProxy=new THREE.Vector3(0,0.05,0); let _focusedPanel=null;
+function focusOnPanel(id){
+  const P=portalPanels[id]; if(!P||!window.gsap) return;
+  window.__camLock=true; setHoverFx(id); const _wasFocused=_focusedPanel; _focusedPanel=id;
+  if(_wasFocused!==id) playFocusChime(SECTION_HZ[id]);
+  let camPos, lookAt, fov;
+  if(uiMode==='orbs' && P.orb){
+    orbitPaused=true;
+    const wp=new THREE.Vector3(); P.orb.getWorldPosition(wp);
+    const radial=new THREE.Vector3(wp.x,0,wp.z); if(radial.lengthSq()<1e-4) radial.set(0,0,1); radial.normalize();
+    camPos=radial.multiplyScalar(3.7).add(new THREE.Vector3(0, wp.y*0.5+0.22, 0));
+    lookAt=new THREE.Vector3(0,0.05,0); fov=37;
+  } else {
+    const c=P.cfg; camPos=c.cam.clone(); lookAt=c.look.clone(); fov=c.fov;
+  }
+  gsap.killTweensOf(camera.position); gsap.killTweensOf(camera); gsap.killTweensOf(window.__lookProxy);
+  gsap.to(camera.position,{x:camPos.x,y:camPos.y,z:camPos.z,duration:1.4,ease:'power3.inOut'});
+  gsap.to(window.__lookProxy,{x:lookAt.x,y:lookAt.y,z:lookAt.z,duration:1.4,ease:'power3.inOut'});
+  gsap.to(camera,{fov:fov,duration:1.4,ease:'power2.inOut',onUpdate:()=>camera.updateProjectionMatrix()});
+}
+function resetFocus(){
+  setHoverFx(null); _focusedPanel=null; orbitPaused=false;
+  if(!window.gsap){ window.__camLock=false; return; }
+  gsap.killTweensOf(camera.position); gsap.killTweensOf(camera); gsap.killTweensOf(window.__lookProxy);
+  gsap.to(camera.position,{x:0,y:0.18,z:CAM_Z,duration:1.1,ease:'power3.inOut'});
+  gsap.to(window.__lookProxy,{x:0,y:0.05,z:0,duration:1.1,ease:'power3.inOut'});
+  gsap.to(camera,{fov:45,duration:1.0,ease:'power2.inOut',onUpdate:()=>camera.updateProjectionMatrix(),onComplete:()=>{window.__camLock=false;}});
+}
+const _ray=new THREE.Raycaster(), _pt=new THREE.Vector2(); let _hoverPanel=null;
+canvas.addEventListener('pointermove',e=>{
+  if(isDown) return;
+  const r=canvas.getBoundingClientRect();
+  _pt.x=((e.clientX-r.left)/r.width)*2-1; _pt.y=-((e.clientY-r.top)/r.height)*2+1;
+  _ray.setFromCamera(_pt,camera);
+  const hit=_ray.intersectObjects(Object.values(portalPanels).map(p=>p.mesh),false);
+  const id=hit.length?hit[0].object.userData.id:null;
+  if(id!==_hoverPanel){ _hoverPanel=id;
+    Object.entries(portalPanels).forEach(([k,p])=>{ p._hoverTarget=(k===id)?1:0; });
+    if(id) focusOnPanel(id); else resetFocus(); }
+});
+// тап/клик по панели обрабатывается в pointerup ниже (десктоп hover + тач)
+// Переключатель HUD ↔ орбита (клавиша P / З)
+window.addEventListener('keydown',e=>{
+  if(['p','P','з','З'].includes(e.key)){
+    panelsOrbit=!panelsOrbit; (panelsOrbit?eggGroup:scene).add(portalUI);
+    const vEl=document.querySelector('.version'); if(vEl) vEl.textContent = panelsOrbit?'панели: ОРБИТА (P)':'панели: HUD (P)';
+    console.info('[Portal UI] panelsOrbit =', panelsOrbit);
+  }
+  if(['o','O','щ','Щ'].includes(e.key)){
+    uiMode=(uiMode==='orbs')?'panels':'orbs'; if(_focusedPanel) resetFocus(); applyUiMode();
+    const vEl=document.querySelector('.version'); if(vEl) vEl.textContent=(uiMode==='orbs')?'✦ сферы (O) · панели (P)':'✦ панели (O)';
+    console.info('[Portal UI] uiMode =', uiMode);
+  }
+});
+
+let at=0, t0=-1, __bgFocus=0;
+function animate(ts){
+  requestAnimationFrame(animate); at=ts*0.001;
+  if(autoRotate) rotY+=0.0012; // медленно
+  eggGroup.rotation.y=rotY; eggGroup.rotation.x=rotX;
+  aura.rotation.set(rotX, rotY, 0);
+  aura.scale.setScalar(1+Math.sin(at*0.6)*0.018);
+  neural.rotation.y += 0.0004; // лёгкая собственная жизнь сети
+
+  // интерактив: мягко тянем текущие значения к целям (плавный заход/выход)
+  cur.game      = lerp(cur.game,      targetFor('game'),      0.05);
+  cur.chronicle = lerp(cur.chronicle, targetFor('chronicle'), 0.05);
+  cur.exchange  = lerp(cur.exchange,  targetFor('exchange'),  0.05);
+  cur.social    = lerp(cur.social,    targetFor('social'),    0.05);
+
+  // Наведение на сферу — плавно тянем «магическое свечение»
+  eggHover = lerp(eggHover, isDown?0:hoverTarget, 0.08);
+
+  // ✦ РОЖДЕНИЕ ЯЙЦА — сфера мистически проявляется из пустоты за ~4.5с (один раз)
+  if(t0<0) t0=at; const life=at-t0;
+  const birthT = Math.min(1, life/4.5);
+  const birth  = birthT*birthT*(3-2*birthT);    // мягкое уплотнение из тумана
+  const intro  = birth;                          // совместимость со старыми эффектами
+  const bloom  = Math.max(0, 1-birth*1.2);       // вспышка-рождение, гаснет к ~3.7с
+  raGroup.scale.setScalar(0.4 + 0.6*birth);
+  // туманная сфера-рождение: GSAP управляет u_birth, если подключён, иначе — таймер life
+  birthMat.uniforms.u_time.value = at;
+  goldEgg.update(at); goldEgg.material.uniforms.uIntensity.value = 1.15*birth; // рождается из тумана вместе со сферой
+  if(!window.gsap) birthMat.uniforms.u_birth.value = birth;
+
+  // ИГРА — ПОРТАЛ: в центре яйца раскрывается светящаяся горловина, сфера тянет внутрь
+  const breathe = Math.sin(at*0.9);            // медленное общее дыхание
+  const gIn = cur.game;                        // 0..1 — насколько «вошли»
+  const gEase = gIn*gIn*(3-2*gIn);             // smoothstep — мягкий заход/выход
+  const invite = eggHover*(1-gEase);           // «магия» — пока ещё не «вошли»
+  const pulse = 0.5+0.5*Math.sin(at*2.0);      // живой пульс свечения
+  const gameP = 1 + breathe*(0.03 + gEase*0.03);
+  // наезд камеры — будто шагаешь в портал (только при настоящем входе)
+  const camTarget = CAM_Z - gEase*(0.4 + lightF*0.45);
+  if(!window.__camLock) camera.position.z += (camTarget - camera.position.z)*0.07;
+  // вдох: яйцо втягивается, скорлупа раскрывается, открывая горловину
+  eggGroup.scale.setScalar((0.6 + 0.4*intro) * (1 - gEase*0.04));
+  shell.material.opacity = (0.3 - gEase*0.2 + invite*0.22*(0.7+0.3*pulse)) * birth; // скорлупа рождается из тьмы
+  merMat.opacity = (0.45 + invite*0.45*pulse) * birth;   // золотая решётка рождается
+  // ПОРТАЛ — только при настоящем входе (клик ИГРА), без белого кольца на наведении
+  portalMat.uniforms.uTime.value = at;
+  portalMat.uniforms.uOpen.value = gEase;
+  portal.scale.setScalar(0.25 + gEase*(1.05 + lightF*0.35));
+  portal.rotation.z = at*0.12;
+  // МАГИЧЕСКОЕ СВЕЧЕНИЕ всей сферы (наведение) + золотая вспышка-рождение при входе
+  magicMat.uniforms.uOpacity.value = Math.max(invite*(0.55+0.25*pulse), bloom*1.1)*(0.7+0.5*lightF);
+  magicGlow.scale.setScalar(1.0 + Math.sin(at*0.8)*0.02 + invite*0.03 + bloom*0.5);
+  // золотая пыль магии: плывёт вверх, проявляется при пробуждении
+  const mp=moteGeo.attributes.position.array;
+  for(let i=0;i<MOTES;i++){ mp[i*3+1]+=moteSpd[i]*0.004; if(mp[i*3+1]>1.7) mp[i*3+1]=-1.7; }
+  moteGeo.attributes.position.needsUpdate=true;
+  motes.rotation.y += 0.0003;
+  moteMat.opacity = (0.22 + 0.2*lightF)*intro + invite*0.25;
+  // ядро мягко теплеет в ответ + ярко вспыхивает при рождении
+  raMat.uniforms.uBoost.value = gEase*(0.5 + lightF*0.7) + invite*0.3*(0.6+0.4*pulse) + bloom*1.6;
+  raCore.scale.setScalar(gameP*(1 + gEase*(0.15 + lightF*0.15) + invite*0.05*pulse));
+  raHalo.scale.setScalar(gameP*1.05*(1 + gEase*(0.2 + lightF*0.25) + invite*0.1));
+  raHalo.material.opacity = (0.13 + gEase*0.14 + gEase*0.04*breathe + invite*0.12*pulse + bloom*0.4) * birth;
+  waveMat.uniforms.uWave.value = (((at*0.26)%1)*2-1)*1.5; // тонкая волна бежит снизу вверх
+  waveMat.uniforms.uOpacity.value = gEase*(0.45 + lightF*0.25);
+  // виньетка-погружение — только при настоящем входе
+  stage.classList.toggle('diving', gIn>0.1);
+
+  // ХРОНИКА — мягкая аура + спутники, собирающие информацию со сферы
+  auraMat.uniforms.uOpacity.value = cur.chronicle*(0.45+Math.sin(at*0.7)*0.1);
+  const satP=[];
+  for(let i=0;i<SAT;i++){ const s=sats[i]; const a=at*s.spd+s.phase;
+    const pos=s.u.clone().multiplyScalar(Math.cos(a)*s.r).add(s.v.clone().multiplyScalar(Math.sin(a)*s.r));
+    pos.multiply(_satScale);
+    s.mesh.position.copy(pos); s.mesh.material.opacity=cur.chronicle*(0.55+0.45*Math.sin(at*2+i));
+    s.mesh.scale.setScalar(0.6+cur.chronicle*0.6);
+    satP.push(pos.x,pos.y,pos.z, 0,0,0);
+  }
+  satBeamGeo.attributes.position.array.set(satP); satBeamGeo.attributes.position.needsUpdate=true;
+  satBeamMat.opacity=cur.chronicle*0.18;
+
+  // ОБМЕН — тонкие симметричные связи + неспешные искры;  ОБЩЕНИЕ — мягко светятся нейроны
+  const netVis = Math.max(cur.exchange, cur.social);
+  edgeMat.opacity = netVis*0.22;
+  neuronMeshes.forEach((m,i)=>{ const tw=0.5+0.5*Math.sin(at*1.4+i*0.7); m.material.opacity = cur.social*(0.3+0.5*tw) + netVis*0.07; m.scale.setScalar(1+cur.social*1.0*tw); });
+  pulses.forEach(p=>{ p.t=(p.t+p.spd*0.009)%1; p.mesh.position.lerpVectors(p.a,p.b,p.t); const s=Math.sin(p.t*Math.PI); p.mesh.material.opacity = cur.exchange*0.6*s; p.mesh.scale.setScalar(0.35+s*0.45); });
+
+  // рождение структуры: кольца/обручи проявляются вместе со сферой (нет статичного обруча на старте)
+  raRing1.material.opacity = 0.6*birth; raRing2.material.opacity = 0.35*birth;
+  ring3a.material.opacity = 0.12*birth; ring3b.material.opacity = 0.10*birth;
+  ring2.material.opacity = 0.20*birth;  ring2b.material.opacity = 0.14*birth;
+  raRing1.rotation.z+=0.006; raRing1.scale.setScalar(1+Math.sin(at*1.5)*0.04); raRing2.rotation.z-=0.004;
+  ring3a.rotation.z+=0.002; ring3b.rotation.z-=0.0015; ring2.rotation.z+=0.004; ring2b.rotation.z-=0.003;
+  rainbowMat.uniforms.uTime.value=at; rainbowMat.uniforms.uOpacity.value=(0.4+0.12*Math.sin(at*0.6))*birth;
+
+  // ПОРТАЛ-ПАНЕЛИ: плавный hover + время; при фокусе камера смотрит на прокси
+  for(const k in portalPanels){ const p=portalPanels[k];
+    p.hover += ((p._hoverTarget||0)-p.hover)*0.12;
+    p.mat.uniforms.uTime.value=at; p.mat.uniforms.uHover.value=p.hover; }
+  // ОРБЫ-ПОРТАЛЫ: орбита вокруг яйца + биллборд-лейблы + свечение по hover
+  if(orbUI.visible && !orbitPaused) orbUI.rotation.y += 0.0016;
+  if(orbUI.visible) for(const k in portalPanels){ const p=portalPanels[k]; if(!p.orb) continue;
+    p.orbCoreMat.uniforms.uTime.value=at; p.orbCoreMat.uniforms.uHover.value=p.hover; p.orbHaloMat.uniforms.uHover.value=p.hover;
+    p.orbCore.scale.setScalar(1+p.hover*0.5+Math.sin(at*1.6+p.phase)*0.04);
+    p.orbHalo.scale.setScalar(1.55*(1+p.hover*0.35));
+    if(p.beamMat) p.beamMat.opacity=p.hover*0.5;
+    if(p.tether){ const T=p.tether; const arr=T.geo.attributes.position.array; const flow=0.15+p.hover*0.85;
+      for(let s=0;s<T.n;s++){ T.t[s]=(T.t[s]+(0.0025+0.014*flow))%1; const tt=T.t[s]; const wob=0.03*Math.sin(tt*9.0+at*3.0+s);
+        arr[s*3]=T.center.x*(1.0-tt)+wob; arr[s*3+1]=T.center.y*(1.0-tt)+0.02*Math.sin(tt*7.0+s); arr[s*3+2]=T.center.z*(1.0-tt)+wob; }
+      T.geo.attributes.position.needsUpdate=true; T.mat.opacity=0.22+p.hover*0.7; T.mat.size=0.022+p.hover*0.03; }
+    if(p.label){ p.orb.getWorldQuaternion(_lq); _lq.invert(); p.label.quaternion.copy(_lq).multiply(camera.quaternion);
+      _wp.setFromMatrixPosition(p.orb.matrixWorld); const front=Math.max(0,Math.min(1,(_wp.z+ORB_R)/(2*ORB_R)));
+      p.label.material.opacity=Math.min(1,0.08+front*0.5+p.hover*0.5); }
+    if(p.deco){ const d=p.deco;
+      if(d.type==='moon'){ d.pivot.rotation.y=at*0.6; if(d.dodeNet){ d.dodeNet.rotation.set(0.18,at*0.12,0); } }
+      else if(d.type==='atom'){ for(let e=0;e<d.orbits.length;e++){ const o=d.orbits[e]; const a=at*o.spd+o.phase; o.el.position.set(Math.cos(a)*o.r,Math.sin(a)*o.r,0); } }
+      else if(d.type==='aura'){ if(d.mat&&d.mat.uniforms&&d.mat.uniforms.uTime) d.mat.uniforms.uTime.value=at; d.mesh.scale.setScalar(2.1+Math.sin(at*1.2+(p.phase||0))*0.2);
+        if(d.scOrb){ const arr=d.scGeo.attributes.position.array; for(let s=0;s<d.scOrb.length;s++){ const o=d.scOrb[s]; const a=at*o.spd+o.ph; const cc=Math.cos(a)*o.r, ss=Math.sin(a)*o.r; arr[s*3]=o.u.x*cc+o.v.x*ss; arr[s*3+1]=o.u.y*cc+o.v.y*ss; arr[s*3+2]=o.u.z*cc+o.v.z*ss; } d.scGeo.attributes.position.needsUpdate=true; }
+        if(d.chRing){ d.chRing.rotation.z=at*0.25; } }
+      else if(d.type==='exchange'){
+        for(let c=0;c<d.crystals.length;c++){ const o=d.crystals[c]; const a=at*o.spd+o.ph; o.mesh.position.set(Math.cos(a)*o.r, Math.sin(a*0.7)*0.12, Math.sin(a)*o.r); o.mesh.rotation.set(at*1.2,at*0.8,0); }
+        if(d.flT){ const arr=d.flGeo.attributes.position.array; for(let f=0;f<d.flT.length;f++){ const o=d.flT[f]; o.t=(o.t+o.spd*0.01)%1; const r=o.r0*(1.0-o.t); arr[f*3]=Math.cos(o.a)*r; arr[f*3+1]=o.h*(1.0-o.t); arr[f*3+2]=Math.sin(o.a)*r; } d.flGeo.attributes.position.needsUpdate=true; }
+        if(d.nfMeshes){ for(let f=0;f<d.nfMeshes.length;f++){ const o=d.nfMeshes[f]; const a=(at*0.4+o.off)*6.28; o.mesh.position.set(Math.cos(a)*0.23,Math.sin(a)*0.23,0); o.mesh.material.opacity=0.5+0.5*Math.sin(at*3+o.off*6.28); } }
+        if(d.ringDar) d.ringDar.rotation.z+=0.003; if(d.ringDar2) d.ringDar2.rotation.z-=0.002;
+      }
+    }
+    // ✦ TASK 3 — кинематографическая изоляция фокуса: не-в-фокусе узлы тускнеют, выбранный ярче
+    { const isFoc=(_focusedPanel===k)?1.0:0.0; const anyFoc=_focusedPanel?1.0:0.0; const dim=anyFoc>0.5?(isFoc>0.5?1.0:0.18):1.0;
+      p.orbHaloMat.uniforms.uHover.value=Math.max(p.hover,isFoc*0.7);
+      p.orbHalo.scale.setScalar(1.55*(1+p.hover*0.35+isFoc*0.55));
+      p.orbCoreMat.uniforms.uHover.value=Math.max(p.hover,isFoc);
+      if(p.label) p.label.material.opacity*=dim;
+      if(p.beamMat) p.beamMat.opacity*=dim;
+      if(p.tether&&p.tether.mat) p.tether.mat.opacity*=dim; }
+  }
+  // ✦ TASK 3 — фон (Яйцо и ореолы) кинематографично уходит в расфокус при наезде на узел
+  { const ff=_focusedPanel?1.0:0.0; __bgFocus+=(ff-__bgFocus)*0.08; const kf=1.0-__bgFocus*0.7;
+    goldEgg.material.uniforms.uIntensity.value*=kf;
+    if(magicMat.uniforms.uOpacity) magicMat.uniforms.uOpacity.value*=kf;
+    if(rainbowMat.uniforms.uOpacity) rainbowMat.uniforms.uOpacity.value*=kf;
+    moteMat.opacity*=kf; auraMat.uniforms.uOpacity.value*=(1.0-__bgFocus*0.5);
+    eggGroup.scale.multiplyScalar(1.0-__bgFocus*0.06); }
+  if(window.__camLock) camera.lookAt(window.__lookProxy);
+
+  if(composer){
+    if(composer.__w!==S){ composer.setSize(S,S); if(bloomPass&&bloomPass.setSize) bloomPass.setSize(S,S); composer.__w=S; }
+    if(bokehPass){
+      let fd=CAM_Z, ap=0.0002;
+      if(typeof _focusedPanel!=='undefined' && _focusedPanel && portalPanels[_focusedPanel] && portalPanels[_focusedPanel].orb){
+        const wp=new THREE.Vector3(); portalPanels[_focusedPanel].orb.getWorldPosition(wp);
+        fd=camera.position.distanceTo(wp); ap=0.0045;   // фокус на выбранном узле + раскрытие диафрагмы
+      }
+      bokehPass.uniforms['focus'].value += (fd-bokehPass.uniforms['focus'].value)*0.1;
+      bokehPass.uniforms['aperture'].value += (ap-bokehPass.uniforms['aperture'].value)*0.08;
+    }
+    composer.render();
+  } else {
+    renderer.render(scene,camera);
+  }
+}
+animate(0);
+// GSAP-рождение u_birth (если GSAP подключён); иначе сферой управляет таймер life в animate()
+if(window.gsap){ gsap.fromTo(birthMat.uniforms.u_birth, {value:0}, {value:1, duration:4.6, ease:'power2.inOut'}); }
+
+function resize(){ S=boxSize(); renderer.setSize(S,S,false); }
+window.addEventListener('resize',resize); resize();
+</script>
+
+<!-- Модульная сборка (идентично lobby.html) -->
+<script type="module">
+import { initLobby, showPassport } from './js/lobby-module.js';
+import { initGame, showGameMenu } from './js/game-module.js';
+import { getMenuState } from './js/menu-module.js';
+import { showModal, showToast } from './js/ui-module.js';
+
+function menuHtml(){
+  const ms = getMenuState();
+  const acc = ms.accessible || {};
+  const lck = ms.locked || {};
+  let html = Object.keys(acc).map(k=>{
+    const c = acc[k];
+    const items = (c.items||[]).map(it=>it.label).join(' · ');
+    return '<div class="mcat"><div class="cl">'+(c.icon||'')+' '+c.label+'</div><div class="it">'+(items||'—')+'</div></div>';
+  }).join('');
+  const lockedItems = Object.keys(lck).map(k=>(lck[k].items||[]).map(it=>it.label)).flat();
+  if(lockedItems.length){
+    html += '<div class="mcat"><div class="cl locked">⊙ Закрыто пока</div><div class="it locked">'+lockedItems.join(' · ')+'</div></div>';
+  }
+  return html || '<div class="mcat"><div class="it">Меню пусто</div></div>';
+}
+
+(async ()=>{
+  try{ await initLobby(); await initGame(); console.info('[Lobby 3D] Готово'); }
+  catch(e){ console.error('[Lobby 3D] Ошибка:', e && e.message ? e.message : e); }
+})();
+
+// Разделы (выезжающая панель) → awara:section + переключение по тапу на яйцо
+const gatesPanel = document.getElementById('gates-panel');
+const eggHint = document.getElementById('egg-hint');
+function togglePanel(force){
+  const open = (typeof force === 'boolean') ? force : !gatesPanel.classList.contains('open');
+  gatesPanel.classList.toggle('open', open);
+  gatesPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+  if(eggHint) eggHint.classList.toggle('hide', open);
+}
+window.addEventListener('awara:eggtap', () => togglePanel());
+function setHoverFx(s){ if(window.__awaraFx) window.__awaraFx.hover = s; }
+function setBaseFx(s){ if(window.__awaraFx) window.__awaraFx.base = (window.__awaraFx.base===s ? null : s); }
+document.querySelectorAll('.gate[data-section]').forEach(function(g){
+  const sec = g.dataset.section;
+  g.addEventListener('mouseenter', ()=> setHoverFx(sec));
+  g.addEventListener('mouseleave', ()=> setHoverFx(null));
+  g.addEventListener('click', function(){
+    setBaseFx(sec);
+    window.dispatchEvent(new CustomEvent('awara:section',{detail:{section:sec}}));
+  });
+});
+
+document.getElementById('btn-passport').onclick = ()=>showPassport();
+document.getElementById('btn-menu').onclick = ()=>showModal({ title:'Доступные пути', content: menuHtml() });
+
+window.addEventListener('awara:section', (e)=>{
+  const s = e.detail && e.detail.section;
+  if(s === 'game'){ showGameMenu(); }
+  else { showToast('Раздел «'+s+'» — скоро'); }
+});
+</script>
+
+<!-- ✦ ГЛАЗ МИРОЗДАНИЯ — логика входа (Шаг 1): клик по зрачку → погружение в лобби -->
+<script>
+(function(){
+  var gate=document.getElementById('eye-gate');
+  if(!gate) return;
+  var entered=false;
+  function enter(){
+    if(entered) return; entered=true;
+    gate.classList.add('diving');
+    try{ var ac=new (window.AudioContext||window.webkitAudioContext)(); var t=ac.currentTime;
+      var o=ac.createOscillator(), g=ac.createGain(); o.type='sine'; o.frequency.value=432;
+      o.connect(g); g.connect(ac.destination);
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.12,t+0.03); g.gain.exponentialRampToValueAtTime(0.0001,t+1.0);
+      o.start(t); o.stop(t+1.05);
+    }catch(e){}
+    setTimeout(function(){ gate.classList.add('gone'); }, 1200);
+    try{ sessionStorage.setItem('awara_eye_entered','1'); }catch(e){}
+  }
+  gate.addEventListener('click', enter);
+  gate.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); enter(); } });
+  window.__awaraEyeEnter=enter;
+})();
+</script>
+</body>
+</html>

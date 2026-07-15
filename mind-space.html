@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · Пространство Ума · 3D Ахамкара</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Cormorant Garamond',serif;color:#c9a84c;touch-action:pan-x pan-y}
+body{display:flex;flex-direction:column;background:#02010a}
+canvas#c{position:fixed;inset:0;z-index:1;touch-action:none}
+
+/* ── HUD top ── */
+.hud-top{position:fixed;top:0;left:0;right:0;z-index:10;padding:10px 14px;background:linear-gradient(180deg,rgba(0,0,0,.85),transparent);display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}
+.hud-top>*{pointer-events:auto}
+.back{color:#c9a84c;text-decoration:none;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;padding:6px 10px;border:1px solid rgba(201,168,76,.2);border-radius:8px;transition:all .3s;flex-shrink:0;backdrop-filter:blur(8px);background:rgba(0,0,0,.5)}
+.back:hover{border-color:#ffd700;color:#ffd700}
+.hud-center{text-align:center;flex:1}
+.hud-center h1{font-family:'Cinzel Decorative',serif;font-size:clamp(11px,3vw,14px);color:#ffd700;letter-spacing:.12em;text-shadow:0 0 20px rgba(255,215,0,.3)}
+.hud-center .sub{font-size:clamp(7px,1.8vw,8px);color:rgba(201,168,76,.35);font-family:'JetBrains Mono',monospace;letter-spacing:.15em}
+.light-display{font-family:'JetBrains Mono',monospace;font-size:clamp(8px,2vw,10px);color:rgba(201,168,76,.6);text-align:right;flex-shrink:0}
+
+/* ── Guna indicator ── */
+.guna-bar{position:fixed;top:52px;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:6px;align-items:center}
+.guna-dot{padding:3px 8px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.08em;cursor:pointer;border:1px solid rgba(201,168,76,.15);background:rgba(0,0,0,.5);color:rgba(201,168,76,.4);transition:all .3s;backdrop-filter:blur(8px)}
+.guna-dot.active{border-color:var(--gc);color:var(--gc);background:rgba(201,168,76,.08)}
+
+/* ── Info bar ── */
+.info-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:8px 16px;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.2);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,.5);pointer-events:none;z-index:3;text-align:center;max-width:90vw;backdrop-filter:blur(12px);transition:opacity .3s}
+
+/* ── Navigation links ── */
+.layer-nav{position:fixed;bottom:58px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;width:min(94vw,520px)}
+.layer-link{padding:8px 14px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;text-decoration:none;letter-spacing:.09em;white-space:nowrap;backdrop-filter:blur(8px);min-height:44px;display:flex;align-items:center}
+.layer-link:hover{background:rgba(201,168,76,.15);color:#ffd700}
+
+/* ── Zone detail panel ── */
+#zone-panel{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);z-index:20;width:min(360px,90vw);background:rgba(4,2,16,.95);border:1px solid rgba(201,168,76,.25);border-radius:16px;padding:18px 20px;backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:all .35s}
+#zone-panel.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all}
+.zp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.zp-title{font-family:'Cinzel',serif;font-size:14px;letter-spacing:.12em}
+.zp-close{background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:18px;padding:4px;line-height:1}
+.zp-progress{height:6px;border-radius:3px;background:rgba(201,168,76,.1);margin-bottom:10px;overflow:hidden}
+.zp-progress-fill{height:100%;border-radius:3px;transition:width .5s}
+.zp-channels{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.zp-channel{padding:3px 8px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:7px;border:1px solid rgba(201,168,76,.15);color:rgba(201,168,76,.5)}
+.zp-add{padding:10px 20px;border-radius:10px;cursor:pointer;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.3);color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;width:100%;min-height:44px;transition:all .2s}
+.zp-add:active{background:rgba(201,168,76,.2)}
+
+/* ── Intentions panel ── */
+#intentions-panel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:30;background:rgba(2,1,10,.96);display:none;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#intentions-panel.show{display:flex}
+.ip-header{padding:14px 16px;border-bottom:1px solid rgba(201,168,76,.15);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(2,1,10,.96);z-index:2}
+.ip-close{padding:8px 16px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;min-height:44px}
+.ip-title{font-family:'Cinzel Decorative',serif;font-size:14px;color:#ffd700;letter-spacing:.1em}
+.ip-body{padding:16px;max-width:500px;margin:0 auto;width:100%}
+.ip-section{margin-bottom:20px}
+.ip-section h3{font-family:'Cinzel',serif;font-size:11px;color:#ffd700;letter-spacing:.12em;margin-bottom:8px}
+.ip-textarea{width:100%;min-height:60px;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.2);border-radius:8px;color:#fff8d6;font-family:'JetBrains Mono',monospace;font-size:10px;padding:10px;resize:vertical}
+.ip-textarea:focus{outline:none;border-color:rgba(201,168,76,.5)}
+.ip-save{margin-top:6px;padding:8px 16px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:9px;cursor:pointer;min-height:44px}
+.ip-card{padding:8px 12px;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);border-radius:8px;margin-top:6px;font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(201,168,76,.6)}
+.ip-card .ip-date{font-size:7px;color:rgba(201,168,76,.3)}
+.ip-card .ip-done{padding:4px 8px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:4px;color:#c9a84c;font-size:7px;cursor:pointer;float:right;min-height:28px}
+.ip-card.archived{opacity:.4;border-style:dashed}
+
+/* ── Constructs panel ── */
+#constructs-panel{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);z-index:20;width:min(360px,90vw);background:rgba(4,2,16,.95);border:1px solid rgba(201,168,76,.25);border-radius:16px;padding:14px;backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:all .35s}
+#constructs-panel.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all}
+.cp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cp-card{padding:10px;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.15);border-radius:10px;text-decoration:none;color:#c9a84c;display:flex;flex-direction:column;gap:4px;transition:all .2s;min-height:44px}
+.cp-card:hover{border-color:rgba(255,215,0,.4);background:rgba(201,168,76,.08)}
+.cp-icon{font-size:16px}
+.cp-name{font-family:'Cinzel',serif;font-size:9px;color:#ffd700;letter-spacing:.06em}
+.cp-status{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(201,168,76,.4)}
+
+/* ── HUD buttons ── */
+.hud-btns{position:fixed;bottom:58px;right:12px;z-index:12;display:flex;flex-direction:column;gap:6px}
+.hud-btn{width:44px;height:44px;border-radius:50%;cursor:pointer;background:rgba(2,1,10,.8);border:1px solid rgba(201,168,76,.25);color:#c9a84c;font-size:16px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:all .3s}
+.hud-btn:hover{border-color:#ffd700;color:#ffd700;box-shadow:0 0 20px rgba(255,215,0,.15)}
+
+/* ── Lang ── */
+.lang-switch{position:fixed;top:8px;right:8px;z-index:15;display:flex;gap:4px}
+.lang-switch button{padding:3px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:8px;cursor:pointer;border-radius:4px;backdrop-filter:blur(8px)}
+
+/* ── Pancha-Kosha bar ── */
+.kosha-bar{position:fixed;bottom:102px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:0;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.18);border-radius:24px;padding:4px 6px;backdrop-filter:blur(12px)}
+.kosha-dot{display:flex;align-items:center;gap:4px;padding:5px 8px;text-decoration:none;color:rgba(201,168,76,.35);font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.06em;border-radius:16px;transition:all .3s;white-space:nowrap;min-height:28px}
+.kosha-dot:hover{color:rgba(201,168,76,.7);background:rgba(201,168,76,.06)}
+.kosha-dot.active{color:#ffd700;background:rgba(255,215,0,.1);text-shadow:0 0 12px rgba(255,215,0,.4)}
+.kosha-dot .kd-circle{width:6px;height:6px;border-radius:50%;background:rgba(201,168,76,.2);transition:all .3s;flex-shrink:0}
+.kosha-dot.active .kd-circle{background:#ffd700;box-shadow:0 0 8px rgba(255,215,0,.5)}
+.kosha-sep{width:12px;height:1px;background:rgba(201,168,76,.12);flex-shrink:0}
+@media(max-width:480px){.kosha-dot span{display:none}.kosha-dot{padding:6px}.kosha-bar{gap:0;padding:4px 8px}}
+
+@media(max-width:375px){.hud-top{padding:8px 10px}.hud-center h1{font-size:11px}.layer-nav{gap:6px}.layer-link{font-size:9px;padding:6px 10px}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<!-- HUD top -->
+<div class="hud-top">
+  <a href="index.html" class="back" id="t-back">← ЛОББИ</a>
+  <div class="hud-center">
+    <h1 id="t-title">ПРОСТРАНСТВО УМА</h1>
+    <div class="sub" id="t-sub">АХАМКАРА · АНТАХКАРАНА · 4 СФЕРЫ</div>
+  </div>
+  <div class="light-display" id="light-val">0.0000000000 ✦</div>
+</div>
+
+<!-- Guna indicator -->
+<div class="guna-bar">
+  <div class="guna-dot active" style="--gc:#ffd700" data-guna="sattva" id="g-sattva">САТТВА</div>
+  <div class="guna-dot" style="--gc:#ff6633" data-guna="rajas" id="g-rajas">РАДЖАС</div>
+  <div class="guna-dot" style="--gc:#6644aa" data-guna="tamas" id="g-tamas">ТАМАС</div>
+</div>
+
+<!-- Info bar -->
+<div class="info-bar" id="info-bar">вращай · нажми на зону мозга</div>
+
+<!-- Pancha-Kosha bar -->
+<div class="kosha-bar" id="kosha-bar">
+  <a href="earth-player.html" class="kosha-dot" title="Аннамайя-коша (пища, тело)"><div class="kd-circle"></div><span>АННА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="aura-pole.html" class="kosha-dot" title="Пранамайя-коша (прана, энергия)"><div class="kd-circle"></div><span>ПРАНА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="mind-space.html" class="kosha-dot active" title="Маномайя-коша (ум, манас)"><div class="kd-circle"></div><span>МАНАС</span></a>
+  <div class="kosha-sep"></div>
+  <a href="vedic-cosmos.html" class="kosha-dot" title="Виджнянамайя-коша (мудрость, буддхи)"><div class="kd-circle"></div><span>ВИДЖНЯНА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="cosmic-forces.html" class="kosha-dot" title="Анандамайя-коша (блаженство)"><div class="kd-circle"></div><span>АНАНДА</span></a>
+</div>
+
+<!-- Navigation -->
+<nav class="layer-nav">
+  <a href="spheres-v2.html" class="layer-link" id="t-nav-soul">ДУША · ИНИЦИАЦИЯ v2</a>
+  <a href="initiation-space.html" class="layer-link" id="t-nav-soul-legacy" style="opacity:0.55;font-size:9px;">ДРЕВНЯЯ v1</a>
+  <a href="cosmic-map.html" class="layer-link" id="t-nav-cosmos">КОСМОС · КАРТА</a>
+  <a href="index.html" class="layer-link" id="t-nav-lobby">ЛОББИ</a>
+</nav>
+
+<!-- HUD action buttons -->
+<div class="hud-btns">
+  <button class="hud-btn" id="btn-intentions" title="Намерения">&#9998;</button>
+  <button class="hud-btn" id="btn-constructs" title="Конструкции">&#9881;</button>
+</div>
+
+<!-- Zone detail panel -->
+<div id="zone-panel">
+  <div class="zp-header">
+    <div class="zp-title" id="zp-name"></div>
+    <button class="zp-close" id="zp-close">&times;</button>
+  </div>
+  <div class="zp-progress"><div class="zp-progress-fill" id="zp-fill"></div></div>
+  <div id="zp-pct" style="font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,.4);margin-bottom:8px"></div>
+  <div class="zp-channels" id="zp-channels"></div>
+  <button class="zp-add" id="zp-add">+ ОПЫТ</button>
+</div>
+
+<!-- Intentions panel -->
+<div id="intentions-panel">
+  <div class="ip-header">
+    <div class="ip-title" id="ip-title">НАМЕРЕНИЯ</div>
+    <button class="ip-close" id="ip-close">ЗАКРЫТЬ</button>
+  </div>
+  <div class="ip-body" id="ip-body"></div>
+</div>
+
+<!-- Constructs panel -->
+<div id="constructs-panel">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <div style="font-family:'Cinzel',serif;font-size:11px;color:#ffd700;letter-spacing:.1em" id="cp-title">КОНСТРУКЦИИ</div>
+    <button class="zp-close" id="cp-close">&times;</button>
+  </div>
+  <div class="cp-grid" id="cp-grid"></div>
+</div>
+
+<div class="lang-switch">
+<button onclick="localStorage.setItem('awara_lang','ru');location.reload()">RU</button>
+<button onclick="localStorage.setItem('awara_lang','en');location.reload()">EN</button>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.157.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+/* ══════════════════════════════════════════
+   DATA & STATE
+   ══════════════════════════════════════════ */
+
+const ZONES = [
+  { id:'mind',   nameRu:'РАЗУМ',    nameEn:'MIND',   lat:80,  lng:0,   color:0x88ccff, hex:'#88ccff',
+    channels:['Зрение','Слух'],  channelsEn:['Sight','Hearing'] },
+  { id:'body',   nameRu:'ТЕЛО',     nameEn:'BODY',   lat:-80, lng:0,   color:0xff8866, hex:'#ff8866',
+    channels:['Осязание','Движение'], channelsEn:['Touch','Movement'] },
+  { id:'speech', nameRu:'РЕЧЬ',     nameEn:'SPEECH', lat:0,   lng:-90, color:0x88ff88, hex:'#88ff88',
+    channels:['Вкус','Обоняние'],    channelsEn:['Taste','Smell'] },
+  { id:'action', nameRu:'ДЕЙСТВИЕ', nameEn:'ACTION', lat:0,   lng:90,  color:0xffcc44, hex:'#ffcc44',
+    channels:['Хватание','Воспроизводство'], channelsEn:['Grasping','Creation'] }
+];
+
+const GUNA_PRESETS = {
+  sattva: { ambient:0x1a1408, fog:0x080604, shellColor:0xffd700, shellOp:0.15, coreIntensity:1.4, rotSpeed:0.002, pulseSpeed:1.0, particleOp:0.6 },
+  rajas:  { ambient:0x1a0808, fog:0x0a0404, shellColor:0xff6600, shellOp:0.20, coreIntensity:0.9, rotSpeed:0.008, pulseSpeed:2.5, particleOp:0.9 },
+  tamas:  { ambient:0x060408, fog:0x020204, shellColor:0x442266, shellOp:0.25, coreIntensity:0.3, rotSpeed:0.0005, pulseSpeed:0.3, particleOp:0.2 }
+};
+
+let currentGuna = 'sattva';
+let activeZone = null;
+
+// State persistence
+const STATE_KEY = 'awara_v255_state';
+const INTENTIONS_KEY = 'awara_intentions';
+
+function loadSpheres(){
+  try{ const s=JSON.parse(localStorage.getItem(STATE_KEY)||'{}'); return s.mindSpheres||{mind:0,body:0,speech:0,action:0}; }catch(e){ return {mind:0,body:0,speech:0,action:0}; }
+}
+function saveSpheres(spheres){
+  try{ const s=JSON.parse(localStorage.getItem(STATE_KEY)||'{}'); s.mindSpheres=spheres; localStorage.setItem(STATE_KEY,JSON.stringify(s)); }catch(e){}
+}
+function getLight(){
+  try{ const s=JSON.parse(localStorage.getItem(STATE_KEY)||'{}'); return s.totalLight||0; }catch(e){ return 0; }
+}
+function loadIntentions(){
+  try{ return JSON.parse(localStorage.getItem(INTENTIONS_KEY)||'{"week":[],"month":[],"year":[]}'); }catch(e){ return {week:[],month:[],year:[]}; }
+}
+function saveIntentions(d){ localStorage.setItem(INTENTIONS_KEY,JSON.stringify(d)); }
+
+let spheres = loadSpheres();
+
+// i18n
+const _lang = localStorage.getItem('awara_lang')||'ru';
+const isEn = _lang==='en';
+if(isEn){
+  document.getElementById('t-title').textContent='MIND SPACE';
+  document.getElementById('t-sub').textContent='AHAMKARA · ANTAHKARANA · 4 SPHERES';
+  document.getElementById('t-back').textContent='← LOBBY';
+  document.getElementById('t-nav-soul').textContent='SOUL · INITIATION v2';
+  { const _legacy=document.getElementById('t-nav-soul-legacy'); if(_legacy) _legacy.textContent='LEGACY v1'; }
+  document.getElementById('t-nav-cosmos').textContent='COSMOS · MAP';
+  document.getElementById('t-nav-lobby').textContent='LOBBY';
+  document.getElementById('info-bar').textContent='rotate · tap a brain zone';
+  document.getElementById('g-sattva').textContent='SATTVA';
+  document.getElementById('g-rajas').textContent='RAJAS';
+  document.getElementById('g-tamas').textContent='TAMAS';
+  document.getElementById('ip-title').textContent='INTENTIONS';
+  document.getElementById('ip-close').textContent='CLOSE';
+  document.getElementById('cp-title').textContent='CONSTRUCTS';
+}
+
+// Light display
+function updateLightUI(){
+  const raw = getLight();
+  const lux = (raw||0)/1e10;
+  document.getElementById('light-val').textContent = lux.toFixed(10)+' ✦';
+}
+updateLightUI();
+
+/* ══════════════════════════════════════════
+   THREE.JS SETUP
+   ══════════════════════════════════════════ */
+
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(GUNA_PRESETS.sattva.fog, 0.06);
+
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 50);
+camera.position.set(0, 0.3, 4.2);
+
+// Lights
+const ambientLight = new THREE.AmbientLight(GUNA_PRESETS.sattva.ambient, 0.5);
+scene.add(ambientLight);
+const dirLight = new THREE.DirectionalLight(0xffd700, 0.4);
+dirLight.position.set(3, 5, 4);
+scene.add(dirLight);
+
+// Stars
+const starsGeo = new THREE.BufferGeometry();
+const starPos = new Float32Array(800*3);
+for(let i=0;i<800*3;i+=3){
+  const r=8+Math.random()*12, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
+  starPos[i]=r*Math.sin(ph)*Math.cos(th); starPos[i+1]=r*Math.sin(ph)*Math.sin(th); starPos[i+2]=r*Math.cos(ph);
+}
+starsGeo.setAttribute('position',new THREE.BufferAttribute(starPos,3));
+scene.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({color:0xffffff, size:.03, transparent:true, opacity:.4})));
+
+/* ══════════════════════════════════════════
+   BRAIN MODEL
+   ══════════════════════════════════════════ */
+
+const brainGroup = new THREE.Group();
+scene.add(brainGroup);
+
+// --- Noise function for brain wrinkles ---
+function hash(n){ let s=Math.sin(n)*43758.5453123; return s-Math.floor(s); }
+function noise3d(x,y,z){
+  const ix=Math.floor(x), iy=Math.floor(y), iz=Math.floor(z);
+  const fx=x-ix, fy=y-iy, fz=z-iz;
+  const ux=fx*fx*(3-2*fx), uy=fy*fy*(3-2*fy), uz=fz*fz*(3-2*fz);
+  const n=ix+iy*157+iz*113;
+  const a=hash(n), b=hash(n+1), c=hash(n+157), d=hash(n+158);
+  const e=hash(n+113), f=hash(n+114), g=hash(n+270), h=hash(n+271);
+  const x1=a+(b-a)*ux, x2=c+(d-c)*ux, x3=e+(f-e)*ux, x4=g+(h-g)*ux;
+  const y1=x1+(x2-x1)*uy, y2=x3+(x4-x3)*uy;
+  return y1+(y2-y1)*uz;
+}
+function fbm(x,y,z){
+  let v=0, a=0.5, freq=1;
+  for(let i=0;i<4;i++){ v+=a*noise3d(x*freq,y*freq,z*freq); freq*=2.1; a*=0.48; }
+  return v;
+}
+
+// LAYER 4 — BUDDHI (outer brain shell with wrinkles)
+const shellGeo = new THREE.SphereGeometry(1.35, 80, 60);
+const shellPositions = shellGeo.attributes.position;
+const shellNormals = shellGeo.attributes.normal;
+for(let i=0; i<shellPositions.count; i++){
+  const x=shellPositions.getX(i), y=shellPositions.getY(i), z=shellPositions.getZ(i);
+  const n = fbm(x*2.5, y*2.5, z*2.5)*0.12;
+  // Brain shape: slightly taller, fissure along top
+  const fissure = Math.exp(-Math.pow(Math.abs(z)*3, 2))*0.04*(y>0?1:0.3);
+  shellPositions.setX(i, x + shellNormals.getX(i)*(n - fissure));
+  shellPositions.setY(i, y*1.08 + shellNormals.getY(i)*(n - fissure));
+  shellPositions.setZ(i, z + shellNormals.getZ(i)*(n - fissure));
+}
+shellGeo.computeVertexNormals();
+
+const shellMat = new THREE.MeshStandardMaterial({
+  color:0xc9a84c, roughness:0.45, metalness:0.5,
+  transparent:true, opacity:0.18, depthWrite:false, side:THREE.DoubleSide
+});
+const shell = new THREE.Mesh(shellGeo, shellMat);
+brainGroup.add(shell);
+
+// Brain meridians (sulci lines)
+const sulciMat = new THREE.LineBasicMaterial({color:0xffd700, transparent:true, opacity:0.12, depthWrite:false});
+for(let i=0; i<8; i++){
+  const pts=[];
+  const offset = Math.random()*100;
+  for(let t=0;t<=Math.PI;t+=0.05){
+    const phi = t, theta = (i/8)*Math.PI*2 + Math.sin(t*3+offset)*0.3;
+    const r = 1.35 + fbm(Math.sin(phi)*Math.cos(theta)*2.5, Math.cos(phi)*2.5, Math.sin(phi)*Math.sin(theta)*2.5)*0.12;
+    pts.push(new THREE.Vector3(r*Math.sin(phi)*Math.cos(theta), r*Math.cos(phi)*1.08, r*Math.sin(phi)*Math.sin(theta)));
+  }
+  brainGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), sulciMat));
+}
+
+// LAYER 3 — AHAMKARA (wireframe icosahedron)
+const ahamGeo = new THREE.IcosahedronGeometry(0.95, 1);
+const ahamMat = new THREE.MeshBasicMaterial({color:0x9966cc, wireframe:true, transparent:true, opacity:0.2, depthWrite:false});
+const ahamkara = new THREE.Mesh(ahamGeo, ahamMat);
+brainGroup.add(ahamkara);
+
+// LAYER 2 — MANAS (toroidal rings)
+const manasGroup = new THREE.Group();
+const torusMat = new THREE.MeshBasicMaterial({color:0xffcc44, transparent:true, opacity:0.15, depthWrite:false});
+const torus1 = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.008, 16, 80), torusMat);
+torus1.rotation.x = Math.PI/2;
+manasGroup.add(torus1);
+const torus2 = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.006, 16, 80), torusMat.clone());
+torus2.rotation.x = Math.PI/3; torus2.rotation.y = Math.PI/4;
+manasGroup.add(torus2);
+const torus3 = new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.005, 16, 80), torusMat.clone());
+torus3.rotation.x = Math.PI/4; torus3.rotation.z = Math.PI/3;
+manasGroup.add(torus3);
+brainGroup.add(manasGroup);
+
+// LAYER 1 — CHITTA (core — glowing Atman)
+const coreGeo = new THREE.SphereGeometry(0.18, 32, 32);
+const coreMat = new THREE.ShaderMaterial({
+  uniforms: { uTime:{value:0}, uIntensity:{value:1.4} },
+  vertexShader:`varying vec3 vN; void main(){ vN=normalize(normalMatrix*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+  fragmentShader:`
+    uniform float uTime; uniform float uIntensity;
+    varying vec3 vN;
+    void main(){
+      float i = pow(0.6 - dot(vN, vec3(0,0,1)), 2.5);
+      float pulse = 0.85 + 0.15*sin(uTime*2.0);
+      gl_FragColor = vec4(1.0, 0.88, 0.3, 1.0) * i * uIntensity * pulse;
+    }`,
+  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false
+});
+const core = new THREE.Mesh(coreGeo, coreMat);
+brainGroup.add(core);
+
+// Core glow halo
+const haloGeo = new THREE.SphereGeometry(0.35, 24, 24);
+const haloMat = new THREE.ShaderMaterial({
+  uniforms:{ uTime:{value:0} },
+  vertexShader:`varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+  fragmentShader:`uniform float uTime;varying vec3 vN;void main(){float i=pow(0.5-dot(vN,vec3(0,0,1)),3.);float p=0.7+0.3*sin(uTime*1.5);gl_FragColor=vec4(1.,.9,.4,1.)*i*0.5*p;}`,
+  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false
+});
+brainGroup.add(new THREE.Mesh(haloGeo, haloMat));
+
+/* ══════════════════════════════════════════
+   5 INDRIYA PARTICLES (Input/Output channels)
+   ══════════════════════════════════════════ */
+
+const INDRIYA_COUNT = 200;
+const indriyaGeo = new THREE.BufferGeometry();
+const indriyaPos = new Float32Array(INDRIYA_COUNT*3);
+const indriyaCol = new Float32Array(INDRIYA_COUNT*3);
+const indriyaVel = []; // direction data
+
+// 5 jnanendriyas (input, toward center) + 5 karmendriyas (output, away)
+const channelColors = [
+  [1,.85,.3],  // sight — gold
+  [.7,.8,1],   // hearing — silver-blue
+  [.4,.9,.4],  // smell — green
+  [1,.6,.2],   // taste — orange
+  [.9,.9,.9],  // touch — white
+  [.4,.9,.4],  // speech out — green
+  [1,.8,.2],   // grasping — yellow
+  [1,.4,.3],   // movement — red
+  [.5,.3,.7],  // excretion — violet
+  [.9,.6,.7],  // reproduction — rose
+];
+
+for(let i=0;i<INDRIYA_COUNT;i++){
+  const ch = i%10; // channel index
+  const isInput = ch<5;
+  const angle = (ch/10)*Math.PI*2 + (Math.random()-0.5)*0.6;
+  const r = 0.3 + Math.random()*1.2;
+  const y = (Math.random()-0.5)*1.5;
+
+  indriyaPos[i*3] = r*Math.cos(angle);
+  indriyaPos[i*3+1] = y;
+  indriyaPos[i*3+2] = r*Math.sin(angle);
+
+  const c = channelColors[ch];
+  indriyaCol[i*3]=c[0]; indriyaCol[i*3+1]=c[1]; indriyaCol[i*3+2]=c[2];
+
+  indriyaVel.push({
+    dir: isInput?-1:1, // toward center or outward
+    speed: 0.003+Math.random()*0.004,
+    angle: angle,
+    phase: Math.random()*Math.PI*2,
+    yBase: y,
+    rBase: r
+  });
+}
+indriyaGeo.setAttribute('position', new THREE.BufferAttribute(indriyaPos, 3));
+indriyaGeo.setAttribute('color', new THREE.BufferAttribute(indriyaCol, 3));
+
+const indriyaPoints = new THREE.Points(indriyaGeo, new THREE.PointsMaterial({
+  size:0.04, vertexColors:true, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false
+}));
+brainGroup.add(indriyaPoints);
+
+/* ══════════════════════════════════════════
+   4 ZONE MARKERS on brain surface
+   ══════════════════════════════════════════ */
+
+const zoneMarkers = [];
+const zoneLabelSprites = [];
+
+ZONES.forEach(z => {
+  const phi = (90-z.lat)*Math.PI/180;
+  const theta = z.lng*Math.PI/180;
+  const r = 1.45;
+  const px = r*Math.sin(phi)*Math.cos(theta);
+  const py = r*Math.cos(phi)*1.08;
+  const pz = r*Math.sin(phi)*Math.sin(theta);
+
+  // Glowing sphere marker
+  const markerGeo = new THREE.SphereGeometry(0.08, 16, 16);
+  const markerMat = new THREE.MeshBasicMaterial({
+    color:z.color, transparent:true, opacity:0.7, depthWrite:false
+  });
+  const marker = new THREE.Mesh(markerGeo, markerMat);
+  marker.position.set(px, py, pz);
+  marker.userData = { zoneId:z.id };
+  brainGroup.add(marker);
+
+  // Outer glow ring
+  const ringGeo = new THREE.RingGeometry(0.1, 0.14, 32);
+  const ringMat = new THREE.MeshBasicMaterial({
+    color:z.color, transparent:true, opacity:0.3, side:THREE.DoubleSide, depthWrite:false
+  });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.position.copy(marker.position);
+  ring.lookAt(0, 0, 0);
+  brainGroup.add(ring);
+
+  // Canvas label
+  const labelCanvas = document.createElement('canvas');
+  labelCanvas.width = 256; labelCanvas.height = 64;
+  const ctx = labelCanvas.getContext('2d');
+  ctx.fillStyle = z.hex;
+  ctx.font = 'bold 22px Cinzel, serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(isEn?z.nameEn:z.nameRu, 128, 28);
+
+  // progress subtext
+  const pct = Math.min(100, spheres[z.id]||0);
+  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  ctx.font = '14px JetBrains Mono, monospace';
+  ctx.fillText(pct+'%', 128, 50);
+
+  const tex = new THREE.CanvasTexture(labelCanvas);
+  const spriteMat = new THREE.SpriteMaterial({map:tex, transparent:true, depthWrite:false, depthTest:false});
+  const sprite = new THREE.Sprite(spriteMat);
+  sprite.scale.set(0.7, 0.18, 1);
+  sprite.position.set(px*1.25, py*1.25 + 0.12, pz*1.25);
+  brainGroup.add(sprite);
+
+  zoneMarkers.push(marker);
+  zoneLabelSprites.push({sprite, canvas:labelCanvas, zone:z});
+});
+
+/* ══════════════════════════════════════════
+   INTERACTION — ROTATE + CLICK
+   ══════════════════════════════════════════ */
+
+let isDragging = false, prevX = 0, prevY = 0;
+let autoRotY = 0;
+let targetCamZ = 4.2;
+
+canvas.addEventListener('pointerdown', e => {
+  isDragging = true;
+  prevX = e.clientX; prevY = e.clientY;
+});
+canvas.addEventListener('pointermove', e => {
+  if(!isDragging) return;
+  const dx = e.clientX - prevX, dy = e.clientY - prevY;
+  brainGroup.rotation.y += dx*0.005;
+  brainGroup.rotation.x = Math.max(-0.8, Math.min(0.8, brainGroup.rotation.x + dy*0.005));
+  prevX = e.clientX; prevY = e.clientY;
+});
+canvas.addEventListener('pointerup', e => {
+  if(isDragging && Math.abs(e.clientX-prevX)<3 && Math.abs(e.clientY-prevY)<3){
+    handleClick(e);
+  }
+  isDragging = false;
+});
+
+// Raycaster for zone clicks
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function handleClick(e){
+  mouse.x = (e.clientX/window.innerWidth)*2-1;
+  mouse.y = -(e.clientY/window.innerHeight)*2+1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(zoneMarkers);
+  if(hits.length>0){
+    const zoneId = hits[0].object.userData.zoneId;
+    openZonePanel(zoneId);
+  } else {
+    closeZonePanel();
+    closeConstructsPanel();
+  }
+}
+
+/* ══════════════════════════════════════════
+   ZONE PANEL
+   ══════════════════════════════════════════ */
+
+function openZonePanel(zoneId){
+  activeZone = ZONES.find(z=>z.id===zoneId);
+  if(!activeZone) return;
+  const panel = document.getElementById('zone-panel');
+  document.getElementById('zp-name').textContent = isEn?activeZone.nameEn:activeZone.nameRu;
+  document.getElementById('zp-name').style.color = activeZone.hex;
+
+  const pct = Math.min(100, spheres[activeZone.id]||0);
+  document.getElementById('zp-fill').style.width = pct+'%';
+  document.getElementById('zp-fill').style.background = activeZone.hex;
+  document.getElementById('zp-pct').textContent = pct+'% '+( isEn?'experience':'опыт');
+
+  const chEl = document.getElementById('zp-channels');
+  chEl.innerHTML = '';
+  const chNames = isEn ? activeZone.channelsEn : activeZone.channels;
+  chNames.forEach(ch => {
+    const d = document.createElement('div');
+    d.className = 'zp-channel';
+    d.textContent = ch;
+    d.style.borderColor = activeZone.hex+'44';
+    chEl.appendChild(d);
+  });
+
+  document.getElementById('zp-add').textContent = isEn?'+ EXPERIENCE':'+ ОПЫТ';
+  panel.classList.add('show');
+  closeConstructsPanel();
+}
+
+function closeZonePanel(){
+  document.getElementById('zone-panel').classList.remove('show');
+  activeZone = null;
+}
+
+document.getElementById('zp-close').addEventListener('click', closeZonePanel);
+
+// Add experience
+document.getElementById('zp-add').addEventListener('click', ()=>{
+  if(!activeZone) return;
+  spheres[activeZone.id] = Math.min(100, (spheres[activeZone.id]||0)+5);
+  saveSpheres(spheres);
+  openZonePanel(activeZone.id);
+  updateZoneLabels();
+  // Visual feedback
+  const marker = zoneMarkers.find(m=>m.userData.zoneId===activeZone.id);
+  if(marker){ marker.material.opacity=1; setTimeout(()=>{marker.material.opacity=0.7;},300); }
+});
+
+function updateZoneLabels(){
+  zoneLabelSprites.forEach(({canvas:c, zone:z, sprite:s})=>{
+    const ctx=c.getContext('2d');
+    ctx.clearRect(0,0,256,64);
+    ctx.fillStyle=z.hex;
+    ctx.font='bold 22px Cinzel, serif';
+    ctx.textAlign='center';
+    ctx.fillText(isEn?z.nameEn:z.nameRu, 128, 28);
+    const pct=Math.min(100, spheres[z.id]||0);
+    ctx.fillStyle='rgba(255,255,255,0.4)';
+    ctx.font='14px JetBrains Mono, monospace';
+    ctx.fillText(pct+'%', 128, 50);
+    s.material.map.needsUpdate=true;
+  });
+}
+
+/* ══════════════════════════════════════════
+   GUNA SWITCHING
+   ══════════════════════════════════════════ */
+
+function applyGuna(guna, save){
+  currentGuna = guna;
+  const p = GUNA_PRESETS[guna];
+  if(save !== false) try{localStorage.setItem('awara_guna', guna)}catch(e){}
+
+  document.querySelectorAll('.guna-dot').forEach(d => d.classList.toggle('active', d.dataset.guna===guna));
+
+  targetShellColor.set(p.shellColor);
+  targetShellOp = p.shellOp;
+  coreMat.uniforms.uIntensity.value = p.coreIntensity;
+  targetRotSpeed = p.rotSpeed;
+  targetPulseSpeed = p.pulseSpeed;
+  indriyaPoints.material.opacity = p.particleOp;
+
+  ambientLight.color.set(p.ambient);
+  scene.fog.color.set(p.fog);
+}
+
+const targetShellColor = new THREE.Color(GUNA_PRESETS.sattva.shellColor);
+let targetShellOp = 0.15;
+let targetRotSpeed = 0.002;
+let targetPulseSpeed = 1.0;
+
+document.querySelectorAll('.guna-dot').forEach(d => {
+  d.addEventListener('click', ()=> applyGuna(d.dataset.guna));
+});
+{const sg=localStorage.getItem('awara_guna');if(sg&&GUNA_PRESETS[sg])applyGuna(sg,false)}
+
+/* ══════════════════════════════════════════
+   INTENTIONS
+   ══════════════════════════════════════════ */
+
+document.getElementById('btn-intentions').addEventListener('click', ()=>{
+  document.getElementById('intentions-panel').classList.add('show');
+  renderIntentions();
+});
+document.getElementById('ip-close').addEventListener('click', ()=>{
+  document.getElementById('intentions-panel').classList.remove('show');
+});
+
+function renderIntentions(){
+  const data = loadIntentions();
+  const body = document.getElementById('ip-body');
+  body.innerHTML = '';
+
+  ['week','month','year'].forEach(type=>{
+    const labels = {
+      week: isEn?'Week':'Неделя',
+      month: isEn?'Month':'Месяц',
+      year: isEn?'Year':'Год'
+    };
+    const section = document.createElement('div');
+    section.className = 'ip-section';
+    section.innerHTML = `<h3>${labels[type]}</h3>`;
+
+    // Input
+    const ta = document.createElement('textarea');
+    ta.className = 'ip-textarea';
+    ta.placeholder = isEn?'Your intention...':'Ваше намерение...';
+    section.appendChild(ta);
+
+    const btn = document.createElement('button');
+    btn.className = 'ip-save';
+    btn.textContent = isEn?'SAVE':'СОХРАНИТЬ';
+    btn.addEventListener('click', ()=>{
+      if(!ta.value.trim()) return;
+      data[type].unshift({text:ta.value.trim(), date:new Date().toISOString().slice(0,10), done:false});
+      saveIntentions(data);
+      ta.value='';
+      renderIntentions();
+    });
+    section.appendChild(btn);
+
+    // Active intentions
+    (data[type]||[]).forEach((item,idx)=>{
+      const card = document.createElement('div');
+      card.className = 'ip-card'+(item.done?' archived':'');
+      card.innerHTML = `<span class="ip-date">${item.date}</span> ${item.text}`;
+      if(!item.done){
+        const doneBtn = document.createElement('button');
+        doneBtn.className = 'ip-done';
+        doneBtn.textContent = isEn?'DONE':'ИСПОЛНЕНО';
+        doneBtn.addEventListener('click', ()=>{
+          data[type][idx].done=true;
+          saveIntentions(data);
+          renderIntentions();
+        });
+        card.appendChild(doneBtn);
+      }
+      section.appendChild(card);
+    });
+
+    body.appendChild(section);
+  });
+}
+
+/* ══════════════════════════════════════════
+   CONSTRUCTS
+   ══════════════════════════════════════════ */
+
+document.getElementById('btn-constructs').addEventListener('click', ()=>{
+  const p = document.getElementById('constructs-panel');
+  p.classList.toggle('show');
+  if(p.classList.contains('show')) renderConstructs();
+});
+document.getElementById('cp-close').addEventListener('click', ()=>{
+  document.getElementById('constructs-panel').classList.remove('show');
+});
+
+function closeConstructsPanel(){
+  document.getElementById('constructs-panel').classList.remove('show');
+}
+
+function renderConstructs(){
+  const grid = document.getElementById('cp-grid');
+  const constructs = [
+    { icon:'🧠', nameRu:'Карта Ума', nameEn:'Mind Map', href:'cards.html', statusRu:'Карты', statusEn:'Cards' },
+    { icon:'◇', nameRu:'Матрица Восприятия', nameEn:'Perception Matrix', href:'matrices.html', statusRu:'Матрица', statusEn:'Matrix' },
+    { icon:'☉', nameRu:'Натальная Карта', nameEn:'Natal Chart', href:'natal.html', statusRu:'Натальная', statusEn:'Natal' },
+    { icon:'🔑', nameRu:'Ключ Дня', nameEn:'Daily Key', href:'#', statusRu:'—', statusEn:'—' }
+  ];
+
+  grid.innerHTML = '';
+  constructs.forEach(c => {
+    const a = document.createElement('a');
+    a.className = 'cp-card';
+    a.href = c.href;
+    a.innerHTML = `<div class="cp-icon">${c.icon}</div><div class="cp-name">${isEn?c.nameEn:c.nameRu}</div><div class="cp-status">${isEn?c.statusEn:c.statusRu}</div>`;
+    grid.appendChild(a);
+  });
+}
+
+/* ══════════════════════════════════════════
+   ANIMATION LOOP
+   ══════════════════════════════════════════ */
+
+let time = 0;
+let currentRotSpeed = 0.002;
+
+function animate(){
+  requestAnimationFrame(animate);
+  time += 0.016;
+
+  // Smooth camera
+  camera.position.z += (targetCamZ - camera.position.z)*0.05;
+
+  // Auto-rotate (when not dragging)
+  currentRotSpeed += (targetRotSpeed - currentRotSpeed)*0.02;
+  if(!isDragging){
+    brainGroup.rotation.y += currentRotSpeed;
+  }
+
+  // Core pulse
+  coreMat.uniforms.uTime.value = time * targetPulseSpeed;
+  haloMat.uniforms.uTime.value = time * targetPulseSpeed;
+
+  // Shell color lerp
+  shellMat.color.lerp(targetShellColor, 0.02);
+  shellMat.opacity += (targetShellOp - shellMat.opacity)*0.02;
+
+  // Manas rings rotation
+  torus1.rotation.z = time*0.3*targetPulseSpeed;
+  torus2.rotation.z = -time*0.2*targetPulseSpeed;
+  torus3.rotation.y = time*0.15*targetPulseSpeed;
+
+  // Ahamkara subtle rotation
+  ahamkara.rotation.y = time*0.1;
+  ahamkara.rotation.x = Math.sin(time*0.2)*0.1;
+
+  // Zone marker pulsation
+  zoneMarkers.forEach((m,i)=>{
+    const s = 1 + Math.sin(time*2 + i)*0.15;
+    m.scale.set(s,s,s);
+  });
+
+  // Indriya particles — toroidal flow
+  const pos = indriyaGeo.attributes.position;
+  for(let i=0;i<INDRIYA_COUNT;i++){
+    const v = indriyaVel[i];
+    const r = v.rBase;
+    const progress = (time*v.speed*30 + v.phase)%1;
+    const flowR = v.dir<0 ? 1.5*(1-progress)+0.05 : 0.05+1.5*progress;
+    const y = v.yBase + Math.sin(progress*Math.PI*2)*0.3;
+
+    pos.setX(i, flowR*Math.cos(v.angle + time*0.3));
+    pos.setY(i, y);
+    pos.setZ(i, flowR*Math.sin(v.angle + time*0.3));
+  }
+  pos.needsUpdate = true;
+
+  renderer.render(scene, camera);
+}
+animate();
+
+/* ══════════════════════════════════════════
+   RESIZE
+   ══════════════════════════════════════════ */
+
+window.addEventListener('resize', ()=>{
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

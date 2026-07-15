@@ -1,0 +1,33 @@
+
+
+============================================================
+FILE: docs\_index.md
+============================================================
+
+# Документация проекта
+
+Создано: 2026-05-24
+
+- **[[docs/GAME_DESIGN.md|GAME_DESIGN.md]]** — AWARA — ДИЗАЙН ИГРЫ (GAME DESIGN DOCUMENT) (17 KB)
+- **[[docs/M-030-audit-report.md|M-030-audit-report.md]]** — M-030: Аудит всех страниц AWARA -- отчёт о дефектах (16 KB)
+- **[[docs/MASTER_PLAN.md|MASTER_PLAN.md]]** — AWARA — МАСТЕР-ПЛАН (13 KB)
+- **[[docs/OPENART_PROMPTS.md|OPENART_PROMPTS.md]]** — AWARA — Тестовые промпты для OpenArt.ai (15 KB)
+- **[[docs/PHILOSOPHY.md|PHILOSOPHY.md]]** — Ответ Gemini (220 KB)
+- **[[docs/PROMPT_COSMIC_MAP.md|PROMPT_COSMIC_MAP.md]]** — Prompt for Next Devin: AWARA Cosmic Map -- Hub + Cosmic Forces (7 KB)
+- **[[docs/REFACTOR_TASKS.md|REFACTOR_TASKS.md]]** — AWARA Рефакторинг — План задач T-049 → T-072 (34 KB)
+- **[[docs/REFACTOR_TASKS_ACTIVE.md|REFACTOR_TASKS_ACTIVE.md]]** — AWARA Рефакторинг — активные задачи после аудита (15 KB)
+- **[[docs/SPHERES_REDESIGN.md|SPHERES_REDESIGN.md]]** — AWARA — РЕДИЗАЙН СФЕР И ОНБОРДИНГА (7 KB)
+- **[[docs/WORKSPACE.md|WORKSPACE.md]]** — AWARA Workspace — состояние на 10 мая 2026 (4 KB)
+- **[[docs/WORK_PLAN.md|WORK_PLAN.md]]** — AWARA — ПЛАН РАБОТЫ (4 KB)
+- **[[docs/architecture.md|architecture.md]]** — AWARA Architecture (6 KB)
+- **[[docs/awara-living-game-architecture.md|awara-living-game-architecture.md]]** — AWARA Living Game Architecture (27 KB)
+- **[[docs/game-space-changes.md|game-space-changes.md]]** — AWARA — единый документ изменений игрового пространства (20 KB)
+- **[[docs/handoff-manifest.md|handoff-manifest.md]]** — AWARA — AI Handoff Manifest (63 KB)
+- **[[docs/mythic-expansion-architecture.md|mythic-expansion-architecture.md]]** — AWARA Mythic Expansion Architecture (6 KB)
+- **[[docs/refactor-map.md|refactor-map.md]]** — T-050 — карта рефакторинга AWARA (16 KB)
+- **[[docs/refactor-status.md|refactor-status.md]]** — Статус рефакторинга AWARA (8 KB)
+- **[[docs/roadmap.md|roadmap.md]]** — AWARA — Roadmap (proposal) (15 KB)
+- **[[docs/screen-status.md|screen-status.md]]** — Статус экранов AWARA (1 KB)
+- **[[docs/synthesis.md|synthesis.md]]** — AWARA — синтез лор-пакета (28 KB)
+- **[[docs/universe-refactor-plan.md|universe-refactor-plan.md]]** — Universe Refactor Plan (1 KB)
+- **[[docs/vision.md|vision.md]]** — AWARA — Vision & Roadmap (Pavel, голосом) (10 KB)

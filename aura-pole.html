@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · Аура-Поля · 7 Чакр</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Cormorant Garamond',serif;color:#c9a84c;touch-action:pan-x pan-y}
+body{display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 40%,rgba(80,25,130,.2),transparent 55%),#02010a}
+canvas#c{position:fixed;inset:0;z-index:1;touch-action:none}
+
+.hud-top{position:fixed;top:0;left:0;right:0;z-index:10;padding:10px 14px;background:linear-gradient(180deg,rgba(0,0,0,.85),transparent);display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}
+.hud-top>*{pointer-events:auto}
+.back{color:#c9a84c;text-decoration:none;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;padding:6px 10px;border:1px solid rgba(201,168,76,.2);border-radius:8px;transition:all .3s;flex-shrink:0;backdrop-filter:blur(8px);background:rgba(0,0,0,.5)}
+.back:hover{border-color:#ffd700;color:#ffd700}
+.hud-center{text-align:center;flex:1}
+.hud-center h1{font-family:'Cinzel Decorative',serif;font-size:clamp(11px,3vw,14px);color:#ffd700;letter-spacing:.12em;text-shadow:0 0 20px rgba(255,215,0,.3)}
+.hud-center .sub{font-size:clamp(7px,1.8vw,8px);color:rgba(201,168,76,.35);font-family:'JetBrains Mono',monospace;letter-spacing:.15em}
+.layer-label{font-family:'JetBrains Mono',monospace;font-size:clamp(8px,2vw,10px);color:rgba(201,168,76,.6);text-align:right;flex-shrink:0}
+
+.info-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:8px 16px;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.2);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,.5);pointer-events:none;z-index:3;text-align:center;max-width:90vw;backdrop-filter:blur(12px);transition:opacity .3s}
+
+.layer-nav{position:fixed;bottom:58px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;width:min(94vw,560px)}
+.layer-link{padding:8px 14px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;text-decoration:none;letter-spacing:.09em;white-space:nowrap;backdrop-filter:blur(8px);min-height:44px;display:flex;align-items:center}
+.layer-link:hover{background:rgba(201,168,76,.15);color:#ffd700}
+
+/* Chakra detail panel */
+#chakra-panel{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);z-index:20;width:min(360px,90vw);background:rgba(4,2,16,.95);border:1px solid rgba(201,168,76,.25);border-radius:16px;padding:18px 20px;backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:all .35s}
+#chakra-panel.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all}
+.cp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cp-title{font-family:'Cinzel',serif;font-size:14px;letter-spacing:.12em}
+.cp-close{background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:18px;padding:4px;line-height:1}
+.cp-body{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,.6);line-height:1.6}
+.cp-body b{color:#ffd700;font-size:10px}
+
+.kosha-bar{position:fixed;bottom:102px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:0;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.18);border-radius:24px;padding:4px 6px;backdrop-filter:blur(12px)}
+.kosha-dot{display:flex;align-items:center;gap:4px;padding:5px 8px;text-decoration:none;color:rgba(201,168,76,.35);font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.06em;border-radius:16px;transition:all .3s;white-space:nowrap;min-height:28px}
+.kosha-dot:hover{color:rgba(201,168,76,.7);background:rgba(201,168,76,.06)}
+.kosha-dot.active{color:#ffd700;background:rgba(255,215,0,.1);text-shadow:0 0 12px rgba(255,215,0,.4)}
+.kosha-dot .kd-circle{width:6px;height:6px;border-radius:50%;background:rgba(201,168,76,.2);transition:all .3s;flex-shrink:0}
+.kosha-dot.active .kd-circle{background:#ffd700;box-shadow:0 0 8px rgba(255,215,0,.5)}
+.kosha-sep{width:12px;height:1px;background:rgba(201,168,76,.12);flex-shrink:0}
+
+.lang-switch{position:fixed;top:8px;right:8px;z-index:15;display:flex;gap:4px}
+.lang-switch button{padding:3px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:8px;cursor:pointer;border-radius:4px;backdrop-filter:blur(8px)}
+
+@media(max-width:480px){.kosha-dot span{display:none}.kosha-dot{padding:6px}.kosha-bar{gap:0;padding:4px 8px}}
+@media(max-width:375px){.hud-top{padding:8px 10px}.hud-center h1{font-size:11px}.layer-nav{gap:6px}.layer-link{font-size:9px;padding:6px 10px}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="hud-top">
+  <a href="index.html" class="back" id="t-back">← ЛОББИ</a>
+  <div class="hud-center">
+    <h1 id="t-title">АУРА-ПОЛЕ ЧЕЛОВЕКА</h1>
+    <div class="sub" id="t-sub">СЛОЙ 1А · 7 ЧАКР · 7 ТОНКИХ ТЕЛ</div>
+  </div>
+  <div class="layer-label">1А</div>
+</div>
+
+<div class="info-bar" id="info-bar">вращай · нажми на чакру</div>
+
+<!-- Pancha-Kosha bar -->
+<div class="kosha-bar">
+  <a href="earth-player.html" class="kosha-dot" title="Аннамайя-коша"><div class="kd-circle"></div><span>АННА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="aura-pole.html" class="kosha-dot active" title="Пранамайя-коша"><div class="kd-circle"></div><span>ПРАНА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="mind-space.html" class="kosha-dot" title="Маномайя-коша"><div class="kd-circle"></div><span>МАНАС</span></a>
+  <div class="kosha-sep"></div>
+  <a href="vedic-cosmos.html" class="kosha-dot" title="Виджнянамайя-коша"><div class="kd-circle"></div><span>ВИДЖНЯНА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="cosmic-forces.html" class="kosha-dot" title="Анандамайя-коша"><div class="kd-circle"></div><span>АНАНДА</span></a>
+</div>
+
+<nav class="layer-nav">
+  <a href="mind-space.html" class="layer-link" id="t-nav-mind">ВНУТРЬ · УМ</a>
+  <a href="nine-measures.html" class="layer-link" id="t-nav-nine">9 МЕРНОСТЬ</a>
+  <a href="region-map.html" class="layer-link" id="t-nav-region">НАРУЖУ · РЕГИОН</a>
+  <a href="index.html" class="layer-link" id="t-nav-lobby">ЛОББИ</a>
+</nav>
+
+<!-- Chakra detail panel -->
+<div id="chakra-panel">
+  <div class="cp-header">
+    <div class="cp-title" id="cp-name"></div>
+    <button class="cp-close" id="cp-close">&times;</button>
+  </div>
+  <div class="cp-body" id="cp-body"></div>
+</div>
+
+<div class="lang-switch">
+<button onclick="localStorage.setItem('awara_lang','ru');location.reload()">RU</button>
+<button onclick="localStorage.setItem('awara_lang','en');location.reload()">EN</button>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.157.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+/* ══════════════════════════════════════════
+   DATA
+   ══════════════════════════════════════════ */
+
+const CHAKRAS = [
+  { id:'muladhara',   nameRu:'МУЛАДХАРА',   nameEn:'MULADHARA',   bodyRu:'физическое тело',    bodyEn:'physical body',    y:-1.8, color:0xff4444, hex:'#ff4444' },
+  { id:'svadhisthana', nameRu:'СВАДХИСТАНА', nameEn:'SVADHISTHANA', bodyRu:'эфирное тело',      bodyEn:'etheric body',     y:-1.2, color:0xff8833, hex:'#ff8833' },
+  { id:'manipura',    nameRu:'МАНИПУРА',    nameEn:'MANIPURA',    bodyRu:'астральное тело',    bodyEn:'astral body',      y:-0.5, color:0xffff44, hex:'#ffff44' },
+  { id:'anahata',     nameRu:'АНАХАТА',     nameEn:'ANAHATA',     bodyRu:'ментальное тело',    bodyEn:'mental body',      y: 0.2, color:0x44ff44, hex:'#44ff44' },
+  { id:'vishuddha',   nameRu:'ВИШУДХА',     nameEn:'VISHUDDHA',   bodyRu:'каузальное тело',    bodyEn:'causal body',      y: 0.9, color:0x44aaff, hex:'#44aaff' },
+  { id:'ajna',        nameRu:'АДЖНА',       nameEn:'AJNA',        bodyRu:'интуитивное тело',   bodyEn:'intuitive body',   y: 1.5, color:0x6644ff, hex:'#6644ff' },
+  { id:'sahasrara',   nameRu:'САХАСРАРА',   nameEn:'SAHASRARA',   bodyRu:'атманическое тело',  bodyEn:'atmic body',       y: 2.1, color:0xcc44ff, hex:'#cc44ff' }
+];
+
+const AURA_SHELLS = [
+  { radius:0.65, height:1.8, color:0xff4444, opacity:0.06 },
+  { radius:0.80, height:2.1, color:0xff8833, opacity:0.05 },
+  { radius:0.95, height:2.4, color:0xffff44, opacity:0.05 },
+  { radius:1.10, height:2.7, color:0x44ff44, opacity:0.04 },
+  { radius:1.25, height:3.0, color:0x44aaff, opacity:0.04 },
+  { radius:1.40, height:3.3, color:0x6644ff, opacity:0.03 },
+  { radius:1.55, height:3.6, color:0xcc44ff, opacity:0.03 }
+];
+
+// i18n
+const _lang = localStorage.getItem('awara_lang')||'ru';
+const isEn = _lang==='en';
+if(isEn){
+  document.getElementById('t-title').textContent='AURA-FIELD';
+  document.getElementById('t-sub').textContent='LAYER 1A · 7 CHAKRAS · 7 SUBTLE BODIES';
+  document.getElementById('t-back').textContent='← LOBBY';
+  document.getElementById('t-nav-mind').textContent='INWARD · MIND';
+  document.getElementById('t-nav-nine').textContent='9 MEASURES';
+  document.getElementById('t-nav-region').textContent='OUTWARD · REGION';
+  document.getElementById('t-nav-lobby').textContent='LOBBY';
+  document.getElementById('info-bar').textContent='rotate · tap a chakra';
+}
+
+/* ══════════════════════════════════════════
+   THREE.JS SETUP
+   ══════════════════════════════════════════ */
+
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x040208, 0.05);
+
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 50);
+camera.position.set(0, 0.3, 6);
+
+const ambientLight = new THREE.AmbientLight(0x1a0820, 0.5);
+scene.add(ambientLight);
+const dirLight = new THREE.DirectionalLight(0xffd700, 0.3);
+dirLight.position.set(3, 5, 4);
+scene.add(dirLight);
+
+// Stars
+const starsGeo = new THREE.BufferGeometry();
+const starPos = new Float32Array(800*3);
+for(let i=0;i<800*3;i+=3){
+  const r=8+Math.random()*12, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
+  starPos[i]=r*Math.sin(ph)*Math.cos(th); starPos[i+1]=r*Math.sin(ph)*Math.sin(th); starPos[i+2]=r*Math.cos(ph);
+}
+starsGeo.setAttribute('position',new THREE.BufferAttribute(starPos,3));
+scene.add(new THREE.Points(starsGeo,new THREE.PointsMaterial({color:0xffffff,size:.03,transparent:true,opacity:.4})));
+
+/* ══════════════════════════════════════════
+   HUMAN FIGURE (central axis)
+   ══════════════════════════════════════════ */
+
+const bodyGroup = new THREE.Group();
+scene.add(bodyGroup);
+
+// Spine / axis
+const spineGeo = new THREE.CylinderGeometry(0.015, 0.015, 4.6, 8);
+const spineMat = new THREE.MeshBasicMaterial({color:0xffd700, transparent:true, opacity:0.25});
+bodyGroup.add(new THREE.Mesh(spineGeo, spineMat));
+
+// Head
+const headGeo = new THREE.SphereGeometry(0.22, 32, 24);
+const headMat = new THREE.MeshStandardMaterial({color:0x1a1428, roughness:0.8, metalness:0.2, transparent:true, opacity:0.7});
+const head = new THREE.Mesh(headGeo, headMat);
+head.position.y = 2.4;
+bodyGroup.add(head);
+
+// Torso
+const torsoGeo = new THREE.CylinderGeometry(0.18, 0.14, 2.8, 16);
+const torsoMat = new THREE.MeshStandardMaterial({color:0x0a0816, roughness:0.9, transparent:true, opacity:0.5});
+const torso = new THREE.Mesh(torsoGeo, torsoMat);
+torso.position.y = 0.2;
+bodyGroup.add(torso);
+
+/* ══════════════════════════════════════════
+   AURA SHELLS (7 nested ellipsoids)
+   ══════════════════════════════════════════ */
+
+const shellGroup = new THREE.Group();
+scene.add(shellGroup);
+
+AURA_SHELLS.forEach((s, i) => {
+  const geo = new THREE.SphereGeometry(1, 48, 36);
+  geo.scale(s.radius, s.height/2, s.radius * 0.7);
+  const mat = new THREE.MeshStandardMaterial({
+    color: s.color,
+    transparent: true,
+    opacity: s.opacity,
+    roughness: 0.3,
+    metalness: 0.1,
+    depthWrite: false,
+    side: THREE.DoubleSide
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.y = 0.15;
+  shellGroup.add(mesh);
+});
+
+/* ══════════════════════════════════════════
+   ENERGY CHANNELS (Ida & Pingala — double helix)
+   ══════════════════════════════════════════ */
+
+function createHelix(phase, color) {
+  const pts = [];
+  for (let t = 0; t <= 1; t += 0.005) {
+    const y = -2.0 + t * 4.3;
+    const x = Math.sin(t * Math.PI * 3.5 + phase) * 0.2;
+    const z = Math.cos(t * Math.PI * 3.5 + phase) * 0.08;
+    pts.push(new THREE.Vector3(x, y, z));
+  }
+  const geo = new THREE.BufferGeometry().setFromPoints(pts);
+  return new THREE.Line(geo, new THREE.LineBasicMaterial({color, transparent:true, opacity:0.35, depthWrite:false}));
+}
+
+scene.add(createHelix(0, 0x4488ff));
+scene.add(createHelix(Math.PI, 0xff4444));
+
+/* ══════════════════════════════════════════
+   CHAKRA SPHERES (7 glowing orbs)
+   ══════════════════════════════════════════ */
+
+const chakraGroup = new THREE.Group();
+scene.add(chakraGroup);
+
+const chakraMeshes = [];
+
+CHAKRAS.forEach((ch) => {
+  const geo = new THREE.SphereGeometry(0.12, 32, 24);
+  const mat = new THREE.MeshStandardMaterial({
+    color: ch.color,
+    emissive: ch.color,
+    emissiveIntensity: 0.8,
+    roughness: 0.2,
+    metalness: 0.3,
+    transparent: true,
+    opacity: 0.9
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(0, ch.y, 0);
+  mesh.userData = ch;
+  chakraGroup.add(mesh);
+  chakraMeshes.push(mesh);
+
+  // Glow ring
+  const ringGeo = new THREE.TorusGeometry(0.18, 0.008, 8, 32);
+  const ringMat = new THREE.MeshBasicMaterial({color: ch.color, transparent:true, opacity:0.3, depthWrite:false});
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.position.set(0, ch.y, 0);
+  ring.rotation.x = Math.PI / 2;
+  chakraGroup.add(ring);
+});
+
+/* ══════════════════════════════════════════
+   CORRESPONDENCE LINES (chakra ↔ aura shell)
+   ══════════════════════════════════════════ */
+
+CHAKRAS.forEach((ch, i) => {
+  const shell = AURA_SHELLS[i];
+  const pts = [
+    new THREE.Vector3(0, ch.y, 0),
+    new THREE.Vector3(shell.radius * 1.1, ch.y, 0)
+  ];
+  const geo = new THREE.BufferGeometry().setFromPoints(pts);
+  const mat = new THREE.LineBasicMaterial({color: ch.color, transparent:true, opacity:0.2, depthWrite:false});
+  scene.add(new THREE.Line(geo, mat));
+
+  const pts2 = [
+    new THREE.Vector3(0, ch.y, 0),
+    new THREE.Vector3(-shell.radius * 1.1, ch.y, 0)
+  ];
+  scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts2), mat.clone()));
+});
+
+/* ══════════════════════════════════════════
+   DRAG ROTATION
+   ══════════════════════════════════════════ */
+
+const sceneGroup = new THREE.Group();
+sceneGroup.add(bodyGroup, shellGroup, chakraGroup);
+// Re-add helices and lines to sceneGroup
+scene.children.filter(c => c.isLine || c.isLineSegments).forEach(l => sceneGroup.add(l));
+scene.add(sceneGroup);
+
+let isDragging = false;
+let prevX = 0, prevY = 0;
+let rotVelX = 0, rotVelY = 0;
+
+canvas.addEventListener('pointerdown', e => { isDragging = true; prevX = e.clientX; prevY = e.clientY; rotVelX = 0; rotVelY = 0; });
+canvas.addEventListener('pointermove', e => {
+  if (!isDragging) return;
+  const dx = e.clientX - prevX, dy = e.clientY - prevY;
+  rotVelY = dx * 0.005;
+  rotVelX = dy * 0.003;
+  sceneGroup.rotation.y += rotVelY;
+  sceneGroup.rotation.x = Math.max(-0.8, Math.min(0.8, sceneGroup.rotation.x + rotVelX));
+  prevX = e.clientX; prevY = e.clientY;
+});
+canvas.addEventListener('pointerup', () => isDragging = false);
+canvas.addEventListener('pointerleave', () => isDragging = false);
+
+/* ══════════════════════════════════════════
+   RAYCASTER — click chakra for detail
+   ══════════════════════════════════════════ */
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+canvas.addEventListener('click', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(chakraMeshes);
+  if (hits.length > 0) {
+    const ch = hits[0].object.userData;
+    showChakraPanel(ch);
+  }
+});
+
+function showChakraPanel(ch) {
+  const panel = document.getElementById('chakra-panel');
+  const name = isEn ? ch.nameEn : ch.nameRu;
+  const body = isEn ? ch.bodyEn : ch.bodyRu;
+  document.getElementById('cp-name').textContent = name;
+  document.getElementById('cp-name').style.color = ch.hex;
+  document.getElementById('cp-body').innerHTML = '<b>' + name + '</b><br>' + body + '<br><br>' +
+    (isEn ? 'Subtle body layer ' : 'Тонкое тело — слой ') + (CHAKRAS.indexOf(ch) + 1) + '/7';
+  panel.classList.add('show');
+}
+
+document.getElementById('cp-close').addEventListener('click', () => {
+  document.getElementById('chakra-panel').classList.remove('show');
+});
+
+/* ══════════════════════════════════════════
+   ANIMATION LOOP
+   ══════════════════════════════════════════ */
+
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  // Auto-rotate when not dragging
+  if (!isDragging) {
+    sceneGroup.rotation.y += 0.002;
+    rotVelY *= 0.95;
+    rotVelX *= 0.95;
+  }
+
+  // Chakra pulse
+  chakraMeshes.forEach((mesh, i) => {
+    const scale = 1 + Math.sin(t * 1.5 + i * 0.8) * 0.12;
+    mesh.scale.setScalar(scale);
+    mesh.material.emissiveIntensity = 0.6 + Math.sin(t * 2 + i) * 0.3;
+  });
+
+  // Shell breathe
+  shellGroup.children.forEach((mesh, i) => {
+    const breathe = 1 + Math.sin(t * 0.5 + i * 0.4) * 0.02;
+    mesh.scale.setScalar(breathe);
+  });
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+// Resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AWARA Core Test</title>
+  <style>
+    body { font-family: monospace; background: #000; color: #c9a84c; padding: 20px; }
+    pre { white-space: pre-wrap; background: #0a0a14; padding: 15px; border-radius: 8px; }
+    h1 { color: #ffd700; }
+  </style>
+</head>
+<body>
+  <h1>AWARA Core Module Test</h1>
+  <pre id="output">Загрузка...</pre>
+  <script type="module">
+    import { 
+      AWARA_VERSION, STAGES, CANON, COLORS, 
+      STORAGE_KEYS, BREAKPOINTS, TIMINGS, validateCanon 
+    } from './core-module.js';
+    
+    const result = {
+      version: AWARA_VERSION,
+      stagesCount: STAGES.length,
+      stages: STAGES.map(s => s.name),
+      canon: CANON,
+      colorsCount: Object.keys(COLORS).length,
+      storageKeys: Object.keys(STORAGE_KEYS),
+      breakpoints: BREAKPOINTS,
+      timings: TIMINGS,
+      canonValid: validateCanon()
+    };
+    
+    document.getElementById('output').textContent = 
+      JSON.stringify(result, null, 2);
+  </script>
+</body>
+</html>

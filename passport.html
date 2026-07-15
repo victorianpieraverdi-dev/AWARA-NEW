@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Soul Passport · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#c9a84c;
+  --gold-bright:#ffd700;
+  --gold-light:#fff8d6;
+  --bg:#02010a;
+  --line:rgba(201,168,76,0.18);
+  --text:rgba(255,248,214,0.85);
+  --text-soft:rgba(255,248,214,0.55);
+  --text-mute:rgba(255,255,255,0.35);
+}
+html,body{background:var(--bg);color:var(--text);min-height:100vh}
+body{
+  font-family:'JetBrains Mono',monospace;
+  padding:18px 14px 110px;
+  background:
+    radial-gradient(ellipse at 20% 18%, rgba(124,58,237,0.40), transparent 38%),
+    radial-gradient(ellipse at 82% 72%, rgba(245,158,11,0.22), transparent 40%),
+    radial-gradient(ellipse at 50% 110%, rgba(80,40,160,0.30), transparent 55%),
+    linear-gradient(180deg,#070318 0%,#0d0626 45%,#05021a 100%),
+    var(--bg);
+  -webkit-font-smoothing:antialiased;
+  position:relative;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url('assets/starfield.svg');
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:0.95;
+}
+.wrap{max-width:580px;margin:0 auto;position:relative;z-index:1}
+
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;gap:8px;
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 14px;min-height:44px;
+  border:1px solid var(--line);border-radius:10px;
+  font-family:Cinzel,serif;font-size:11px;
+  letter-spacing:0.2em;color:var(--text-soft);
+  text-decoration:none;cursor:pointer;transition:all 0.3s;
+}
+.back-link:hover{border-color:var(--gold);color:var(--gold)}
+
+.passport-title{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(16px,4vw,22px);
+  color:var(--gold);letter-spacing:0.15em;
+  text-align:center;margin-bottom:6px;
+}
+.passport-sub{
+  font-size:9px;letter-spacing:0.2em;
+  color:var(--text-mute);text-align:center;margin-bottom:28px;
+}
+
+.passport-card{
+  border:1px solid rgba(201,168,76,0.20);border-radius:14px;
+  padding:clamp(16px,4vw,24px);margin-bottom:16px;
+  background:rgba(14,8,32,0.28);
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(8px) saturate(130%);
+  -webkit-backdrop-filter:blur(8px) saturate(130%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),0 6px 22px rgba(0,0,0,0.32);
+}
+.passport-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,0.06),transparent 60%);
+  pointer-events:none;
+}
+
+.pp-section-title{
+  font-family:Cinzel,serif;font-size:9px;
+  letter-spacing:0.2em;color:rgba(201,168,76,0.45);
+  margin-bottom:12px;
+}
+
+.pp-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:6px 0;border-bottom:1px solid rgba(201,168,76,0.06);
+}
+.pp-label{font-size:9px;letter-spacing:0.1em;color:var(--text-mute)}
+.pp-value{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(13px,3vw,15px);color:var(--text);
+}
+.pp-value-gold{color:var(--gold)}
+
+.spirit-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+  gap:8px;margin-top:8px;
+}
+.spirit-cell{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 6px;border-radius:8px;
+  background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.08);
+}
+.spirit-name{font-size:8px;letter-spacing:0.12em;color:var(--text-mute)}
+.spirit-val{
+  font-family:'Cinzel',serif;font-size:clamp(14px,3.5vw,18px);
+  color:var(--gold-light);
+}
+
+.streak-row{
+  display:flex;gap:8px;align-items:center;justify-content:center;
+  margin-top:8px;
+}
+.streak-dot{
+  width:12px;height:12px;border-radius:50%;
+  background:rgba(255,255,255,0.08);
+  transition:all 0.3s;
+}
+.streak-dot.active{
+  background:var(--gold);
+  box-shadow:0 0 8px rgba(201,168,76,0.5);
+}
+.streak-label{
+  font-size:7px;color:var(--text-mute);text-align:center;margin-top:2px;
+}
+
+.ray-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(13px,3vw,15px);
+}
+.ray-number{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(201,168,76,0.25),rgba(255,215,0,0.10));
+  border:1px solid rgba(201,168,76,0.35);
+  font-family:Cinzel,serif;font-size:10px;font-weight:700;
+  color:var(--gold-bright);
+}
+.guna-badge{
+  display:inline-block;padding:3px 10px;border-radius:99px;
+  font-size:10px;letter-spacing:0.1em;
+  border:1px solid;
+}
+.guna-sattva{color:#ffd700;border-color:rgba(255,215,0,0.35);background:rgba(255,215,0,0.08)}
+.guna-rajas{color:#ff6b4a;border-color:rgba(255,107,74,0.35);background:rgba(255,107,74,0.08)}
+.guna-tamas{color:#8b9dc3;border-color:rgba(139,157,195,0.35);background:rgba(139,157,195,0.08)}
+
+.keys-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));
+  gap:8px;margin-top:8px;
+}
+.key-cell{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 6px;border-radius:8px;
+  background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.08);
+}
+.key-cell.has-keys{border-color:rgba(201,168,76,0.22);background:rgba(201,168,76,0.08)}
+.key-icon{font-size:16px;line-height:1}
+.key-name{font-size:7px;letter-spacing:0.1em;color:var(--text-mute);text-transform:uppercase}
+.key-count{
+  font-family:Cinzel,serif;font-size:clamp(14px,3.5vw,18px);
+  color:var(--gold-light);
+}
+
+.cards-summary{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+}
+.cards-total{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(20px,5vw,28px);color:var(--gold-bright);
+}
+.cards-of{font-size:10px;color:var(--text-mute);margin-left:4px}
+.rarity-row{
+  display:flex;align-items:center;gap:8px;
+  padding:5px 0;border-bottom:1px solid rgba(201,168,76,0.06);
+}
+.rarity-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+.rarity-dot.common{background:rgba(160,160,160,0.6)}
+.rarity-dot.uncommon{background:rgba(80,190,160,0.7)}
+.rarity-dot.rare{background:rgba(255,215,0,0.8)}
+.rarity-dot.epic{background:rgba(170,90,255,0.8)}
+.rarity-dot.legendary{background:rgba(255,248,214,0.9);box-shadow:0 0 6px rgba(255,248,214,0.5)}
+.rarity-name{font-size:9px;letter-spacing:0.08em;color:var(--text-soft);flex:1}
+.rarity-count{font-family:Cinzel,serif;font-size:12px;color:var(--gold-light)}
+
+.journey-log{margin-top:8px}
+.journey-entry{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 0;border-bottom:1px solid rgba(201,168,76,0.06);
+}
+.journey-date{font-size:8px;color:var(--text-mute);min-width:50px}
+.journey-text{font-size:10px;color:var(--text-soft);flex:1}
+.journey-light{font-size:10px;color:var(--gold)}
+
+.daimon-card{
+  display:flex;align-items:center;gap:14px;
+  color:inherit;text-decoration:none;border-color:rgba(255,215,0,0.28);
+  transition:border-color 0.3s,box-shadow 0.3s,transform 0.3s;
+}
+.daimon-card:hover,.daimon-card:focus-visible{
+  border-color:rgba(255,215,0,0.55);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 8px 28px rgba(255,215,0,0.10);
+  transform:translateY(-1px);outline:none;
+}
+.daimon-sigil{
+  width:54px;height:54px;min-width:54px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:Cinzel,serif;font-size:16px;letter-spacing:0.08em;color:var(--gold-bright);
+  border:1px solid rgba(255,215,0,0.28);
+  background:radial-gradient(circle at 50% 35%,rgba(255,215,0,0.18),rgba(124,58,237,0.12) 48%,rgba(14,8,32,0.70));
+  box-shadow:0 0 18px rgba(255,215,0,0.10),inset 0 0 16px rgba(255,248,214,0.04);
+}
+.daimon-card.dormant .daimon-sigil{color:var(--text-mute);border-color:rgba(201,168,76,0.12);background:rgba(255,255,255,0.03)}
+.daimon-body{flex:1;min-width:0;position:relative;z-index:1}
+.daimon-body .pp-section-title{margin-bottom:6px}
+.daimon-name{
+  font-family:'Cinzel Decorative',serif;font-size:clamp(15px,4vw,19px);
+  color:var(--gold-light);line-height:1.2;margin-bottom:5px;
+}
+.daimon-form{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(13px,3.3vw,15px);
+  color:var(--text-soft);line-height:1.25;
+}
+.daimon-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.daimon-tag{
+  padding:5px 7px;border-radius:999px;
+  border:1px solid rgba(201,168,76,0.12);background:rgba(201,168,76,0.05);
+  font-size:8px;letter-spacing:0.08em;color:var(--text-soft);
+}
+.daimon-open{
+  align-self:stretch;display:flex;align-items:center;
+  font-family:Cinzel,serif;font-size:18px;color:var(--gold);opacity:0.75;
+}
+.milost-card{border-color:rgba(255,215,0,0.28)}
+.milost-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.milost-title{
+  font-family:Cinzel,serif;font-size:14px;letter-spacing:0.12em;
+  color:var(--gold);text-transform:uppercase;
+}
+.milost-date{font-size:8px;letter-spacing:0.12em;color:var(--text-mute)}
+.milost-score-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.milost-bar{
+  flex:1;height:8px;border-radius:99px;overflow:hidden;
+  background:rgba(255,255,255,0.08);border:1px solid rgba(201,168,76,0.10);
+}
+.milost-bar-fill{
+  height:100%;width:0%;border-radius:99px;
+  background:linear-gradient(90deg,rgba(201,168,76,0.55),#ffd700);
+  box-shadow:0 0 12px rgba(255,215,0,0.35);transition:width 0.5s ease;
+}
+.milost-score{font-size:9px;color:var(--text-soft);min-width:54px;text-align:right}
+.milost-sources{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px}
+.milost-source{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 2px;border-radius:10px;
+  border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.03);
+  color:rgba(255,255,255,0.35);
+}
+.milost-source.active{
+  color:var(--gold-bright);border-color:rgba(255,215,0,0.28);
+  background:rgba(201,168,76,0.08);box-shadow:inset 0 0 14px rgba(255,215,0,0.06);
+}
+.milost-icon{font-family:Cinzel,serif;font-size:clamp(13px,4vw,18px);line-height:1}
+.milost-source-label{font-size:clamp(5px,1.6vw,7px);letter-spacing:0.06em;text-align:center;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.milost-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.milost-note{font-size:8px;line-height:1.35;color:var(--text-mute)}
+.milost-multiplier{
+  font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;
+  color:var(--gold-bright);text-shadow:0 0 10px rgba(255,215,0,0.25);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="back-link" href="index.html" data-i18n="nav.lobby">← ЛОББИ</a>
+    <div style="font-family:Cinzel,serif;font-size:9px;letter-spacing:0.15em;color:var(--text-mute);">AWARA</div>
+  </div>
+
+  <div class="passport-title" data-i18n="passport.title">ПАСПОРТ ДУШИ</div>
+  <div class="passport-sub" data-i18n="pass.map.path">КАРТА ТВОЕГО ПУТИ</div>
+
+  <!-- ИДЕНТИФИКАЦИЯ -->
+  <div class="passport-card">
+    <div class="pp-section-title" data-i18n="passport.id">ИДЕНТИФИКАЦИЯ</div>
+    <div class="pp-row">
+      <span class="pp-label">PLAYER ID</span>
+      <span class="pp-value" id="pp-id" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);">—</span>
+    </div>
+    <div class="pp-row">
+      <span class="pp-label" data-i18n="pass.agent.label">АГЕНТ</span>
+      <span class="pp-value pp-value-gold" id="pp-agent">—</span>
+    </div>
+    <div class="pp-row">
+      <span class="pp-label" data-i18n="pass.matrix.label">МАТРИЦА</span>
+      <span class="pp-value" id="pp-matrix">—</span>
+    </div>
+    <div class="pp-row">
+      <span class="pp-label" data-i18n="pass.ray.label">ЛУЧ</span>
+      <span class="pp-value" id="pp-ray"><span class="ray-badge">—</span></span>
+    </div>
+    <div class="pp-row">
+      <span class="pp-label" data-i18n="pass.guna.label">ГУНА</span>
+      <span class="pp-value" id="pp-guna">—</span>
+    </div>
+  </div>
+
+  <!-- ДАЙМОН -->
+  <a class="passport-card daimon-card dormant" href="daimon.html" id="daimon-card" aria-label="Открыть экран Даймона" data-i18n-title="pass.daimon.open">
+    <div class="daimon-sigil" id="daimon-sigil">Д</div>
+    <div class="daimon-body">
+      <div class="pp-section-title" data-i18n="passport.daimon" data-i18n="passport.daimon">ДАЙМОН</div>
+      <div class="daimon-name" id="daimon-name" data-i18n="passport.daimon.dormant">Даймон не пробуждён</div>
+      <div class="daimon-form" id="daimon-form" data-i18n="pass.daimon.hint">Открой экран Хранителя, чтобы увидеть форму и путь.</div>
+      <div class="daimon-tags" id="daimon-tags">
+        <span class="daimon-tag" data-i18n="passport.daimon.screen">ЭКРАН ДАЙМОНА</span>
+      </div>
+    </div>
+    <div class="daimon-open" aria-hidden="true">→</div>
+  </a>
+
+  <!-- ЭНЕРГИЯ -->
+  <div class="passport-card">
+    <div class="pp-section-title" data-i18n="passport.energy">ЭНЕРГИЯ</div>
+    <div class="pp-row">
+      <span class="pp-label" data-i18n="pass.luminosity">СВЕТИМОСТЬ</span>
+      <span class="pp-value pp-value-gold" id="pp-light">0 ✦</span>
+    </div>
+    <div class="pp-row">
+      <span class="pp-label" data-i18n="pass.dominant.el">ДОМИНАНТНАЯ СТИХИЯ</span>
+      <span class="pp-value" id="pp-element">—</span>
+    </div>
+    <div class="pp-row">
+      <span class="pp-label" data-i18n="pass.streak">СЕРИЯ ДНЕЙ</span>
+      <span class="pp-value pp-value-gold" id="pp-streak">0</span>
+    </div>
+  </div>
+
+  <!-- ДУХ -->
+  <div class="passport-card">
+    <div class="pp-section-title" data-i18n="passport.spirit" data-i18n="passport.spirit">ДУХ</div>
+    <div class="spirit-grid" id="pp-spirit"></div>
+  </div>
+
+  <!-- STREAK ВИЗУАЛИЗАЦИЯ -->
+  <div class="passport-card">
+    <div class="pp-section-title" data-i18n="passport.streak">СЕРИЯ ПОСЕЩЕНИЙ</div>
+    <div class="streak-row" id="pp-streak-dots"></div>
+  </div>
+
+  <!-- КЛЮЧИ -->
+  <div class="passport-card">
+    <div class="pp-section-title" data-i18n="passport.keys" data-i18n="passport.keys">КЛЮЧИ</div>
+    <div class="pp-row">
+      <span class="pp-label" data-i18n="pass.total.collected">ВСЕГО СОБРАНО</span>
+      <span class="pp-value pp-value-gold" id="pp-keys-total">0</span>
+    </div>
+    <div class="keys-grid" id="pp-keys-grid"></div>
+  </div>
+
+  <!-- КОЛЛЕКЦИЯ КАРТ -->
+  <div class="passport-card">
+    <div class="pp-section-title" data-i18n="passport.cards">КОЛЛЕКЦИЯ КАРТ</div>
+    <div class="cards-summary">
+      <div><span class="cards-total" id="pp-cards-total">0</span><span class="cards-of"> / 693</span></div>
+      <div style="font-size:8px;color:var(--text-mute);letter-spacing:0.1em;" data-i18n="pass.collected">СОБРАНО</div>
+    </div>
+    <div id="pp-rarity-breakdown"></div>
+  </div>
+
+  <!-- ПУТЬ (последние события) -->
+  <div class="passport-card">
+    <div class="pp-section-title" data-i18n="passport.path" data-i18n="passport.path">ПУТЬ ДУШИ</div>
+    <div class="journey-log" id="pp-journey"></div>
+  </div>
+
+  <div class="passport-card milost-card">
+    <div class="milost-head">
+      <div class="milost-title" data-i18n="passport.milost" data-i18n="passport.milost">Милость Дня</div>
+      <div class="milost-date" id="milost-date">—</div>
+    </div>
+    <div class="milost-score-row">
+      <div class="milost-bar"><div class="milost-bar-fill" id="milost-bar-fill"></div></div>
+      <div class="milost-score" id="milost-score">0.0 / 1.5</div>
+    </div>
+    <div class="milost-sources" id="milost-sources"></div>
+    <div class="milost-bottom">
+      <div class="milost-note" id="milost-note" data-i18n="pass.milost.note">расчёт на сегодня</div>
+      <div class="milost-multiplier" id="milost-multiplier">×1.0</div>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+import { t, getLang, initLang, applyTranslations } from './js/i18n.js';
+import { getState } from './js/playerState.js';
+import { getStreak } from './js/streak.js';
+import { getDaimon } from './js/daimon-module.js';
+import { getCurrentSource, getSourceMultiplier, checkVeilBreach, getMacrocosmMessage } from './js/milost-module.js';
+initLang();
+const RAY_NAMES = {
+  1: t('pass.ray.1'),
+  2: t('pass.ray.2'),
+  3: t('pass.ray.3'),
+  4: t('pass.ray.4'),
+  5: t('pass.ray.5'),
+  6: t('pass.ray.6'),
+  7: t('pass.ray.7')
+};
+
+const GUNA_MAP = {
+  'саттва': { label: t('pass.guna.sattva'), css: 'guna-sattva' },
+  'раджас': { label: t('pass.guna.rajas'), css: 'guna-rajas' },
+  'тамас':  { label: t('pass.guna.tamas'),  css: 'guna-tamas' }
+};
+
+const KEY_TYPE_META = [
+  { type: 'small',     icon: '🔑', name: t('pass.key.small') },
+  { type: 'conscious', icon: '🗝', name: t('pass.key.conscious') },
+  { type: 'deep',      icon: '⚷', name: t('pass.key.deep') },
+  { type: 'mystic',    icon: '✦', name: t('pass.key.mystic') },
+  { type: 'divine',    icon: '☀', name: t('pass.key.divine') }
+];
+
+const RARITY_META = [
+  { id: 'legendary',  name: t('pass.rarity.legendary'), dot: 'legendary' },
+  { id: 'epic',       name: t('pass.rarity.epic'),  dot: 'epic' },
+  { id: 'rare',       name: t('pass.rarity.rare'),    dot: 'rare' },
+  { id: 'uncommon',   name: t('pass.rarity.uncommon'),   dot: 'uncommon' },
+  { id: 'common',     name: t('pass.rarity.common'),       dot: 'common' }
+];
+
+const MILOST_SOURCE_META = [
+  { ray: 1, icon: 'I',   label: 'Сатья' },
+  { ray: 2, icon: 'II',  label: 'Трета' },
+  { ray: 3, icon: 'III', label: 'Двапара' },
+  { ray: 4, icon: 'IV',  label: 'Кали' },
+  { ray: 5, icon: 'V',   label: 'Манвант.' },
+  { ray: 6, icon: 'VI',  label: 'Кальпа' },
+  { ray: 7, icon: 'VII', label: 'Маха' }
+];
+
+const ELEMENT_RU = {
+  fire: t('pass.el.fire'),
+  water: t('pass.el.water'),
+  earth: t('pass.el.earth'),
+  air: t('pass.el.air'),
+  ether: t('pass.el.ether')
+};
+
+function todayKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function formatMilost(value) {
+  return Number(value || 0).toFixed(1);
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+}
+
+function formatElement(value) {
+  return ELEMENT_RU[value] || value || '—';
+}
+
+function buildDaimonSigil(daimon) {
+  const source = daimon?.formName || daimon?.name || 'Д';
+  const letters = String(source)
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(part => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+  return letters || 'Д';
+}
+
+function renderDaimonCard() {
+  const card = document.getElementById('daimon-card');
+  const sigilEl = document.getElementById('daimon-sigil');
+  const nameEl = document.getElementById('daimon-name');
+  const formEl = document.getElementById('daimon-form');
+  const tagsEl = document.getElementById('daimon-tags');
+
+  try {
+    const daimon = getDaimon();
+    if (!daimon) return;
+
+    const element = formatElement(daimon.element);
+    const stage = daimon.stage?.name || daimon.stage || t('pass.daimon.stage.default');
+    const chakra = daimon.chakraName ? daimon.chakra + ' · ' + daimon.chakraName : daimon.chakra || '—';
+    const bonus = Math.round(Number(daimon.resonanceBonus || 0) * 100);
+
+    card.classList.remove('dormant');
+    sigilEl.textContent = buildDaimonSigil(daimon);
+    nameEl.textContent = daimon.name || daimon.formName || t('pass.daimon.default');
+    formEl.textContent = (daimon.formName || t('pass.form.unnamed')) + ' · ' + (daimon.archetype || t('pass.archetype.unset'));
+    tagsEl.innerHTML = '' +
+      '<span class="daimon-tag">' + escapeHtml(element) + '</span>' +
+      '<span class="daimon-tag">' + escapeHtml(chakra) + '</span>' +
+      '<span class="daimon-tag">' + escapeHtml(stage) + '</span>' +
+      (bonus > 0 ? '<span class="daimon-tag">' + t('pass.resonance') + ' +' + bonus + '%</span>' : '');
+  } catch (e) {
+    console.warn('daimon passport:', e);
+  }
+}
+
+function renderMilostPanel({ playerRay, source, multiplier, veilBreached, macrocosmMsg, resonance }) {
+  document.getElementById('milost-date').textContent = todayKey();
+
+  const threshold = source ? source.veil_threshold : 1000;
+  const progress = Math.max(0, Math.min(100, (resonance / threshold) * 100));
+  document.getElementById('milost-bar-fill').style.width = progress + '%';
+  document.getElementById('milost-score').textContent = resonance + ' / ' + threshold;
+
+  document.getElementById('milost-multiplier').textContent = '×' + formatMilost(multiplier || 1);
+
+  document.getElementById('milost-sources').innerHTML = MILOST_SOURCE_META.map(m => {
+    const isActive = m.ray === playerRay;
+    const title = source && m.ray === playerRay ? escapeHtml(source.name_ru) : escapeHtml(m.label);
+    return '<div class="milost-source' + (isActive ? ' active' : '') + '" title="' + title + '">' +
+      '<div class="milost-icon">' + m.icon + '</div>' +
+      '<div class="milost-source-label">' + escapeHtml(m.label) + '</div>' +
+    '</div>';
+  }).join('');
+
+  const noteEl = document.getElementById('milost-note');
+  if (veilBreached && macrocosmMsg) {
+    noteEl.textContent = macrocosmMsg;
+    noteEl.style.color = 'var(--gold-bright, #ffd700)';
+  } else if (source) {
+    noteEl.textContent = source.name_ru;
+  }
+}
+
+async function initMilostPanel() {
+  try {
+    const state = getState();
+    const playerRay = state.ray || state.soulPassport?.ray || 4;
+    const source = await getCurrentSource(playerRay);
+    const multiplier = await getSourceMultiplier(playerRay);
+    const resonance = state.totalLight || 0;
+    const veilBreached = await checkVeilBreach(playerRay, resonance);
+    const macrocosmMsg = veilBreached ? await getMacrocosmMessage(playerRay) : null;
+
+    renderMilostPanel({ playerRay, source, multiplier, veilBreached, macrocosmMsg, resonance });
+  } catch (e) {
+    console.warn('milost v2:', e);
+  }
+}
+
+async function init() {
+  const state = getState();
+  renderDaimonCard();
+
+  // Player ID
+  const pid = localStorage.getItem('awara_player_id') || '—';
+  document.getElementById('pp-id').textContent = pid.length > 12 ? pid.slice(0, 8) + '…' : pid;
+
+  // Agent + Ray + Guna
+  const agentSlug = localStorage.getItem('awara_active_agent') || 'svet_ra';
+  let agents = [];
+  try {
+    agents = await fetch('data/agents.json').then(r => r.json());
+    const agent = agents.find(a => a.slug === agentSlug || a.id === agentSlug);
+    document.getElementById('pp-agent').textContent = agent ? agent.name : agentSlug;
+
+    if (agent && agent.ray) {
+      const rayName = RAY_NAMES[agent.ray] || t('pass.ray.prefix') + ' ' + agent.ray;
+      document.getElementById('pp-ray').innerHTML =
+        '<span class="ray-badge"><span class="ray-number">' + agent.ray + '</span> ' + escapeHtml(rayName) + '</span>';
+    }
+    if (agent && agent.guna) {
+      const guna = GUNA_MAP[agent.guna] || { label: agent.guna, css: '' };
+      document.getElementById('pp-guna').innerHTML =
+        '<span class="guna-badge ' + guna.css + '">' + escapeHtml(guna.label) + '</span>';
+    }
+  } catch { document.getElementById('pp-agent').textContent = agentSlug; }
+
+  // Matrix
+  document.getElementById('pp-matrix').textContent = state.activeSystem || t('pass.matrix.default');
+
+  // Light
+  const light = state.totalLight || 0;
+  document.getElementById('pp-light').textContent = light.toFixed(2) + ' ✦';
+
+  // Dominant element
+  const elems = state.elements || {};
+  const sorted = Object.entries(elems).sort((a, b) => b[1] - a[1]);
+  if (sorted.length > 0 && sorted[0][1] > 0) {
+    document.getElementById('pp-element').textContent = sorted[0][0] + ' (' + sorted[0][1] + ')';
+  } else {
+    document.getElementById('pp-element').textContent = t('pass.element.undefined');
+  }
+
+  // Spirit
+  const spirit = state.spirit || {};
+  const spiritEl = document.getElementById('pp-spirit');
+  spiritEl.innerHTML = Object.entries(spirit).map(([k, v]) =>
+    '<div class="spirit-cell">' +
+      '<div class="spirit-name">' + k.toUpperCase() + '</div>' +
+      '<div class="spirit-val">' + v + '</div>' +
+    '</div>'
+  ).join('');
+
+  // Streak
+  const streak = getStreak();
+  document.getElementById('pp-streak').textContent = streak.current + '/7';
+
+  const DAYS_RU = [t('earth.day.mo'),t('earth.day.tu'),t('earth.day.we'),t('earth.day.th'),t('earth.day.fr'),t('earth.day.sa'),t('earth.day.su')];
+  const dotsEl = document.getElementById('pp-streak-dots');
+  dotsEl.innerHTML = streak.last7.map(d => {
+    const dt = new Date(d.date);
+    const label = DAYS_RU[dt.getDay() === 0 ? 6 : dt.getDay() - 1];
+    return '<div style="display:flex;flex-direction:column;align-items:center;gap:3px;">' +
+      '<div class="streak-dot' + (d.visited ? ' active' : '') + '"></div>' +
+      '<div class="streak-label">' + label + '</div></div>';
+  }).join('');
+
+  // Keys
+  renderKeys();
+
+  // Cards collection
+  await renderCardsCollection();
+
+  // Journey
+  renderJourney(state);
+
+  await initMilostPanel();
+}
+
+function renderKeys() {
+  let inventory = [];
+  try { inventory = JSON.parse(localStorage.getItem('awara_key_inventory') || '[]'); } catch (e) { console.warn('keys:', e); }
+
+  document.getElementById('pp-keys-total').textContent = inventory.length;
+
+  const counts = {};
+  KEY_TYPE_META.forEach(k => { counts[k.type] = 0; });
+  inventory.forEach(key => {
+    const t = (key.type || key.keyType || 'small').toLowerCase();
+    if (counts[t] !== undefined) counts[t]++;
+    else counts['small']++;
+  });
+
+  const grid = document.getElementById('pp-keys-grid');
+  grid.innerHTML = KEY_TYPE_META.map(k => {
+    const c = counts[k.type] || 0;
+    return '<div class="key-cell' + (c > 0 ? ' has-keys' : '') + '">' +
+      '<div class="key-icon">' + k.icon + '</div>' +
+      '<div class="key-count">' + c + '</div>' +
+      '<div class="key-name">' + k.name + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+async function renderCardsCollection() {
+  let collected = {};
+  try { collected = JSON.parse(localStorage.getItem('awara_cards') || '{}'); } catch (e) {}
+
+  const totalCollected = Object.keys(collected).length;
+  document.getElementById('pp-cards-total').textContent = totalCollected;
+
+  let prompts = [];
+  try { prompts = await fetch('data/card_prompts.json').then(r => r.json()); } catch (e) {}
+
+  const promptMap = {};
+  prompts.forEach(p => { promptMap[p.card_id] = p; });
+
+  const rarityCounts = {};
+  RARITY_META.forEach(r => { rarityCounts[r.id] = 0; });
+  Object.keys(collected).forEach(cid => {
+    const prompt = promptMap[cid];
+    const rarity = prompt ? prompt.rarity : 'common';
+    if (rarityCounts[rarity] !== undefined) rarityCounts[rarity]++;
+    else rarityCounts['common']++;
+  });
+
+  const breakdown = document.getElementById('pp-rarity-breakdown');
+  breakdown.innerHTML = RARITY_META.map(r => {
+    const c = rarityCounts[r.id] || 0;
+    return '<div class="rarity-row">' +
+      '<div class="rarity-dot ' + r.dot + '"></div>' +
+      '<div class="rarity-name">' + r.name + '</div>' +
+      '<div class="rarity-count">' + c + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderJourney(state) {
+  const journey = (state.journey || []).slice(0, 10);
+  const el = document.getElementById('pp-journey');
+
+  if (journey.length === 0) {
+    el.innerHTML = '<div style="font-size:10px;color:var(--text-mute);text-align:center;padding:12px 0;">' + t('pass.journey.empty') + '</div>';
+    return;
+  }
+
+  el.innerHTML = journey.map(j => {
+    const date = j.date || j.ts ? new Date(j.date || j.ts).toLocaleDateString(getLang()==='en'?'en-US':'ru-RU', { day: '2-digit', month: '2-digit' }) : '—';
+    const text = j.agent || j.id || t('pass.journey.entry');
+    const light = j.lightDelta != null ? (j.lightDelta >= 0 ? '+' : '') + Number(j.lightDelta).toFixed(1) + ' ✦' : '';
+    return '<div class="journey-entry">' +
+      '<div class="journey-date">' + date + '</div>' +
+      '<div class="journey-text">' + escapeHtml(text) + '</div>' +
+      (light ? '<div class="journey-light">' + light + '</div>' : '') +
+    '</div>';
+  }).join('');
+}
+
+init();
+applyTranslations();
+</script>
+
+<!-- Подсказки (M-006) -->
+<button class="hint-btn" title="Подсказки" data-i18n-title="app.help">?</button>
+<script type="module">
+import { initHints } from './js/hints-module.js';
+initHints('passport');
+</script>
+
+<!-- M-033: RU/EN переключатель -->
+<div style="position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px">
+  <button id="lang-ru" onclick="localStorage.setItem('awara_lang','ru');if(window.switchLang)window.switchLang('ru');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">RU</button>
+  <button id="lang-en" onclick="localStorage.setItem('awara_lang','en');if(window.switchLang)window.switchLang('en');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">EN</button>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang, createLangSwitcher } from './js/i18n.js';
+window.switchLang = function(lang) {
+  setLang(lang);
+  translatePage();
+  createLangSwitcher();
+  document.querySelectorAll('#lang-ru,#lang-en').forEach(function(b){
+    b.style.borderColor = b.textContent === lang.toUpperCase() ? '#ffd700' : 'rgba(201,168,76,.2)';
+    b.style.color = b.textContent === lang.toUpperCase() ? '#ffd700' : '#c9a84c';
+  });
+};
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  createLangSwitcher();
+  var cur = getLang();
+  if (window.switchLang) window.switchLang(cur);
+});
+</script>
+</body>
+</html>

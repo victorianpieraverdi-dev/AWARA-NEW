@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · Архетип</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100%;background:#02010a;color:#c9a84c;font-family:'Cormorant Garamond',serif}
+body{overflow-x:hidden;background:radial-gradient(ellipse at 50% 30%,rgba(138,43,226,.12),transparent 50%),radial-gradient(ellipse at 50% 70%,rgba(201,168,76,.08),transparent 40%),#02010a}
+
+.hud-top{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px;background:linear-gradient(180deg,rgba(2,1,10,.92),transparent)}
+.hud-top a{color:#c9a84c;text-decoration:none;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.1em}
+.hud-top h1{font-family:'Cinzel Decorative',serif;font-size:clamp(12px,3vw,16px);color:#ffd700;letter-spacing:.15em;text-shadow:0 0 24px rgba(255,215,0,.3)}
+.lang-switch{display:flex;gap:4px}
+.lang-switch button{padding:3px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:8px;cursor:pointer;border-radius:4px}
+
+.page{position:relative;z-index:1;min-height:100vh;padding:68px 16px 100px;display:flex;flex-direction:column;align-items:center}
+
+.kicker{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;color:rgba(201,168,76,.4);text-transform:uppercase;margin-bottom:8px;text-align:center}
+
+.archetype-card{width:min(400px,100%);padding:32px 24px;border:1px solid rgba(138,43,226,.3);border-radius:18px;background:linear-gradient(145deg,rgba(2,1,10,.8),rgba(28,12,48,.5));box-shadow:0 20px 80px rgba(0,0,0,.5),inset 0 0 60px rgba(138,43,226,.04);backdrop-filter:blur(10px);text-align:center;margin-bottom:24px}
+
+.arch-glyph{font-size:64px;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(201,168,76,.6));animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.arch-name{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,6vw,28px);color:#ffd700;letter-spacing:.12em;text-shadow:0 0 30px rgba(255,215,0,.3);margin-bottom:6px}
+.arch-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,.4);letter-spacing:.18em;margin-bottom:16px}
+.arch-desc{font-size:clamp(14px,3.5vw,17px);color:rgba(201,168,76,.65);line-height:1.65;margin-bottom:20px}
+
+.arch-traits{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.trait{padding:10px;border:1px solid rgba(201,168,76,.12);border-radius:8px;background:rgba(0,0,0,.3);text-align:center}
+.trait-icon{font-size:18px;margin-bottom:4px}
+.trait-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,.4);letter-spacing:.12em;margin-bottom:2px}
+.trait-value{font-family:'Cinzel',serif;font-size:12px;color:#c9a84c}
+
+.arch-matrix{padding:12px 16px;border:1px solid rgba(201,168,76,.15);border-radius:10px;background:rgba(201,168,76,.04);display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.arch-matrix-icon{font-size:22px}
+.arch-matrix-text{text-align:left}
+.arch-matrix-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,.35);letter-spacing:.12em}
+.arch-matrix-name{font-family:'Cinzel',serif;font-size:13px;color:#ffd700;letter-spacing:.06em}
+
+.locked-overlay{padding:20px;border:1px dashed rgba(201,168,76,.2);border-radius:14px;background:rgba(0,0,0,.3);text-align:center;max-width:340px;margin-bottom:20px}
+.locked-overlay .lock-icon{font-size:32px;margin-bottom:8px;opacity:.5}
+.locked-overlay .lock-text{font-size:13px;color:rgba(201,168,76,.45);line-height:1.6}
+
+.discover-btn{display:inline-block;padding:12px 24px;border:1px solid rgba(201,168,76,.3);border-radius:10px;background:rgba(201,168,76,.08);color:#c9a84c;font-family:'Cinzel',serif;font-size:12px;letter-spacing:.1em;text-decoration:none;cursor:pointer;transition:all .3s}
+.discover-btn:hover{border-color:#ffd700;color:#ffd700;background:rgba(201,168,76,.15)}
+
+.layer-nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:20;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:min(94vw,480px)}
+.layer-link{padding:8px 14px;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.25);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.08em;text-decoration:none;white-space:nowrap;backdrop-filter:blur(8px)}
+.layer-link:hover{border-color:#ffd700;color:#ffd700}
+
+@media(max-width:375px){
+  .archetype-card{padding:22px 16px}
+  .arch-glyph{font-size:48px}
+  .arch-traits{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="hud-top">
+  <a href="index.html" id="t-back">← ЛОББИ</a>
+  <h1 id="t-title">АРХЕТИП</h1>
+  <div class="lang-switch">
+    <button onclick="localStorage.setItem('awara_lang','ru');location.reload()">RU</button>
+    <button onclick="localStorage.setItem('awara_lang','en');location.reload()">EN</button>
+  </div>
+</div>
+
+<main class="page">
+  <div class="kicker" id="t-kicker">ХРОНИКА · КТО ТЫ</div>
+
+  <div class="archetype-card">
+    <div class="arch-glyph">◇</div>
+    <div class="arch-name" id="t-name">ИСКАТЕЛЬ</div>
+    <div class="arch-sub" id="t-sub">АРХЕТИП · ПЕРВЫЙ УРОВЕНЬ</div>
+    <div class="arch-desc" id="t-desc">Тот, кто пришёл с вопросом. Ещё без ответов, но уже с намерением. Каждая матрица, каждый квест, каждый день в Тигеле раскрывает грани твоего истинного архетипа.</div>
+
+    <div class="arch-traits">
+      <div class="trait">
+        <div class="trait-icon">🔥</div>
+        <div class="trait-label" id="t-tr1l">СТИХИЯ</div>
+        <div class="trait-value" id="t-tr1v">—</div>
+      </div>
+      <div class="trait">
+        <div class="trait-icon">☯</div>
+        <div class="trait-label" id="t-tr2l">ГУНА</div>
+        <div class="trait-value" id="t-tr2v">—</div>
+      </div>
+      <div class="trait">
+        <div class="trait-icon">⚡</div>
+        <div class="trait-label" id="t-tr3l">ДОША</div>
+        <div class="trait-value" id="t-tr3v">—</div>
+      </div>
+      <div class="trait">
+        <div class="trait-icon">✦</div>
+        <div class="trait-label" id="t-tr4l">УРОВЕНЬ</div>
+        <div class="trait-value" id="t-tr4v">1</div>
+      </div>
+    </div>
+
+    <div class="arch-matrix">
+      <div class="arch-matrix-icon" id="t-mx-icon">☯</div>
+      <div class="arch-matrix-text">
+        <div class="arch-matrix-label" id="t-mx-label">АКТИВНАЯ МАТРИЦА</div>
+        <div class="arch-matrix-name" id="t-mx-name">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="locked-overlay">
+    <div class="lock-icon">🔮</div>
+    <div class="lock-text" id="t-locked">Архетип раскрывается по мере прохождения матриц, квестов и практик. Пройди инициацию, чтобы открыть первую грань.</div>
+  </div>
+
+  <a href="matrix.html" class="discover-btn" id="t-discover">ВЫБРАТЬ МАТРИЦУ →</a>
+</main>
+
+<nav class="layer-nav">
+  <a class="layer-link" href="passport.html" id="t-nav1">ПАСПОРТ</a>
+  <a class="layer-link" href="tree.html" id="t-nav2">ДРЕВО</a>
+  <a class="layer-link" href="index.html" id="t-nav3">ЛОББИ</a>
+</nav>
+
+<script>
+const _lang=localStorage.getItem('awara_lang')||'ru';
+
+// Read active matrix from localStorage
+const mx=localStorage.getItem('awara_matrix');
+if(mx){
+  const META={
+    'vedic':{icon:'🕉',ru:'ВЕДИЧЕСКАЯ',en:'VEDIC'},
+    'daoist':{icon:'☯',ru:'ДАОССКАЯ',en:'DAOIST'},
+    'alchemy':{icon:'⚗',ru:'АЛХИМИЯ',en:'ALCHEMY'},
+    'norse':{icon:'ᚱ',ru:'СКАНДИНАВСКАЯ',en:'NORSE'},
+    'egyptian':{icon:'𓂀',ru:'ЕГИПЕТСКАЯ',en:'EGYPTIAN'},
+    'buddhist':{icon:'☸',ru:'БУДДИЙСКАЯ',en:'BUDDHIST'},
+    'sufi':{icon:'☽',ru:'СУФИЙСКАЯ',en:'SUFI'},
+    'kabbalistic':{icon:'✡',ru:'КАББАЛИСТИЧЕСКАЯ',en:'KABBALISTIC'},
+    'christian':{icon:'✝',ru:'ХРИСТИАНСКАЯ',en:'CHRISTIAN'},
+    'shamanic':{icon:'🪶',ru:'ШАМАНСКАЯ',en:'SHAMANIC'},
+    'greek':{icon:'⚡',ru:'ГРЕЧЕСКАЯ',en:'GREEK'},
+    'mayan':{icon:'𝌆',ru:'МАЙЯНСКАЯ',en:'MAYAN'},
+    'zen':{icon:'◯',ru:'ДЗЕН',en:'ZEN'},
+    'tantric':{icon:'◈',ru:'ТАНТРИЧЕСКАЯ',en:'TANTRIC'},
+    'slavic':{icon:'☀',ru:'СЛАВЯНСКАЯ',en:'SLAVIC'},
+    'aboriginal':{icon:'🌀',ru:'АБОРИГЕНСКАЯ',en:'ABORIGINAL'},
+    'integral':{icon:'∞',ru:'ИНТЕГРАЛЬНАЯ',en:'INTEGRAL'}
+  };
+  const m=META[mx];
+  if(m){
+    document.getElementById('t-mx-icon').textContent=m.icon;
+    document.getElementById('t-mx-name').textContent=_lang==='en'?m.en:m.ru;
+  }
+}
+
+if(_lang==='en'){
+  document.getElementById('t-back').textContent='← LOBBY';
+  document.getElementById('t-title').textContent='ARCHETYPE';
+  document.getElementById('t-kicker').textContent='CHRONICLE · WHO YOU ARE';
+  document.getElementById('t-name').textContent='SEEKER';
+  document.getElementById('t-sub').textContent='ARCHETYPE · FIRST LEVEL';
+  document.getElementById('t-desc').textContent='One who came with a question. No answers yet, but with intention. Each matrix, each quest, each day in the Crucible reveals facets of your true archetype.';
+  document.getElementById('t-tr1l').textContent='ELEMENT';
+  document.getElementById('t-tr2l').textContent='GUNA';
+  document.getElementById('t-tr3l').textContent='DOSHA';
+  document.getElementById('t-tr4l').textContent='LEVEL';
+  document.getElementById('t-mx-label').textContent='ACTIVE MATRIX';
+  document.getElementById('t-locked').textContent='The archetype reveals itself through matrices, quests, and practices. Complete initiation to unlock the first facet.';
+  document.getElementById('t-discover').textContent='CHOOSE MATRIX →';
+  document.getElementById('t-nav1').textContent='PASSPORT';
+  document.getElementById('t-nav2').textContent='TREE';
+  document.getElementById('t-nav3').textContent='LOBBY';
+}
+</script>
+</body>
+</html>

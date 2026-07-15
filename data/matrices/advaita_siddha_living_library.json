@@ -1,0 +1,90 @@
+{
+  "system_slug": "advaita",
+  "tradition_matrix": 33,
+  "system_name": "\u0410\u0434\u0432\u0430\u0439\u0442\u0430 \u0438 18 \u0441\u0438\u0434\u0434\u0445\u043e\u0432: 4 \u043c\u0430\u0445\u0430\u0432\u0430\u043a\u044c\u0438, 4 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u044f, 5 \u043a\u043e\u0448",
+  "note": "Advaita-Siddha living library. Primary lattice: the eighteen Tamil Siddhars (enumerations vary by source; this follows the widely cited Kriya Yoga lineage). Secondary lattices: four Mahavakyas (great Upanishadic sayings), four states of consciousness (avastha-traya plus Turiya), five koshas (sheaths), three bodies (sharira-traya), and the four-fold qualification (sadhana chatushtaya). Each element carries a spine agent and its mera (1-9).",
+  "element_count": 18,
+  "mahavakya_count": 4,
+  "state_count": 4,
+  "kosha_count": 5,
+  "body_count": 3,
+  "sadhana_count": 4,
+  "layers": ["key", "siddhar", "other_name", "specialty", "agent", "mera"],
+  "reconstructed": false,
+  "mera_axis": "9-dimensional axis (mera 1-9): chakras 1-7 (Muladhara..Sahasrara) + Monada (8) + Absolut (9); each spine agent carries its mera.",
+  "mera_map": { "svet_ra": 9, "iskra": 8, "brahma": 7, "vishnu": 7, "ananda": 7, "shanti": 7, "jnana": 6, "shiva": 6, "tejas": 6, "sarasvati": 5, "akasha": 5, "prema": 4, "parvati": 4, "vayu": 4, "shakti": 3, "agni": 3, "varuna": 2, "lakshmi": 2, "prithvi": 1, "dharma": 1, "karma": 1 },
+  "mahavakyas": [
+    {"n": 1, "mahavakya": "Prajnanam Brahma", "sanskrit": "prajnanam brahma", "meaning": "Consciousness is Brahman", "veda": "Aitareya (Rigveda)", "agent": "jnana", "mera": 6},
+    {"n": 2, "mahavakya": "Aham Brahmasmi", "sanskrit": "aham brahmasmi", "meaning": "I am Brahman", "veda": "Brihadaranyaka (Yajurveda)", "agent": "svet_ra", "mera": 9},
+    {"n": 3, "mahavakya": "Tat Tvam Asi", "sanskrit": "tat tvam asi", "meaning": "Thou art That", "veda": "Chandogya (Samaveda)", "agent": "brahma", "mera": 7},
+    {"n": 4, "mahavakya": "Ayam Atma Brahma", "sanskrit": "ayam atma brahma", "meaning": "This Self is Brahman", "veda": "Mandukya (Atharvaveda)", "agent": "akasha", "mera": 5}
+  ],
+  "states": [
+    {"n": 1, "state": "Jagrat", "sanskrit": "jagrat", "aum_part": "A", "description": "waking, gross experience (Vaishvanara)", "agent": "prithvi", "mera": 1},
+    {"n": 2, "state": "Svapna", "sanskrit": "svapna", "aum_part": "U", "description": "dreaming, subtle luminous experience (Taijasa)", "agent": "tejas", "mera": 6},
+    {"n": 3, "state": "Sushupti", "sanskrit": "sushupti", "aum_part": "M", "description": "deep dreamless sleep, causal bliss (Prajna)", "agent": "ananda", "mera": 7},
+    {"n": 4, "state": "Turiya", "sanskrit": "turiya", "aum_part": "silence", "description": "the fourth, pure consciousness beyond the three states", "agent": "svet_ra", "mera": 9}
+  ],
+  "koshas": [
+    {"n": 1, "kosha": "Annamaya", "sanskrit": "annamaya", "meaning": "food sheath, physical body", "agent": "prithvi", "mera": 1},
+    {"n": 2, "kosha": "Pranamaya", "sanskrit": "pranamaya", "meaning": "vital breath sheath", "agent": "vayu", "mera": 4},
+    {"n": 3, "kosha": "Manomaya", "sanskrit": "manomaya", "meaning": "mind and emotion sheath", "agent": "parvati", "mera": 4},
+    {"n": 4, "kosha": "Vijnanamaya", "sanskrit": "vijnanamaya", "meaning": "intellect and wisdom sheath", "agent": "jnana", "mera": 6},
+    {"n": 5, "kosha": "Anandamaya", "sanskrit": "anandamaya", "meaning": "bliss sheath", "agent": "ananda", "mera": 7}
+  ],
+  "bodies": [
+    {"n": 1, "body": "Sthula sharira", "sanskrit": "sthula sharira", "koshas": "Annamaya", "state": "Jagrat", "agent": "prithvi", "mera": 1},
+    {"n": 2, "body": "Sukshma sharira", "sanskrit": "sukshma sharira", "koshas": "Pranamaya, Manomaya, Vijnanamaya", "state": "Svapna", "agent": "sarasvati", "mera": 5},
+    {"n": 3, "body": "Karana sharira", "sanskrit": "karana sharira", "koshas": "Anandamaya", "state": "Sushupti", "agent": "karma", "mera": 1}
+  ],
+  "sadhana_chatushtaya": [
+    {"n": 1, "qualification": "Viveka", "sanskrit": "viveka", "meaning": "discrimination between the real and unreal", "agent": "jnana", "mera": 6},
+    {"n": 2, "qualification": "Vairagya", "sanskrit": "vairagya", "meaning": "dispassion and renunciation", "agent": "shiva", "mera": 6},
+    {"n": 3, "qualification": "Shatsampatti", "sanskrit": "shatsampatti", "meaning": "the six virtues of mental discipline (sama, dama, uparati, titiksha, shraddha, samadhana)", "agent": "shanti", "mera": 7},
+    {"n": 4, "qualification": "Mumukshutva", "sanskrit": "mumukshutva", "meaning": "intense longing for liberation", "agent": "shakti", "mera": 3}
+  ],
+  "spine": {
+    "svet_ra": {"mera": 9, "note": "Agasthiyar (foremost Siddhar), Aham Brahmasmi (I am Brahman), and Turiya (the fourth, pure consciousness) - the radiant source."},
+    "iskra": {"mera": 8, "note": "Pambatti the snake charmer - the kundalini serpent ascending to the crown."},
+    "brahma": {"mera": 7, "note": "Karuvoorar (sacred temple architecture) and Tat Tvam Asi (Thou art That) - creative identity with the Absolute."},
+    "vishnu": {"mera": 7, "note": "Dhanvantari - the divine physician of Ayurveda and the nectar of immortality."},
+    "ananda": {"mera": 7, "note": "Anandamaya kosha (bliss sheath) and Sushupti (deep sleep) - the causal body of bliss."},
+    "shanti": {"mera": 7, "note": "Kudambai (summa iru, just be) and Shatsampatti (the six virtues of calm) - peace and mental discipline."},
+    "jnana": {"mera": 6, "note": "Patanjali (Yoga Sutras), Prajnanam Brahma (Consciousness is Brahman), Vijnanamaya kosha, and Viveka - discernment and wisdom."},
+    "shiva": {"mera": 6, "note": "Nandhi Devar (gatekeeper of Shiva) and Vairagya (dispassion) - renunciation that cuts attachment."},
+    "tejas": {"mera": 6, "note": "Konganar (science of breath and light) and Svapna/Taijasa (the luminous dream state) - inner radiance."},
+    "sarasvati": {"mera": 5, "note": "Valmiki the adi kavi (first poet) and the Sukshma sharira (subtle body) - word and subtle mind."},
+    "akasha": {"mera": 5, "note": "Ayam Atma Brahma (This Self is Brahman) - the Self as all-pervading space."},
+    "prema": {"mera": 4, "note": "Thirumoolar - author of the Tirumantiram, teacher of anbe sivam (love is God)."},
+    "parvati": {"mera": 4, "note": "Manomaya kosha (the sheath of mind and emotion) - nurturing feeling."},
+    "vayu": {"mera": 4, "note": "Ramadevar (mantra and far travels) and Pranamaya kosha (vital breath) - the moving life-force."},
+    "shakti": {"mera": 3, "note": "Gorakkar (hatha yoga and kundalini) and Mumukshutva (longing for liberation) - the awakening power."},
+    "agni": {"mera": 3, "note": "Bogar the great alchemist - navapashanam and the fire of transmutation."},
+    "varuna": {"mera": 2, "note": "Macchamuni (Matsyendranath), the fish-born founder of Nath hatha yoga."},
+    "lakshmi": {"mera": 2, "note": "Kamalamuni - the lotus sage of inner purity."},
+    "prithvi": {"mera": 1, "note": "Sundaranandar (mastery of the body), Jagrat (waking), Annamaya kosha, and the Sthula sharira - the gross physical ground."},
+    "dharma": {"mera": 1, "note": "Sattaimuni - the stern alchemist of discipline."},
+    "karma": {"mera": 1, "note": "Idaikkadar (astrology of time and fate) and the Karana sharira (causal body, storehouse of karma)."}
+  },
+  "items": [
+    {"key": 1, "siddhar": "Agasthiyar", "other_name": "Agastya", "specialty": "foremost Siddhar; Tamil grammar, medicine, kaya kalpa", "agent": "svet_ra", "mera": 9},
+    {"key": 2, "siddhar": "Nandhi Devar", "other_name": "Nandi", "specialty": "gatekeeper of Shiva; alchemy and transmission of yoga", "agent": "shiva", "mera": 6},
+    {"key": 3, "siddhar": "Thirumoolar", "other_name": "Sundaranatha", "specialty": "author of Tirumantiram; anbe sivam (love is God)", "agent": "prema", "mera": 4},
+    {"key": 4, "siddhar": "Bogar", "other_name": "Boganathar", "specialty": "alchemy, navapashanam, the Palani Murugan idol", "agent": "agni", "mera": 3},
+    {"key": 5, "siddhar": "Konganar", "other_name": "Konganavar", "specialty": "kundalini and the science of breath and light", "agent": "tejas", "mera": 6},
+    {"key": 6, "siddhar": "Macchamuni", "other_name": "Matsyendranath", "specialty": "fish-born founder of Nath hatha yoga", "agent": "varuna", "mera": 2},
+    {"key": 7, "siddhar": "Gorakkar", "other_name": "Gorakhnath", "specialty": "Nath yoga, hatha discipline, kundalini mastery", "agent": "shakti", "mera": 3},
+    {"key": 8, "siddhar": "Sattaimuni", "other_name": "Sattamuni", "specialty": "stern alchemy; guru of Sundaranandar", "agent": "dharma", "mera": 1},
+    {"key": 9, "siddhar": "Sundaranandar", "other_name": "", "specialty": "mastery of the body and kaya kalpa", "agent": "prithvi", "mera": 1},
+    {"key": 10, "siddhar": "Ramadevar", "other_name": "Yacob", "specialty": "mantra shastra, music, far travels", "agent": "vayu", "mera": 4},
+    {"key": 11, "siddhar": "Kudambai", "other_name": "Kuthambai", "specialty": "cryptic verses of stillness; summa iru (just be)", "agent": "shanti", "mera": 7},
+    {"key": 12, "siddhar": "Karuvoorar", "other_name": "", "specialty": "sacred architecture of the Thanjavur temple", "agent": "brahma", "mera": 7},
+    {"key": 13, "siddhar": "Idaikkadar", "other_name": "", "specialty": "astrology and the reading of time and fate", "agent": "karma", "mera": 1},
+    {"key": 14, "siddhar": "Kamalamuni", "other_name": "", "specialty": "the lotus sage of inner purity", "agent": "lakshmi", "mera": 2},
+    {"key": 15, "siddhar": "Valmiki", "other_name": "Vanmeegar", "specialty": "adi kavi, the first poet of the Ramayana", "agent": "sarasvati", "mera": 5},
+    {"key": 16, "siddhar": "Patanjali", "other_name": "", "specialty": "the Yoga Sutras and ashtanga yoga", "agent": "jnana", "mera": 6},
+    {"key": 17, "siddhar": "Dhanvantari", "other_name": "", "specialty": "divine physician of Ayurveda and amrita", "agent": "vishnu", "mera": 7},
+    {"key": 18, "siddhar": "Pambatti", "other_name": "", "specialty": "snake charmer; the kundalini serpent ascending", "agent": "iskra", "mera": 8}
+  ],
+  "sources": ["en.wikipedia.org/wiki/Siddhar", "en.wikipedia.org/wiki/Mah%C4%81v%C4%81kyas", "en.wikipedia.org/wiki/Kosha", "en.wikipedia.org/wiki/Three_bodies_doctrine", "en.wikipedia.org/wiki/Advaita_Vedanta", "Mandukya Upanishad - the four states of consciousness (avastha-traya and Turiya)", "Tirumular - Tirumantiram", "Tamil Siddha tradition - the eighteen Siddhars (list per Babaji Kriya Yoga lineage; enumerations vary by source)"]
+}

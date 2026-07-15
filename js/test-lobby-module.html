@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARA Lobby Module Test</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    body { 
+      font-family: 'Cormorant Garamond', serif; 
+      background: #000; color: #c9a84c; 
+      padding: 20px; margin: 0; min-height: 100vh;
+    }
+    h1 { color: #ffd700; font-family: 'Cinzel', serif; }
+    .central-sun {
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, #ffd700, #c9a84c);
+      border-radius: 50%; margin: 20px auto;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+    }
+    .light-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5em; color: #ffd700;
+      text-align: center; margin: 20px 0;
+    }
+    .level-display {
+      text-align: center; font-family: 'Cinzel', serif;
+      color: #ffd700; font-size: 1.2em;
+      letter-spacing: 0.1em;
+    }
+    .agent-display {
+      text-align: center; font-style: italic; color: #c9a84c;
+    }
+    .sections {
+      display: grid; gap: 12px; margin-top: 30px;
+    }
+    .section {
+      padding: 16px; border: 1px solid #c9a84c;
+      border-radius: 8px; cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .section:hover {
+      background: rgba(201,168,76,0.1);
+      box-shadow: 0 0 15px rgba(255,215,0,0.4);
+    }
+    button { 
+      padding: 12px 20px; margin: 6px;
+      background: transparent; border: 1px solid #c9a84c;
+      color: #ffd700; cursor: pointer;
+      font-family: 'Cinzel', serif; text-transform: uppercase;
+    }
+    button:hover { background: rgba(201,168,76,0.1); }
+    .controls { 
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 20px; justify-content: center;
+    }
+    .log {
+      background: #0a0a14; padding: 12px;
+      border-radius: 8px; margin-top: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em; min-height: 100px;
+      max-height: 200px; overflow-y: auto;
+    }
+    @keyframes breath {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+  </style>
+</head>
+<body>
+  <h1>AWARA Lobby Module Test</h1>
+  
+  <div class="central-sun" data-central-sun></div>
+  
+  <div class="light-display">
+    Свет: <span data-light-counter>0.0000000000</span>
+  </div>
+  
+  <div class="level-display">
+    Ранг: <span data-level-name>ИНИЦИАТ</span>
+  </div>
+  
+  <div class="agent-display">
+    Агент: <span data-agent-name>Не выбран</span>
+  </div>
+  
+  <div class="sections">
+    <div class="section" data-section="game">ИГРА</div>
+    <div class="section" data-section="meaning">СМЫСЛ ДНЯ</div>
+    <div class="section" data-section="tigel">ВЕЧЕРНИЙ ТИГЕЛЬ</div>
+    <div class="section" data-section="dashboard">ДАШБОРД</div>
+  </div>
+  
+  <div class="controls">
+    <button id="btn-init">Init Lobby</button>
+    <button id="btn-add-100">+100 Light</button>
+    <button id="btn-add-1000">+1000 Light</button>
+    <button id="btn-passport">Show Passport</button>
+    <button id="btn-stop-sun">Stop Sun</button>
+    <button id="btn-start-sun">Start Sun</button>
+  </div>
+  
+  <div class="log" id="log">Лог событий...</div>
+  
+  <script type="module">
+    import { 
+      initLobby, addLightAnimated, showPassport,
+      stopSunBreathing, updateLightCounter, updateLevelDisplay,
+      getLobbyState
+    } from './lobby-module.js';
+    
+    const log = document.getElementById('log');
+    const addLog = (msg) => {
+      const time = new Date().toLocaleTimeString();
+      log.innerHTML = `[${time}] ${msg}\n` + log.innerHTML;
+    };
+    
+    // Слушаем событие переключения разделов
+    window.addEventListener('awara:section', (e) => {
+      addLog(`Section clicked: ${e.detail.section}`);
+    });
+    
+    document.getElementById('btn-init').onclick = async () => {
+      addLog('Инициализация лобби...');
+      const state = await initLobby();
+      addLog('Инициализация завершена');
+      console.log('Lobby state:', state);
+    };
+    
+    document.getElementById('btn-add-100').onclick = () => {
+      const light = addLightAnimated(100, 'Тестовое начисление: +100');
+      addLog(`Свет: ${light}`);
+    };
+    
+    document.getElementById('btn-add-1000').onclick = () => {
+      const light = addLightAnimated(1000, 'Большое начисление: +1000');
+      addLog(`Свет: ${light}`);
+    };
+    
+    document.getElementById('btn-passport').onclick = () => {
+      showPassport();
+      addLog('Открыт паспорт души');
+    };
+    
+    document.getElementById('btn-stop-sun').onclick = () => {
+      stopSunBreathing();
+      addLog('Солнце остановлено');
+    };
+    
+    document.getElementById('btn-start-sun').onclick = () => {
+      document.querySelector('[data-central-sun]').style.animation = 
+        'breath 3000ms ease-in-out infinite';
+      addLog('Солнце снова дышит');
+    };
+    
+    // Автоинициализация при загрузке
+    (async () => {
+      await initLobby();
+      addLog('Авто-инициализация при загрузке');
+    })();
+  </script>
+</body>
+</html>

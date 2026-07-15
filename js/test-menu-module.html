@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест menu-module — AWARA</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a14;
+      color: #c9a84c;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    h1 {
+      font-family: 'Cinzel', serif;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+    }
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      margin: 16px 0 8px;
+      color: #ffd700;
+      letter-spacing: 1px;
+    }
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .controls button {
+      background: transparent;
+      border: 1px solid #c9a84c;
+      color: #c9a84c;
+      padding: 8px 16px;
+      margin: 4px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+    }
+    .controls button:hover { background: rgba(201, 168, 76, 0.15); }
+    .controls button.active { background: rgba(201, 168, 76, 0.3); border-color: #ffd700; }
+    #output {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      padding: 16px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .category { margin-bottom: 12px; }
+    .category-header {
+      font-size: 0.9rem;
+      color: #ffd700;
+      margin-bottom: 4px;
+    }
+    .item { padding-left: 16px; color: #c9a84c; }
+    .item.locked { color: #555; }
+    .level-badge {
+      display: inline-block;
+      background: rgba(201, 168, 76, 0.2);
+      border: 1px solid #c9a84c;
+      padding: 2px 8px;
+      font-size: 0.85rem;
+      margin-left: 8px;
+    }
+    .locked-label {
+      color: #666;
+      font-size: 0.75rem;
+      margin-left: 8px;
+    }
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .stat-box {
+      background: rgba(201, 168, 76, 0.08);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      padding: 12px 16px;
+      text-align: center;
+      min-width: 120px;
+    }
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      color: #ffd700;
+    }
+    .stat-label { font-size: 0.75rem; color: #888; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <h1>ТЕСТ MENU-MODULE (M-001)</h1>
+
+  <div class="controls">
+    <button onclick="runTest(0)">0 света</button>
+    <button onclick="runTest(500)">500 света</button>
+    <button onclick="runTest(3000)">3000 света</button>
+    <button onclick="runTest(10000)">10000 света</button>
+    <button onclick="runTest(25000)">25000 света</button>
+    <button onclick="runTest(50000)">50000 света</button>
+  </div>
+
+  <div id="output">Нажмите кнопку для проверки при заданном значении света.</div>
+
+  <script type="module">
+    import {
+      MENU,
+      ACCESS_LEVELS,
+      getAccessibleItems,
+      getLockedItems,
+      getCurrentLevel,
+      getNextLevel,
+      getMenuState
+    } from './menu-module.js';
+
+    function runTest(lightValue) {
+      const out = document.getElementById('output');
+
+      const level = getCurrentLevel(lightValue);
+      const next = getNextLevel(lightValue);
+      const accessible = getAccessibleItems(lightValue);
+      const locked = getLockedItems(lightValue);
+
+      const accessibleCount = Object.values(accessible).reduce((s, c) => s + c.items.length, 0);
+      const totalItems = Object.values(MENU).reduce((s, c) => s + c.items.length, 0);
+
+      let html = '';
+
+      // Статистика
+      html += '<div class="stats">';
+      html += `<div class="stat-box"><div class="stat-value">${lightValue}</div><div class="stat-label">СВЕТ</div></div>`;
+      html += `<div class="stat-box"><div class="stat-value">${level.name}</div><div class="stat-label">УРОВЕНЬ</div></div>`;
+      html += `<div class="stat-box"><div class="stat-value">${accessibleCount} / ${totalItems}</div><div class="stat-label">ЭКРАНОВ</div></div>`;
+      if (next) {
+        html += `<div class="stat-box"><div class="stat-value">${next.minLight - lightValue}</div><div class="stat-label">ДО ${next.name}</div></div>`;
+      } else {
+        html += `<div class="stat-box"><div class="stat-value">MAX</div><div class="stat-label">МАКСИМУМ</div></div>`;
+      }
+      html += '</div>';
+
+      // Доступные
+      html += '<h2>ДОСТУПНЫЕ ЭКРАНЫ</h2>';
+      for (const [catId, cat] of Object.entries(accessible)) {
+        html += `<div class="category">`;
+        html += `<div class="category-header">${cat.icon} ${cat.label} — ${cat.description}</div>`;
+        for (const item of cat.items) {
+          html += `<div class="item">${item.label} — ${item.description} (${item.href})</div>`;
+        }
+        html += '</div>';
+      }
+
+      // Закрытые
+      if (locked.length > 0) {
+        html += '<h2>ЗАКРЫТЫЕ ЭКРАНЫ</h2>';
+        for (const item of locked) {
+          html += `<div class="item locked">${item.label} — ${item.categoryLabel} — нужно ${item.minLight} света<span class="locked-label">(${item.requiredLevel.name})</span></div>`;
+        }
+      }
+
+      // getMenuState (из localStorage)
+      html += '<h2>getMenuState() — из localStorage</h2>';
+      try {
+        const menuState = getMenuState();
+        html += `Свет: ${menuState.light}, Уровень: ${menuState.currentLevel.name}, Экранов доступно: ${Object.values(menuState.accessible).reduce((s, c) => s + c.items.length, 0)}`;
+      } catch (e) {
+        html += `Ошибка: ${e.message}`;
+      }
+
+      out.innerHTML = html;
+
+      // Обновить активную кнопку
+      document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    window.runTest = runTest;
+
+    // Автозапуск с 0
+    runTest(0);
+  </script>
+
+</body>
+</html>

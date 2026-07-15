@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "lib": ["ES2019", "DOM"],
+    "strict": true,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "declaration": false
+  },
+  "include": ["src/index.ts"]
+}

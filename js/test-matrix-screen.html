@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест: Matrix Screen · AWARA T-065</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #0a0a14;
+      color: #c9a84c;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    h1 { font-family: 'Cinzel', serif; color: #ffd700; margin-bottom: 20px; text-align: center; }
+    .test-section {
+      background: rgba(18,14,30,0.72);
+      border: 1px solid rgba(201,168,76,0.22);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      max-width: 700px;
+      margin-left: auto; margin-right: auto;
+    }
+    .test-title { color: #ffe080; margin-bottom: 10px; font-size: 14px; }
+    .pass { color: #00ffaa; }
+    .fail { color: #ff6666; }
+    .warn { color: #ffaa00; }
+    .result { font-size: 12px; margin: 4px 0; padding: 4px 8px; background: rgba(0,0,0,0.3); border-radius: 4px; }
+    button {
+      padding: 10px 16px;
+      background: transparent;
+      border: 1px solid #c9a84c;
+      color: #ffd700;
+      font-family: 'Cinzel', serif;
+      cursor: pointer;
+      border-radius: 8px;
+      margin: 4px;
+      transition: all 0.3s;
+    }
+    button:hover { background: rgba(201,168,76,0.15); box-shadow: 0 0 12px rgba(201,168,76,0.3); }
+    .log {
+      margin-top: 16px; padding: 12px;
+      background: rgba(0,0,0,0.4); border-radius: 8px;
+      font-size: 11px; max-height: 300px; overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      max-width: 700px;
+      margin-left: auto; margin-right: auto;
+    }
+    #mini-switcher {
+      display: flex; gap: 6px; justify-content: center; margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Тест: Matrix Screen (T-065)</h1>
+
+  <div class="test-section">
+    <div class="test-title">1. Загрузка канона (canon-module)</div>
+    <button onclick="runTest1()">Тест Загрузки</button>
+    <div class="result" id="test1">—</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">2. Переключатель восприятий (matrixSwitcher)</div>
+    <div id="mini-switcher"></div>
+    <button onclick="runTest2()">Тест Переключателя</button>
+    <div class="result" id="test2">—</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">3. Активация матрицы (state + localStorage)</div>
+    <button onclick="runTest3()">Тест Активации</button>
+    <div class="result" id="test3">—</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">4. Проверка 21/33 канона</div>
+    <div class="result" id="test4">—</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">5. Экспорты всех модулей</div>
+    <div class="result" id="test5">—</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">6. Проверка matrix.html структуры</div>
+    <button onclick="checkMatrixHtml()">Проверить matrix.html</button>
+    <div class="result" id="test6">—</div>
+  </div>
+
+  <div class="log" id="test-log"></div>
+
+  <script type="module">
+    import { loadAgents, loadMatrices } from './canon-module.js';
+    import { renderSwitcher, getActivePerception, setActivePerception, PERCEPTIONS } from './matrixSwitcher.js';
+    import { loadState, updateState } from './state-module.js';
+
+    const logEl = document.getElementById('test-log');
+    function log(msg) {
+      logEl.innerHTML += '<div>[' + new Date().toLocaleTimeString() + '] ' + msg + '</div>';
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    // Тест 1: Загрузка
+    window.runTest1 = async function() {
+      try {
+        const [agents, matrices] = await Promise.all([loadAgents(), loadMatrices()]);
+        const el = document.getElementById('test1');
+        const checks = [];
+        checks.push(agents && agents.length === 21 ? 'PASS: 21 агент' : 'FAIL: агентов ' + (agents?.length || 0));
+        checks.push(matrices && matrices.length === 33 ? 'PASS: 33 матрицы' : 'FAIL: матриц ' + (matrices?.length || 0));
+        el.innerHTML = checks.map(c =>
+          '<div class="result"><span class="' + (c.startsWith('PASS') ? 'pass' : 'fail') + '">' + c + '</span></div>'
+        ).join('');
+        log('Тест 1: ' + (checks.every(c => c.startsWith('PASS')) ? 'PASS' : 'FAIL'));
+      } catch(e) {
+        document.getElementById('test1').innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+        log('Тест 1: ERROR — ' + e.message);
+      }
+    };
+
+    // Тест 2: Переключатель
+    window.runTest2 = function() {
+      try {
+        const container = document.getElementById('mini-switcher');
+        renderSwitcher(container, (id) => { log('Тест 2: onChange — ' + id); });
+
+        const current = getActivePerception();
+        const el = document.getElementById('test2');
+        const checks = [];
+        checks.push(PERCEPTIONS.length === 3 ? 'PASS: 3 восприятия' : 'FAIL');
+        checks.push(current ? 'PASS: активное = ' + current : 'FAIL: нет активного');
+        checks.push(typeof setActivePerception === 'function' ? 'PASS: setActivePerception' : 'FAIL');
+        checks.push(typeof renderSwitcher === 'function' ? 'PASS: renderSwitcher' : 'FAIL');
+
+        el.innerHTML = checks.map(c =>
+          '<div class="result"><span class="' + (c.startsWith('PASS') ? 'pass' : 'fail') + '">' + c + '</span></div>'
+        ).join('');
+        log('Тест 2: Переключатель — виджет отрисован');
+      } catch(e) {
+        document.getElementById('test2').innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+      }
+    };
+
+    // Тест 3: Активация
+    window.runTest3 = async function() {
+      try {
+        const matrices = await loadMatrices();
+        if (!matrices || matrices.length === 0) {
+          document.getElementById('test3').innerHTML = '<span class="fail">FAIL</span> — матрицы не загружены';
+          return;
+        }
+
+        const testSlug = matrices[5].slug || matrices[5].id;
+        const prevSlug = getActivePerception();
+        setActivePerception(testSlug);
+
+        const newSlug = getActivePerception();
+        const stored = localStorage.getItem('awara_matrix');
+
+        // Возвращаем обратно
+        setActivePerception(prevSlug);
+
+        const el = document.getElementById('test3');
+        const checks = [];
+        checks.push(newSlug === testSlug ? 'PASS: смена на ' + testSlug : 'FAIL: смена не сработала');
+        checks.push(stored === testSlug ? 'PASS: localStorage записан' : 'FAIL: localStorage не обновлён');
+        checks.push(getActivePerception() === prevSlug ? 'PASS: возврат на ' + prevSlug : 'FAIL: возврат');
+
+        el.innerHTML = checks.map(c =>
+          '<div class="result"><span class="' + (c.startsWith('PASS') ? 'pass' : 'fail') + '">' + c + '</span></div>'
+        ).join('');
+        log('Тест 3: Активация — ' + checks.filter(c => c.startsWith('PASS')).length + '/' + checks.length + ' PASS');
+      } catch(e) {
+        document.getElementById('test3').innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+      }
+    };
+
+    // Тест 4: Канон
+    (async function() {
+      try {
+        const [agents, matrices] = await Promise.all([loadAgents(), loadMatrices()]);
+        const el = document.getElementById('test4');
+        const checks = [];
+        checks.push(agents?.length === 21 ? 'PASS: 21/21 агентов' : 'FAIL: агентов ' + agents?.length);
+        checks.push(matrices?.length === 33 ? 'PASS: 33/33 матриц' : 'FAIL: матриц ' + matrices?.length);
+
+        // Проверка что у всех матриц есть slug, name, conflict
+        const hasAllFields = matrices?.every(m => m.slug && m.name && m.conflict);
+        checks.push(hasAllFields ? 'PASS: все поля у матриц' : 'FAIL: не у всех матриц есть slug/name/conflict');
+
+        // Проверка что у агентов есть name
+        const agentsOk = agents?.every(a => a.name);
+        checks.push(agentsOk ? 'PASS: все поля у агентов' : 'FAIL: не у всех агентов есть name');
+
+        el.innerHTML = checks.map(c =>
+          '<div class="result"><span class="' + (c.startsWith('PASS') ? 'pass' : 'fail') + '">' + c + '</span></div>'
+        ).join('');
+        log('Тест 4: Канон — ' + checks.filter(c => c.startsWith('PASS')).length + '/' + checks.length + ' PASS');
+      } catch(e) {
+        document.getElementById('test4').innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+      }
+    })();
+
+    // Тест 5: Экспорты
+    (function() {
+      const checks = [];
+      // matrixSwitcher exports
+      checks.push(typeof PERCEPTIONS !== 'undefined' ? 'PASS: PERCEPTIONS' : 'FAIL: PERCEPTIONS');
+      checks.push(typeof getActivePerception === 'function' ? 'PASS: getActivePerception' : 'FAIL');
+      checks.push(typeof setActivePerception === 'function' ? 'PASS: setActivePerception' : 'FAIL');
+      checks.push(typeof renderSwitcher === 'function' ? 'PASS: renderSwitcher' : 'FAIL');
+      // canon-module exports
+      checks.push(typeof loadAgents === 'function' ? 'PASS: loadAgents' : 'FAIL');
+      checks.push(typeof loadMatrices === 'function' ? 'PASS: loadMatrices' : 'FAIL');
+
+      document.getElementById('test5').innerHTML = checks.map(c =>
+        '<div class="result"><span class="' + (c.startsWith('PASS') ? 'pass' : 'fail') + '">' + c + '</span></div>'
+      ).join('');
+      log('Тест 5: Экспорты — все доступны');
+    })();
+
+    // Тест 6: Проверка matrix.html
+    window.checkMatrixHtml = async function() {
+      const el = document.getElementById('test6');
+      try {
+        const resp = await fetch('../matrix.html');
+        if (resp.ok) {
+          const html = await resp.text();
+          const checks = [];
+          checks.push(html.includes('canon-module.js') ? 'PASS: импорт canon-module' : 'FAIL');
+          checks.push(html.includes('matrixSwitcher.js') ? 'PASS: импорт matrixSwitcher' : 'FAIL');
+          checks.push(html.includes('state-module.js') ? 'PASS: импорт state-module' : 'FAIL');
+          checks.push(html.includes('id="agents-grid"') ? 'PASS: agents-grid' : 'FAIL');
+          checks.push(html.includes('id="matrices-grid"') ? 'PASS: matrices-grid' : 'FAIL');
+          checks.push(html.includes('id="matrix-switcher-container"') ? 'PASS: switcher-container' : 'FAIL');
+          checks.push(html.includes('АКТИВНА') ? 'PASS: бейдж активной матрицы' : 'FAIL');
+
+          el.innerHTML = checks.map(c =>
+            '<div class="result"><span class="' + (c.startsWith('PASS') ? 'pass' : 'fail') + '">' + c + '</span></div>'
+          ).join('');
+          log('Тест 6: matrix.html — ' + checks.filter(c => c.startsWith('PASS')).length + '/' + checks.length + ' PASS');
+        } else {
+          el.innerHTML = '<span class="fail">FAIL</span> — matrix.html не найден (status: ' + resp.status + ')';
+        }
+      } catch(e) {
+        el.innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+      }
+    };
+
+    // Авто-рендер переключателя
+    const container = document.getElementById('mini-switcher');
+    if (container) renderSwitcher(container);
+
+    log('Тесты загружены. Нажми на кнопки для запуска.');
+  </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "player_id": null,
+  "created_at": null,
+  "updated_at": null,
+  "current_layer": "soul",
+  "profile": {
+    "display_name": null,
+    "birth_date": null,
+    "birth_time": null,
+    "birth_place": null,
+    "chosen_matrix_slug": null,
+    "oracle_mode": "living_game",
+    "privacy_level": "private"
+  },
+  "soul": {
+    "unlocked": true,
+    "stage": "sleeping_soul",
+    "level": 1,
+    "light": 0,
+    "total_light_earned": 0,
+    "initiation_space": {
+      "feet": {
+        "level": 1,
+        "light": 0,
+        "themes": [],
+        "last_entry_id": null
+      },
+      "heart": {
+        "level": 1,
+        "light": 0,
+        "themes": [],
+        "last_entry_id": null
+      },
+      "head": {
+        "level": 1,
+        "light": 0,
+        "themes": [],
+        "last_entry_id": null
+      },
+      "cooperation": {
+        "level": 1,
+        "light": 0,
+        "themes": [],
+        "last_entry_id": null
+      }
+    },
+    "elements": {
+      "earth": 0,
+      "water": 0,
+      "fire": 0,
+      "air": 0,
+      "ether": 0
+    },
+    "principles": {
+      "atma": 0,
+      "buddhi": 0,
+      "manas": 0,
+      "kama": 0,
+      "prana": 0,
+      "linga_sharira": 0,
+      "sthula_sharira": 0
+    },
+    "distortions": {
+      "ahamkara": 0,
+      "fear": 0,
+      "desire": 0,
+      "illusion": 0,
+      "inertia": 0,
+      "anger": 0,
+      "attachment": 0
+    },
+    "active_agents": [],
+    "active_matrices": [],
+    "active_keys": []
+  },
+  "earth": {
+    "unlocked": false,
+    "light": 0,
+    "star_temple": {
+      "center": 0,
+      "library": 0,
+      "body_temple": 0,
+      "creative_workshop": 0,
+      "service_hall": 0,
+      "relationship_house": 0,
+      "garden": 0,
+      "fire_altar": 0,
+      "water_sanctuary": 0,
+      "air_tower": 0,
+      "ether_dome": 0
+    },
+    "vastu_grid": {
+      "north": 0,
+      "north_east": 0,
+      "east": 0,
+      "south_east": 0,
+      "south": 0,
+      "south_west": 0,
+      "west": 0,
+      "north_west": 0,
+      "center": 0
+    },
+    "materials": {
+      "earth_crystal": 0,
+      "water_pearl": 0,
+      "fire_seed": 0,
+      "air_feather": 0,
+      "ether_thread": 0
+    }
+  },
+  "cosmos": {
+    "unlocked": false,
+    "light": 0,
+    "logos_resonance": 0,
+    "active_lokas": [],
+    "agent_domains": [],
+    "planetary_links": [],
+    "mythic_worlds": [],
+    "cosmic_gates": []
+  },
+  "divine_game": {
+    "unlocked": false,
+    "board_level": 0,
+    "available_moves": [],
+    "active_deck": [],
+    "created_universes": [],
+    "cooperative_games": []
+  },
+  "cauldron": {
+    "entries_count": 0,
+    "last_entry_id": null,
+    "last_entry_at": null,
+    "streak_days": 0,
+    "entries": []
+  },
+  "oracle": {
+    "last_response_id": null,
+    "active_recommendations": [],
+    "music_prompts": [],
+    "ayurvedic_advices": []
+  },
+  "collection": {
+    "cards": {},
+    "fragments": {},
+    "keys": {},
+    "artifacts": {},
+    "last_unlocked_card_id": null
+  },
+  "light_economy": {
+    "inner_light": 0,
+    "svetcoin_balance": 0,
+    "svetcoin_earned_total": 0,
+    "svetcoin_spent_total": 0,
+    "exchange_history": []
+  },
+  "social": {
+    "cooperation_unlocked": false,
+    "open_to_light_exchange": false,
+    "trusted_players": [],
+    "shared_spheres": [],
+    "service_offers": []
+  },
+  "unlock_progress": {
+    "earth": {
+      "required_soul_light": 1000,
+      "required_tigel_entries": 7,
+      "required_balanced_elements": 3,
+      "ready": false
+    },
+    "cosmos": {
+      "required_soul_light": 5000,
+      "required_earth_light": 2500,
+      "required_star_temple_zones": 7,
+      "required_cooperation_events": 3,
+      "ready": false
+    },
+    "divine_game": {
+      "required_total_light": 15000,
+      "required_cards": 108,
+      "required_cosmos_unlocked": true,
+      "required_shared_spheres": 1,
+      "ready": false
+    }
+  }
+}

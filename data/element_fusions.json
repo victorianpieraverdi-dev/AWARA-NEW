@@ -1,0 +1,143 @@
+{
+  "version": "1.0.0",
+  "description": "Element fusion recipes for Daimon, Agent, Matrix and collective ritual synthesis.",
+  "base_elements": ["fire", "water", "earth", "air", "ether"],
+  "aliases": {
+    "Огонь": "fire",
+    "Вода": "water",
+    "Земля": "earth",
+    "Камень": "earth",
+    "Кристалл": "earth",
+    "Воздух": "air",
+    "Эфир": "ether",
+    "fire": "fire",
+    "water": "water",
+    "earth": "earth",
+    "stone": "earth",
+    "crystal": "earth",
+    "air": "air",
+    "ether": "ether"
+  },
+  "binary": {
+    "fire+water": {
+      "compound": "steam",
+      "name_ru": "Пар",
+      "archetype": "Очищение давлением",
+      "result_names": ["Паровой Дух", "Хранитель Тёплого Источника", "Туманная Саламандра"],
+      "effects": { "healing": 0.08, "transformation": 0.08, "emotional_clearing": 0.12 }
+    },
+    "earth+fire": {
+      "compound": "lava_obsidian",
+      "name_ru": "Лава / Обсидиан",
+      "archetype": "Материализованная воля",
+      "result_names": ["Обсидиановый Саламандр", "Лавовый Страж", "Кузнечный Даймонит"],
+      "effects": { "protection": 0.1, "will": 0.12, "shadow_burning": 0.08 }
+    },
+    "earth+water": {
+      "compound": "spring_clay",
+      "name_ru": "Источник / Глина",
+      "archetype": "Память тела",
+      "result_names": ["Глиняный Целитель", "Черепаха Источника", "Минеральная Нимфа"],
+      "effects": { "stability": 0.1, "healing": 0.1, "domain_growth": 0.06 }
+    },
+    "air+fire": {
+      "compound": "lightning",
+      "name_ru": "Молния",
+      "archetype": "Мысль, ставшая действием",
+      "result_names": ["Молниевый Вестник", "Птица Искры", "Огненный Логос"],
+      "effects": { "clarity": 0.1, "will": 0.08, "speed": 0.12 }
+    },
+    "air+water": {
+      "compound": "mist",
+      "name_ru": "Туман",
+      "archetype": "Тонкое чувство",
+      "result_names": ["Туманный Оракул", "Дух Облака", "Лунный Вестник"],
+      "effects": { "intuition": 0.12, "healing": 0.06, "dreams": 0.1 }
+    },
+    "earth+air": {
+      "compound": "dust_form",
+      "name_ru": "Пыль Формы",
+      "archetype": "Идея, получившая тело",
+      "result_names": ["Песчаный Архивариус", "Страж Формы", "Глиняный Мыслитель"],
+      "effects": { "memory": 0.1, "structure": 0.12, "manifestation": 0.08 }
+    },
+    "ether+fire": {
+      "compound": "solar_mantra",
+      "name_ru": "Солнечная Мантра",
+      "archetype": "Воля духа",
+      "result_names": ["Мантрический Феникс", "Солнечный Архонт", "Пламенный Риши"],
+      "effects": { "spirit": 0.12, "will": 0.1, "light_bonus": 0.08 }
+    },
+    "ether+water": {
+      "compound": "nectar",
+      "name_ru": "Нектар",
+      "archetype": "Милость и растворение",
+      "result_names": ["Нектарный Хранитель", "Лунный Целитель", "Дух Амриты"],
+      "effects": { "grace": 0.12, "healing": 0.1, "emotional_clearing": 0.08 }
+    },
+    "earth+ether": {
+      "compound": "sacred_mountain",
+      "name_ru": "Священная Гора",
+      "archetype": "Вертикаль мира",
+      "result_names": ["Горный Даймон", "Кристальный Столп", "Хранитель Оси"],
+      "effects": { "domain_stability": 0.14, "protection": 0.08, "initiation": 0.08 }
+    },
+    "air+ether": {
+      "compound": "logos_wind",
+      "name_ru": "Ветер Логоса",
+      "archetype": "Слово пространства",
+      "result_names": ["Вестник Логоса", "Эфирная Птица", "Дух Звучащего Неба"],
+      "effects": { "clarity": 0.12, "communication": 0.12, "oracle": 0.06 }
+    }
+  },
+  "triple": {
+    "earth+fire+water": {
+      "compound": "geyser_living_stone",
+      "name_ru": "Гейзер / Живой Камень",
+      "archetype": "Исцеление через давление и форму",
+      "result_names": ["Гейзерный Хранитель", "Обсидиановая Черепаха Источника", "Термальный Страж"],
+      "preferred_types": ["elemental_minion", "artifact", "shared_domain"],
+      "effects": { "healing": 0.15, "transformation": 0.1, "domain_stability": 0.12, "light_bonus": 0.07 }
+    },
+    "air+fire+water": {
+      "compound": "storm_rainbow",
+      "name_ru": "Гроза / Радуга",
+      "archetype": "Очищающее откровение",
+      "result_names": ["Радужный Буревестник", "Дракон Грозового Ока", "Оракул Дождя и Молнии"],
+      "preferred_types": ["oracle_being", "card_seed", "ritual_weather"],
+      "effects": { "oracle": 0.14, "clarity": 0.12, "emotional_clearing": 0.1 }
+    },
+    "earth+fire+ether": {
+      "compound": "temple_core",
+      "name_ru": "Ядро Храма",
+      "archetype": "Воля, закреплённая в мире",
+      "result_names": ["Храмовый Голем", "Огненный Столп", "Архитектор Священной Горы"],
+      "preferred_types": ["domain_seed", "guardian", "artifact"],
+      "effects": { "domain_stability": 0.16, "will": 0.1, "protection": 0.1 }
+    },
+    "earth+water+ether": {
+      "compound": "holy_spring",
+      "name_ru": "Святой Источник",
+      "archetype": "Милость, вошедшая в тело",
+      "result_names": ["Нектарная Черепаха", "Хранитель Святого Источника", "Кристальная Нимфа"],
+      "preferred_types": ["healing_domain", "elemental_minion", "artifact"],
+      "effects": { "healing": 0.16, "grace": 0.12, "stability": 0.08 }
+    },
+    "air+earth+ether": {
+      "compound": "akashic_archive",
+      "name_ru": "Акашический Архив",
+      "archetype": "Память пространства",
+      "result_names": ["Акашический Архивариус", "Песчаный Логос", "Кристалл Памяти"],
+      "preferred_types": ["oracle_being", "archive_card", "domain_seed"],
+      "effects": { "memory": 0.14, "oracle": 0.1, "structure": 0.1 }
+    },
+    "air+fire+ether": {
+      "compound": "solar_word",
+      "name_ru": "Солнечное Слово",
+      "archetype": "Логос действия",
+      "result_names": ["Солнечный Вестник", "Пламенный Логос", "Птица Мантры"],
+      "preferred_types": ["card_seed", "guardian", "oracle_being"],
+      "effects": { "clarity": 0.12, "will": 0.12, "light_bonus": 0.1 }
+    }
+  }
+}

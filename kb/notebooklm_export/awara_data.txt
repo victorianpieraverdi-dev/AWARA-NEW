@@ -1,0 +1,622 @@
+
+
+============================================================
+FILE: data\_index.md
+============================================================
+
+# Data-файлы проекта
+
+Создано: 2026-05-24
+
+### agent_matrix_map.json
+- **Записей:** 693
+- **Размер:** 172 KB
+- **Примеры:** 1, 1, 1
+
+### agents.json
+- **Записей:** 21
+- **Размер:** 5 KB
+- **Примеры:** Свет Ра, Искра, Брахма
+
+### breath_path_layers.json
+- **Ключей:** 6
+- **Поля:** schema_version, purpose, safety_principle, core_formula, progression, oracle_output_fields
+
+### card_prompts.json
+- **Записей:** 693
+- **Размер:** 978 KB
+- **Примеры:** svet_ra__vedic, svet_ra__egyptian, svet_ra__kabbalistic
+
+### cauldron_rules.json
+- **Ключей:** 10
+- **Поля:** schema_version, purpose, base_light, initiation_spheres, elements, distortions, agent_resonance_keywords, matrix_resonance_keywords, reward_rarity, unlock_checks
+
+### chakras.json
+- **Записей:** 9
+- **Размер:** 2 KB
+- **Примеры:** Муладхара, Свадхистхана, Манипура
+
+### daimon-forms.json
+- **Записей:** 27
+- **Размер:** 11 KB
+- **Примеры:** Ашвини, Бхарани, Криттика
+
+### daimon-stages.json
+- **Записей:** 5
+- **Размер:** 3 KB
+- **Примеры:** 1, 2, 3
+
+### default_player_state.json
+- **Ключей:** 10
+- **Поля:** schema_version, player_id, created_at, updated_at, current_layer, profile, soul, earth, cosmos, divine_game
+
+### domain_cards.json
+- **Записей:** 21
+- **Размер:** 48 KB
+- **Примеры:** domain__svet_ra, domain__iskra, domain__brahma
+
+### extra_beings.json
+- **Записей:** 330
+- **Размер:** 560 KB
+- **Примеры:** Ганеша, Гаятри, Хануман
+
+### extra_card_prompts.json
+- **Записей:** 792
+- **Размер:** 1831 KB
+- **Примеры:** Ганеша, Гаятри, Хануман
+
+### iconography.json
+- **Ключей:** 10
+- **Поля:** _doc, Сурья / Савитар, Ра, Кетер / Ор Эйн Соф, Кинич Ахау, Даждьбог, Бальдр / Соль, Тайян / солнечная Ци, Плеромный Свет, Аматэрасу
+
+### locas.json
+- **Записей:** 14
+- **Размер:** 2 KB
+- **Примеры:** Сатья-лока, Тапа-лока, Джана-лока
+
+### matrices.json
+- **Записей:** 33
+- **Размер:** 9 KB
+- **Примеры:** Ведическая, Египетская, Каббалистическая
+
+### milost-sources.json
+- **Записей:** 7
+- **Размер:** 4 KB
+- **Примеры:** 1, 2, 3
+
+### monad_path_cards.json
+- **Записей:** 16
+- **Размер:** 54 KB
+- **Примеры:** monad_path__polar_race, monad_path__hyperborean_race, monad_path__lemurian_race
+
+### mythic_branches.json
+- **Записей:** 33
+- **Размер:** 46 KB
+- **Примеры:** Ведическое Древо Дэвов, Египетская Линия Маат, Каббалистическое Древо Тиккуна
+
+### mythic_locations.json
+- **Записей:** 231
+- **Размер:** 286 KB
+- **Примеры:** Гора Меру, Кайласа, Вайкунтха
+
+### mythic_quest_lines.json
+- **Записей:** 261
+- **Размер:** 616 KB
+- **Примеры:** Путь: Ганеша, Путь: Гаятри, Путь: Хануман
+
+### mythic_relationships.json
+- **Записей:** 330
+- **Размер:** 266 KB
+- **Примеры:** vedic__ganesha, vedic__gayatri, vedic__hanuman
+
+### mythic_relics.json
+- **Записей:** 231
+- **Размер:** 282 KB
+- **Примеры:** Ваджра, Нить Гаятри, Сударшана-чакра
+
+### quest-cultural-keys.json
+- **Записей:** 33
+- **Размер:** 215 KB
+- **Примеры:** {'ru': 'Ведическая', 'en': 'Vedic'}, {'ru': 'Египетская', 'en': 'Egyptian'}, {'ru': 'Каббалистическая', 'en': 'Kabbalistic'}
+
+### reality_scale_maps.json
+- **Ключей:** 5
+- **Поля:** schema_version, purpose, core_principle, scales, physical_board_requirements
+
+### sensory_ritual_layers.json
+- **Ключей:** 6
+- **Поля:** schema_version, purpose, daily_ritual_flow, sensory_channels, layer_visual_evolution, oracle_sensory_output_contract
+
+### temple-ecosystems.json
+- **Записей:** 33
+- **Размер:** 27 KB
+- **Примеры:** 1, 2, 3
+
+### temple-upgrades.json
+- **Записей:** 5
+- **Размер:** 1 KB
+- **Примеры:** 1, 2, 3
+
+### vedic_loka_being_cards.json
+- **Записей:** 42
+- **Размер:** 130 KB
+- **Примеры:** Брахма — Владыка Сатья-локи, Риши Сатья-локи, Порядок Сатьи
+
+### vedic_loka_cards.json
+- **Записей:** 14
+- **Размер:** 47 KB
+- **Примеры:** vedic_loka_satya_loka, vedic_loka_tapas_loka, vedic_loka_jana_loka
+
+### zones.json
+- **Записей:** 9
+- **Размер:** 2 KB
+- **Примеры:** Восток, Юго-Восток, Юг
+
+
+
+============================================================
+FILE: data\agent_matrix_map.md
+============================================================
+
+# agent_matrix_map.json
+
+2026-05-24 | data/agent_matrix_map.json
+
+Массив из 693 элементов
+Поля: agent_id, agent_slug, agent_name, matrix_id, matrix_slug, matrix_name, cultural_name
+- 
+- 
+- 
+- 
+- 
+
+
+============================================================
+FILE: data\agents.md
+============================================================
+
+# agents.json
+
+2026-05-24 | data/agents.json
+
+Массив из 21 элементов
+Поля: id, slug, name, domain, guna, vastu_zone, planet, element, ray
+- Свет Ра
+- Искра
+- Брахма
+- Сарасвати
+- Вишну
+
+
+============================================================
+FILE: data\breath_path_layers.md
+============================================================
+
+# breath_path_layers.json
+
+2026-05-24 | data/breath_path_layers.json
+
+Объект, 6 ключей: schema_version, purpose, safety_principle, core_formula, progression, oracle_output_fields
+
+============================================================
+FILE: data\card_prompts.md
+============================================================
+
+# card_prompts.json
+
+2026-05-24 | data/card_prompts.json
+
+Массив из 693 элементов
+Поля: card_id, rarity, agent_slug, agent_name, matrix_slug, matrix_name, cultural_name, element, domain, domain_cultural
+- 
+- 
+- 
+- 
+- 
+
+
+============================================================
+FILE: data\cauldron_rules.md
+============================================================
+
+# cauldron_rules.json
+
+2026-05-24 | data/cauldron_rules.json
+
+Объект, 10 ключей: schema_version, purpose, base_light, initiation_spheres, elements, distortions, agent_resonance_keywords, matrix_resonance_keywords, reward_rarity, unlock_checks
+
+============================================================
+FILE: data\chakras.md
+============================================================
+
+# chakras.json
+
+2026-05-24 | data/chakras.json
+
+Массив из 9 элементов
+Поля: id, slug, name, sanskrit, position, color, element, mantra_seed
+- Муладхара
+- Свадхистхана
+- Манипура
+- Анахата
+- Вишуддха
+
+
+============================================================
+FILE: data\daimon-forms.md
+============================================================
+
+# daimon-forms.json
+
+2026-05-24 | data/daimon-forms.json
+
+Массив из 27 элементов
+Поля: id, slug, name, sanskrit, ruler, element, form, form_name, archetype, resonanceBonus
+- Ашвини
+- Бхарани
+- Криттика
+- Рохини
+- Мригашира
+
+
+============================================================
+FILE: data\daimon-stages.md
+============================================================
+
+# daimon-stages.json
+
+2026-05-24 | data/daimon-stages.json
+
+Массив из 5 элементов
+Поля: stage, name_ru, name_en, description, dna_strands, multiplier, unlock_condition, granthi, chakra_range, abilities
+- 
+- 
+- 
+- 
+- 
+
+
+============================================================
+FILE: data\default_player_state.md
+============================================================
+
+# default_player_state.json
+
+2026-05-24 | data/default_player_state.json
+
+Объект, 16 ключей: schema_version, player_id, created_at, updated_at, current_layer, profile, soul, earth, cosmos, divine_game, cauldron, oracle, collection, light_economy, social
+
+============================================================
+FILE: data\domain_cards.md
+============================================================
+
+# domain_cards.json
+
+2026-05-24 | data/domain_cards.json
+
+Массив из 21 элементов
+Поля: card_id, card_type, rarity, agent_slug, agent_name, domain, display_name, element, planet, vastu_zone
+- 
+- 
+- 
+- 
+- 
+
+
+============================================================
+FILE: data\extra_beings.md
+============================================================
+
+# extra_beings.json
+
+2026-05-24 | data/extra_beings.json
+
+Массив из 330 элементов
+Поля: id, name, matrix_slug, type, role, rarity, element, linked_agents, tags, description
+- Ганеша
+- Гаятри
+- Хануман
+- Анубис
+- Тот
+
+
+============================================================
+FILE: data\extra_card_prompts.md
+============================================================
+
+# extra_card_prompts.json
+
+2026-05-24 | data/extra_card_prompts.json
+
+Массив из 792 элементов
+Поля: card_id, card_type, rarity, matrix_slug, matrix_name, name, display_name, element, type, role
+- Ганеша
+- Гаятри
+- Хануман
+- Анубис
+- Тот
+
+
+============================================================
+FILE: data\iconography.md
+============================================================
+
+# iconography.json
+
+2026-05-24 | data/iconography.json
+
+Объект, 135 ключей: _doc, Сурья / Савитар, Ра, Кетер / Ор Эйн Соф, Кинич Ахау, Даждьбог, Бальдр / Соль, Тайян / солнечная Ци, Плеромный Свет, Аматэрасу, Луг, Вайрочана-Калачакра, Христос Пантократор, Солнечный Орёл, Siddhi Radiance
+
+============================================================
+FILE: data\locas.md
+============================================================
+
+# locas.json
+
+2026-05-24 | data/locas.json
+
+Массив из 14 элементов
+Поля: id, name, density, description
+- Сатья-лока
+- Тапа-лока
+- Джана-лока
+- Махар-лока
+- Свар-лока
+
+
+============================================================
+FILE: data\matrices.md
+============================================================
+
+# matrices.json
+
+2026-05-24 | data/matrices.json
+
+Массив из 33 элементов
+Поля: id, slug, name, conflict, visual_code, source_file
+- Ведическая
+- Египетская
+- Каббалистическая
+- Майянская
+- Славянская
+
+
+============================================================
+FILE: data\milost-sources.md
+============================================================
+
+# milost-sources.json
+
+2026-05-24 | data/milost-sources.json
+
+Массив из 7 элементов
+Поля: id, ray, name_ru, description, veil_threshold, macrocosm_message, multiplier
+- 1
+- 2
+- 3
+- 4
+- 5
+
+
+============================================================
+FILE: data\monad_path_cards.md
+============================================================
+
+# monad_path_cards.json
+
+2026-05-24 | data/monad_path_cards.json
+
+Массив из 16 элементов
+Поля: card_id, card_type, rarity, display_name, category, element, arc_phase, role, mythology, description
+- 
+- 
+- 
+- 
+- 
+
+
+============================================================
+FILE: data\mythic_branches.md
+============================================================
+
+# mythic_branches.json
+
+2026-05-24 | data/mythic_branches.json
+
+Массив из 33 элементов
+Поля: branch_name, worldview, core_mood, sacred_geography, being_families, quest_themes, ritual_grammar, matrix_slug, matrix_name, visual_atmosphere
+- 
+- 
+- 
+- 
+- 
+
+
+============================================================
+FILE: data\mythic_locations.md
+============================================================
+
+# mythic_locations.json
+
+2026-05-24 | data/mythic_locations.json
+
+Массив из 231 элементов
+Поля: id, name, matrix_slug, matrix_name, type, rarity, description, quest_use, visual_tags, card_type
+- Гора Меру
+- Кайласа
+- Вайкунтха
+- Дуат
+- Поля Аару
+
+
+============================================================
+FILE: data\mythic_quest_lines.md
+============================================================
+
+# mythic_quest_lines.json
+
+2026-05-24 | data/mythic_quest_lines.json
+
+Массив из 261 элементов
+Поля: id, name, matrix_slug, matrix_name, being_id, primary_location_id, primary_relic_id, rarity, philosophical_focus, shadow_focus
+- Путь: Ганеша
+- Путь: Гаятри
+- Путь: Хануман
+- Путь: Анубис
+- Путь: Тот
+
+
+============================================================
+FILE: data\mythic_relationships.md
+============================================================
+
+# mythic_relationships.json
+
+2026-05-24 | data/mythic_relationships.json
+
+Массив из 330 элементов
+Поля: being_id, matrix_slug, linked_agents, primary_location_id, primary_relic_id, relationship_mode, quest_line, game_significance
+- 
+- 
+- 
+- 
+- 
+
+
+============================================================
+FILE: data\mythic_relics.md
+============================================================
+
+# mythic_relics.json
+
+2026-05-24 | data/mythic_relics.json
+
+Массив из 231 элементов
+Поля: id, name, matrix_slug, matrix_name, type, rarity, description, quest_use, visual_tags, card_type
+- Ваджра
+- Нить Гаятри
+- Сударшана-чакра
+- Анх
+- Перо Маат
+
+
+============================================================
+FILE: data\quest-cultural-keys.md
+============================================================
+
+# quest-cultural-keys.json
+
+2026-05-24 | data/quest-cultural-keys.json
+
+Массив из 33 элементов
+Поля: id, slug, name, symbol, culturalKeys, questStyle, agentForms
+- {'ru': 'Ведическая', 'en': 'Vedic'}
+- {'ru': 'Египетская', 'en': 'Egyptian'}
+- {'ru': 'Каббалистическая', 'en': 'Kabbalistic'}
+- {'ru': 'Майянская', 'en': 'Mayan'}
+- {'ru': 'Славянская', 'en': 'Slavic'}
+
+
+============================================================
+FILE: data\reality_scale_maps.md
+============================================================
+
+# reality_scale_maps.json
+
+2026-05-24 | data/reality_scale_maps.json
+
+Объект, 5 ключей: schema_version, purpose, core_principle, scales, physical_board_requirements
+
+============================================================
+FILE: data\sensory_ritual_layers.md
+============================================================
+
+# sensory_ritual_layers.json
+
+2026-05-24 | data/sensory_ritual_layers.json
+
+Объект, 6 ключей: schema_version, purpose, daily_ritual_flow, sensory_channels, layer_visual_evolution, oracle_sensory_output_contract
+
+============================================================
+FILE: data\temple-ecosystems.md
+============================================================
+
+# temple-ecosystems.json
+
+2026-05-24 | data/temple-ecosystems.json
+
+Массив из 33 элементов
+Поля: matrixId, matrixSlug, matrixName, templeNameTemplate, universe, flora, minerals, creatures, ambient, basePassiveSvet
+- 
+- 
+- 
+- 
+- 
+
+
+============================================================
+FILE: data\temple-upgrades.md
+============================================================
+
+# temple-upgrades.json
+
+2026-05-24 | data/temple-upgrades.json
+
+Массив из 5 элементов
+Поля: level, name_ru, name_en, description, cost_light, passive_multiplier, meditation_bonus, unlock_feature
+- 
+- 
+- 
+- 
+- 
+
+
+============================================================
+FILE: data\vedic_loka_being_cards.md
+============================================================
+
+# vedic_loka_being_cards.json
+
+2026-05-24 | data/vedic_loka_being_cards.json
+
+Массив из 42 элементов
+Поля: card_id, card_type, rarity, matrix_slug, matrix_name, loka_id, loka_name, loka_sanskrit, loka_axis, cosmic_order
+- Брахма — Владыка Сатья-локи
+- Риши Сатья-локи
+- Порядок Сатьи
+- Огненные Тапасвины
+- Йоги Тапас-локи
+
+
+============================================================
+FILE: data\vedic_loka_cards.md
+============================================================
+
+# vedic_loka_cards.json
+
+2026-05-24 | data/vedic_loka_cards.json
+
+Массив из 14 элементов
+Поля: card_id, card_type, rarity, matrix_slug, matrix_name, display_name, sanskrit, axis, cosmic_order, element
+- 
+- 
+- 
+- 
+- 
+
+
+============================================================
+FILE: data\zones.md
+============================================================
+
+# zones.json
+
+2026-05-24 | data/zones.json
+
+Массив из 9 элементов
+Поля: id, slug, name, direction, element, planet, quality
+- Восток
+- Юго-Восток
+- Юг
+- Юго-Запад
+- Запад

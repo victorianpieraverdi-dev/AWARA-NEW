@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Oracle · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#c9a84c;
+  --gold-bright:#ffd700;
+  --gold-light:#fff8d6;
+  --bg:#02010a;
+  --line:rgba(201,168,76,0.18);
+  --text:rgba(255,248,214,0.85);
+  --text-soft:rgba(255,248,214,0.55);
+  --text-mute:rgba(255,255,255,0.35);
+  --accent:rgba(180,120,255,0.9);
+  --accent-dim:rgba(180,120,255,0.35);
+  --accent-bg:rgba(180,120,255,0.06);
+  --accent-line:rgba(180,120,255,0.18);
+}
+html,body{background:var(--bg);color:var(--text);min-height:100vh}
+body{
+  font-family:'JetBrains Mono',monospace;
+  display:flex;flex-direction:column;height:100vh;
+  background:
+    radial-gradient(ellipse at 20% 18%, rgba(124,58,237,0.46), transparent 38%),
+    radial-gradient(ellipse at 82% 72%, rgba(180,120,255,0.20), transparent 40%),
+    radial-gradient(ellipse at 50% 110%, rgba(80,40,160,0.30), transparent 55%),
+    linear-gradient(180deg,#070318 0%,#0d0626 45%,#05021a 100%),
+    var(--bg);
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+  overflow:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url('assets/starfield.svg');
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:0.95;
+}
+body::after{
+  content:'ॐ';position:fixed;left:50%;top:48%;transform:translate(-50%,-50%);
+  font-family:Georgia,serif;
+  font-size:min(520px,62vh);line-height:1;color:transparent;
+  -webkit-text-stroke:1px rgba(201,168,76,0.08);
+  pointer-events:none;z-index:0;
+}
+.wrap{
+  max-width:580px;margin:0 auto;width:100%;display:flex;flex-direction:column;height:100%;
+  padding:14px 14px 0;position:relative;z-index:1;
+}
+
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;gap:8px;flex-shrink:0;
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 14px;min-height:44px;
+  border:1px solid rgba(201,168,76,0.22);border-radius:12px;
+  font-family:Cinzel,serif;font-size:11px;
+  letter-spacing:0.2em;color:var(--text-soft);
+  text-decoration:none;cursor:pointer;transition:all 0.3s;
+  background:rgba(2,1,10,0.45);
+}
+.back-link:hover{border-color:var(--gold);color:var(--gold)}
+.logo-mark{font-family:'Cinzel Decorative',serif;font-size:12px;color:var(--text-mute);letter-spacing:0.15em}
+
+h1{
+  font-family:'Cinzel Decorative',serif;font-weight:700;
+  font-size:clamp(20px,5vw,28px);letter-spacing:0.15em;
+  text-align:center;color:var(--gold-light);margin-bottom:4px;flex-shrink:0;
+  text-shadow:0 0 18px rgba(180,120,255,0.55),0 0 32px rgba(201,168,76,0.18);
+}
+.subtitle{
+  font-family:Cinzel,serif;font-size:10px;letter-spacing:0.3em;
+  text-align:center;color:var(--accent-dim);margin-bottom:12px;flex-shrink:0;
+  text-transform:uppercase;
+}
+.oracle-aura{
+  position:relative;flex-shrink:0;
+  width:132px;height:132px;margin:0 auto 12px;
+  display:flex;align-items:center;justify-content:center;
+}
+.oracle-aura::before{
+  content:'';position:absolute;inset:-18px;border-radius:50%;
+  background:radial-gradient(circle,rgba(180,120,255,0.34),rgba(201,168,76,0.12) 42%,transparent 72%);
+  filter:blur(14px);
+}
+.oracle-aura::after{
+  content:'';position:absolute;inset:10px;border-radius:50%;
+  border:1px solid rgba(201,168,76,0.28);
+  box-shadow:0 0 24px rgba(180,120,255,0.25),inset 0 0 18px rgba(201,168,76,0.08);
+}
+.oracle-crystal{
+  position:relative;z-index:1;width:68px;height:68px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  background:radial-gradient(circle at 45% 35%,#fff8d6 0 8%,rgba(180,120,255,0.95) 28%,rgba(80,40,140,0.35) 58%,transparent 76%);
+  color:#fff8d6;font-size:34px;
+  box-shadow:0 0 24px rgba(180,120,255,0.55),0 0 58px rgba(201,168,76,0.18);
+}
+.oracle-ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:1px dashed rgba(201,168,76,0.32);
+  animation:oracleSpin 70s linear infinite;
+}
+@keyframes oracleSpin{to{transform:rotate(360deg)}}
+
+/* Context Selector */
+.ctx-bar{
+  display:flex;gap:6px;margin-bottom:12px;flex-shrink:0;
+  overflow-x:auto;scrollbar-width:none;padding:2px 0;
+}
+.ctx-bar::-webkit-scrollbar{display:none}
+.ctx-btn{
+  flex:1;min-width:0;padding:10px 6px;border-radius:14px;
+  border:1px solid rgba(180,120,255,0.20);
+  background:linear-gradient(135deg,rgba(180,120,255,0.075),rgba(8,5,18,0.46));
+  cursor:pointer;text-align:center;transition:all 0.3s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.ctx-btn:hover{border-color:var(--accent);background:rgba(180,120,255,0.1)}
+.ctx-btn.active{
+  border-color:rgba(255,215,80,0.42);
+  background:linear-gradient(135deg,rgba(180,120,255,0.18),rgba(201,168,76,0.075));
+  box-shadow:0 0 18px rgba(180,120,255,0.22),inset 0 0 16px rgba(201,168,76,0.04);
+}
+.ctx-icon{font-size:20px;line-height:1;filter:drop-shadow(0 0 8px rgba(180,120,255,0.35))}
+.ctx-name{
+  font-family:Cinzel,serif;font-size:8px;letter-spacing:0.1em;
+  color:var(--accent-dim);line-height:1.2;
+}
+.ctx-btn.active .ctx-name{color:var(--accent)}
+.ctx-desc{
+  font-size:10px;color:var(--accent-dim);text-align:center;
+  font-family:'JetBrains Mono',monospace;margin-bottom:8px;
+  flex-shrink:0;min-height:14px;
+}
+
+/* API Key Setup */
+.key-setup{
+  background:linear-gradient(135deg,rgba(18,14,30,0.72),rgba(8,5,18,0.62));
+  border:1px solid rgba(180,120,255,0.22);
+  border-radius:18px;padding:16px;margin-bottom:12px;flex-shrink:0;
+  box-shadow:inset 0 0 22px rgba(180,120,255,0.03);
+}
+.key-setup label{
+  font-family:Cinzel,serif;font-size:10px;letter-spacing:0.15em;
+  color:var(--accent-dim);text-transform:uppercase;display:block;margin-bottom:8px;
+}
+.key-row{display:flex;gap:8px;align-items:center}
+.key-input{
+  flex:1;background:rgba(180,120,255,0.04);color:var(--text);
+  border:1px solid var(--accent-line);border-radius:8px;
+  padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:13px;
+  outline:none;transition:border-color 0.3s;
+}
+.key-input:focus{border-color:var(--accent)}
+.key-input::placeholder{color:var(--text-mute);font-size:11px}
+.key-btn{
+  padding:10px 16px;border:1px solid var(--accent-line);border-radius:8px;
+  background:var(--accent-bg);color:var(--accent);cursor:pointer;
+  font-family:Cinzel,serif;font-size:10px;letter-spacing:0.15em;
+  transition:all 0.3s;white-space:nowrap;min-height:44px;
+}
+.key-btn:hover{background:rgba(180,120,255,0.15);border-color:var(--accent)}
+.key-status{
+  font-size:10px;color:var(--accent-dim);margin-top:6px;
+  font-family:'JetBrains Mono',monospace;
+}
+.key-status.ok{color:rgba(100,220,140,0.8)}
+.key-status.err{color:rgba(255,100,100,0.8)}
+
+/* Chat Area */
+.chat-area{
+  flex:1;overflow-y:auto;padding:12px;
+  display:flex;flex-direction:column;gap:10px;
+  scrollbar-width:thin;scrollbar-color:var(--accent-line) transparent;
+  border:1px solid rgba(180,120,255,0.12);
+  border-radius:20px;
+  background:linear-gradient(180deg,rgba(8,5,18,0.30),rgba(2,1,10,0.18));
+  box-shadow:inset 0 0 34px rgba(180,120,255,0.035);
+}
+.chat-area::-webkit-scrollbar{width:4px}
+.chat-area::-webkit-scrollbar-track{background:transparent}
+.chat-area::-webkit-scrollbar-thumb{background:var(--accent-line);border-radius:4px}
+
+.msg{
+  padding:12px 14px;border-radius:16px;
+  font-size:13px;line-height:1.6;max-width:88%;
+  word-wrap:break-word;
+}
+.msg.user{
+  align-self:flex-end;
+  background:rgba(180,120,255,0.1);border:1px solid rgba(180,120,255,0.2);
+  color:var(--text);
+}
+.msg.assistant{
+  align-self:flex-start;
+  background:linear-gradient(135deg,rgba(201,168,76,0.085),rgba(180,120,255,0.045));
+  border:1px solid rgba(201,168,76,0.18);
+  color:var(--text);
+  font-family:'Cormorant Garamond',serif;font-size:15px;
+}
+.msg.system{
+  align-self:center;text-align:center;
+  background:transparent;border:none;
+  color:var(--text-mute);font-size:11px;
+  font-family:'JetBrains Mono',monospace;
+}
+.msg.error{
+  align-self:center;text-align:center;
+  background:rgba(255,80,80,0.06);border:1px solid rgba(255,80,80,0.2);
+  color:rgba(255,120,120,0.9);font-size:12px;
+}
+
+.typing{
+  align-self:flex-start;padding:10px 14px;
+  color:var(--accent-dim);font-size:12px;
+  font-family:'JetBrains Mono',monospace;
+}
+.typing .dots{animation:blink 1.4s infinite both}
+@keyframes blink{0%,80%,100%{opacity:0.2}40%{opacity:1}}
+
+/* Welcome */
+.welcome{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:16px;padding:20px;text-align:center;
+}
+.welcome-icon{font-size:48px;filter:drop-shadow(0 0 20px rgba(180,120,255,0.4))}
+.welcome-text{
+  font-family:'Cormorant Garamond',serif;font-size:16px;
+  color:var(--text-soft);line-height:1.7;max-width:380px;
+}
+.welcome-hint{font-size:11px;color:var(--text-mute)}
+
+/* Input Area */
+.input-area{
+  flex-shrink:0;padding:12px 0 14px;
+  border-top:1px solid rgba(180,120,255,0.16);
+}
+.input-row{display:flex;gap:8px;align-items:flex-end}
+.chat-input{
+  flex:1;background:rgba(2,1,10,0.55);color:var(--text);
+  border:1px solid rgba(180,120,255,0.24);border-radius:16px;
+  padding:12px 14px;font-family:'Cormorant Garamond',serif;font-size:15px;
+  outline:none;resize:none;max-height:120px;min-height:44px;
+  transition:border-color 0.3s;line-height:1.5;
+}
+.chat-input:focus{border-color:var(--accent)}
+.chat-input::placeholder{color:var(--text-mute);font-size:13px}
+.send-btn{
+  width:44px;height:44px;border-radius:16px;
+  background:linear-gradient(135deg,rgba(255,215,80,0.22),rgba(180,120,255,0.16));
+  border:1px solid rgba(255,215,80,0.34);
+  color:var(--gold-light);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;transition:all 0.3s;flex-shrink:0;
+}
+.send-btn:hover{background:rgba(180,120,255,0.25);border-color:var(--accent)}
+.send-btn:disabled{opacity:0.3;cursor:not-allowed}
+.clear-btn{
+  width:44px;height:44px;border-radius:12px;
+  background:transparent;border:1px solid var(--accent-line);
+  color:var(--text-mute);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:all 0.3s;flex-shrink:0;
+}
+.clear-btn:hover{border-color:rgba(255,100,100,0.4);color:rgba(255,100,100,0.7)}
+
+/* Settings toggle */
+.settings-toggle{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:6px 10px;border:1px solid var(--accent-line);border-radius:8px;
+  background:var(--accent-bg);color:var(--accent-dim);
+  cursor:pointer;font-size:10px;font-family:Cinzel,serif;
+  letter-spacing:0.1em;transition:all 0.3s;min-height:44px;
+}
+.settings-toggle:hover{border-color:var(--accent);color:var(--accent)}
+
+.model-select{
+  width:100%;background:rgba(180,120,255,0.04);color:var(--text);
+  border:1px solid var(--accent-line);border-radius:8px;
+  padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  outline:none;cursor:pointer;transition:border-color 0.3s;
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(180,120,255,0.5)'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.model-select:focus{border-color:var(--accent)}
+.model-select option{background:#0a0a14;color:var(--text)}
+@media(max-width:560px){
+  body{padding:8px 6px 0}
+  .wrap{
+    width:min(430px,100%);
+    max-width:none;
+    padding:12px 12px 0;
+    border:1px solid rgba(201,168,76,0.18);
+    border-radius:30px 30px 0 0;
+    background:transparent;
+    box-shadow:0 0 0 1px rgba(255,215,80,0.06),0 30px 120px rgba(0,0,0,0.55),inset 0 0 48px rgba(201,168,76,0.03);
+  }
+  h1{font-size:24px;letter-spacing:0.12em}
+  .subtitle{letter-spacing:0.18em}
+  .oracle-aura{width:112px;height:112px;margin-bottom:10px}
+  .oracle-crystal{width:60px;height:60px;font-size:30px}
+  .ctx-bar{display:grid;grid-template-columns:repeat(2,1fr);overflow:visible}
+  .ctx-btn{min-height:58px}
+  .key-row{display:grid;grid-template-columns:1fr;gap:8px}
+  .key-btn,.settings-toggle{width:100%;justify-content:center}
+  .msg{max-width:94%;font-size:14px}
+  .msg.assistant{font-size:16px}
+  .welcome-text{font-size:17px}
+  .input-row{gap:6px}
+  .chat-input{font-size:16px;min-height:48px}
+  .send-btn,.clear-btn{width:48px;height:48px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="back-link" href="index.html" data-i18n="nav.lobby">&larr; ЛОББИ</a>
+    <span class="logo-mark">AWARA</span>
+  </div>
+
+  <h1 data-i18n="oracle.title">ОРАКУЛ</h1>
+  <div class="subtitle" data-i18n="oracle.subtitle">мудрость древних традиций</div>
+  <div class="oracle-aura" aria-hidden="true">
+    <div class="oracle-ring"></div>
+    <div class="oracle-crystal">&#128302;</div>
+  </div>
+
+  <!-- Context Selector -->
+  <div id="ctxBar" class="ctx-bar"></div>
+  <div id="ctxDesc" class="ctx-desc"></div>
+
+  <!-- API Key Setup (collapsible) -->
+  <div id="keyPanel" class="key-setup">
+    <label>OpenRouter API Key</label>
+    <div class="key-row">
+      <input id="keyInput" class="key-input" type="password" placeholder="sk-or-v1-..." autocomplete="off">
+      <button id="keySaveBtn" class="key-btn" onclick="saveKey()" data-i18n="oracle.save">СОХРАНИТЬ</button>
+      <button class="settings-toggle" onclick="toggleKeyPanel()" data-i18n-title="oracle.hide" title="Скрыть">&#10005;</button>
+    </div>
+    <div id="keyStatus" class="key-status"></div>
+    <label style="margin-top:12px;display:block;" data-i18n="oracle.model.label">Модель</label>
+    <select id="modelSelect" class="model-select" onchange="changeModel(this.value)"></select>
+    <div style="margin-top:8px;font-size:10px;color:var(--text-mute);">
+      <span data-i18n="oracle.key.saved.local">Ключ хранится только в вашем браузере.</span> <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent-dim)" data-i18n="oracle.key.get">Получить ключ</a>
+    </div>
+  </div>
+
+  <!-- Collapsed key indicator -->
+  <div id="keyBar" style="display:none;margin-bottom:12px;flex-shrink:0;">
+    <button class="settings-toggle" onclick="toggleKeyPanel()" style="width:100%;justify-content:center;">
+      &#9881; <span data-i18n="oracle.settings">НАСТРОЙКИ API</span>
+    </button>
+  </div>
+
+  <!-- Chat Messages -->
+  <div id="chatArea" class="chat-area">
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">&#128302;</div>
+      <div class="welcome-text">
+        <span data-i18n="oracle.welcome">Задай вопрос Оракулу.</span><br>
+        <span data-i18n="oracle.welcome.desc">Он ответит в контексте твоего пути в AWARA &mdash; агент дня, матрица, стихия, натальная карта.</span>
+      </div>
+      <div class="welcome-hint" data-i18n="oracle.welcome.hint">Введи сообщение внизу и нажми &rarr;</div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-area">
+    <div class="input-row">
+      <textarea id="chatInput" class="chat-input" rows="1" placeholder="Задай вопрос Оракулу..." data-i18n-placeholder="oracle.placeholder" disabled></textarea>
+      <button id="sendBtn" class="send-btn" onclick="doSend()" disabled data-i18n-title="oracle.send" title="Отправить">&rarr;</button>
+      <button class="clear-btn" onclick="doClear()" data-i18n-title="oracle.clear.history" title="Очистить историю">&#8634;</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { t, initLang, applyTranslations } from './js/i18n.js';
+import { getApiKey, setApiKey, getHistory, saveHistory, clearHistory, sendMessage, getModel, setModel, AVAILABLE_MODELS, getContext, setContext, ORACLE_CONTEXTS } from './js/oracle.js';
+initLang();
+
+const chatArea = document.getElementById('chatArea');
+const chatInput = document.getElementById('chatInput');
+const sendBtn = document.getElementById('sendBtn');
+const keyInput = document.getElementById('keyInput');
+const keyStatus = document.getElementById('keyStatus');
+const keyPanel = document.getElementById('keyPanel');
+const keyBar = document.getElementById('keyBar');
+const welcome = document.getElementById('welcome');
+const modelSelect = document.getElementById('modelSelect');
+const ctxBar = document.getElementById('ctxBar');
+const ctxDescEl = document.getElementById('ctxDesc');
+
+let chatHistory = [];
+let sending = false;
+
+function initContextSelector() {
+  const current = getContext();
+  ORACLE_CONTEXTS.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'ctx-btn' + (c.id === current ? ' active' : '');
+    btn.dataset.ctx = c.id;
+    btn.innerHTML = `<span class="ctx-icon">${c.icon}</span><span class="ctx-name">${c.name}</span>`;
+    btn.onclick = () => switchContext(c.id);
+    ctxBar.appendChild(btn);
+  });
+  const active = ORACLE_CONTEXTS.find(c => c.id === current);
+  if (active) ctxDescEl.textContent = active.desc;
+}
+
+function switchContext(contextId) {
+  setContext(contextId);
+  ctxBar.querySelectorAll('.ctx-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.ctx === contextId);
+  });
+  const active = ORACLE_CONTEXTS.find(c => c.id === contextId);
+  if (active) ctxDescEl.textContent = active.desc;
+  clearHistory();
+  chatHistory = [];
+  chatArea.innerHTML = '';
+  chatArea.appendChild(welcome);
+  welcome.style.display = 'flex';
+  const ctxLabel = ORACLE_CONTEXTS.find(c => c.id === contextId);
+  if (ctxLabel) {
+    appendMsg('system', t('oracle.mode') + ' ' + ctxLabel.name, false);
+  }
+}
+
+function initModelSelector() {
+  const current = getModel();
+  AVAILABLE_MODELS.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.id;
+    opt.textContent = `${m.name} — ${m.desc}`;
+    if (m.id === current) opt.selected = true;
+    modelSelect.appendChild(opt);
+  });
+}
+
+window.changeModel = function(modelId) {
+  setModel(modelId);
+};
+
+function init() {
+  initContextSelector();
+  initModelSelector();
+  const key = getApiKey();
+  if (key) {
+    keyInput.value = key;
+    keyStatus.textContent = t('oracle.key.saved');
+    keyStatus.className = 'key-status ok';
+    enableChat();
+    keyPanel.style.display = 'none';
+    keyBar.style.display = 'block';
+  }
+  chatHistory = getHistory();
+  if (chatHistory.length > 0) {
+    welcome.style.display = 'none';
+    chatHistory.forEach(m => appendMsg(m.role, m.content, false));
+    scrollToBottom();
+  }
+}
+
+function enableChat() {
+  chatInput.disabled = false;
+  sendBtn.disabled = false;
+  chatInput.placeholder = t('oracle.welcome.hint');
+}
+
+function disableChat() {
+  chatInput.disabled = true;
+  sendBtn.disabled = true;
+  chatInput.placeholder = t('oracle.placeholder.key');
+}
+
+window.saveKey = function() {
+  const key = keyInput.value.trim();
+  if (!key) {
+    keyStatus.textContent = t('oracle.key.enter');
+    keyStatus.className = 'key-status err';
+    return;
+  }
+  setApiKey(key);
+  keyStatus.textContent = t('oracle.key.saved');
+  keyStatus.className = 'key-status ok';
+  enableChat();
+  chatInput.focus();
+};
+
+window.toggleKeyPanel = function() {
+  const hidden = keyPanel.style.display === 'none';
+  keyPanel.style.display = hidden ? 'block' : 'none';
+  keyBar.style.display = hidden ? 'none' : 'block';
+};
+
+function appendMsg(role, content, save = true) {
+  if (welcome.style.display !== 'none' && role !== 'system') {
+    welcome.style.display = 'none';
+  }
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.textContent = content;
+  chatArea.appendChild(div);
+  if (save) {
+    chatHistory.push({ role, content });
+    saveHistory(chatHistory);
+  }
+  scrollToBottom();
+}
+
+function appendTyping() {
+  const div = document.createElement('div');
+  div.className = 'typing';
+  div.id = 'typingIndicator';
+  div.innerHTML = t('oracle.thinking') + '<span class="dots">...</span>';
+  chatArea.appendChild(div);
+  scrollToBottom();
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
+
+function scrollToBottom() {
+  requestAnimationFrame(() => {
+    chatArea.scrollTop = chatArea.scrollHeight;
+  });
+}
+
+window.doSend = async function() {
+  const text = chatInput.value.trim();
+  if (!text || sending) return;
+
+  const key = getApiKey();
+  if (!key) {
+    keyPanel.style.display = 'block';
+    keyBar.style.display = 'none';
+    keyStatus.textContent = t('oracle.error.nokey');
+    keyStatus.className = 'key-status err';
+    return;
+  }
+
+  sending = true;
+  sendBtn.disabled = true;
+  chatInput.value = '';
+  chatInput.style.height = 'auto';
+
+  appendMsg('user', text);
+  appendTyping();
+
+  try {
+    const historyForApi = chatHistory.slice(0, -1);
+    const reply = await sendMessage(text, historyForApi);
+    removeTyping();
+    appendMsg('assistant', reply);
+  } catch (e) {
+    removeTyping();
+    let errMsg = t('oracle.error.conn');
+    if (e.message === 'API_KEY_MISSING') {
+      errMsg = t('oracle.error.nokey');
+      keyPanel.style.display = 'block';
+      keyBar.style.display = 'none';
+    } else if (e.message === 'API_KEY_INVALID') {
+      errMsg = t('oracle.error.badkey');
+      keyPanel.style.display = 'block';
+      keyBar.style.display = 'none';
+      keyStatus.textContent = t('oracle.key.invalid');
+      keyStatus.className = 'key-status err';
+    } else if (e.message === 'API_CREDITS_EMPTY') {
+      errMsg = t('oracle.error.credits');
+    } else if (e.message === 'API_RATE_LIMIT') {
+      errMsg = t('oracle.error.rate');
+    } else if (e.message === 'API_EMPTY_RESPONSE') {
+      errMsg = t('oracle.error.silent');
+    }
+    const errDiv = document.createElement('div');
+    errDiv.className = 'msg error';
+    errDiv.textContent = errMsg;
+    chatArea.appendChild(errDiv);
+    scrollToBottom();
+  } finally {
+    sending = false;
+    sendBtn.disabled = false;
+    chatInput.focus();
+  }
+};
+
+window.doClear = function() {
+  if (chatHistory.length === 0) return;
+  if (!confirm(t('oracle.clear.confirm'))) return;
+  clearHistory();
+  chatHistory = [];
+  chatArea.innerHTML = '';
+  chatArea.appendChild(welcome);
+  welcome.style.display = 'flex';
+};
+
+chatInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    window.doSend();
+  }
+});
+
+chatInput.addEventListener('input', () => {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+});
+
+init();
+applyTranslations();
+</script>
+
+<!-- Подсказки (M-006) -->
+<button class="hint-btn" title="Подсказки" data-i18n-title="app.help">?</button>
+<script type="module">
+import { initHints } from './js/hints-module.js';
+initHints('oracle');
+</script>
+
+<!-- M-033: RU/EN переключатель -->
+<div style="position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px">
+  <button id="lang-ru" onclick="localStorage.setItem('awara_lang','ru');if(window.switchLang)window.switchLang('ru');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">RU</button>
+  <button id="lang-en" onclick="localStorage.setItem('awara_lang','en');if(window.switchLang)window.switchLang('en');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">EN</button>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang, createLangSwitcher } from './js/i18n.js';
+window.switchLang = function(lang) {
+  setLang(lang);
+  translatePage();
+  createLangSwitcher();
+  document.querySelectorAll('#lang-ru,#lang-en').forEach(function(b){
+    b.style.borderColor = b.textContent === lang.toUpperCase() ? '#ffd700' : 'rgba(201,168,76,.2)';
+    b.style.color = b.textContent === lang.toUpperCase() ? '#ffd700' : '#c9a84c';
+  });
+};
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  createLangSwitcher();
+  var cur = getLang();
+  if (window.switchLang) window.switchLang(cur);
+});
+</script>
+</body>
+</html>

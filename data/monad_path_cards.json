@@ -1,0 +1,578 @@
+[
+  {
+    "card_id": "monad_path__polar_race",
+    "card_type": "monad_path",
+    "rarity": "legendary",
+    "display_name": "I. Полярная раса",
+    "category": "stage",
+    "element": "Эфир",
+    "arc_phase": "инволюция",
+    "role": "эфирный бессознательный дух",
+    "mythology": "эфирные бесплотные существа, чистая духовная возможность без физического тела и индивидуального самосознания",
+    "description": "эфирные бесплотные существа, чистая духовная возможность без физического тела и индивидуального самосознания",
+    "player_effect": "учит игрока теме первичной невинности, до-личностного света и начала нисхождения",
+    "visual": "ethereal polar beings of pure light, translucent human seeds, arctic cosmic dawn, no physical bodies",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "учит игрока теме первичной невинности, до-личностного света и начала нисхождения",
+      "arc_phase": "инволюция",
+      "category": "stage"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__polar_race.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: I. Полярная раса — эфирный бессознательный дух, карта Пути Монады в эзотерической космологии. Смысл: эфирные бесплотные существа, чистая духовная возможность без физического тела и индивидуального самосознания Игровое влияние: учит игрока теме первичной невинности, до-личностного света и начала нисхождения Фаза пути: инволюция. Стихия: Эфир. Визуальная сцена: ethereal polar beings of pure light, translucent human seeds, arctic cosmic dawn, no physical bodies. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__hyperborean_race",
+    "card_type": "monad_path",
+    "rarity": "epic",
+    "display_name": "II. Гиперборейская раса",
+    "category": "stage",
+    "element": "Воздух",
+    "arc_phase": "инволюция",
+    "role": "полудуховное уплотнение",
+    "mythology": "начало уплотнения формы, формирование пранического энергетического контура, зарождение жизненного дыхания",
+    "description": "начало уплотнения формы, формирование пранического энергетического контура, зарождение жизненного дыхания",
+    "player_effect": "открывает квесты жизненной силы, дыхания и первых границ формы",
+    "visual": "semi-spiritual Hyperborean beings, aurora continents, pranic luminous outlines, floating subtle bodies",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "открывает квесты жизненной силы, дыхания и первых границ формы",
+      "arc_phase": "инволюция",
+      "category": "stage"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__hyperborean_race.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: II. Гиперборейская раса — полудуховное уплотнение, карта Пути Монады в эзотерической космологии. Смысл: начало уплотнения формы, формирование пранического энергетического контура, зарождение жизненного дыхания Игровое влияние: открывает квесты жизненной силы, дыхания и первых границ формы Фаза пути: инволюция. Стихия: Воздух. Визуальная сцена: semi-spiritual Hyperborean beings, aurora continents, pranic luminous outlines, floating subtle bodies. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__lemurian_race",
+    "card_type": "monad_path",
+    "rarity": "legendary",
+    "display_name": "III. Лемурийская раса",
+    "category": "stage",
+    "element": "Огонь",
+    "arc_phase": "инволюция",
+    "role": "пробуждение Манаса",
+    "mythology": "обретение плотного тела, разделение полов, сошествие Манасапутр и зажигание искры интеллекта",
+    "description": "обретение плотного тела, разделение полов, сошествие Манасапутр и зажигание искры интеллекта",
+    "player_effect": "даёт карты пробуждения разума, тела, пола, ответственности и огня индивидуальности",
+    "visual": "ancient Lemurian titanic silhouettes, volcanic earth, solar angels descending, flame of mind igniting humanity",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "даёт карты пробуждения разума, тела, пола, ответственности и огня индивидуальности",
+      "arc_phase": "инволюция",
+      "category": "stage"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__lemurian_race.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: III. Лемурийская раса — пробуждение Манаса, карта Пути Монады в эзотерической космологии. Смысл: обретение плотного тела, разделение полов, сошествие Манасапутр и зажигание искры интеллекта Игровое влияние: даёт карты пробуждения разума, тела, пола, ответственности и огня индивидуальности Фаза пути: инволюция. Стихия: Огонь. Визуальная сцена: ancient Lemurian titanic silhouettes, volcanic earth, solar angels descending, flame of mind igniting humanity. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__atlantean_race",
+    "card_type": "monad_path",
+    "rarity": "legendary",
+    "display_name": "IV. Атлантическая раса",
+    "category": "stage",
+    "element": "Вода",
+    "arc_phase": "нижняя точка",
+    "role": "максимальная плотность и астральная мощь",
+    "mythology": "полное погружение в физическую материю, расцвет астральной магии, технологий, эмоциональной силы и последующий катаклизм",
+    "description": "полное погружение в физическую материю, расцвет астральной магии, технологий, эмоциональной силы и последующий катаклизм",
+    "player_effect": "проверяет игрока на власть, эмоции, магию желания и злоупотребление силой",
+    "visual": "Atlantean crystal cities, storm oceans, astral magic, colossal waves, luminous technology and tragic flood",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "проверяет игрока на власть, эмоции, магию желания и злоупотребление силой",
+      "arc_phase": "нижняя точка",
+      "category": "stage"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__atlantean_race.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: IV. Атлантическая раса — максимальная плотность и астральная мощь, карта Пути Монады в эзотерической космологии. Смысл: полное погружение в физическую материю, расцвет астральной магии, технологий, эмоциональной силы и последующий катаклизм Игровое влияние: проверяет игрока на власть, эмоции, магию желания и злоупотребление силой Фаза пути: нижняя точка. Стихия: Вода. Визуальная сцена: Atlantean crystal cities, storm oceans, astral magic, colossal waves, luminous technology and tragic flood. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__aryan_race",
+    "card_type": "monad_path",
+    "rarity": "epic",
+    "display_name": "V. Арийская раса",
+    "category": "stage",
+    "element": "Земля",
+    "arc_phase": "эволюция",
+    "role": "развитие низшего Манаса",
+    "mythology": "текущая стадия аналитического интеллекта, различения, культуры, науки и преодоления диктата желания",
+    "description": "текущая стадия аналитического интеллекта, различения, культуры, науки и преодоления диктата желания",
+    "player_effect": "усиливает карты выбора, дисциплины ума, кармы и ответственности эпохи",
+    "visual": "current human age, sacred cities, books, tools, analytical mind mandalas, earth path rising from ruins",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "усиливает карты выбора, дисциплины ума, кармы и ответственности эпохи",
+      "arc_phase": "эволюция",
+      "category": "stage"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__aryan_race.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: V. Арийская раса — развитие низшего Манаса, карта Пути Монады в эзотерической космологии. Смысл: текущая стадия аналитического интеллекта, различения, культуры, науки и преодоления диктата желания Игровое влияние: усиливает карты выбора, дисциплины ума, кармы и ответственности эпохи Фаза пути: эволюция. Стихия: Земля. Визуальная сцена: current human age, sacred cities, books, tools, analytical mind mandalas, earth path rising from ruins. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__sixth_race",
+    "card_type": "monad_path",
+    "rarity": "mythic",
+    "display_name": "VI. Шестая раса",
+    "category": "stage",
+    "element": "Воздух",
+    "arc_phase": "эволюция",
+    "role": "пробуждение Буддхи",
+    "mythology": "грядущий синтез интеллекта и духовной интуиции, мудрости, сострадания и группового сознания",
+    "description": "грядущий синтез интеллекта и духовной интуиции, мудрости, сострадания и группового сознания",
+    "player_effect": "открывает карты будущего, интуиции, любви, братства и коллективной эволюции",
+    "visual": "future luminous humanity, heart-mind halos, group consciousness, rainbow buddhic light, peaceful radiant cities",
+    "game_significance": {
+      "significance_tier": "monadic_axis",
+      "gameplay_hint": "открывает карты будущего, интуиции, любви, братства и коллективной эволюции",
+      "arc_phase": "эволюция",
+      "category": "stage"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__sixth_race.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: VI. Шестая раса — пробуждение Буддхи, карта Пути Монады в эзотерической космологии. Смысл: грядущий синтез интеллекта и духовной интуиции, мудрости, сострадания и группового сознания Игровое влияние: открывает карты будущего, интуиции, любви, братства и коллективной эволюции Фаза пути: эволюция. Стихия: Воздух. Визуальная сцена: future luminous humanity, heart-mind halos, group consciousness, rainbow buddhic light, peaceful radiant cities. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__seventh_race",
+    "card_type": "monad_path",
+    "rarity": "mythic",
+    "display_name": "VII. Седьмая раса",
+    "category": "stage",
+    "element": "Эфир",
+    "arc_phase": "эволюция",
+    "role": "раскрытие Атмы",
+    "mythology": "финальная стадия земного цикла, духовное просветление и возвращение Монады к божественному источнику с самосознанием",
+    "description": "финальная стадия земного цикла, духовное просветление и возвращение Монады к божественному источнику с самосознанием",
+    "player_effect": "является высшей картой завершения цикла, интеграции и перехода на новый космический виток",
+    "visual": "final radiant humanity of Atma, golden-white ascension, monads returning to divine source, cosmic spiral completion",
+    "game_significance": {
+      "significance_tier": "monadic_axis",
+      "gameplay_hint": "является высшей картой завершения цикла, интеграции и перехода на новый космический виток",
+      "arc_phase": "эволюция",
+      "category": "stage"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__seventh_race.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: VII. Седьмая раса — раскрытие Атмы, карта Пути Монады в эзотерической космологии. Смысл: финальная стадия земного цикла, духовное просветление и возвращение Монады к божественному источнику с самосознанием Игровое влияние: является высшей картой завершения цикла, интеграции и перехода на новый космический виток Фаза пути: эволюция. Стихия: Эфир. Визуальная сцена: final radiant humanity of Atma, golden-white ascension, monads returning to divine source, cosmic spiral completion. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__atma",
+    "card_type": "monad_path",
+    "rarity": "mythic",
+    "display_name": "Атма",
+    "category": "principle",
+    "element": "Эфир",
+    "arc_phase": "семь принципов человека",
+    "role": "божественный дух",
+    "mythology": "высший принцип человека, луч универсального духа и источник духовной воли",
+    "description": "высший принцип человека, луч универсального духа и источник духовной воли",
+    "player_effect": "усиливает карты предназначения, высшей воли и финального смысла",
+    "visual": "pure divine spark above crown, white-gold flame, monadic ray, cosmic source",
+    "game_significance": {
+      "significance_tier": "monadic_axis",
+      "gameplay_hint": "усиливает карты предназначения, высшей воли и финального смысла",
+      "arc_phase": "семь принципов человека",
+      "category": "principle"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__atma.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: Атма — божественный дух, карта Пути Монады в эзотерической космологии. Смысл: высший принцип человека, луч универсального духа и источник духовной воли Игровое влияние: усиливает карты предназначения, высшей воли и финального смысла Фаза пути: семь принципов человека. Стихия: Эфир. Визуальная сцена: pure divine spark above crown, white-gold flame, monadic ray, cosmic source. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__buddhi",
+    "card_type": "monad_path",
+    "rarity": "legendary",
+    "display_name": "Буддхи",
+    "category": "principle",
+    "element": "Воздух",
+    "arc_phase": "семь принципов человека",
+    "role": "духовная душа",
+    "mythology": "интуитивная мудрость, сострадание, безусловная любовь и способность прямого знания",
+    "description": "интуитивная мудрость, сострадание, безусловная любовь и способность прямого знания",
+    "player_effect": "открывает квесты сердца, мудрости и синтеза",
+    "visual": "buddhic lotus heart, rainbow-gold aura, compassionate wisdom light",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "открывает квесты сердца, мудрости и синтеза",
+      "arc_phase": "семь принципов человека",
+      "category": "principle"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__buddhi.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: Буддхи — духовная душа, карта Пути Монады в эзотерической космологии. Смысл: интуитивная мудрость, сострадание, безусловная любовь и способность прямого знания Игровое влияние: открывает квесты сердца, мудрости и синтеза Фаза пути: семь принципов человека. Стихия: Воздух. Визуальная сцена: buddhic lotus heart, rainbow-gold aura, compassionate wisdom light. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__manas",
+    "card_type": "monad_path",
+    "rarity": "legendary",
+    "display_name": "Манас",
+    "category": "principle",
+    "element": "Огонь",
+    "arc_phase": "семь принципов человека",
+    "role": "разум",
+    "mythology": "мыслящий принцип, мост между животной природой и духовной душой, искра самосознания",
+    "description": "мыслящий принцип, мост между животной природой и духовной душой, искра самосознания",
+    "player_effect": "влияет на выбор, стратегию, обучение и различение",
+    "visual": "fiery mind mandala, solar angel spark, luminous brain-lotus bridge",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "влияет на выбор, стратегию, обучение и различение",
+      "arc_phase": "семь принципов человека",
+      "category": "principle"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__manas.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: Манас — разум, карта Пути Монады в эзотерической космологии. Смысл: мыслящий принцип, мост между животной природой и духовной душой, искра самосознания Игровое влияние: влияет на выбор, стратегию, обучение и различение Фаза пути: семь принципов человека. Стихия: Огонь. Визуальная сцена: fiery mind mandala, solar angel spark, luminous brain-lotus bridge. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__kama",
+    "card_type": "monad_path",
+    "rarity": "epic",
+    "display_name": "Кама",
+    "category": "principle",
+    "element": "Вода",
+    "arc_phase": "семь принципов человека",
+    "role": "желание",
+    "mythology": "астрально-эмоциональный принцип влечения, страсти, жажды опыта и привязанности",
+    "description": "астрально-эмоциональный принцип влечения, страсти, жажды опыта и привязанности",
+    "player_effect": "проверяет игрока на желания, эмоции и зависимость от образов",
+    "visual": "astral desire waters, crimson-blue waves, emotional moon mirror, lotus and chains",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "проверяет игрока на желания, эмоции и зависимость от образов",
+      "arc_phase": "семь принципов человека",
+      "category": "principle"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__kama.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: Кама — желание, карта Пути Монады в эзотерической космологии. Смысл: астрально-эмоциональный принцип влечения, страсти, жажды опыта и привязанности Игровое влияние: проверяет игрока на желания, эмоции и зависимость от образов Фаза пути: семь принципов человека. Стихия: Вода. Визуальная сцена: astral desire waters, crimson-blue waves, emotional moon mirror, lotus and chains. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__prana",
+    "card_type": "monad_path",
+    "rarity": "epic",
+    "display_name": "Прана",
+    "category": "principle",
+    "element": "Воздух",
+    "arc_phase": "семь принципов человека",
+    "role": "жизненная сила",
+    "mythology": "дыхание жизни, энергетический ток, оживляющий форму и связывающий тело с тонкими полями",
+    "description": "дыхание жизни, энергетический ток, оживляющий форму и связывающий тело с тонкими полями",
+    "player_effect": "усиливает восстановление, daily energy и телесную осознанность",
+    "visual": "visible pranic winds, golden breath spirals, living energy currents",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "усиливает восстановление, daily energy и телесную осознанность",
+      "arc_phase": "семь принципов человека",
+      "category": "principle"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__prana.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: Прана — жизненная сила, карта Пути Монады в эзотерической космологии. Смысл: дыхание жизни, энергетический ток, оживляющий форму и связывающий тело с тонкими полями Игровое влияние: усиливает восстановление, daily energy и телесную осознанность Фаза пути: семь принципов человека. Стихия: Воздух. Визуальная сцена: visible pranic winds, golden breath spirals, living energy currents. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__linga_sharira",
+    "card_type": "monad_path",
+    "rarity": "rare",
+    "display_name": "Линга Шарира",
+    "category": "principle",
+    "element": "Эфир",
+    "arc_phase": "семь принципов человека",
+    "role": "эфирный двойник",
+    "mythology": "тонкая матрица формы, энергетический шаблон физического тела",
+    "description": "тонкая матрица формы, энергетический шаблон физического тела",
+    "player_effect": "связан с картами формы, здоровья, образа и скрытой структуры",
+    "visual": "etheric human double, blue-violet subtle body grid, sacred anatomy lines",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "связан с картами формы, здоровья, образа и скрытой структуры",
+      "arc_phase": "семь принципов человека",
+      "category": "principle"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__linga_sharira.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: Линга Шарира — эфирный двойник, карта Пути Монады в эзотерической космологии. Смысл: тонкая матрица формы, энергетический шаблон физического тела Игровое влияние: связан с картами формы, здоровья, образа и скрытой структуры Фаза пути: семь принципов человека. Стихия: Эфир. Визуальная сцена: etheric human double, blue-violet subtle body grid, sacred anatomy lines. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__sthula_sharira",
+    "card_type": "monad_path",
+    "rarity": "rare",
+    "display_name": "Стхула Шарира",
+    "category": "principle",
+    "element": "Земля",
+    "arc_phase": "семь принципов человека",
+    "role": "физическое тело",
+    "mythology": "плотная форма воплощения, инструмент действия, опыта и кармической проверки",
+    "description": "плотная форма воплощения, инструмент действия, опыта и кармической проверки",
+    "player_effect": "даёт земные квесты тела, привычек, труда и материи",
+    "visual": "sacred physical body as temple, earth, bones, roots, golden anatomical mandala",
+    "game_significance": {
+      "significance_tier": "evolutionary_stage",
+      "gameplay_hint": "даёт земные квесты тела, привычек, труда и материи",
+      "arc_phase": "семь принципов человека",
+      "category": "principle"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__sthula_sharira.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: Стхула Шарира — физическое тело, карта Пути Монады в эзотерической космологии. Смысл: плотная форма воплощения, инструмент действия, опыта и кармической проверки Игровое влияние: даёт земные квесты тела, привычек, труда и материи Фаза пути: семь принципов человека. Стихия: Земля. Визуальная сцена: sacred physical body as temple, earth, bones, roots, golden anatomical mandala. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__involution_arc",
+    "card_type": "monad_path",
+    "rarity": "mythic",
+    "display_name": "Дуга Инволюции",
+    "category": "arc",
+    "element": "Тьма",
+    "arc_phase": "нисхождение души",
+    "role": "великая дуга пути",
+    "mythology": "нисхождение Монады из чистого духа в плотную материю для обретения формы, тела, границ и опыта",
+    "description": "нисхождение Монады из чистого духа в плотную материю для обретения формы, тела, границ и опыта",
+    "player_effect": "открывает сценарии погружения, испытания формой, тенью, желанием и плотностью",
+    "visual": "great descending cosmic arc, monad falling into matter, spiral from white light into dense world",
+    "game_significance": {
+      "significance_tier": "monadic_axis",
+      "gameplay_hint": "открывает сценарии погружения, испытания формой, тенью, желанием и плотностью",
+      "arc_phase": "нисхождение души",
+      "category": "arc"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__involution_arc.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: Дуга Инволюции — великая дуга пути, карта Пути Монады в эзотерической космологии. Смысл: нисхождение Монады из чистого духа в плотную материю для обретения формы, тела, границ и опыта Игровое влияние: открывает сценарии погружения, испытания формой, тенью, желанием и плотностью Фаза пути: нисхождение души. Стихия: Тьма. Визуальная сцена: great descending cosmic arc, monad falling into matter, spiral from white light into dense world. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  },
+  {
+    "card_id": "monad_path__evolution_arc",
+    "card_type": "monad_path",
+    "rarity": "mythic",
+    "display_name": "Дуга Эволюции",
+    "category": "arc",
+    "element": "Эфир",
+    "arc_phase": "восхождение души",
+    "role": "великая дуга пути",
+    "mythology": "возвращение Монады к духовному Источнику через пробуждение самосознания, мудрости и духовной воли",
+    "description": "возвращение Монады к духовному Источнику через пробуждение самосознания, мудрости и духовной воли",
+    "player_effect": "открывает сценарии восхождения, интеграции опыта и возвращения к источнику",
+    "visual": "great ascending cosmic arc, soul rising from matter to spirit, golden spiral to divine source",
+    "game_significance": {
+      "significance_tier": "monadic_axis",
+      "gameplay_hint": "открывает сценарии восхождения, интеграции опыта и возвращения к источнику",
+      "arc_phase": "восхождение души",
+      "category": "arc"
+    },
+    "unlock_context": [
+      "monad_path",
+      "esoteric_evolution",
+      "cosmic_cycle",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "monad_progression",
+      "principle_activation",
+      "involution_evolution_arc",
+      "consciousness_stage_unlock"
+    ],
+    "negative_prompt": "Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты.",
+    "image_path": "cards_monad_path/monad_path__evolution_arc.webp",
+    "type_label": "ПУТЬ МОНАДЫ",
+    "prompt": "Создай роскошную коллекционную карту в стиле эпического мистического таро. Центральный образ: Дуга Эволюции — великая дуга пути, карта Пути Монады в эзотерической космологии. Смысл: возвращение Монады к духовному Источнику через пробуждение самосознания, мудрости и духовной воли Игровое влияние: открывает сценарии восхождения, интеграции опыта и возвращения к источнику Фаза пути: восхождение души. Стихия: Эфир. Визуальная сцена: great ascending cosmic arc, soul rising from matter to spirit, golden spiral to divine source. Передай инволюцию и эволюцию души, семь принципов человека, космические циклы, монадическую искру, сакральные диаграммы и золотую рамку. Стиль: premium mystical tarot card art, esoteric cosmology, theosophical symbolic diagram atmosphere, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred lighting, cosmic evolution, no readable text. Ни текста, ни надписей, ни букв, ни водяных знаков, ни логотипов, ни подписи художника — только изображение карты."
+  }
+]

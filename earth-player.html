@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Player's Earth · Dominion of RA · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#c9a84c;--gold2:#e8cc7a;
+  --earth:#4a6741;--water:#2a6080;--fire:#8a3020;--air:#606888;--ether:#7060a8;
+  --sc:#c9a84c;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:#020108;font-family:'JetBrains Mono',monospace;}
+
+/* ── Фон ── */
+#bg-canvas{position:fixed;inset:0;z-index:0;}
+
+/* ── Top Bar ── */
+#top-bar{
+  position:fixed;top:0;left:0;right:0;height:44px;z-index:100;
+  background:rgba(2,1,8,.94);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(201,168,76,.1);
+  display:flex;align-items:center;padding:0 16px;gap:12px;
+}
+#back-lbl{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:rgba(255,255,255,.3);letter-spacing:.12em;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:color .2s;padding:6px 0;
+}
+#back-lbl:hover{color:rgba(255,255,255,.7);}
+#realm-name{
+  font-family:'Cinzel Decorative',serif;font-size:12px;
+  color:rgba(201,168,76,.85);letter-spacing:.2em;margin-left:4px;
+}
+#realm-era{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(255,255,255,.2);letter-spacing:.1em;margin-top:1px;}
+#top-coins{
+  margin-left:auto;display:flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:20px;
+  background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.18);
+  font-size:9px;color:rgba(201,168,76,.8);letter-spacing:.1em;
+}
+#top-coins .tc-ico{font-size:11px;filter:drop-shadow(0 0 4px rgba(201,168,76,.8));}
+#realm-level{
+  font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.1em;
+  padding:4px 10px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);
+}
+
+/* ── Время ── */
+#realm-time{
+  position:fixed;top:54px;right:16px;z-index:50;
+  font-size:9px;color:rgba(255,255,255,.22);letter-spacing:.1em;
+  background:rgba(2,1,8,.7);padding:4px 10px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.06);
+}
+
+/* ── Стихии слева ── */
+#elements-bar{
+  position:fixed;left:14px;top:50%;transform:translateY(-50%);
+  z-index:50;display:flex;flex-direction:column;gap:7px;
+}
+.el-btn{
+  width:44px;height:44px;border-radius:12px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(2,1,8,.88);backdrop-filter:blur(8px);
+  transition:all .25s;position:relative;
+}
+.el-btn:hover{transform:scale(1.12);border-color:rgba(255,255,255,.3);}
+.el-btn.on{border-width:1.5px;}
+.el-ico{font-size:17px;line-height:1;}
+.el-lbl{font-size:8px;letter-spacing:.07em;color:rgba(255,255,255,.3);margin-top:2px;}
+.el-cnt{
+  position:absolute;top:-5px;right:-5px;
+  width:15px;height:15px;border-radius:50%;
+  font-size:8px;display:flex;align-items:center;justify-content:center;
+  background:rgba(2,1,8,.9);border:1px solid currentColor;
+}
+
+/* ── ГЛАВНАЯ КАРТА — центр ── */
+#map-area{
+  position:fixed;left:66px;right:0;top:44px;bottom:120px;z-index:10;
+  display:flex;align-items:center;justify-content:center;
+}
+#vastu-grid{
+  position:relative;
+  width:min(70vh, 75vw);
+  height:min(70vh, 75vw);
+  max-width:580px;max-height:580px;
+}
+#vastu-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
+
+/* Зоны поверх canvas */
+.zone{
+  position:absolute;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-radius:6px;transition:all .2s;font-family:'Cinzel',serif;
+}
+.zone:hover{background:rgba(201,168,76,.08)!important;z-index:5;}
+.zone-label{font-size:clamp(9px,1.4vw,10px);letter-spacing:.08em;color:rgba(255,255,255,.4);text-align:center;line-height:1.3;}
+.zone-ico{font-size:clamp(12px,2vw,20px);margin-bottom:2px;}
+.zone-dir{font-size:8px;letter-spacing:.15em;color:rgba(255,255,255,.2);margin-top:2px;}
+
+/* ── Инфо строения (справа) ── */
+#struct-info{
+  position:fixed;right:14px;top:54px;z-index:50;
+  width:190px;background:rgba(2,1,8,.94);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.1);border-radius:14px;
+  overflow:hidden;display:none;
+}
+#struct-info.show{display:block;}
+#si-head{padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:8px;}
+#si-ico{font-size:22px;}
+#si-name{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.12em;}
+#si-body{padding:10px 14px;}
+.si-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+.si-lbl{font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.08em;}
+.si-val{font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,.75);}
+
+/* ── Статус ── */
+#status-msg{
+  position:fixed;top:54px;left:50%;transform:translateX(-50%);z-index:80;
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:.15em;color:rgba(201,168,76,.7);
+  background:rgba(2,1,8,.85);backdrop-filter:blur(6px);
+  padding:5px 16px;border-radius:20px;border:1px solid rgba(201,168,76,.2);
+  opacity:0;transition:opacity .5s;pointer-events:none;
+}
+#status-msg.show{opacity:1;}
+
+/* ── Инфо зоны (попап) ── */
+#zone-info{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:80;
+  width:min(320px,85vw);padding:18px 20px;border-radius:14px;
+  background:rgba(6,4,18,0.96);border:1px solid rgba(201,168,76,0.25);
+  box-shadow:0 0 40px rgba(0,0,0,0.7);display:none;
+  font-family:'JetBrains Mono',monospace;
+}
+#zone-info.show{display:block;}
+.zi-title{
+  font-family:'Cinzel',serif;font-size:16px;color:#c9a84c;
+  letter-spacing:0.15em;text-align:center;margin-bottom:12px;
+}
+.zi-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0;border-bottom:1px solid rgba(201,168,76,0.06);
+}
+.zi-label{font-size:9px;letter-spacing:0.1em;color:rgba(255,255,255,0.3);}
+.zi-value{font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(255,248,214,0.85);}
+.zi-close{
+  display:block;margin:14px auto 0;padding:8px 24px;min-height:44px;
+  border:1px solid rgba(201,168,76,0.3);border-radius:8px;
+  background:rgba(201,168,76,0.06);color:#c9a84c;
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.15em;cursor:pointer;
+}
+
+/* ── Панель строительства (снизу) ── */
+#build-panel{
+  position:fixed;bottom:0;left:0;right:0;z-index:60;
+  background:linear-gradient(0deg,rgba(2,1,8,.98) 65%,transparent);
+  padding:10px 16px 16px;
+  transform:translateY(100%);transition:transform .4s cubic-bezier(.22,1,.36,1);
+}
+#build-panel.show{transform:translateY(0);}
+#build-tabs{display:flex;gap:6px;margin-bottom:10px;}
+.bt{
+  padding:5px 12px;border-radius:20px;cursor:pointer;
+  font-size:9px;letter-spacing:.1em;color:rgba(255,255,255,.3);
+  border:1px solid rgba(255,255,255,.1);transition:all .2s;min-height:44px;
+  background:rgba(255,255,255,.03);display:flex;align-items:center;
+}
+.bt.on{color:var(--gold);border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.07);}
+#build-grid{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+#build-grid::-webkit-scrollbar{display:none;}
+.bld-card{
+  flex-shrink:0;width:88px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:10px 8px;cursor:pointer;text-align:center;transition:all .2s;
+}
+.bld-card:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18);transform:translateY(-2px);}
+.bld-card.active{border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.06);}
+.bld-ico{font-size:22px;margin-bottom:4px;}
+.bld-name{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.07em;color:rgba(255,255,255,.65);line-height:1.3;}
+.bld-cost{font-size:9px;color:rgba(201,168,76,.6);margin-top:3px;}
+.bld-el{font-size:9px;margin-top:2px;}
+
+/* ── Кнопка строительства ── */
+#build-btn{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:61;
+  padding:10px 28px;border-radius:30px;cursor:pointer;min-height:44px;
+  background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(180,140,60,.1));
+  border:1px solid rgba(201,168,76,.35);
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;
+  color:rgba(201,168,76,.9);transition:all .3s;backdrop-filter:blur(8px);
+  display:flex;align-items:center;gap:8px;
+}
+#build-btn:hover{background:rgba(201,168,76,.22);border-color:rgba(201,168,76,.65);transform:translateX(-50%) scale(1.04);}
+#build-btn.open{border-radius:20px 20px 0 0;border-bottom-color:transparent;}
+
+/* ── Тултип ── */
+#tooltip{
+  position:fixed;z-index:90;pointer-events:none;
+  background:rgba(2,1,8,.96);border:1px solid rgba(201,168,76,.2);
+  border-radius:10px;padding:8px 12px;opacity:0;transition:opacity .2s;
+  max-width:160px;
+}
+#tooltip.show{opacity:1;}
+#tt-name{font-family:'Cinzel',serif;font-size:9px;color:rgba(201,168,76,.9);letter-spacing:.12em;margin-bottom:4px;}
+#tt-desc{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;color:rgba(255,255,255,.55);line-height:1.45;}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- TOP BAR -->
+<div id="top-bar">
+  <div id="back-lbl" onclick="window.location.href='index.html'" data-i18n="earth.back.label">← КАРТА ДУШИ</div>
+  <div style="border-left:1px solid rgba(255,255,255,.06);height:24px;"></div>
+  <div>
+    <div id="realm-name" data-i18n="earth.realm.name">ДЕРЖАВА РА</div>
+    <div id="realm-era" data-i18n="earth.realm.era">ЭРА ТВОРЕНИЯ · ГОД 1</div>
+  </div>
+  <div id="realm-level" data-i18n="earth.level">УР. 1</div>
+  <div id="top-coins">
+    <span class="tc-ico">✦</span>
+    <span id="coins-val">0</span>
+    <span style="opacity:.5" data-i18n="earth.coins.light">МОНЕТ СВЕТА</span>
+  </div>
+</div>
+
+<!-- Время -->
+<div id="realm-time">—</div>
+
+<!-- Статус -->
+<div id="status-msg"></div>
+
+<!-- Стихии слева -->
+<div id="elements-bar">
+  <div class="el-btn on" data-el="earth" style="border-color:rgba(74,103,65,.6)" onclick="selectEl('earth')" title="">
+    <div class="el-ico">🌱</div><div class="el-lbl" data-i18n="earth.el.earth">ЗЕМЛЯ</div>
+    <div class="el-cnt" style="color:rgba(74,103,65,.8);" id="ec-earth">0</div>
+  </div>
+  <div class="el-btn" data-el="water" style="border-color:rgba(42,96,128,.5)" onclick="selectEl('water')" title="">
+    <div class="el-ico">🌊</div><div class="el-lbl" data-i18n="earth.el.water">ВОДА</div>
+    <div class="el-cnt" style="color:rgba(42,96,128,.8);" id="ec-water">0</div>
+  </div>
+  <div class="el-btn" data-el="fire" style="border-color:rgba(138,48,32,.5)" onclick="selectEl('fire')" title="">
+    <div class="el-ico">🔥</div><div class="el-lbl" data-i18n="earth.el.fire">ОГОНЬ</div>
+    <div class="el-cnt" style="color:rgba(138,48,32,.8);" id="ec-fire">0</div>
+  </div>
+  <div class="el-btn" data-el="air" style="border-color:rgba(96,104,136,.5)" onclick="selectEl('air')" title="">
+    <div class="el-ico">💨</div><div class="el-lbl" data-i18n="earth.el.air">ВОЗДУХ</div>
+    <div class="el-cnt" style="color:rgba(96,104,136,.8);" id="ec-air">0</div>
+  </div>
+  <div class="el-btn" data-el="ether" style="border-color:rgba(112,96,168,.5)" onclick="selectEl('ether')" title="">
+    <div class="el-ico">✦</div><div class="el-lbl" data-i18n="earth.el.ether">ЭФИР</div>
+    <div class="el-cnt" style="color:rgba(112,96,168,.8);" id="ec-ether">0</div>
+  </div>
+</div>
+
+<!-- Карта Васту -->
+<div id="map-area">
+  <div id="vastu-grid">
+    <canvas id="vastu-canvas"></canvas>
+  </div>
+</div>
+
+<!-- Инфо строения -->
+<div id="struct-info">
+  <div id="si-head"><div id="si-ico">🏛</div><div id="si-name" data-i18n="earth.structure">СТРУКТУРА</div></div>
+  <div id="si-body">
+    <div class="si-row"><span class="si-lbl" data-i18n="earth.element.label">СТИХИЯ</span><span class="si-val" id="si-el">—</span></div>
+    <div class="si-row"><span class="si-lbl" data-i18n="earth.level.label">УРОВЕНЬ</span><span class="si-val" id="si-lvl">1</span></div>
+    <div class="si-row"><span class="si-lbl" data-i18n="earth.light.hour">СВЕТ/ЧАС</span><span class="si-val" id="si-income">+1</span></div>
+    <div id="si-desc" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;color:rgba(255,255,255,.4);line-height:1.5;margin-top:4px;"></div>
+  </div>
+</div>
+
+<!-- Тултип -->
+<div id="tooltip"><div id="tt-name"></div><div id="tt-desc"></div></div>
+
+<!-- Инфо зоны -->
+<div id="zone-info">
+  <div class="zi-title" id="zi-name">—</div>
+  <div class="zi-row"><span class="zi-label" data-i18n="earth.direction">НАПРАВЛЕНИЕ</span><span class="zi-value" id="zi-dir">—</span></div>
+  <div class="zi-row"><span class="zi-label" data-i18n="earth.element.label">СТИХИЯ</span><span class="zi-value" id="zi-element">—</span></div>
+  <div class="zi-row"><span class="zi-label" data-i18n="earth.planet.label">ПЛАНЕТА</span><span class="zi-value" id="zi-planet">—</span></div>
+  <div class="zi-row"><span class="zi-label" data-i18n="earth.quality">КАЧЕСТВО</span><span class="zi-value" id="zi-quality">—</span></div>
+  <div class="zi-row"><span class="zi-label" data-i18n="earth.buildings.label">СТРОЕНИЯ</span><span class="zi-value" id="zi-buildings" data-i18n="earth.buildings.none">нет</span></div>
+  <button class="zi-close" onclick="document.getElementById('zone-info').classList.remove('show')" data-i18n="earth.close">ЗАКРЫТЬ</button>
+</div>
+
+<!-- Бонусы карт -->
+<div id="earth-card-effects" style="display:none;position:fixed;bottom:52px;left:50%;transform:translateX(-50%);width:min(320px,90vw);padding:10px 14px;border-radius:10px;background:rgba(6,4,18,0.95);border:1px solid rgba(201,168,76,0.2);z-index:100;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.2em;color:rgba(201,168,76,0.4);margin-bottom:6px;text-align:center;"><span data-i18n="earth.card.bonuses">БОНУСЫ КАРТ</span></div>
+  <div id="earth-card-effects-list" style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(220,210,190,0.7);display:flex;flex-direction:column;gap:4px;"></div>
+</div>
+
+<!-- Кнопка строительства -->
+<div id="build-btn" onclick="toggleBuild()">
+  <span>⚒</span> <span data-i18n="earth.build.btn">ВОЗВЕСТИ СТРУКТУРУ</span>
+</div>
+
+<!-- Панель строений -->
+<div id="build-panel">
+  <div id="build-tabs">
+    <div class="bt on" onclick="buildTab('all',this)" data-i18n="earth.tab.all">ВСЕ</div>
+    <div class="bt" onclick="buildTab('earth',this)" data-i18n="earth.el.earth">🌱 ЗЕМЛЯ</div>
+    <div class="bt" onclick="buildTab('water',this)" data-i18n="earth.el.water">🌊 ВОДА</div>
+    <div class="bt" onclick="buildTab('fire',this)" data-i18n="earth.el.fire">🔥 ОГОНЬ</div>
+    <div class="bt" onclick="buildTab('air',this)" data-i18n="earth.el.air">💨 ВОЗДУХ</div>
+    <div class="bt" onclick="buildTab('ether',this)" data-i18n="earth.el.ether">✦ ЭФИР</div>
+  </div>
+  <div id="build-grid"></div>
+</div>
+
+<script>
+var _t_registry={};
+function _t(k,fb){_t_registry[fb]=k;return(window.t&&window.t(k))||fb;}
+
+// ══ ДАННЫЕ ══
+var ELEMENTS = ['earth','water','fire','air','ether'];
+var EL_COLORS = {earth:'74,103,65',water:'42,96,128',fire:'138,48,32',air:'96,104,136',ether:'112,96,168'};
+var EL_ICO = {earth:'🌱',water:'🌊',fire:'🔥',air:'💨',ether:'✦'};
+var EL_NAMES = {earth:_t('earth.n.earth','Земля'),water:_t('earth.n.water','Вода'),fire:_t('earth.n.fire','Огонь'),air:_t('earth.n.air','Воздух'),ether:_t('earth.n.ether','Эфир')};
+
+// 9 базовых строений (1 на Васту-зону), стоимость: свет + ключи
+var BUILDINGS = [
+  {id:'field',  el:'earth', zone:'В',   ico:'🌾', name:_t('earth.bld.field','Поле Света'),     cost:50,  keys:0, income:2,  desc:_t('earth.bld.field.d','Источник чистой световой энергии. Зона Востока.')},
+  {id:'lake',   el:'water', zone:'С',   ico:'💧', name:_t('earth.bld.lake','Озеро Самадхи'), cost:80,  keys:1, income:3,  desc:_t('earth.bld.lake.d','Зерцало ума. Зона Севера.')},
+  {id:'stone',  el:'fire',  zone:'ЮВ',  ico:'🪨', name:_t('earth.bld.stone','Камень Агни'),   cost:120, keys:1, income:4,  desc:_t('earth.bld.stone.d','Первобытная сила огня. Зона Юго-Востока.')},
+  {id:'bridge', el:'air',   zone:'СЗ',  ico:'🌉', name:_t('earth.bld.bridge','Мост Дхармы'),   cost:150, keys:2, income:5,  desc:_t('earth.bld.bridge.d','Соединяет видимое и невидимое. Зона Северо-Запада.')},
+  {id:'forge',  el:'ether', zone:'СВ',  ico:'⚒️', name:_t('earth.bld.forge','Кузница Воли'),  cost:200, keys:2, income:6,  desc:_t('earth.bld.forge.d','Место создания артефактов. Зона Северо-Востока.')},
+  {id:'grove',  el:'earth', zone:'З',   ico:'🌳', name:_t('earth.bld.grove','Свами-Роща'),    cost:250, keys:3, income:7,  desc:_t('earth.bld.grove.d','Место мудрости. Зона Запада.')},
+  {id:'temple', el:'fire',  zone:'Ю',   ico:'🕌', name:_t('earth.bld.temple','Храм Сознания'), cost:300, keys:3, income:8,  desc:_t('earth.bld.temple.d','Обитель осознания. Зона Юга.')},
+  {id:'ashram', el:'water', zone:'ЮЗ',  ico:'🪷', name:_t('earth.bld.ashram','Ашрам Прамы'),   cost:400, keys:5, income:10, desc:_t('earth.bld.ashram.d','Духовная школа. Зона Юго-Запада.')},
+  {id:'meru',   el:'ether', zone:'ЦТР', ico:'⛰️', name:_t('earth.bld.meru','Гора Меру'),     cost:500, keys:7, income:12, desc:_t('earth.bld.meru.d','Священная ось мира. Брахмастан.')},
+];
+
+function getPlayerKeys(){ try { return parseInt(localStorage.getItem('awara_keys')||'0'); } catch(e){ return 0; } }
+function spendPlayerKeys(n){ try { var cur=getPlayerKeys(); localStorage.setItem('awara_keys', Math.max(0,cur-n)); } catch(e){} }
+
+// ══ СОСТОЯНИЕ ══
+var state = (function(){
+  try{ return JSON.parse(localStorage.getItem('awara_earth_v1')||'{}'); }catch(e){return {};}
+})();
+if(!state.coins) state.coins = parseInt(localStorage.getItem('awara_light')||'0');
+if(!state.structs) state.structs = {};
+if(!state.elements) state.elements = {earth:0,water:0,fire:0,air:0,ether:0};
+var curEl = 'earth';
+var buildPanelOpen = false;
+
+function saveState(){
+  try{ localStorage.setItem('awara_earth_v1', JSON.stringify(state)); }catch(e){}
+}
+
+// ══ UI ══
+function updateCoins(){ document.getElementById('coins-val').textContent = state.coins; }
+function updateElCounts(){
+  ELEMENTS.forEach(function(el){
+    var cnt = Object.keys(state.structs).filter(function(k){ return state.structs[k] && state.structs[k].el===el; }).length;
+    var el2 = document.getElementById('ec-'+el);
+    if(el2) el2.textContent = cnt;
+    state.elements[el] = cnt;
+  });
+}
+
+function selectEl(el){
+  curEl = el;
+  document.querySelectorAll('.el-btn').forEach(function(b){ b.classList.toggle('on', b.dataset.el===el); });
+  buildTab('all', document.querySelector('#build-tabs .bt.on'));
+}
+
+function buildTab(filter, btn){
+  document.querySelectorAll('#build-tabs .bt').forEach(function(b){ b.classList.remove('on'); });
+  if(btn) btn.classList.add('on');
+  renderBuildGrid(filter);
+}
+
+function renderBuildGrid(filter){
+  var grid = document.getElementById('build-grid');
+  var list = filter==='all' ? BUILDINGS : BUILDINGS.filter(function(b){ return b.el===filter; });
+  grid.innerHTML = list.map(function(b){
+    var owned = state.structs[b.id];
+    var playerKeys = getPlayerKeys();
+    var canAfford = state.coins >= b.cost && playerKeys >= (b.keys||0);
+    var col = EL_COLORS[b.el];
+    var costText = owned ? _t('earth.bld.built','✦ ВОЗВЕДЕНО') : '✦ '+b.cost+(b.keys?' · 🔑'+b.keys:'');
+    return '<div class="bld-card'+(owned?' active':'')+(canAfford?'':' dimmed')+'" onclick="buyBuilding(\''+b.id+'\')"'+
+      ' onmouseenter="showTip(\''+b.name+'\',\''+b.desc+'\',event)" onmouseleave="hideTip()"'+
+      ' style="'+(owned?'border-color:rgba('+col+',.55);background:rgba('+col+',.08);':'')+'">'+
+      '<div class="bld-ico">'+b.ico+'</div>'+
+      '<div class="bld-name">'+b.name+'</div>'+
+      '<div class="bld-cost">'+costText+'</div>'+
+      '<div class="bld-el">'+EL_ICO[b.el]+'</div>'+
+      '</div>';
+  }).join('');
+}
+
+function buyBuilding(id){
+  var b = BUILDINGS.find(function(x){ return x.id===id; });
+  if(!b) return;
+  if(state.structs[id]){
+    showInfo(b); return;
+  }
+  if(state.coins < b.cost){ showStatus(_t('earth.bld.nolight','Недостаточно Света')+' ('+_t('earth.bld.need','нужно')+' ✦'+b.cost+')'); return; }
+  var pk = getPlayerKeys();
+  if(pk < (b.keys||0)){ showStatus(_t('earth.bld.nokeys','Недостаточно Ключей')+' ('+_t('earth.bld.need','нужно')+' 🔑'+b.keys+')'); return; }
+  state.coins -= b.cost;
+  if(b.keys) spendPlayerKeys(b.keys);
+  state.structs[id] = {el:b.el, level:1, income:b.income, built:Date.now()};
+  saveState(); updateCoins(); updateElCounts();
+  drawMap(); renderBuildGrid(document.querySelector('#build-tabs .bt.on')?.dataset?.filter || 'all');
+  showStatus('✦ '+b.name+' '+_t('earth.bld.done','возведена!'));
+  showInfo(b);
+}
+
+function showInfo(b){
+  document.getElementById('si-ico').textContent = b.ico;
+  document.getElementById('si-name').textContent = b.name;
+  document.getElementById('si-el').textContent = EL_ICO[b.el]+' '+EL_NAMES[b.el];
+  document.getElementById('si-lvl').textContent = state.structs[b.id]?.level || '—';
+  document.getElementById('si-income').textContent = '+'+b.income;
+  document.getElementById('si-desc').textContent = b.desc;
+  document.getElementById('struct-info').classList.add('show');
+}
+
+function showStatus(msg){
+  var el = document.getElementById('status-msg');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(el._t); el._t = setTimeout(function(){ el.classList.remove('show'); }, 2500);
+}
+
+function showTip(name, desc, e){
+  var t = document.getElementById('tooltip');
+  document.getElementById('tt-name').textContent = name;
+  document.getElementById('tt-desc').textContent = desc;
+  t.style.left = Math.min(e.clientX+12, innerWidth-180)+'px';
+  t.style.top = Math.max(e.clientY-40, 60)+'px';
+  t.classList.add('show');
+}
+function hideTip(){ document.getElementById('tooltip').classList.remove('show'); }
+
+function toggleBuild(){
+  buildPanelOpen = !buildPanelOpen;
+  document.getElementById('build-panel').classList.toggle('show', buildPanelOpen);
+  document.getElementById('build-btn').classList.toggle('open', buildPanelOpen);
+  if(buildPanelOpen) renderBuildGrid('all');
+}
+
+// Закрыть инфо при клике вне
+document.addEventListener('click', function(e){
+  var si = document.getElementById('struct-info');
+  if(si.classList.contains('show') && !si.contains(e.target)) si.classList.remove('show');
+  if(buildPanelOpen && !document.getElementById('build-panel').contains(e.target) && !e.target.closest('#build-btn')){
+    buildPanelOpen = false;
+    document.getElementById('build-panel').classList.remove('show');
+    document.getElementById('build-btn').classList.remove('open');
+  }
+});
+
+// ══ КАРТА ВАСТУ (Canvas) ══
+function drawMap(){
+  var c = document.getElementById('vastu-canvas');
+  var W = c.parentElement.offsetWidth;
+  var H = c.parentElement.offsetHeight;
+  c.width = W; c.height = H;
+  var ctx = c.getContext('2d');
+  var cx = W/2, cy = H/2;
+  var sz = Math.min(W,H) * 0.92;
+  var gs = sz/3; // размер ячейки сетки
+
+  ctx.clearRect(0,0,W,H);
+
+  // Внешняя граница
+  ctx.strokeStyle = 'rgba(201,168,76,0.25)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(cx-sz/2, cy-sz/2, sz, sz);
+
+  // Сетка 3×3
+  var g3 = sz/3;
+  for(var i=1;i<3;i++){
+    ctx.beginPath();
+    ctx.moveTo(cx-sz/2+g3*i, cy-sz/2); ctx.lineTo(cx-sz/2+g3*i, cy+sz/2);
+    ctx.moveTo(cx-sz/2, cy-sz/2+g3*i); ctx.lineTo(cx+sz/2, cy-sz/2+g3*i);
+    ctx.strokeStyle='rgba(201,168,76,0.1)'; ctx.lineWidth=0.5; ctx.stroke();
+  }
+
+  // 9 зон Васту
+  var zones = [
+    {r:0,c:0,dir:_t('earth.dir.nw','NW'),el:'air',  lbl:_t('earth.g.vayu','Vayu'),  ico:'💨'},
+    {r:0,c:1,dir:_t('earth.dir.n','N'), el:'water',lbl:_t('earth.g.varuna','Varuna'), ico:'🌊'},
+    {r:0,c:2,dir:_t('earth.dir.ne','NE'),el:'ether',lbl:_t('earth.g.ishana','Ishana'),  ico:'✦'},
+    {r:1,c:0,dir:_t('earth.dir.w','W'), el:'fire', lbl:_t('earth.g.agni','Agni'),   ico:'🔥'},
+    {r:1,c:1,dir:_t('earth.dir.ctr','CTR'),el:'earth',lbl:_t('earth.g.brahma','Brahma'), ico:'🌱'},
+    {r:1,c:2,dir:_t('earth.dir.e','E'), el:'earth',lbl:_t('earth.g.indra','Indra'),  ico:'⚡'},
+    {r:2,c:0,dir:_t('earth.dir.sw','SW'),el:'water',lbl:_t('earth.g.niriti','Niriti'), ico:'🌊'},
+    {r:2,c:1,dir:_t('earth.dir.s','S'), el:'fire', lbl:_t('earth.g.yama','Yama'),    ico:'🔥'},
+    {r:2,c:2,dir:_t('earth.dir.se','SE'),el:'air',  lbl:_t('earth.g.agni.se','Agni'),   ico:'💨'},
+  ];
+
+  zones.forEach(function(z){
+    var x = cx - sz/2 + z.c * g3;
+    var y = cy - sz/2 + z.r * g3;
+    var col = EL_COLORS[z.el];
+
+    // Заливка зоны
+    ctx.fillStyle = 'rgba('+col+',0.05)';
+    ctx.fillRect(x+1, y+1, g3-2, g3-2);
+
+    // Если есть строение в этой зоне
+    var bInZone = BUILDINGS.filter(function(b){ return b.zone===z.dir && state.structs[b.id]; });
+    if(bInZone.length > 0){
+      ctx.fillStyle = 'rgba('+col+',0.12)';
+      ctx.fillRect(x+1, y+1, g3-2, g3-2);
+      // Светящаяся рамка
+      ctx.strokeStyle = 'rgba('+col+',0.55)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x+2, y+2, g3-4, g3-4);
+    }
+
+    // Метка направления
+    ctx.font = '7px JetBrains Mono';
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(z.dir, x+6, y+6);
+
+    // Иконка стихии
+    ctx.font = (g3*0.22)+'px serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.globalAlpha = 0.35;
+    ctx.fillText(z.ico, x+g3/2, y+g3/2-4);
+    ctx.globalAlpha = 1;
+
+    // Название
+    ctx.font = '8px Cinzel, serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText(z.lbl, x+g3/2, y+g3-8);
+
+    // Строения в зоне
+    if(bInZone.length > 0){
+      ctx.font = (g3*0.17)+'px serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      bInZone.forEach(function(b,i){
+        ctx.fillText(b.ico, x+g3/2 + (i-bInZone.length/2+0.5)*12, y+g3/2+10);
+      });
+    }
+  });
+
+  // Центральный символ Брахмастхана
+  ctx.save();
+  ctx.font = (g3*0.32)+'px serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.globalAlpha = 0.15;
+  ctx.fillStyle = '#c9a84c';
+  ctx.fillText('✦', cx, cy);
+  ctx.restore();
+
+  // Пульсирующий круг в центре
+  ctx.beginPath();
+  ctx.arc(cx, cy, g3*0.2, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(201,168,76,0.3)';
+  ctx.lineWidth = 1; ctx.stroke();
+}
+
+// ══ ФОН ══
+(function(){
+  var c = document.getElementById('bg-canvas');
+  var ctx = c.getContext('2d');
+  var W,H,stars=[];
+  function resize(){ W=c.width=innerWidth; H=c.height=innerHeight; }
+  resize(); window.addEventListener('resize', function(){ resize(); drawMap(); });
+  for(var i=0;i<100;i++) stars.push({
+    x:Math.random(),y:Math.random(),r:Math.random()*1.2+.2,
+    a:Math.random(),da:(Math.random()-.5)*.005,
+    col:Math.random()>.7?[201,168,76]:Math.random()>.5?[74,103,65]:[220,220,240]
+  });
+  function draw(){
+    ctx.fillStyle='rgba(2,1,8,0.85)'; ctx.fillRect(0,0,W,H);
+    var fog=ctx.createRadialGradient(W*.5,H,0,W*.5,H,H*.5);
+    fog.addColorStop(0,'rgba(74,103,65,0.1)');fog.addColorStop(1,'rgba(2,1,8,0)');
+    ctx.fillStyle=fog; ctx.fillRect(0,0,W,H);
+    stars.forEach(function(s){
+      s.a+=s.da; if(s.a<0){s.a=0;s.da*=-1;}if(s.a>1){s.a=1;s.da*=-1;}
+      ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+      ctx.fillStyle='rgba('+s.col+','+(s.a*.6)+')';ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ══ ВРЕМЯ ══
+function updateTime(){
+  var d=new Date();
+  var days=[_t('earth.day.su','Вс'),_t('earth.day.mo','Пн'),_t('earth.day.tu','Вт'),_t('earth.day.we','Ср'),_t('earth.day.th','Чт'),_t('earth.day.fr','Пт'),_t('earth.day.sa','Сб')];
+  document.getElementById('realm-time').textContent =
+    days[d.getDay()]+' · '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+}
+updateTime(); setInterval(updateTime,60000);
+
+// ══ КЛИК ПО ЗОНАМ ВАСТУ ══
+var zonesData = null;
+fetch('data/zones.json').then(function(r){return r.json();}).then(function(d){zonesData=d;}).catch(function(){});
+
+var ZONE_MAP = {
+  'СЗ':'northwest','С':'north','СВ':'northeast',
+  'З':'west','ЦТР':'center','В':'east',
+  'ЮЗ':'southwest','Ю':'south','ЮВ':'southeast'
+};
+
+document.getElementById('vastu-canvas').addEventListener('click', function(e){
+  var c = this;
+  var rect = c.getBoundingClientRect();
+  var scaleX = c.width / rect.width;
+  var scaleY = c.height / rect.height;
+  var mx = (e.clientX - rect.left) * scaleX;
+  var my = (e.clientY - rect.top) * scaleY;
+
+  var sz = Math.min(c.width, c.height) * 0.85;
+  var g3 = sz / 3;
+  var cx = c.width / 2;
+  var cy = c.height / 2;
+
+  var zones = [
+    {r:0,c:0,dir:_t('earth.dir.nw','NW'),el:'air',  lbl:_t('earth.g.vayu','Vayu'),  ico:'💨'},
+    {r:0,c:1,dir:_t('earth.dir.n','N'), el:'water',lbl:_t('earth.g.varuna','Varuna'), ico:'🌊'},
+    {r:0,c:2,dir:_t('earth.dir.ne','NE'),el:'ether',lbl:_t('earth.g.ishana','Ishana'),  ico:'✦'},
+    {r:1,c:0,dir:_t('earth.dir.w','W'), el:'fire', lbl:_t('earth.g.agni','Agni'),   ico:'🔥'},
+    {r:1,c:1,dir:_t('earth.dir.ctr','CTR'),el:'earth',lbl:_t('earth.g.brahma','Brahma'), ico:'🌱'},
+    {r:1,c:2,dir:_t('earth.dir.e','E'), el:'earth',lbl:_t('earth.g.indra','Indra'),  ico:'⚡'},
+    {r:2,c:0,dir:_t('earth.dir.sw','SW'),el:'water',lbl:_t('earth.g.niriti','Niriti'), ico:'🌊'},
+    {r:2,c:1,dir:_t('earth.dir.s','S'), el:'fire', lbl:_t('earth.g.yama','Yama'),    ico:'🔥'},
+    {r:2,c:2,dir:_t('earth.dir.se','SE'),el:'air',  lbl:_t('earth.g.agni.se','Agni'),   ico:'💨'},
+  ];
+
+  for (var i = 0; i < zones.length; i++) {
+    var z = zones[i];
+    var x = cx - sz/2 + z.c * g3;
+    var y = cy - sz/2 + z.r * g3;
+    if (mx >= x && mx <= x+g3 && my >= y && my <= y+g3) {
+      showZoneInfo(z);
+      break;
+    }
+  }
+});
+
+function showZoneInfo(z) {
+  var EL_RU = {water:_t('earth.n.water','Вода'),wood:_t('earth.n.wood','Дерево'),fire:_t('earth.n.fire','Огонь'),earth:_t('earth.n.earth','Земля'),metal:_t('earth.n.metal','Металл'),air:_t('earth.n.air','Воздух'),ether:_t('earth.n.ether','Эфир')};
+  document.getElementById('zi-name').textContent = z.ico + ' ' + z.lbl;
+  document.getElementById('zi-dir').textContent = z.dir;
+  document.getElementById('zi-element').textContent = EL_RU[z.el] || z.el;
+
+  var slug = ZONE_MAP[z.dir] || '';
+  var zd = zonesData && zonesData.find(function(d){ return d.slug === slug; });
+  document.getElementById('zi-planet').textContent = zd ? zd.planet : '—';
+  document.getElementById('zi-quality').textContent = zd ? zd.quality : '—';
+
+  var st = loadState();
+  var bInZone = BUILDINGS.filter(function(b){ return b.zone===z.dir && st.structs[b.id]; });
+  document.getElementById('zi-buildings').textContent = bInZone.length > 0
+    ? bInZone.map(function(b){ return b.ico + ' ' + b.name; }).join(', ')
+    : _t('earth.bld.none','нет');
+
+  document.getElementById('zone-info').classList.add('show');
+}
+
+// ══ ИНИЦИАЛИЗАЦИЯ ══
+updateCoins();
+updateElCounts();
+renderBuildGrid('all');
+
+// Карта рисуется после layout
+setTimeout(drawMap, 100);
+window.addEventListener('resize', function(){ setTimeout(drawMap,50); });
+
+window._retranslateEarthData = function(){
+  if(!window.t) return;
+  for(var fb in _t_registry){ var k=_t_registry[fb]; var v=window.t(k); if(v&&v!==k) _t_registry[fb]=k; }
+  EL_NAMES.earth=window.t('earth.n.earth');
+  EL_NAMES.water=window.t('earth.n.water');
+  EL_NAMES.fire=window.t('earth.n.fire');
+  EL_NAMES.air=window.t('earth.n.air');
+  EL_NAMES.ether=window.t('earth.n.ether');
+  BUILDINGS.forEach(function(b){
+    var nk='earth.bld.'+b.id, dk='earth.bld.'+b.id+'.d';
+    b.name=window.t(nk); b.desc=window.t(dk);
+  });
+  renderBuildGrid('all'); drawMap();
+};
+</script>
+
+<script>
+// ══ БОНУСЫ КАРТ НА ЗЕМЛЕ ══
+(async function() {
+  try {
+    const { getCardEffects, applyStreakBonus } = await import('./js/cardEffects.js');
+    const fx = getCardEffects();
+    const total = fx.vedic + fx.slavic + fx.kabbalistic;
+    if (total === 0) return;
+
+    var lines = [];
+    if (fx.vedic > 0) {
+      lines.push('<div style="display:flex;justify-content:space-between;"><span style="font-family:\'JetBrains Mono\',monospace;font-size:7px;color:rgba(201,168,76,0.4);">' + _t('earth.fx.light','СВЕТ/ЧАС (КАРТЫ)') + '</span><span>+' + fx.lightPerHour + '</span></div>');
+    }
+    if (fx.slavic > 0) {
+      lines.push('<div style="display:flex;justify-content:space-between;"><span style="font-family:\'JetBrains Mono\',monospace;font-size:7px;color:rgba(201,168,76,0.4);">' + _t('earth.fx.keychance','ШАНС КЛЮЧА') + '</span><span>+' + fx.keyChancePct + '%</span></div>');
+    }
+    if (fx.kabbalistic > 0) {
+      lines.push('<div style="display:flex;justify-content:space-between;"><span style="font-family:\'JetBrains Mono\',monospace;font-size:7px;color:rgba(201,168,76,0.4);">' + _t('earth.fx.streak','КЛЮЧИ (STREAK 7)') + '</span><span>+' + fx.keysAtStreak7 + '</span></div>');
+    }
+
+    document.getElementById('earth-card-effects-list').innerHTML = lines.join('');
+    document.getElementById('earth-card-effects').style.display = 'block';
+
+    // Streak 7 bonus
+    try {
+      const { getStreak } = await import('./js/streak.js');
+      var streak = getStreak();
+      var result = applyStreakBonus(streak.current);
+      if (result.awarded) {
+        var keysEl = document.getElementById('status-msg');
+        if (keysEl) {
+          keysEl.textContent = '+' + result.keys + ' ' + _t('earth.fx.streakbonus','ключей за streak 7!');
+          keysEl.classList.add('show');
+          setTimeout(function(){ keysEl.classList.remove('show'); }, 3000);
+        }
+      }
+    } catch(e) { console.warn('streak bonus:', e); }
+  } catch(e) { console.warn('cardEffects:', e); }
+})();
+</script>
+
+
+<script type="module">
+import { t, initLang, applyTranslations } from './js/i18n.js';
+initLang();
+applyTranslations();
+if(typeof window._retranslateEarthData==='function') window._retranslateEarthData();
+</script>
+
+<!-- Подсказки (M-006) -->
+<button class="hint-btn" title="Подсказки" data-i18n-title="app.help">?</button>
+<script type="module">
+import { initHints } from './js/hints-module.js';
+initHints('earth');
+</script>
+
+<!-- M-033: RU/EN переключатель -->
+<div style="position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px">
+  <button id="lang-ru" onclick="localStorage.setItem('awara_lang','ru');if(window.switchLang)window.switchLang('ru');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">RU</button>
+  <button id="lang-en" onclick="localStorage.setItem('awara_lang','en');if(window.switchLang)window.switchLang('en');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">EN</button>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang, createLangSwitcher } from './js/i18n.js';
+window.switchLang = function(lang) {
+  setLang(lang);
+  translatePage();
+  createLangSwitcher();
+  document.querySelectorAll('#lang-ru,#lang-en').forEach(function(b){
+    b.style.borderColor = b.textContent === lang.toUpperCase() ? '#ffd700' : 'rgba(201,168,76,.2)';
+    b.style.color = b.textContent === lang.toUpperCase() ? '#ffd700' : '#c9a84c';
+  });
+};
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  createLangSwitcher();
+  var cur = getLang();
+  if (window.switchLang) window.switchLang(cur);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARA — Сознание</title>
+<link rel="stylesheet" href="css/consciousness.css">
+</head>
+<body>
+  <div id="consciousness-container">
+    <!-- Фон со звёздами -->
+    <canvas id="stars-canvas"></canvas>
+
+    <!-- Сферы (вертикально) -->
+    <div id="spheres-container">
+      <div class="sphere" id="sphere-mind" data-sphere="mind">
+        <div class="sphere-inner"></div>
+        <div class="sphere-label">Разум</div>
+      </div>
+
+      <div class="sphere" id="sphere-ego" data-sphere="ego">
+        <div class="sphere-inner"></div>
+        <div class="sphere-label">Эго</div>
+      </div>
+
+      <div class="sphere" id="sphere-will" data-sphere="will">
+        <div class="sphere-inner"></div>
+        <div class="sphere-label">Воля</div>
+      </div>
+
+      <div class="sphere" id="sphere-daimon" data-sphere="daimon">
+        <div class="sphere-inner daimon-placeholder"></div>
+        <div class="sphere-label">Даймон</div>
+      </div>
+
+      <div class="sphere" id="sphere-heart" data-sphere="heart">
+        <div class="sphere-inner"></div>
+        <div class="sphere-label">Сердце</div>
+      </div>
+    </div>
+
+    <!-- Диалоговое окно -->
+    <div id="dialog-container">
+      <div id="dialog-text"></div>
+      <div id="dialog-options"></div>
+    </div>
+
+    <!-- Прогресс -->
+    <div id="progress-bar">
+      <div id="progress-fill"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/consciousness-module.js"></script>
+</body>
+</html>

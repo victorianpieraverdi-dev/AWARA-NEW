@@ -1,0 +1,758 @@
+[
+  {
+    "card_id": "domain__svet_ra",
+    "card_type": "agent_domain",
+    "rarity": "mythic",
+    "agent_slug": "svet_ra",
+    "agent_name": "Свет Ра",
+    "domain": "Гелиосфера",
+    "display_name": "Гелиосфера",
+    "element": "Огонь",
+    "planet": "Солнце",
+    "vastu_zone": "Восток",
+    "guna": "саттва",
+    "ray": 1,
+    "description": "Солнечная вселенная первичного света, восточного пробуждения и царственной ясности.",
+    "game_significance": {
+      "rarity_weight": 13,
+      "significance_tier": "domain_universe",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Гелиосфера, the personal cosmic universe of Свет Ра. Scene: a vast radiant solar realm of golden temples, dawn gates, heliospheres, divine sun rivers and crowned light beings. Agent correspondence: Свет Ра, element Огонь, planet Солнце, vastu direction Восток, ray 1, guna саттва. Elemental atmosphere: flames, solar corona, molten gold, radiant heat, sacred intensity. Rarity treatment: transcendent prismatic universe-level aura, impossible sacred geometry, divine scale. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__svet_ra.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__iskra",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "iskra",
+    "agent_name": "Искра",
+    "domain": "Океан Синхронности",
+    "display_name": "Океан Синхронности",
+    "element": "Вода",
+    "planet": "Луна",
+    "vastu_zone": "Северо-Запад",
+    "guna": "тамас",
+    "ray": 2,
+    "description": "Океан синхронности, где малые события становятся знаками пути и пробуждают душу.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Океан Синхронности, the personal cosmic universe of Искра. Scene: an infinite moonlit ocean of synchronicity filled with glowing sparks, silver waves, floating omens and delicate soul-lights. Agent correspondence: Искра, element Вода, planet Луна, vastu direction Северо-Запад, ray 2, guna тамас. Elemental atmosphere: moonlit waters, mist, blue currents, pearls, emotional depth. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__iskra.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__brahma",
+    "card_type": "agent_domain",
+    "rarity": "mythic",
+    "agent_slug": "brahma",
+    "agent_name": "Брахма",
+    "domain": "Кузница Фракталов",
+    "display_name": "Кузница Фракталов",
+    "element": "Эфир",
+    "planet": "Брахмастан",
+    "vastu_zone": "Центр",
+    "guna": "раджас",
+    "ray": 3,
+    "description": "Кузница творящих фракталов, где формы, миры и судьбы рождаются из эфирной архитектуры.",
+    "game_significance": {
+      "rarity_weight": 13,
+      "significance_tier": "domain_universe",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Кузница Фракталов, the personal cosmic universe of Брахма. Scene: a cosmic fractal forge where universes are shaped from luminous geometry, lotus engines, creator wheels and sacred blueprints. Agent correspondence: Брахма, element Эфир, planet Брахмастан, vastu direction Центр, ray 3, guna раджас. Elemental atmosphere: star fields, luminous void, sacred geometry, cosmic space, subtle light. Rarity treatment: transcendent prismatic universe-level aura, impossible sacred geometry, divine scale. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__brahma.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__sarasvati",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "sarasvati",
+    "agent_name": "Сарасвати",
+    "domain": "Эфир Логоса",
+    "display_name": "Эфир Логоса",
+    "element": "Воздух",
+    "planet": "Меркурий",
+    "vastu_zone": "Север",
+    "guna": "саттва",
+    "ray": 3,
+    "description": "Эфир Логоса, библиотека речи, музыки, знания и тонкой структурирующей вибрации.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Эфир Логоса, the personal cosmic universe of Сарасвати. Scene: an etheric library of living language, flowing white rivers, celestial veenas, sacred books and luminous calligraphy. Agent correspondence: Сарасвати, element Воздух, planet Меркурий, vastu direction Север, ray 3, guna саттва. Elemental atmosphere: wind, clouds, feathers, breath spirals, echoing sky. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__sarasvati.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__vishnu",
+    "card_type": "agent_domain",
+    "rarity": "mythic",
+    "agent_slug": "vishnu",
+    "agent_name": "Вишну",
+    "domain": "Горизонт Равновесия",
+    "display_name": "Горизонт Равновесия",
+    "element": "Эфир",
+    "planet": "Юпитер",
+    "vastu_zone": "Северо-Восток",
+    "guna": "саттва",
+    "ray": 2,
+    "description": "Горизонт равновесия, где сохранение мира держится на мягкой силе, мере и космическом сне.",
+    "game_significance": {
+      "rarity_weight": 13,
+      "significance_tier": "domain_universe",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Горизонт Равновесия, the personal cosmic universe of Вишну. Scene: a serene cosmic horizon of balance with blue oceans, lotus constellations, preserving temples and endless equilibrium. Agent correspondence: Вишну, element Эфир, planet Юпитер, vastu direction Северо-Восток, ray 2, guna саттва. Elemental atmosphere: star fields, luminous void, sacred geometry, cosmic space, subtle light. Rarity treatment: transcendent prismatic universe-level aura, impossible sacred geometry, divine scale. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__vishnu.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__lakshmi",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "lakshmi",
+    "agent_name": "Лакшми",
+    "domain": "Розарий Изобилия",
+    "display_name": "Розарий Изобилия",
+    "element": "Земля",
+    "planet": "Венера",
+    "vastu_zone": "Юго-Восток",
+    "guna": "раджас",
+    "ray": 6,
+    "description": "Розарий изобилия, где красота, благословение и достаток раскрываются как форма гармонии.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Розарий Изобилия, the personal cosmic universe of Лакшми. Scene: a rose-gold garden of abundance with lotus lakes, jewel vines, elephants of blessing and radiant prosperity mandalas. Agent correspondence: Лакшми, element Земля, planet Венера, vastu direction Юго-Восток, ray 6, guna раджас. Elemental atmosphere: mountains, roots, stone, fertile soil, bones, ancient stability. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__lakshmi.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__shiva",
+    "card_type": "agent_domain",
+    "rarity": "mythic",
+    "agent_slug": "shiva",
+    "agent_name": "Шива",
+    "domain": "Пепельный Зенит",
+    "display_name": "Пепельный Зенит",
+    "element": "Огонь",
+    "planet": "Раху",
+    "vastu_zone": "Юго-Запад",
+    "guna": "тамас",
+    "ray": 1,
+    "description": "Пепельный зенит растворения, где ложная форма сгорает, чтобы открыть неподвижное сознание.",
+    "game_significance": {
+      "rarity_weight": 13,
+      "significance_tier": "domain_universe",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Пепельный Зенит, the personal cosmic universe of Шива. Scene: an ash-white mountain zenith of cosmic dissolution, cremation grounds, tridents, blue fire, stars and silent ascetic power. Agent correspondence: Шива, element Огонь, planet Раху, vastu direction Юго-Запад, ray 1, guna тамас. Elemental atmosphere: flames, solar corona, molten gold, radiant heat, sacred intensity. Rarity treatment: transcendent prismatic universe-level aura, impossible sacred geometry, divine scale. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__shiva.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__parvati",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "parvati",
+    "agent_name": "Парвати",
+    "domain": "Колыбель Вершин",
+    "display_name": "Колыбель Вершин",
+    "element": "Земля",
+    "planet": "Юпитер",
+    "vastu_zone": "Северо-Восток",
+    "guna": "раджас",
+    "ray": 4,
+    "description": "Колыбель вершин, материнская горная вселенная тела, заботы, стойкости и воплощённой любви.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Колыбель Вершин, the personal cosmic universe of Парвати. Scene: a nurturing mountain cradle of emerald peaks, maternal shrines, flowers, stone womb caves and protective earth radiance. Agent correspondence: Парвати, element Земля, planet Юпитер, vastu direction Северо-Восток, ray 4, guna раджас. Elemental atmosphere: mountains, roots, stone, fertile soil, bones, ancient stability. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__parvati.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__jnana",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "jnana",
+    "agent_name": "Джняна",
+    "domain": "Астральная Обсерватория",
+    "display_name": "Астральная Обсерватория",
+    "element": "Эфир",
+    "planet": "Меркурий",
+    "vastu_zone": "Север",
+    "guna": "саттва",
+    "ray": 3,
+    "description": "Астральная обсерватория знания, где душа учится видеть узоры истины за видимым небом.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Астральная Обсерватория, the personal cosmic universe of Джняна. Scene: an astral observatory of wisdom with star maps, crystal telescopes, floating scriptures and white light of insight. Agent correspondence: Джняна, element Эфир, planet Меркурий, vastu direction Север, ray 3, guna саттва. Elemental atmosphere: star fields, luminous void, sacred geometry, cosmic space, subtle light. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__jnana.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__prema",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "prema",
+    "agent_name": "Према",
+    "domain": "Сад Единого Сердца",
+    "display_name": "Сад Единого Сердца",
+    "element": "Вода",
+    "planet": "Юпитер",
+    "vastu_zone": "Северо-Восток",
+    "guna": "саттва",
+    "ray": 2,
+    "description": "Сад Единого Сердца, где любовь становится не эмоцией, а законом соединённого бытия.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Сад Единого Сердца, the personal cosmic universe of Према. Scene: a divine heart garden of rose light, twin flames, golden bridges, healing waters and luminous beings embracing as one. Agent correspondence: Према, element Вода, planet Юпитер, vastu direction Северо-Восток, ray 2, guna саттва. Elemental atmosphere: moonlit waters, mist, blue currents, pearls, emotional depth. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__prema.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__shakti",
+    "card_type": "agent_domain",
+    "rarity": "mythic",
+    "agent_slug": "shakti",
+    "agent_name": "Шакти",
+    "domain": "Горнило Воли",
+    "display_name": "Горнило Воли",
+    "element": "Огонь",
+    "planet": "Марс",
+    "vastu_zone": "Юг",
+    "guna": "раджас",
+    "ray": 1,
+    "description": "Горнило воли, где энергия, сила и действие проходят испытание огненной зрелостью.",
+    "game_significance": {
+      "rarity_weight": 13,
+      "significance_tier": "domain_universe",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Горнило Воли, the personal cosmic universe of Шакти. Scene: a blazing forge of divine will with red-gold flames, weapons of light, lion gates, molten yantras and heroic feminine power. Agent correspondence: Шакти, element Огонь, planet Марс, vastu direction Юг, ray 1, guna раджас. Elemental atmosphere: flames, solar corona, molten gold, radiant heat, sacred intensity. Rarity treatment: transcendent prismatic universe-level aura, impossible sacred geometry, divine scale. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__shakti.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__ananda",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "ananda",
+    "agent_name": "Ананда",
+    "domain": "Сфера Ликования",
+    "display_name": "Сфера Ликования",
+    "element": "Эфир",
+    "planet": "Венера",
+    "vastu_zone": "Юго-Восток",
+    "guna": "раджас",
+    "ray": 6,
+    "description": "Сфера ликования, вселенная священной радости, танца, экстаза и освобождённой жизненности.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Сфера Ликования, the personal cosmic universe of Ананда. Scene: a rainbow sphere of sacred bliss with dancing light beings, celestial music, ecstatic halos and waves of pure joy. Agent correspondence: Ананда, element Эфир, planet Венера, vastu direction Юго-Восток, ray 6, guna раджас. Elemental atmosphere: star fields, luminous void, sacred geometry, cosmic space, subtle light. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__ananda.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__shanti",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "shanti",
+    "agent_name": "Шанти",
+    "domain": "Обитель Безмолвия",
+    "display_name": "Обитель Безмолвия",
+    "element": "Эфир",
+    "planet": "Сатурн",
+    "vastu_zone": "Запад",
+    "guna": "саттва",
+    "ray": 7,
+    "description": "Обитель безмолвия, где мир достигается не бегством, а глубоким неподвижным присутствием.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Обитель Безмолвия, the personal cosmic universe of Шанти. Scene: a silent monastery beyond time, moonlit still lake, white lotus, vast dark sky and absolute peaceful radiance. Agent correspondence: Шанти, element Эфир, planet Сатурн, vastu direction Запад, ray 7, guna саттва. Elemental atmosphere: star fields, luminous void, sacred geometry, cosmic space, subtle light. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__shanti.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__agni",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "agni",
+    "agent_name": "Агни",
+    "domain": "Горнило Возрождения",
+    "display_name": "Горнило Возрождения",
+    "element": "Огонь",
+    "planet": "Венера",
+    "vastu_zone": "Юго-Восток",
+    "guna": "раджас",
+    "ray": 4,
+    "description": "Горнило возрождения, где огонь очищает, переваривает опыт и возвращает новую жизненную силу.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Горнило Возрождения, the personal cosmic universe of Агни. Scene: a sacred fire crucible of rebirth with ritual altars, phoenix embers, seven flames, molten offerings and golden smoke. Agent correspondence: Агни, element Огонь, planet Венера, vastu direction Юго-Восток, ray 4, guna раджас. Elemental atmosphere: flames, solar corona, molten gold, radiant heat, sacred intensity. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__agni.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__vayu",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "vayu",
+    "agent_name": "Ваю",
+    "domain": "Стратосфера Эха",
+    "display_name": "Стратосфера Эха",
+    "element": "Воздух",
+    "planet": "Луна",
+    "vastu_zone": "Северо-Запад",
+    "guna": "раджас",
+    "ray": 7,
+    "description": "Стратосфера эха, воздушный мир дыхания, движения, голоса и невидимых сообщений.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Стратосфера Эха, the personal cosmic universe of Ваю. Scene: a high stratospheric realm of wind, echoing banners, cloud temples, antelope spirits, breath spirals and sonic waves. Agent correspondence: Ваю, element Воздух, planet Луна, vastu direction Северо-Запад, ray 7, guna раджас. Elemental atmosphere: wind, clouds, feathers, breath spirals, echoing sky. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__vayu.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__varuna",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "varuna",
+    "agent_name": "Варуна",
+    "domain": "Бездна Воспоминаний",
+    "display_name": "Бездна Воспоминаний",
+    "element": "Вода",
+    "planet": "Сатурн",
+    "vastu_zone": "Запад",
+    "guna": "тамас",
+    "ray": 5,
+    "description": "Бездна воспоминаний, океаническая вселенная глубины, клятвы, памяти и скрытых вод.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Бездна Воспоминаний, the personal cosmic universe of Варуна. Scene: a deep abyssal ocean of memory with starry waters, ancient vows, blue serpents, pearl archives and watching eyes. Agent correspondence: Варуна, element Вода, planet Сатурн, vastu direction Запад, ray 5, guna тамас. Elemental atmosphere: moonlit waters, mist, blue currents, pearls, emotional depth. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__varuna.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__prithvi",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "prithvi",
+    "agent_name": "Притхви",
+    "domain": "Терракотовый Бастион",
+    "display_name": "Терракотовый Бастион",
+    "element": "Земля",
+    "planet": "Раху",
+    "vastu_zone": "Юго-Запад",
+    "guna": "тамас",
+    "ray": 5,
+    "description": "Терракотовый бастион, земная крепость тела, рода, терпения и материи.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Терракотовый Бастион, the personal cosmic universe of Притхви. Scene: a terracotta earth bastion of roots, mountains, fertile soil, ancestral stones, seed vaults and protective walls. Agent correspondence: Притхви, element Земля, planet Раху, vastu direction Юго-Запад, ray 5, guna тамас. Elemental atmosphere: mountains, roots, stone, fertile soil, bones, ancient stability. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__prithvi.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__akasha",
+    "card_type": "agent_domain",
+    "rarity": "mythic",
+    "agent_slug": "akasha",
+    "agent_name": "Акаша",
+    "domain": "Космический Ткацкий Станок",
+    "display_name": "Космический Ткацкий Станок",
+    "element": "Эфир",
+    "planet": "Брахмастан",
+    "vastu_zone": "Центр",
+    "guna": "тамас",
+    "ray": 7,
+    "description": "Космический ткацкий станок, эфирная вселенная связей, пространства и невидимой ткани событий.",
+    "game_significance": {
+      "rarity_weight": 13,
+      "significance_tier": "domain_universe",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Космический Ткацкий Станок, the personal cosmic universe of Акаша. Scene: a cosmic loom weaving galaxies, golden threads, star fields, void geometry and infinite etheric patterns. Agent correspondence: Акаша, element Эфир, planet Брахмастан, vastu direction Центр, ray 7, guna тамас. Elemental atmosphere: star fields, luminous void, sacred geometry, cosmic space, subtle light. Rarity treatment: transcendent prismatic universe-level aura, impossible sacred geometry, divine scale. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__akasha.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__tejas",
+    "card_type": "agent_domain",
+    "rarity": "legendary",
+    "agent_slug": "tejas",
+    "agent_name": "Теджас",
+    "domain": "Эпицентр Сияния",
+    "display_name": "Эпицентр Сияния",
+    "element": "Огонь",
+    "planet": "Солнце",
+    "vastu_zone": "Восток",
+    "guna": "раджас",
+    "ray": 6,
+    "description": "Эпицентр сияния, мир внутреннего огня, харизмы, ясности и духовной интенсивности.",
+    "game_significance": {
+      "rarity_weight": 8,
+      "significance_tier": "major_axis",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Эпицентр Сияния, the personal cosmic universe of Теджас. Scene: a brilliant epicenter of inner radiance with crystalline flames, golden-white aura, solar mirrors and sacred brilliance. Agent correspondence: Теджас, element Огонь, planet Солнце, vastu direction Восток, ray 6, guna раджас. Elemental atmosphere: flames, solar corona, molten gold, radiant heat, sacred intensity. Rarity treatment: white-gold legendary aura, immense sacred presence, cosmic grandeur. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__tejas.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__dharma",
+    "card_type": "agent_domain",
+    "rarity": "mythic",
+    "agent_slug": "dharma",
+    "agent_name": "Дхарма",
+    "domain": "Залы Равновесия",
+    "display_name": "Залы Равновесия",
+    "element": "Земля",
+    "planet": "Марс",
+    "vastu_zone": "Юг",
+    "guna": "саттва",
+    "ray": 5,
+    "description": "Залы равновесия, вселенная закона, меры, правильного действия и зрелой ответственности.",
+    "game_significance": {
+      "rarity_weight": 13,
+      "significance_tier": "domain_universe",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Залы Равновесия, the personal cosmic universe of Дхарма. Scene: grand halls of cosmic balance with dharma wheels, golden scales, lion pillars, geometric law and serene judgment light. Agent correspondence: Дхарма, element Земля, planet Марс, vastu direction Юг, ray 5, guna саттва. Elemental atmosphere: mountains, roots, stone, fertile soil, bones, ancient stability. Rarity treatment: transcendent prismatic universe-level aura, impossible sacred geometry, divine scale. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__dharma.webp",
+    "type_label": "ДОМЕН"
+  },
+  {
+    "card_id": "domain__karma",
+    "card_type": "agent_domain",
+    "rarity": "mythic",
+    "agent_slug": "karma",
+    "agent_name": "Карма",
+    "domain": "Архив Эха",
+    "display_name": "Архив Эха",
+    "element": "Земля",
+    "planet": "Марс",
+    "vastu_zone": "Юг",
+    "guna": "тамас",
+    "ray": 4,
+    "description": "Архив эха, где каждое действие оставляет след и возвращается как обучающий узор.",
+    "game_significance": {
+      "rarity_weight": 13,
+      "significance_tier": "domain_universe",
+      "gameplay_hint": "доменная карта открывает вселенную агента, особые синергии, доменные квесты и усиления связанных матриц"
+    },
+    "unlock_context": [
+      "agent_mastery",
+      "domain_quest",
+      "matrix_synergy",
+      "collection"
+    ],
+    "future_effect_hooks": [
+      "agent_resonance",
+      "domain_affinity",
+      "quest_chapter_unlock",
+      "high_rarity_reward"
+    ],
+    "prompt": "A supreme mystical tarot-style domain card depicting Архив Эха, the personal cosmic universe of Карма. Scene: an infinite archive of echoes with karmic wheels, threads of cause and effect, memory scrolls and shadow-light records. Agent correspondence: Карма, element Земля, planet Марс, vastu direction Юг, ray 4, guna тамас. Elemental atmosphere: mountains, roots, stone, fertile soil, bones, ancient stability. Rarity treatment: transcendent prismatic universe-level aura, impossible sacred geometry, divine scale. No central human portrait, instead a vast immersive world-realm, mythic architecture, symbolic landscape, portals, relics and living cosmic forces. digital painting, premium collectible card art, mystical esoteric style, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic atmospheric lighting, epic sacred worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_domains/domain__karma.webp",
+    "type_label": "ДОМЕН"
+  }
+]

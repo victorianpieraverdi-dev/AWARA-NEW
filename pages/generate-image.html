@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Generate Image · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/daimon-create.css">
+<style>
+.platform-selector{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:24px;
+}
+.platform-btn{
+  background:rgba(201,168,76,0.06);
+  border:1px solid rgba(201,168,76,0.2);
+  color:rgba(255,248,214,0.6);
+  font-family:'Cinzel',serif;
+  font-size:12px;
+  letter-spacing:0.15em;
+  padding:10px 24px;
+  border-radius:6px;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+.platform-btn:hover{
+  border-color:rgba(201,168,76,0.4);
+  color:var(--gold);
+}
+.platform-btn.active{
+  background:rgba(255,215,0,0.1);
+  border-color:rgba(255,215,0,0.4);
+  color:#ffd700;
+}
+.prompt-area{
+  background:rgba(201,168,76,0.03);
+  border:1px solid rgba(201,168,76,0.12);
+  border-radius:10px;
+  padding:16px;
+  margin-bottom:16px;
+}
+.prompt-label{
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  color:rgba(255,248,214,0.4);
+  letter-spacing:0.15em;
+  margin-bottom:8px;
+}
+.prompt-text{
+  width:100%;
+  min-height:200px;
+  background:rgba(0,0,0,0.3);
+  border:1px solid rgba(201,168,76,0.08);
+  border-radius:8px;
+  color:rgba(255,248,214,0.75);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  line-height:1.6;
+  padding:12px;
+  resize:vertical;
+}
+.prompt-text:focus{
+  outline:none;
+  border-color:rgba(201,168,76,0.3);
+}
+.copy-btn{
+  display:block;
+  width:100%;
+  background:rgba(255,215,0,0.08);
+  border:1px solid rgba(255,215,0,0.25);
+  color:#ffd700;
+  font-family:'Cinzel',serif;
+  font-size:13px;
+  letter-spacing:0.2em;
+  padding:14px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all 0.3s;
+  margin-bottom:24px;
+}
+.copy-btn:hover{
+  background:rgba(255,215,0,0.15);
+  border-color:rgba(255,215,0,0.4);
+}
+.copy-btn.copied{
+  background:rgba(100,200,100,0.1);
+  border-color:rgba(100,200,100,0.3);
+  color:rgba(100,200,100,0.9);
+}
+.instructions-section{
+  margin-bottom:28px;
+}
+.instr-heading{
+  font-family:'Cinzel',serif;
+  font-size:clamp(12px,2.5vw,14px);
+  color:#c9a84c;
+  letter-spacing:0.15em;
+  margin-bottom:12px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(201,168,76,0.12);
+}
+.instr-list{
+  list-style:none;
+  padding:0;
+}
+.instr-list li{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;
+  color:rgba(255,248,214,0.55);
+  line-height:1.6;
+  margin-bottom:8px;
+  padding-left:8px;
+}
+.preview-section{
+  margin-top:24px;
+}
+.preview-area{
+  background:rgba(201,168,76,0.03);
+  border:2px dashed rgba(201,168,76,0.15);
+  border-radius:12px;
+  padding:40px 20px;
+  text-align:center;
+  position:relative;
+  cursor:pointer;
+  transition:all 0.3s;
+  min-height:200px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+.preview-area:hover{
+  border-color:rgba(201,168,76,0.3);
+  background:rgba(201,168,76,0.05);
+}
+.preview-area img{
+  max-width:100%;
+  max-height:400px;
+  border-radius:8px;
+}
+.preview-hint{
+  font-size:12px;
+  color:rgba(255,248,214,0.3);
+  letter-spacing:0.1em;
+}
+.preview-area input[type="file"]{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
+.daimon-info{
+  text-align:center;
+  margin-bottom:24px;
+  padding:16px;
+  background:rgba(201,168,76,0.04);
+  border:1px solid rgba(201,168,76,0.12);
+  border-radius:10px;
+}
+.daimon-info-name{
+  font-family:'Cinzel',serif;
+  font-size:16px;
+  color:#ffd700;
+  letter-spacing:0.15em;
+  margin-bottom:4px;
+}
+.daimon-info-meta{
+  font-size:10px;
+  color:rgba(255,248,214,0.4);
+  letter-spacing:0.1em;
+}
+</style>
+</head>
+<body>
+
+<div class="page-shell">
+  <header class="page-header">
+    <a href="../index.html" class="back-link" data-i18n="app.back">LOBBY</a>
+    <h1 class="page-title" data-i18n="prompt.title">IMAGE GENERATION</h1>
+    <div class="page-subtitle" data-i18n="prompt.subtitle">Create an image of your Daimon</div>
+  </header>
+
+  <div id="gen-content"></div>
+</div>
+
+<script type="module">
+import { translatePage, getLang, createLangSwitcher, t } from '../js/i18n.js';
+import { loadPlayerDaimon, getDaimonForm } from '../js/modules/daimon-manager.js';
+import { generateDaimonPrompt } from '../js/modules/prompt-generator.js';
+
+document.addEventListener('DOMContentLoaded', async function() {
+  translatePage();
+  createLangSwitcher();
+
+  var container = document.getElementById('gen-content');
+  var lang = getLang();
+  var daimon = loadPlayerDaimon();
+
+  if (!daimon) {
+    renderNoDaimon(container);
+    return;
+  }
+
+  var form = await getDaimonForm(daimon.formId);
+  if (!form) {
+    renderNoDaimon(container);
+    return;
+  }
+
+  renderGenerator(container, daimon, form);
+});
+
+function renderNoDaimon(container) {
+  var html = '<div style="text-align:center;padding:60px 20px;">';
+  html += '<div style="font-size:48px;margin-bottom:24px;opacity:0.4;">&#9788;</div>';
+  html += '<h2 style="font-family:Cinzel,serif;font-size:clamp(16px,3vw,20px);color:#ffd700;letter-spacing:0.15em;margin-bottom:12px;">' + t('prompt.no_daimon_title') + '</h2>';
+  html += '<p style="font-family:Cormorant Garamond,serif;font-size:14px;color:rgba(255,248,214,0.5);margin-bottom:24px;">' + t('prompt.no_daimon_desc') + '</p>';
+  html += '<a href="daimon-create.html" class="submit-btn" style="display:inline-block;width:auto;margin:0;padding:12px 24px;text-decoration:none;">' + t('prompt.create_daimon') + '</a>';
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderGenerator(container, daimon, form) {
+  var lang = getLang();
+  var species = form.species ? form.species[lang] : '?';
+  var currentPlatform = 'gpt';
+
+  var html = '';
+
+  // Daimon info
+  html += '<div class="daimon-info">';
+  html += '<div class="daimon-info-name">' + species + '</div>';
+  html += '<div class="daimon-info-meta">' + form.kingdom + ' / ' + form.element + ' / ' + form.archetype + ' / LVL ' + daimon.level + ' / ' + daimon.tier + '</div>';
+  html += '</div>';
+
+  // Platform selector
+  html += '<div class="prompt-label" style="text-align:center;margin-bottom:8px;">' + t('prompt.platform') + '</div>';
+  html += '<div class="platform-selector">';
+  html += '<button class="platform-btn active" data-platform="gpt">GPT</button>';
+  html += '<button class="platform-btn" data-platform="grok">GROK</button>';
+  html += '</div>';
+
+  // Prompt area
+  html += '<div class="prompt-area">';
+  html += '<div class="prompt-label">' + t('prompt.generated') + '</div>';
+  html += '<textarea class="prompt-text" id="prompt-output" readonly>' + generateDaimonPrompt(daimon, form, 'gpt') + '</textarea>';
+  html += '</div>';
+
+  // Copy button
+  html += '<button class="copy-btn" id="copy-btn">' + t('prompt.copy') + '</button>';
+
+  // Instructions
+  html += '<div class="instructions-section">';
+  html += '<div class="instr-heading">' + t('prompt.instructions') + '</div>';
+  html += '<ul class="instr-list">';
+  html += '<li>' + t('prompt.instr_1') + '</li>';
+  html += '<li>' + t('prompt.instr_2') + '</li>';
+  html += '<li>' + t('prompt.instr_3') + '</li>';
+  html += '<li>' + t('prompt.instr_4') + '</li>';
+  html += '</ul></div>';
+
+  // Preview section
+  html += '<div class="preview-section">';
+  html += '<div class="instr-heading">' + t('prompt.preview') + '</div>';
+  html += '<div class="preview-area" id="preview-area">';
+  html += '<div class="preview-hint">' + t('prompt.upload_hint') + '</div>';
+  html += '<input type="file" accept="image/*" id="preview-input">';
+  html += '</div></div>';
+
+  container.innerHTML = html;
+
+  // Platform switch
+  container.querySelectorAll('.platform-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      container.querySelectorAll('.platform-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentPlatform = btn.dataset.platform;
+      document.getElementById('prompt-output').value = generateDaimonPrompt(daimon, form, currentPlatform);
+    });
+  });
+
+  // Copy
+  document.getElementById('copy-btn').addEventListener('click', function() {
+    var textarea = document.getElementById('prompt-output');
+    navigator.clipboard.writeText(textarea.value).then(function() {
+      var btn = document.getElementById('copy-btn');
+      btn.textContent = t('prompt.copied');
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = t('prompt.copy');
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+
+  // Preview upload
+  document.getElementById('preview-input').addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var area = document.getElementById('preview-area');
+      area.innerHTML = '<img src="' + ev.target.result + '" alt="Daimon preview"><input type="file" accept="image/*" id="preview-input">';
+      document.getElementById('preview-input').addEventListener('change', arguments.callee);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+</script>
+
+</body>
+</html>

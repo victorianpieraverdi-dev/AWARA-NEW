@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARA — Integration Test (полная модульная сборка)</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background: #02010a; color: #c9a84c;
+      padding: 20px; margin: 0; min-height: 100vh;
+    }
+    h1 { color: #ffd700; font-family: 'Cinzel', serif; margin-bottom: 4px; }
+    .sub { color: #8a7a3c; font-size: 0.9em; margin-bottom: 20px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      border: 1px solid #c9a84c; border-radius: 10px; padding: 16px;
+      background: rgba(201,168,76,0.04);
+    }
+    .card h2 { color: #ffd700; font-family: 'Cinzel', serif; font-size: 1.05em; margin: 0 0 12px; }
+    .central-sun {
+      width: 96px; height: 96px;
+      background: radial-gradient(circle, #ffd700, #c9a84c);
+      border-radius: 50%; margin: 8px auto;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+    }
+    .light-display { font-family: 'JetBrains Mono', monospace; font-size: 1.3em; color: #ffd700; text-align: center; margin: 12px 0; }
+    .level-display { text-align: center; font-family: 'Cinzel', serif; color: #ffd700; letter-spacing: 0.1em; }
+    .agent-display { text-align: center; font-style: italic; color: #c9a84c; margin-top: 4px; }
+    .sections { display: grid; gap: 8px; margin-top: 16px; }
+    .section { padding: 12px; border: 1px solid #c9a84c; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+    .section:hover { background: rgba(201,168,76,0.1); box-shadow: 0 0 15px rgba(255,215,0,0.4); }
+    button { padding: 9px 14px; margin: 4px; background: transparent; border: 1px solid #c9a84c; color: #ffd700; cursor: pointer; font-family: 'Cinzel', serif; text-transform: uppercase; font-size: 0.8em; border-radius: 6px; }
+    button:hover { background: rgba(201,168,76,0.1); }
+    .controls { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 14px; }
+    .log { background: #000; padding: 12px; border-radius: 8px; margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.78em; line-height: 1.5; height: 320px; overflow-y: auto; white-space: pre-wrap; }
+    .log .e { color: #ff6b6b; }
+    .log .w { color: #ffcf6b; }
+    .log .i { color: #6bd0ff; }
+    .checks { list-style: none; padding: 0; margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+    .checks li { padding: 4px 0; }
+    .pass { color: #7CFC8A; }
+    .fail { color: #ff6b6b; }
+    .pending { color: #8a7a3c; }
+    .menu-cat { margin-bottom: 10px; }
+    .menu-cat .cat-label { color: #ffd700; font-family: 'Cinzel', serif; font-size: 0.9em; }
+    .menu-cat .cat-items { font-size: 0.82em; color: #c9a84c; }
+    @keyframes breath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  </style>
+</head>
+<body>
+  <h1>AWARA — Integration Test</h1>
+  <div class="sub">Полная модульная сборка: core → canon → state → ui → lobby → menu → game. Живой index.html не затрагивается.</div>
+
+  <div class="grid">
+    <!-- ЛОББИ -->
+    <div class="card">
+      <h2>Лобби (lobby-module)</h2>
+      <div class="central-sun" data-central-sun></div>
+      <div class="light-display">Свет: <span data-light-counter>0.0000000000</span></div>
+      <div class="level-display">Ранг: <span data-level-name>—</span></div>
+      <div class="agent-display">Агент: <span data-agent-name>—</span></div>
+      <div class="sections">
+        <div class="section" data-section="game">ИГРА</div>
+        <div class="section" data-section="chronicle">ХРОНИКА</div>
+        <div class="section" data-section="exchange">ОБМЕН</div>
+        <div class="section" data-section="social">ОБЩЕНИЕ</div>
+      </div>
+      <div class="controls">
+        <button id="btn-add-1000">+1000 света</button>
+        <button id="btn-add-7000">+7000 света</button>
+        <button id="btn-passport">Паспорт</button>
+        <button id="btn-game-menu">Меню ИГРА</button>
+        <button id="btn-reset">Сброс (тест-стор)</button>
+      </div>
+    </div>
+
+    <!-- САМОПРОВЕРКА + МЕНЮ -->
+    <div class="card">
+      <h2>Самопроверка канона</h2>
+      <ul class="checks" id="checks">
+        <li class="pending">⏳ agents = 21 …</li>
+        <li class="pending">⏳ matrices = 33 …</li>
+        <li class="pending">⏳ locas = 14 …</li>
+        <li class="pending">⏳ chakras = 9 …</li>
+        <li class="pending">⏳ lobby init …</li>
+        <li class="pending">⏳ game init …</li>
+      </ul>
+      <h2 style="margin-top:16px;">Меню (menu-module)</h2>
+      <div id="menu-render" style="font-size:0.85em;">…</div>
+    </div>
+  </div>
+
+  <!-- КОНСОЛЬ -->
+  <div class="card" style="margin-top:20px;">
+    <h2>Консоль (зеркало)</h2>
+    <div class="log" id="log"></div>
+  </div>
+
+  <!-- Перехват консоли (классический скрипт — до модулей) -->
+  <script>
+    (function () {
+      var logEl = document.getElementById('log');
+      function append(kind, args) {
+        if (!logEl) return;
+        var time = new Date().toLocaleTimeString();
+        var msg = Array.prototype.map.call(args, function (a) {
+          if (typeof a === 'object') { try { return JSON.stringify(a); } catch (e) { return String(a); } }
+          return String(a);
+        }).join(' ');
+        var cls = kind === 'error' ? 'e' : kind === 'warn' ? 'w' : kind === 'info' ? 'i' : '';
+        logEl.innerHTML += '<span class="' + cls + '">[' + time + '] ' + msg.replace(/</g, '&lt;') + '</span>\n';
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+      ['log', 'warn', 'error', 'info'].forEach(function (k) {
+        var orig = console[k].bind(console);
+        console[k] = function () { orig.apply(console, arguments); append(k, arguments); };
+      });
+      window.addEventListener('error', function (e) { append('error', ['Uncaught: ' + e.message + ' @ ' + e.filename + ':' + e.lineno]); });
+      window.addEventListener('unhandledrejection', function (e) { append('error', ['Promise rejected: ' + (e.reason && e.reason.message ? e.reason.message : e.reason)]); });
+    })();
+  </script>
+
+  <!-- Сборка модулей -->
+  <script type="module">
+    import { CANON, AWARA_VERSION } from './core-module.js';
+    import { preloadCanon } from './canon-module.js';
+    import { resetState } from './state-module.js';
+    import {
+      initLobby, addLightAnimated, showPassport,
+      updateLightCounter, updateLevelDisplay, updateAgentDisplay,
+      getLobbyState
+    } from './lobby-module.js';
+    import { initGame, showGameMenu } from './game-module.js';
+    import { getMenuState } from './menu-module.js';
+
+    const checks = document.getElementById('checks').children;
+    function setCheck(i, ok, text) {
+      checks[i].className = ok ? 'pass' : 'fail';
+      checks[i].textContent = (ok ? '✅ ' : '❌ ') + text;
+    }
+
+    console.info('[Integration] AWARA v' + AWARA_VERSION + ' — старт сборки');
+
+    (async () => {
+      try {
+        // 1) Канон напрямую (для самопроверки счётчиков)
+        const canon = await preloadCanon();
+        setCheck(0, (canon.agents || []).length === CANON.AGENTS_COUNT, 'agents = ' + ((canon.agents || []).length) + ' (ожид. ' + CANON.AGENTS_COUNT + ')');
+        setCheck(1, (canon.matrices || []).length === CANON.MATRICES_COUNT, 'matrices = ' + ((canon.matrices || []).length) + ' (ожид. ' + CANON.MATRICES_COUNT + ')');
+        setCheck(2, (canon.locas || []).length === CANON.LOCAS_COUNT, 'locas = ' + ((canon.locas || []).length) + ' (ожид. ' + CANON.LOCAS_COUNT + ')');
+        setCheck(3, (canon.chakras || []).length === CANON.CHAKRAS_COUNT, 'chakras = ' + ((canon.chakras || []).length) + ' (ожид. ' + CANON.CHAKRAS_COUNT + ')');
+
+        // 2) Лобби
+        const lobby = await initLobby();
+        setCheck(4, !!lobby && lobby.initialized, 'lobby init: ' + (lobby && lobby.initialized ? 'ok' : 'FAIL'));
+
+        // 3) Игра
+        const game = await initGame();
+        setCheck(5, !!game && game.initialized, 'game init: ' + (game && game.initialized ? 'ok' : 'FAIL'));
+
+        // 4) Меню
+        renderMenu();
+        console.info('[Integration] Сборка завершена');
+      } catch (e) {
+        console.error('[Integration] Падение сборки:', e && e.message ? e.message : e);
+      }
+    })();
+
+    function renderMenu() {
+      const ms = getMenuState();
+      const host = document.getElementById('menu-render');
+      const cats = ms.accessible || {};
+      host.innerHTML = Object.keys(cats).map(function (k) {
+        const c = cats[k];
+        const items = (c.items || []).map(function (it) { return it.label; }).join(' · ');
+        return '<div class="menu-cat"><span class="cat-label">' + c.icon + ' ' + c.label + '</span><div class="cat-items">' + items + '</div></div>';
+      }).join('') + '<div style="color:#8a7a3c;font-size:0.8em;">Уровень: ' + ms.currentLevel.name + ' · свет: ' + ms.light + '</div>';
+    }
+
+    // Кнопки
+    document.getElementById('btn-add-1000').onclick = () => { addLightAnimated(1000); renderMenu(); };
+    document.getElementById('btn-add-7000').onclick = () => { addLightAnimated(7000); renderMenu(); };
+    document.getElementById('btn-passport').onclick = () => showPassport();
+    document.getElementById('btn-game-menu').onclick = () => showGameMenu();
+    document.getElementById('btn-reset').onclick = () => {
+      resetState();
+      updateLightCounter(); updateLevelDisplay(); updateAgentDisplay();
+      renderMenu();
+      console.info('[Integration] Тест-стор сброшен');
+    };
+
+    // Клик по разделам лобби (диспатчит awara:section, game-module слушает)
+    window.addEventListener('awara:section', (e) => console.info('[Integration] section →', e.detail.section));
+  </script>
+</body>
+</html>

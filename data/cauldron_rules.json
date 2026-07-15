@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "purpose": "Rules for converting a player's daily Tigel entry into soul growth, light, elements, principles, distortions, agents, matrices and card resonance.",
+  "base_light": {
+    "free_entry_min": 3,
+    "structured_entry_min": 6,
+    "media_attachment_bonus": 2,
+    "honest_shadow_bonus": 4,
+    "completed_practice_bonus": 5,
+    "cooperation_bonus": 4,
+    "streak_bonus_per_day": 1,
+    "streak_bonus_cap": 14
+  },
+  "initiation_spheres": {
+    "feet": {
+      "title": "Ноги",
+      "meaning": "body, action, matter, work, discipline, habit, grounded embodiment",
+      "default_element": "earth",
+      "keywords": [
+        "тело",
+        "делал",
+        "работа",
+        "дисциплина",
+        "дом",
+        "деньги",
+        "здоровье",
+        "сон",
+        "еда",
+        "практика",
+        "земля",
+        "порядок",
+        "уборка",
+        "спорт"
+      ],
+      "awards": {
+        "element": "earth",
+        "principles": ["sthula_sharira", "prana"],
+        "card_tags": ["body", "earth", "discipline", "work", "grounding"]
+      }
+    },
+    "heart": {
+      "title": "Сердце",
+      "meaning": "emotion, love, pain, fear, devotion, compassion, relationship field",
+      "default_element": "water",
+      "keywords": [
+        "чувствовал",
+        "любовь",
+        "боль",
+        "страх",
+        "радость",
+        "отношения",
+        "сердце",
+        "обида",
+        "принятие",
+        "благодарность",
+        "слёзы",
+        "вода",
+        "семья",
+        "сострадание"
+      ],
+      "awards": {
+        "element": "water",
+        "principles": ["buddhi", "kama"],
+        "card_tags": ["heart", "water", "healing", "relationship", "devotion"]
+      }
+    },
+    "head": {
+      "title": "Голова",
+      "meaning": "mind, perception, thought, meaning, decision, clarity and distortion of reality",
+      "default_element": "air",
+      "keywords": [
+        "понял",
+        "думал",
+        "решил",
+        "осознал",
+        "идея",
+        "смысл",
+        "ум",
+        "мысль",
+        "анализ",
+        "знание",
+        "слово",
+        "воздух",
+        "обучение",
+        "выбор"
+      ],
+      "awards": {
+        "element": "air",
+        "principles": ["manas"],
+        "card_tags": ["mind", "air", "wisdom", "speech", "choice"]
+      }
+    },
+    "cooperation": {
+      "title": "Сотрудничество",
+      "meaning": "exchange, service, co-creation, boundaries, other players, collective light",
+      "default_element": "ether",
+      "keywords": [
+        "помог",
+        "вместе",
+        "обмен",
+        "служение",
+        "люди",
+        "команда",
+        "границы",
+        "сотрудничество",
+        "светообмен",
+        "другой",
+        "сообщество",
+        "эфир",
+        "договор",
+        "поддержка"
+      ],
+      "awards": {
+        "element": "ether",
+        "principles": ["buddhi", "atma"],
+        "card_tags": ["cooperation", "ether", "service", "exchange", "collective"]
+      }
+    }
+  },
+  "elements": {
+    "earth": {
+      "ru": "Земля",
+      "meaning": "form, body, routine, structure, money, home, work",
+      "card_tags": ["earth", "body", "home", "structure", "vastu"]
+    },
+    "water": {
+      "ru": "Вода",
+      "meaning": "emotion, memory, healing, relationship, cleansing",
+      "card_tags": ["water", "emotion", "healing", "memory", "relationship"]
+    },
+    "fire": {
+      "ru": "Огонь",
+      "meaning": "will, transformation, courage, discipline, creative power",
+      "keywords": ["воля", "огонь", "смелость", "трансформация", "сила", "аскеза", "энергия", "действие"],
+      "card_tags": ["fire", "will", "transformation", "courage", "power"]
+    },
+    "air": {
+      "ru": "Воздух",
+      "meaning": "thought, speech, learning, perspective, signal",
+      "card_tags": ["air", "mind", "speech", "learning", "signal"]
+    },
+    "ether": {
+      "ru": "Эфир",
+      "meaning": "space, prayer, meaning, subtle connection, divine field",
+      "keywords": ["бог", "молитва", "эфир", "пространство", "дух", "медитация", "тишина", "смысл"],
+      "card_tags": ["ether", "space", "spirit", "prayer", "cosmos"]
+    }
+  },
+  "distortions": {
+    "ahamkara": {
+      "ru": "Ахамкара",
+      "meaning": "ego fixation, false center, identification with role or pain",
+      "keywords": ["я прав", "эго", "гордость", "обида", "меня не поняли", "контроль", "важность"],
+      "shadow_light_bonus": 3,
+      "card_tags": ["ego", "shadow", "identity"]
+    },
+    "fear": {
+      "ru": "Страх",
+      "meaning": "contraction, avoidance, survival reaction",
+      "keywords": ["страх", "боюсь", "тревога", "паника", "опасность", "избегал"],
+      "shadow_light_bonus": 3,
+      "card_tags": ["fear", "shadow", "protection"]
+    },
+    "desire": {
+      "ru": "Желание",
+      "meaning": "kama, craving, attachment, emotional pull",
+      "keywords": ["хочу", "желание", "зависимость", "тянет", "страсть", "привязанность"],
+      "shadow_light_bonus": 2,
+      "card_tags": ["desire", "kama", "water"]
+    },
+    "illusion": {
+      "ru": "Иллюзия",
+      "meaning": "distorted perception, projection, fantasy replacing reality",
+      "keywords": ["иллюзия", "самообман", "кажется", "фантазия", "искажение", "проекция"],
+      "shadow_light_bonus": 4,
+      "card_tags": ["illusion", "maya", "mind"]
+    },
+    "inertia": {
+      "ru": "Инерция",
+      "meaning": "tamas, stagnation, sleep, avoidance of movement",
+      "keywords": ["лень", "инерция", "не сделал", "застрял", "сонливость", "тяжесть"],
+      "shadow_light_bonus": 2,
+      "card_tags": ["tamas", "earth", "stagnation"]
+    }
+  },
+  "agent_resonance_keywords": {
+    "dharma": ["закон", "правда", "выбор", "справедливость", "обязанность", "ответственность"],
+    "parvati": ["забота", "исцеление", "мать", "сердце", "принятие", "нежность"],
+    "shiva": ["разрушение", "тишина", "аскеза", "трансформация", "пустота", "освобождение"],
+    "sarasvati": ["слово", "музыка", "знание", "обучение", "творчество", "речь"],
+    "agni": ["огонь", "воля", "жертва", "очищение", "энергия", "сила"],
+    "vayu": ["дыхание", "ветер", "движение", "воздух", "сигнал", "нервы"],
+    "lakshmi": ["деньги", "красота", "изобилие", "дом", "ценность", "благодарность"],
+    "hanuman": ["служение", "верность", "сила", "помощь", "преданность", "смелость"]
+  },
+  "matrix_resonance_keywords": {
+    "vedic": ["дхарма", "карма", "мантра", "веды", "йога", "чакра", "гуна", "атман"],
+    "gene_keys": ["тень", "дар", "сиддхи", "ген", "ключ", "рана", "трансформация"],
+    "egyptian": ["маат", "сердце", "дуат", "анубис", "осирис", "ра", "весы"],
+    "kabbalistic": ["сефира", "древо", "каббала", "свет", "сосуд", "исправление"],
+    "norse": ["руна", "иггдрасиль", "один", "битва", "судьба", "север"],
+    "shinto": ["ками", "очищение", "храм", "природа", "предки", "ритуал"]
+  },
+  "reward_rarity": {
+    "base_weights": {
+      "common": 60,
+      "uncommon": 25,
+      "rare": 10,
+      "epic": 4,
+      "legendary": 0.9,
+      "mythic": 0.1
+    },
+    "light_bias_thresholds": [
+      {
+        "min_light_awarded": 10,
+        "epic_bonus": 1,
+        "legendary_bonus": 0.2
+      },
+      {
+        "min_light_awarded": 20,
+        "epic_bonus": 2,
+        "legendary_bonus": 0.5,
+        "mythic_bonus": 0.1
+      },
+      {
+        "min_light_awarded": 40,
+        "epic_bonus": 4,
+        "legendary_bonus": 1,
+        "mythic_bonus": 0.25
+      }
+    ]
+  },
+  "unlock_checks": {
+    "earth": {
+      "soul_light": 1000,
+      "tigel_entries": 7,
+      "balanced_elements_min_count": 3,
+      "balanced_element_min_value": 100
+    },
+    "cosmos": {
+      "soul_light": 5000,
+      "earth_light": 2500,
+      "star_temple_zones_min": 7,
+      "cooperation_events_min": 3
+    },
+    "divine_game": {
+      "total_light": 15000,
+      "cards_min": 108,
+      "cosmos_unlocked": true,
+      "shared_spheres_min": 1
+    }
+  }
+}

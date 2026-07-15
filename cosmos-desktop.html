@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<title>AWARA · Рабочий стол мирозданий</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{ --gold:#c9a84c; --gold-bright:#ffd700; --gold-light:#fff8d6; --f-dec:'Cinzel Decorative',serif; --f-mono:'JetBrains Mono',monospace; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:#01010a;color:#e8e0c8;font-family:var(--f-mono)}
+  #cosmos{position:fixed;inset:0;display:block;width:100%;height:100%}
+
+  .hud{position:fixed;z-index:10;pointer-events:none;text-shadow:0 0 12px rgba(0,0,0,0.8)}
+  .hud-tl{top:18px;left:20px}
+  .hud-tl .title{font-family:var(--f-dec);font-size:15px;letter-spacing:0.22em;color:var(--gold-bright)}
+  .hud-tl .owner{margin-top:6px;font-size:11px;letter-spacing:0.16em;color:rgba(255,225,170,0.7)}
+  .hud-tr{top:16px;right:18px;display:flex;gap:10px;pointer-events:auto}
+  .btn{font-family:var(--f-mono);font-size:11px;letter-spacing:0.14em;color:var(--gold-bright);
+    background:rgba(12,9,28,0.6);border:1px solid var(--gold);padding:7px 12px;border-radius:9px;cursor:pointer;
+    backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);transition:background .25s,opacity .35s}
+  .btn:hover{background:rgba(40,30,70,0.7)}
+  .btn.hidden{opacity:0;pointer-events:none}
+  .hud-b{left:50%;bottom:22px;transform:translateX(-50%);text-align:center;width:min(80vw,520px)}
+  .scale-row{display:flex;justify-content:space-between;font-size:9px;letter-spacing:0.24em;color:rgba(200,180,230,0.55);margin-bottom:6px}
+  .scale-bar{position:relative;height:3px;border-radius:3px;background:linear-gradient(90deg,#ffd27a,#6a7cff,#ff7a4a);padding:10px 0;background-clip:content-box;pointer-events:auto;cursor:pointer}
+  .scale-knob{position:absolute;top:50%;width:11px;height:11px;border-radius:50%;background:#fff;
+    box-shadow:0 0 12px rgba(255,255,255,0.8);transform:translate(-50%,-50%);transition:left .12s linear}
+  .hint{margin-top:12px;font-size:10px;letter-spacing:0.2em;color:rgba(255,220,160,0.55);animation:hintPulse 3.4s ease-in-out infinite}
+  @keyframes hintPulse{0%,100%{opacity:0.4}50%{opacity:0.85}}
+
+  #warp{position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity .5s}
+  #node-tip{position:fixed;z-index:20;pointer-events:none;opacity:0;transform:translate(-50%,-140%);
+    font-size:10px;letter-spacing:0.14em;color:#fff;background:rgba(12,9,28,0.8);border:1px solid var(--gold);
+    padding:5px 9px;border-radius:7px;white-space:nowrap;transition:opacity .18s}
+
+  /* оверлей ошибки — чтобы никогда не было молчаливого белого экрана */
+  #err{position:fixed;inset:0;z-index:90;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    background:rgba(4,2,12,0.94);padding:30px;text-align:center}
+  #err .h{font-family:var(--f-dec);font-size:18px;color:#ff8a6a;letter-spacing:0.12em}
+  #err .m{max-width:560px;font-size:12px;line-height:1.7;color:#e8d8b8;white-space:pre-wrap}
+  #err .s{font-size:11px;color:rgba(200,180,140,0.7);max-width:560px;line-height:1.7}
+
+  .scale-row{display:none}
+  #vig{position:fixed;inset:0;z-index:8;pointer-events:none;background:radial-gradient(circle at 50% 50%,transparent 42%,rgba(2,1,8,0.6) 100%)}
+  #enter{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+  #enter.show{opacity:1}
+  #enter .lbl{font-family:var(--f-dec);font-size:13px;letter-spacing:0.42em;color:rgba(255,236,190,0.85);text-transform:uppercase;text-shadow:0 0 22px rgba(255,200,120,0.5);animation:enterPulse 3.2s ease-in-out infinite}
+  @keyframes enterPulse{0%,100%{opacity:0.4;letter-spacing:0.42em}50%{opacity:0.95;letter-spacing:0.52em}}
+  .hud-tl,.hud-b{transition:opacity 1.4s ease}
+  body.intro .hud-tl,body.intro .hud-b{opacity:0;pointer-events:none}
+</style>
+</head>
+<body class="intro">
+<canvas id="cosmos"></canvas>
+
+<div class="hud hud-tl">
+  <div class="title" data-ru="AWARA · РАБОЧИЙ СТОЛ" data-en="AWARA · DESKTOP">AWARA · РАБОЧИЙ СТОЛ</div>
+  <div class="owner" id="owner" data-ru="твоё мироздание · Исток" data-en="your creation · Source">твоё мироздание · Исток</div>
+</div>
+
+<div class="hud hud-tr">
+  <div class="btn hidden" id="backBtn" data-ru="← вернуться" data-en="← return">← вернуться</div>
+  <div class="btn" id="langBtn">RU / EN</div>
+</div>
+
+<div class="hud hud-b">
+  <div class="scale-row">
+    <span data-ru="МАКРО · Исток" data-en="MACRO · Source">МАКРО · Исток</span>
+    <span data-ru="Край Акаши · иные вселенные" data-en="Akasha edge · other universes">Край Акаши · иные вселенные</span>
+  </div>
+  <div class="scale-bar"><div class="scale-knob" id="knob" style="left:12%"></div></div>
+  <div class="hint" id="hint" data-ru="отдались — иные вселенные" data-en="zoom out — other universes">отдались — иные вселенные</div>
+</div>
+
+<div id="node-tip"></div>
+<div id="warp"></div>
+<div id="vig"></div>
+<div id="enter"><div class="lbl" data-ru="войти" data-en="enter">войти</div></div>
+
+<div id="err">
+  <div class="h" data-ru="Сцена не загрузилась" data-en="Scene failed to load">Сцена не загрузилась</div>
+  <div class="m" id="err-msg"></div>
+  <div class="s" data-ru="Чаще всего: не скачался three.module.js с unpkg (нет интернета или блокировка CDN). Открой F12 → Console." data-en="Most likely three.module.js did not load from unpkg (no internet / CDN blocked). Open F12 → Console.">Чаще всего: не скачался three.module.js с unpkg (нет интернета или блокировка CDN). Открой F12 → Console.</div>
+</div>
+
+<!-- Сторож ошибок — ловит падение модуля / незагрузку THREE -->
+<script>
+  function showErr(msg){
+    var el=document.getElementById('err'); if(!el) return;
+    el.style.display='flex';
+    var m=document.getElementById('err-msg'); if(m && msg) m.textContent=String(msg).slice(0,400);
+  }
+  window.addEventListener('error', function(e){ showErr((e.error&&e.error.stack)||e.message||'error'); });
+  window.addEventListener('unhandledrejection', function(e){ showErr((e.reason&&(e.reason.stack||e.reason.message))||'promise rejection'); });
+  setTimeout(function(){
+    if(!window.__cosmosReady){
+      showErr('Движок не стартовал за 5с. Вероятно, three.module.js не скачался с unpkg.com. Проверь интернет и F12 → Console.');
+    }
+  }, 5000);
+</script>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module">
+try {
+  const THREE = await import('three')
+
+  /* ===================================================================
+     AWARA — Лёгкий «Рабочий стол» мирозданий (Шаг 1).
+     Без log-depth, без раймарча, умеренные масштабы. Мультиплеер — заглушка.
+     =================================================================== */
+
+  const canvas = document.getElementById('cosmos')
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, powerPreference:'high-performance' })
+  renderer.setPixelRatio(1)
+  renderer.setSize(innerWidth, innerHeight)
+  renderer.setClearColor(0x01010a, 1)
+
+  const IS_MOBILE = matchMedia('(max-width:760px)').matches
+  const scene = new THREE.Scene()
+  const camera = new THREE.PerspectiveCamera(55, innerWidth/innerHeight, 0.1, 4000)
+
+  /* —— радиальная текстура-свечение —— */
+  function glowTex(stops){
+    const c=document.createElement('canvas'); c.width=c.height=128
+    const g=c.getContext('2d'); const gr=g.createRadialGradient(64,64,0,64,64,64)
+    ;(stops||[[0,'rgba(255,255,255,1)'],[0.25,'rgba(255,230,160,0.75)'],[1,'rgba(255,200,120,0)']]).forEach(s=>gr.addColorStop(s[0],s[1]))
+    g.fillStyle=gr; g.fillRect(0,0,128,128)
+    const t=new THREE.CanvasTexture(c); t.needsUpdate=true; return t
+  }
+  const sunGlow = glowTex()
+  const softGlow = glowTex([[0,'rgba(255,255,255,0.9)'],[0.5,'rgba(180,200,255,0.35)'],[1,'rgba(120,140,255,0)']])
+  const starTex = glowTex([[0,'rgba(255,255,255,1)'],[0.3,'rgba(255,255,255,0.55)'],[1,'rgba(255,255,255,0)']])
+  // anamorphic flare (cross) for the central star
+  function flareTex(){
+    const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d'); g.translate(128,128)
+    const grd=g.createRadialGradient(0,0,0,0,0,128)
+    grd.addColorStop(0,'rgba(255,245,220,0.9)'); grd.addColorStop(0.2,'rgba(255,220,150,0.25)'); grd.addColorStop(1,'rgba(255,200,120,0)')
+    g.fillStyle=grd; g.beginPath(); g.arc(0,0,128,0,7); g.fill()
+    g.globalCompositeOperation='lighter'
+    for(let k=0;k<4;k++){ g.rotate(Math.PI/4)
+      const lg=g.createLinearGradient(-128,0,128,0)
+      lg.addColorStop(0,'rgba(255,230,170,0)'); lg.addColorStop(0.5,'rgba(255,240,200,0.55)'); lg.addColorStop(1,'rgba(255,230,170,0)')
+      g.fillStyle=lg; g.fillRect(-128,-1.5,256,3) }
+    const t=new THREE.CanvasTexture(c); t.needsUpdate=true; return t
+  }
+  // sun surface granulation
+  function sunSurfaceTex(){
+    const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d')
+    g.fillStyle='#ffe7a8'; g.fillRect(0,0,256,256)
+    for(let i=0;i<900;i++){ const x=Math.random()*256,y=Math.random()*256,r=2+Math.random()*7,a=Math.random()*0.5
+      g.fillStyle=Math.random()<0.5?`rgba(255,180,70,${a})`:`rgba(255,250,220,${a})`
+      g.beginPath(); g.arc(x,y,r,0,7); g.fill() }
+    const t=new THREE.CanvasTexture(c); t.needsUpdate=true; t.wrapS=t.wrapT=THREE.RepeatWrapping; return t
+  }
+
+  /* —— звёзды —— */
+  function buildStars(n, R){
+    const g=new THREE.BufferGeometry(); const p=new Float32Array(n*3); const col=new Float32Array(n*3)
+    const c=new THREE.Color()
+    for(let i=0;i<n;i++){
+      const u=Math.random(), v=Math.random()
+      const th=2*Math.PI*u, ph=Math.acos(2*v-1)
+      const r=R*(0.55+Math.random()*0.45)
+      p[i*3]=r*Math.sin(ph)*Math.cos(th); p[i*3+1]=r*Math.cos(ph); p[i*3+2]=r*Math.sin(ph)*Math.sin(th)
+      const h=Math.random()<0.15?0.6:0.11, l=0.65+Math.random()*0.3
+      c.setHSL(h,0.5,l); col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b
+    }
+    g.setAttribute('position',new THREE.BufferAttribute(p,3))
+    g.setAttribute('color',new THREE.BufferAttribute(col,3))
+    const m=new THREE.PointsMaterial({ size:R*0.004, map:starTex, vertexColors:true, transparent:true, opacity:0.95, depthWrite:false, blending:THREE.AdditiveBlending, sizeAttenuation:true })
+    return new THREE.Points(g,m)
+  }
+  const starField=buildStars(IS_MOBILE?4000:13000, 600); scene.add(starField)
+  // few bright twinkling hero stars
+  const heroStars=[]; const heroGroup=new THREE.Group(); scene.add(heroGroup)
+  for(let i=0;i<(IS_MOBILE?18:36);i++){
+    const u=Math.random(),v=Math.random(); const th=2*Math.PI*u, ph=Math.acos(2*v-1); const r=560*(0.6+Math.random()*0.4)
+    const sp=new THREE.Sprite(new THREE.SpriteMaterial({ map:starTex, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, color:new THREE.Color().setHSL(Math.random()<0.3?0.58:0.11,0.6,0.8) }))
+    sp.position.set(r*Math.sin(ph)*Math.cos(th), r*Math.cos(ph), r*Math.sin(ph)*Math.sin(th))
+    const base=6+Math.random()*10; sp.scale.setScalar(base); heroGroup.add(sp)
+    heroStars.push({ sp, base, ph:Math.random()*7, sp2:0.6+Math.random()*1.4 })
+  }
+
+  /* —— туманности (дешёвые спрайты) —— */
+  function galaxyTex(hueA,hueB){
+    const S=256,c=document.createElement('canvas');c.width=c.height=S;const g=c.getContext('2d');g.translate(S/2,S/2)
+    const disc=g.createRadialGradient(0,0,0,0,0,S/2)
+    disc.addColorStop(0,`hsla(${hueA},70%,82%,0.85)`);disc.addColorStop(0.28,`hsla(${hueB},65%,58%,0.45)`);disc.addColorStop(1,`hsla(${hueB},60%,40%,0)`)
+    g.fillStyle=disc;g.beginPath();g.arc(0,0,S/2,0,7);g.fill()
+    g.globalCompositeOperation='lighter'
+    const arms=2+Math.floor(Math.random()*2)
+    for(let a=0;a<arms;a++){const off=a*Math.PI*2/arms
+      for(let i=0;i<240;i++){const tt=i/240,ang=off+tt*Math.PI*3.4,rad=tt*(S/2-8)
+        const x=Math.cos(ang)*rad+(Math.random()-0.5)*9,y=Math.sin(ang)*rad+(Math.random()-0.5)*9
+        g.fillStyle=`hsla(${hueA-tt*30},85%,${82-tt*42}%,${0.5*(1-tt)})`;g.beginPath();g.arc(x,y,1.5,0,7);g.fill()}}
+    const core=g.createRadialGradient(0,0,0,0,0,S*0.16)
+    core.addColorStop(0,'rgba(255,255,250,1)');core.addColorStop(1,'rgba(255,240,210,0)')
+    g.fillStyle=core;g.beginPath();g.arc(0,0,S*0.16,0,7);g.fill()
+    const t=new THREE.CanvasTexture(c);t.needsUpdate=true;return t
+  }
+  function webFireTex(){
+    const S=1024,c=document.createElement('canvas');c.width=c.height=S;const g=c.getContext('2d')
+    g.fillStyle='#000000';g.fillRect(0,0,S,S);g.globalCompositeOperation='lighter'
+    for(let i=0;i<460;i++){let x=Math.random()*S,y=Math.random()*S
+      const hue=Math.random()<0.5?262:22
+      g.strokeStyle=`hsla(${hue+Math.random()*28},85%,60%,0.06)`;g.lineWidth=1+Math.random()*1.6
+      g.beginPath();g.moveTo(x,y);const steps=22+Math.floor(Math.random()*30);let ang=Math.random()*7
+      for(let s=0;s<steps;s++){ang+=(Math.random()-0.5)*0.85;x+=Math.cos(ang)*8;y+=Math.sin(ang)*8;g.lineTo(x,y)}g.stroke()}
+    for(let i=0;i<340;i++){const x=Math.random()*S,y=Math.random()*S,r=Math.random()*2.3
+      g.fillStyle=`hsla(${Math.random()<0.4?45:285},75%,${60+Math.random()*30}%,${0.3+Math.random()*0.5})`;g.beginPath();g.arc(x,y,r,0,7);g.fill()}
+    const t=new THREE.CanvasTexture(c);t.needsUpdate=true;t.wrapS=t.wrapT=THREE.RepeatWrapping;return t
+  }
+  const galTexes=[galaxyTex(210,260),galaxyTex(35,15),galaxyTex(290,320),galaxyTex(50,40),galaxyTex(160,200)]
+
+  /* —— огненный обод-паутина мироздания (дальняя сфера-граница) —— */
+  const boundary=new THREE.Mesh(new THREE.SphereGeometry(320,48,48), new THREE.MeshBasicMaterial({ map:webFireTex(), side:THREE.BackSide, transparent:true, opacity:0.75, depthWrite:false, blending:THREE.AdditiveBlending }))
+  scene.add(boundary)
+
+  /* —— цветные туманности —— */
+  const nebRGB=['255,200,120','170,120,255','110,160,255','255,120,190','255,120,70','120,220,200']
+  for(let i=0;i<(IS_MOBILE?6:12);i++){
+    const rgb=nebRGB[i%nebRGB.length]
+    const cs=[[0,`rgba(${rgb},0.5)`],[0.5,`rgba(${rgb},0.16)`],[1,`rgba(${rgb},0)`]]
+    const sp=new THREE.Sprite(new THREE.SpriteMaterial({ map:glowTex(cs), transparent:true, opacity:0.32+Math.random()*0.3, depthWrite:false, blending:THREE.AdditiveBlending }))
+    const u=Math.random(),v=Math.random(),th=2*Math.PI*u,ph=Math.acos(2*v-1),r=130+Math.random()*150
+    sp.position.set(r*Math.sin(ph)*Math.cos(th), r*Math.cos(ph)*0.7, r*Math.sin(ph)*Math.sin(th))
+    sp.scale.setScalar(150+Math.random()*230); scene.add(sp)
+  }
+
+  /* —— мириады галактик (фон иных мирозданий) —— */
+  const galGroup=new THREE.Group(); scene.add(galGroup)
+  for(let i=0;i<(IS_MOBILE?34:80);i++){
+    const sp=new THREE.Sprite(new THREE.SpriteMaterial({ map:galTexes[i%galTexes.length], transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, opacity:0.45+Math.random()*0.5, rotation:Math.random()*7 }))
+    const u=Math.random(),v=Math.random(),th=2*Math.PI*u,ph=Math.acos(2*v-1),r=55+Math.random()*150
+    sp.position.set(r*Math.sin(ph)*Math.cos(th), r*Math.cos(ph)*0.65, r*Math.sin(ph)*Math.sin(th))
+    sp.scale.setScalar(7+Math.random()*26); galGroup.add(sp)
+  }
+
+  /* —— Ядро Исток (Солнце) —— */
+  const coreGroup=new THREE.Group(); scene.add(coreGroup)
+  const sunMat=new THREE.MeshBasicMaterial({ color:0xfff1c0, map:sunSurfaceTex() })
+  const sun=new THREE.Mesh(new THREE.SphereGeometry(1.05,48,48), sunMat); coreGroup.add(sun)
+  // anamorphic flare over the central star
+  const flare=new THREE.Sprite(new THREE.SpriteMaterial({ map:flareTex(), transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, opacity:0.85 }))
+  flare.scale.setScalar(7); coreGroup.add(flare)
+  // multi-layer corona for a radiant star look
+  const coronaTex=glowTex([[0,'rgba(255,250,230,1)'],[0.18,'rgba(255,225,150,0.85)'],[0.5,'rgba(255,170,80,0.35)'],[1,'rgba(255,120,40,0)']])
+  const halos=[]
+  ;[[3.2,1.0,0xffffff],[7,0.85,0xffe6a0],[14,0.4,0xffb060],[26,0.2,0xff7a3a],[55,0.1,0xffc070]].forEach(cfg=>{
+    const h=new THREE.Sprite(new THREE.SpriteMaterial({ map:coronaTex, color:cfg[2], transparent:true, opacity:cfg[1], depthWrite:false, blending:THREE.AdditiveBlending }))
+    h.scale.setScalar(cfg[0]); coreGroup.add(h); halos.push({ h, base:cfg[0] })
+  })
+  const halo=halos[1].h
+  // thin glowing accretion ring
+  const ring=new THREE.Mesh(new THREE.RingGeometry(1.8,1.95,96), new THREE.MeshBasicMaterial({ color:0xffd27a, transparent:true, opacity:0.5, side:THREE.DoubleSide, depthWrite:false, blending:THREE.AdditiveBlending }))
+  ring.rotation.x=Math.PI*0.5; coreGroup.add(ring)
+  // наша вселенная как светящаяся сфера-пузырь среди прочих
+  const bubble=new THREE.Mesh(new THREE.SphereGeometry(30,40,40), new THREE.MeshBasicMaterial({ map:softGlow, color:0x6fa0ff, side:THREE.BackSide, transparent:true, opacity:0.12, depthWrite:false, blending:THREE.AdditiveBlending }))
+  scene.add(bubble)
+
+  /* —— орбиты агентов / матриц —— */
+  function orbitRing(count, radius, hue, yJit){
+    const g=new THREE.BufferGeometry(); const p=new Float32Array(count*3); const col=new Float32Array(count*3); const c=new THREE.Color()
+    for(let i=0;i<count;i++){ const a=(i/count)*Math.PI*2
+      p[i*3]=Math.cos(a)*radius; p[i*3+1]=(Math.random()-0.5)*yJit; p[i*3+2]=Math.sin(a)*radius
+      c.setHSL(hue,0.7,0.65); col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b }
+    g.setAttribute('position',new THREE.BufferAttribute(p,3)); g.setAttribute('color',new THREE.BufferAttribute(col,3))
+    const m=new THREE.PointsMaterial({ size:0.16, vertexColors:true, transparent:true, opacity:0.95, depthWrite:false, blending:THREE.AdditiveBlending })
+    const pts=new THREE.Points(g,m); pts.userData.spin=(0.0006+Math.random()*0.0006)*(Math.random()<0.5?1:-1); return pts
+  }
+  const agents=orbitRing(21,3.0,0.58,0.6); const matrices=orbitRing(33,5.2,0.78,1.0)
+  coreGroup.add(agents); coreGroup.add(matrices)
+
+  /* —— Иные вселенные (узлы, проявляются при отдалении) —— */
+  const NAMES=['Vega','Orin','Surya','Mira','Tara','Eno','Lyra','Kuan','Aery','Dvar','Ymir','Sol-9','Nuun','Ravi','Esha','Kael','Tien','Anu','Vis','Mok','Zeya','Hira','Ophi','Pavo','Rhea','Sien','Tao','Ushas','Veda','Wren','Xen','Yron','Zara','Ila','Bodh','Chir']
+  const nodeCount=IS_MOBILE?18:30, UNI_R=95
+  const nodeGroup=new THREE.Group(); scene.add(nodeGroup)
+  const nodes=[]
+  const nodeTex=softGlow
+  for(let i=0;i<nodeCount;i++){
+    const y=1-(i/(nodeCount-1))*2; const rr=Math.sqrt(1-y*y); const ph=i*2.39996323
+    const pos=new THREE.Vector3(Math.cos(ph)*rr, y, Math.sin(ph)*rr).multiplyScalar(UNI_R*(0.8+Math.random()*0.4))
+    const sp=new THREE.Sprite(new THREE.SpriteMaterial({ map:galTexes[i%galTexes.length], transparent:true, opacity:0, depthWrite:false, blending:THREE.AdditiveBlending, color:new THREE.Color().setHSL(0.6+Math.random()*0.18,0.5,0.8) }))
+    sp.position.copy(pos); sp.scale.setScalar(9); nodeGroup.add(sp)
+    nodes.push({ sp, name:NAMES[i%NAMES.length], id:'u'+(i+1) })
+  }
+
+  /* —— камера-орбита с логарифмичным ощущением зума —— */
+  let theta=0.7, phi=Math.PI*0.46
+  const R_MIN=5.5, R_MAX=170
+  let logR=Math.log(150), tLogR=logR
+  let intro=true
+  function radius(){ return Math.exp(logR) }
+  function scale01(){ return (radius()-R_MIN)/(R_MAX-R_MIN) }
+  function applyCam(){
+    const r=radius(), sp=Math.sin(phi)
+    camera.position.set(r*sp*Math.sin(theta), r*Math.cos(phi), r*sp*Math.cos(theta))
+    camera.lookAt(0,0,0)
+  }
+  const LOG_MIN=Math.log(R_MIN), LOG_MAX=Math.log(R_MAX)
+  addEventListener('wheel', e=>{ if(intro) return; e.preventDefault(); tLogR=Math.min(LOG_MAX,Math.max(LOG_MIN, tLogR+e.deltaY*0.0012)) }, { passive:false })
+  let drag=false, lx=0, ly=0, moved=0
+  canvas.addEventListener('pointerdown', e=>{ drag=true; lx=e.clientX; ly=e.clientY; moved=0; canvas.setPointerCapture(e.pointerId) })
+  canvas.addEventListener('pointermove', e=>{
+    const mx=e.clientX, my=e.clientY
+    if(drag){ const dx=mx-lx, dy=my-ly; lx=mx; ly=my; moved+=Math.abs(dx)+Math.abs(dy)
+      theta-=dx*0.005; phi=Math.min(Math.PI*0.92,Math.max(0.08, phi-dy*0.005)) }
+    hoverPick(mx,my)
+  })
+  canvas.addEventListener('pointerup', e=>{ drag=false; if(moved<6){ if(intro) startDive(); else clickPick(e.clientX,e.clientY) } })
+
+  // bottom scale acts as a zoom slider
+  const bar=document.querySelector('.scale-bar')
+  function barSet(cx){ const r=bar.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(cx-r.left)/r.width)); tLogR=LOG_MIN+f*(LOG_MAX-LOG_MIN) }
+  let barDrag=false
+  bar.addEventListener('pointerdown', e=>{ if(intro){ startDive(); return } barDrag=true; barSet(e.clientX); bar.setPointerCapture(e.pointerId) })
+  bar.addEventListener('pointermove', e=>{ if(barDrag) barSet(e.clientX) })
+  bar.addEventListener('pointerup', ()=>{ barDrag=false })
+
+  /* —— экранный пикинг узлов (дешёво, без Raycaster) —— */
+  const tip=document.getElementById('node-tip'); let hovered=null
+  function projectNode(n){ const v=n.sp.position.clone().project(camera); return { x:(v.x*0.5+0.5)*innerWidth, y:(-v.y*0.5+0.5)*innerHeight, z:v.z } }
+  function nearestNode(mx,my){
+    if(scale01()<0.45) return null
+    let best=null, bd=34
+    for(const n of nodes){ if(n.sp.material.opacity<0.15) continue; const s=projectNode(n); if(s.z>1) continue
+      const d=Math.hypot(s.x-mx,s.y-my); if(d<bd){ bd=d; best={ n, s } } }
+    return best
+  }
+  function hoverPick(mx,my){
+    const hit=nearestNode(mx,my); hovered=hit?hit.n:null
+    if(hit){ tip.textContent=hit.n.name; tip.style.left=hit.s.x+'px'; tip.style.top=hit.s.y+'px'; tip.style.opacity='1'; canvas.style.cursor='pointer' }
+    else { tip.style.opacity='0'; canvas.style.cursor=drag?'grabbing':'grab' }
+  }
+  function clickPick(mx,my){ const hit=nearestNode(mx,my); if(hit) warpTo(hit.n) }
+
+  /* —— Мост Мультиплеера (заглушка) —— */
+  const warp=document.getElementById('warp'), owner=document.getElementById('owner'), backBtn=document.getElementById('backBtn')
+  let foreign=false
+  async function loadForeignState(id){
+    try{ const r=await fetch('/api/universe/'+id); if(r.ok) return await r.json() }catch(e){}
+    return { totalLight:0, level:0, agent:null, matrix:'vedic', __foreign:true, ownerId:id }
+  }
+  async function warpTo(n){
+    warp.style.opacity='1'
+    const st=await loadForeignState(n.id)
+    setTimeout(()=>{
+      foreign=true
+      const hue=0.5+(st.level||0)*0.04
+      sunMat.color.setHSL(hue%1,0.7,0.6)
+      owner.dataset.ru='мироздание · '+n.name; owner.dataset.en='creation · '+n.name
+      owner.textContent=owner.dataset[curLang]
+      backBtn.classList.remove('hidden')
+      tLogR=Math.log(20)
+      warp.style.opacity='0'
+    }, 520)
+  }
+  function returnHome(){
+    warp.style.opacity='1'
+    setTimeout(()=>{ foreign=false; sunMat.color.set(0xffe09a)
+      owner.dataset.ru='твоё мироздание · Исток'; owner.dataset.en='your creation · Source'
+      owner.textContent=owner.dataset[curLang]
+      backBtn.classList.add('hidden'); tLogR=Math.log(16); warp.style.opacity='0' }, 520)
+  }
+  backBtn.addEventListener('click', returnHome)
+
+  /* —— cinematic plunge inward on click —— */
+  const enterEl=document.getElementById('enter')
+  setTimeout(()=>{ if(intro) enterEl.classList.add('show') }, 700)
+  let diving=false, diveStart=0, diveFrom=0
+  const DIVE_DUR=2.8, DIVE_TO=Math.log(13)
+  function startDive(){
+    if(diving||!intro) return
+    diving=true; diveStart=clock.getElapsedTime(); diveFrom=logR
+    enterEl.classList.remove('show')
+  }
+
+  /* —— i18n —— */
+  let curLang='ru'
+  function applyLang(lang){
+    curLang=lang
+    document.querySelectorAll('[data-ru][data-en]').forEach(el=>{ el.textContent=el.getAttribute('data-'+lang)||el.textContent })
+    try{ localStorage.setItem('awara_lang',lang) }catch(e){}
+  }
+  try{ const l=localStorage.getItem('awara_lang'); if(l==='ru'||l==='en') curLang=l }catch(e){}
+  applyLang(curLang)
+  document.getElementById('langBtn').addEventListener('click', ()=>applyLang(curLang==='ru'?'en':'ru'))
+
+  /* —— resize —— */
+  addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight) })
+
+  /* —— render loop —— */
+  const knob=document.getElementById('knob'); const clock=new THREE.Clock()
+  function tick(){
+    const t=clock.getElapsedTime()
+    if(diving){
+      const p=Math.min(1,(t-diveStart)/DIVE_DUR)
+      const e=p<0.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2
+      logR=diveFrom+(DIVE_TO-diveFrom)*e; tLogR=logR
+      camera.fov=55+Math.sin(p*Math.PI)*40; camera.updateProjectionMatrix()
+      theta+=0.004
+      if(p>=1){ diving=false; intro=false; camera.fov=55; camera.updateProjectionMatrix(); document.body.classList.remove('intro') }
+    } else {
+      logR += (tLogR-logR)*0.12
+    }
+    applyCam()
+    const s01=scale01()
+    // пульс Солнца + LOD
+    const pulse=1+Math.sin(t*1.4)*0.06
+    for(const o of halos){ o.h.scale.setScalar(o.base*pulse) }
+    ring.rotation.z += 0.002; ring.material.opacity=0.4+Math.sin(t*0.8)*0.15
+    sun.rotation.y += 0.0015
+    flare.material.rotation += 0.0009; flare.material.opacity=0.7+Math.sin(t*1.2)*0.22
+    for(const h of heroStars){ h.sp.material.opacity=0.45+Math.sin(t*h.sp2+h.ph)*0.45 }
+    coreGroup.visible = s01<0.75
+    agents.visible = s01<0.5; matrices.visible = s01<0.6
+    agents.rotation.y += agents.userData.spin; matrices.rotation.y += matrices.userData.spin
+    // узлы иных вселенных — плавное появление
+    const target=Math.max(0,Math.min(1,(s01-0.45)/0.4))
+    for(const n of nodes){ const o=n.sp.material; o.opacity += (target*0.9 - o.opacity)*0.08
+      const base=9+(n===hovered?4:0); n.sp.scale.setScalar(base+Math.sin(t*1.6+n.sp.position.x)*0.3) }
+    nodeGroup.rotation.y += 0.0004
+    starField.rotation.y += 0.00012
+    galGroup.rotation.y += 0.00018
+    boundary.rotation.y += 0.00006
+    const logFrac=(logR-LOG_MIN)/(LOG_MAX-LOG_MIN)
+    knob.style.left=(6+logFrac*88)+'%'
+    renderer.render(scene,camera)
+    window.__cosmosReady=true
+    requestAnimationFrame(tick)
+  }
+  applyCam(); tick()
+
+} catch(err){
+  if(window.showErr) window.showErr((err&&err.stack)||String(err)); else console.error(err)
+}
+</script>
+</body>
+</html>

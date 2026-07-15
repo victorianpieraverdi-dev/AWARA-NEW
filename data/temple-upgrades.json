@@ -1,0 +1,93 @@
+[
+  {
+    "id": 1,
+    "name": "Основание",
+    "name_ru": "Основание",
+    "name_en": "Foundation",
+    "cost": 0,
+    "cost_light": 0,
+    "effect": "passive_multiplier ×1.0, meditation_bonus +10",
+    "description": "Первый камень заложен. Храм излучает слабое сияние.",
+    "passive_multiplier": 1.0,
+    "meditation_bonus": 10,
+    "unlock_feature": null
+  },
+  {
+    "id": 2,
+    "name": "Алтарь",
+    "name_ru": "Алтарь",
+    "name_en": "Altar",
+    "cost": 1000,
+    "cost_light": 1000,
+    "effect": "passive_multiplier ×1.5, meditation_bonus +20, unlock basic_rituals",
+    "description": "Алтарь воздвигнут. Можно проводить базовые ритуалы.",
+    "passive_multiplier": 1.5,
+    "meditation_bonus": 20,
+    "unlock_feature": "basic_rituals"
+  },
+  {
+    "id": 3,
+    "name": "Святилище",
+    "name_ru": "Святилище",
+    "name_en": "Sanctuary",
+    "cost": 3000,
+    "cost_light": 3000,
+    "effect": "passive_multiplier ×2.0, meditation_bonus +35, unlock deep_meditation",
+    "description": "Святилище открыто. Доступна глубокая медитация.",
+    "passive_multiplier": 2.0,
+    "meditation_bonus": 35,
+    "unlock_feature": "deep_meditation"
+  },
+  {
+    "id": 4,
+    "name": "Храм",
+    "name_ru": "Храм",
+    "name_en": "Temple",
+    "cost": 7000,
+    "cost_light": 7000,
+    "effect": "passive_multiplier ×2.5, meditation_bonus +50, unlock pilgrims",
+    "description": "Полноценный храм. Привлекает паломников.",
+    "passive_multiplier": 2.5,
+    "meditation_bonus": 50,
+    "unlock_feature": "pilgrims"
+  },
+  {
+    "id": 5,
+    "name": "Космический Маяк",
+    "name_ru": "Космический Маяк",
+    "name_en": "Cosmic Beacon",
+    "cost": 15000,
+    "cost_light": 15000,
+    "effect": "passive_multiplier ×3.5, meditation_bonus +100, unlock macrocosm_link",
+    "description": "Маяк света виден из других лок. Связь с Макрокосмом.",
+    "passive_multiplier": 3.5,
+    "meditation_bonus": 100,
+    "unlock_feature": "macrocosm_link"
+  },
+  {
+    "id": 6,
+    "name": "Зиккурат Духа",
+    "name_ru": "Зиккурат Духа",
+    "name_en": "Spirit Ziggurat",
+    "cost": 30000,
+    "cost_light": 30000,
+    "effect": "passive_multiplier ×5.0, meditation_bonus +150, unlock spirit_amplifier",
+    "description": "Многоярусная башня, усиливающая духовные практики. Каждый ярус резонирует с одним из 7 Лучей.",
+    "passive_multiplier": 5.0,
+    "meditation_bonus": 150,
+    "unlock_feature": "spirit_amplifier"
+  },
+  {
+    "id": 7,
+    "name": "Обитель Абсолюта",
+    "name_ru": "Обитель Абсолюта",
+    "name_en": "Abode of the Absolute",
+    "cost": 77000,
+    "cost_light": 77000,
+    "effect": "passive_multiplier ×7.0, meditation_bonus +210, unlock transcendence",
+    "description": "Финальная форма храма. Точка соединения микрокосма и макрокосма. Трансценденция доступна.",
+    "passive_multiplier": 7.0,
+    "meditation_bonus": 210,
+    "unlock_feature": "transcendence"
+  }
+]

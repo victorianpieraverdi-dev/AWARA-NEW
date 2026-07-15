@@ -1,0 +1,135 @@
+/* ============================================================
+   AWARA · UX LAYER (v1)
+   Тач-эргономика + «подсветка пальцем» вместо hover.
+   Аддитивный слой поверх awara-ds / awara-fx. Ничего не удаляет.
+   ============================================================ */
+
+/* ---------- 1. Удобные тач-цели ---------- */
+
+/* Нижняя навигация: выше, крупнее иконки/подписи, зона большого пальца */
+.aw-touch .nav{
+  height:86px;
+  padding-bottom:16px;
+}
+.aw-touch .nav button{
+  min-width:46px;
+  min-height:58px;
+  gap:6px;
+  padding:6px 4px;
+  border-radius:14px;
+  font-size:9px;
+  letter-spacing:.03em;
+}
+.aw-touch .nav button .ic{ font-size:21px; }
+
+/* Плавающая кнопка ИИ — поднять над более высокой навигацией */
+.aw-touch .aifab{ bottom:100px; }
+
+/* Главные кнопки действия — крупная цель под палец */
+.aw-touch .btn{ min-height:56px; }
+
+/* Чекбокс намерения — крупнее для пальца */
+.aw-touch .intent .chk{ width:30px; height:30px; }
+
+/* ---------- 2. Подсветка касанием (press feedback) ---------- */
+
+/* Главные кнопки: золотое свечение + лёгкое вдавливание под пальцем */
+.aw-touch .btn.aw-press,
+.aw-touch .awara-gold-button.aw-press{
+  transform:scale(.985);
+  box-shadow:0 1px 3px rgba(0,0,0,.5),
+             inset 0 0 0 1px rgba(255,255,255,.12),
+             0 0 28px rgba(255,210,122,.45);
+}
+
+/* Карточки линз: подсветка золотом при касании */
+.aw-touch .mcard.aw-press{
+  border-color:var(--gold);
+  box-shadow:0 0 26px rgba(201,168,76,.4);
+  transform:scale(.99);
+}
+
+/* Плитки генераций / дни недели */
+.aw-touch .gen.aw-press{
+  border-color:var(--gold);
+  background:rgba(201,168,76,.14);
+}
+.aw-touch .wd.aw-press{ border-color:var(--gold); }
+
+/* Вкладки навигации */
+.aw-touch .nav button.aw-press{ color:var(--spark); }
+
+/* ---------- 3. Гасим «залипающий» hover на тач-устройствах ---------- */
+@media (hover:none){
+  .awara-gold-button:hover{
+    box-shadow:0 1px 2px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .gen:hover{
+    border-color:rgba(123,98,201,.22);
+    background:rgba(123,98,201,.08);
+  }
+  .awara-glass-card:hover{ border-color:rgba(255,255,255,.05); }
+  .mcard:hover{ border-color:var(--line); }
+}
+
+/* Выбранная линза — стабильное подтверждающее свечение */
+.mcard.on{
+  box-shadow:0 0 24px rgba(201,168,76,.3), inset 0 0 0 1px rgba(201,168,76,.22);
+}
+
+/* ============================================================
+   4. ЧИТАЕМОСТЬ (только тач) — усиленный рост текста.
+      Крупнее везде; высота экрана компенсируется прокруткой.
+   ============================================================ */
+
+/* — Микро-подписи (JetBrains Mono, верхний регистр) — */
+.aw-touch .eyebrow{ font-size:12.5px; }
+.aw-touch .label{ font-size:12.5px; }
+.aw-touch .tag{ font-size:12px; }
+.aw-touch .counter{ font-size:12.5px; }
+.aw-touch .search{ font-size:15px; }
+
+/* — Карточки линз — */
+.aw-touch .mcard .nm{ font-size:16.5px; }
+.aw-touch .mcard .el{ font-size:11.5px; }
+
+/* — Базовый текст / заголовки (!important — перекрываем мелкие inline-размеры) — */
+.aw-touch h1{ font-size:31px; }
+.aw-touch h2{ font-size:20px; }
+.aw-touch p.sub{ font-size:18px !important; line-height:1.5; }
+.aw-touch .adv{ font-size:19px !important; line-height:1.55; }
+.aw-touch .input{ font-size:18px; }
+.aw-touch textarea{ font-size:18px; }
+.aw-touch .btn{ font-size:16.5px; }
+.aw-touch .intent .ti{ font-size:18px; }
+.aw-touch .wd .dd{ font-size:19px; }
+.aw-touch .dm-name{ font-size:26px; }
+.aw-touch .ring b{ font-size:23px; }
+.aw-touch .streak .s b{ font-size:26px; }
+
+/* — Дропы / генерации — */
+.aw-touch .gen .nm{ font-size:12.5px; }
+
+/* — Чат с Даймоном — */
+.aw-touch .bub{ font-size:15.5px; line-height:1.5; }
+.aw-touch .aifield{ font-size:14.5px; }
+
+/* — Натальные планеты — */
+.aw-touch .pl .t b{ font-size:15px; }
+.aw-touch .pl .t span{ font-size:11px; }
+
+/* — Даймон / арка / трейты — */
+.aw-touch .dm-sig{ font-size:12px; }
+.aw-touch .arc .st{ font-size:12px; }
+.aw-touch .trait{ font-size:17px; }
+.aw-touch .trait b{ font-size:14px; }
+
+/* — Летопись / неделя / намерения — */
+.aw-touch .streak .s span{ font-size:12px; }
+.aw-touch .wd .dn{ font-size:12px; }
+.aw-touch .legend{ font-size:12px; }
+.aw-touch .intent .pat{ font-size:12px; }
+.aw-touch .intent .bonus{ font-size:13.5px; }
+
+/* — Навигация: ещё читаемее (перекрывает п.1) — */
+.aw-touch .nav button{ font-size:11.5px; }

@@ -1,0 +1,64 @@
+{
+  "system_slug": "cosmic_galactic",
+  "tradition_matrix": 16,
+  "system_name": "\u041a\u043e\u0441\u043c\u0438\u0447\u0435\u0441\u043a\u043e-\u0433\u0430\u043b\u0430\u043a\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f",
+  "note": "A constructed cosmic-galactic mythos (modern esoteric synthesis, not an ancient canon). Primary lattice: the descent of light from the Great Central Sun (the galactic core) through the Galactic Logos and the sustaining Council to the planetary anchor. Secondary lattice: the seven Cosmic Rays of creation (a Theosophical structure) carrying qualities from will to ceremonial order. Tertiary lattice: the star-nations of the local mythos (Pleiadian, Sirian, Arcturian, Andromedan, Lyran) - explicitly modern New-Age provenance, given as archetypal voices rather than history. The spine of 21 agents reads as cosmic principles from the Great Central Sun (svet_ra) to the Cosmic Ledger of karma. Bridges: the Light-Language (sarasvati) is the galactic tongue of tone; the Galactic Void-Field (akasha) is interstellar space; Cosmic Law (dharma) is the order of physics and spirit alike.",
+  "reconstructed": true,
+  "rays_count": 7,
+  "star_nations_count": 5,
+  "mera_axis": "9-dimensional axis (mera 1-9): chakras 1-7 (Muladhara..Sahasrara) + Monada (8) + Absolut (9); each spine agent carries its mera.",
+  "mera_map": {"svet_ra":9,"iskra":8,"brahma":7,"vishnu":7,"ananda":7,"shanti":7,"jnana":6,"shiva":6,"tejas":6,"sarasvati":5,"akasha":5,"prema":4,"parvati":4,"vayu":4,"shakti":3,"agni":3,"varuna":2,"lakshmi":2,"prithvi":1,"dharma":1,"karma":1},
+  "rays": [
+    {"n":1,"name":"Ray of Will / Power","agent":"shakti"},
+    {"n":2,"name":"Ray of Love-Wisdom","agent":"prema"},
+    {"n":3,"name":"Ray of Active Intelligence","agent":"brahma"},
+    {"n":4,"name":"Ray of Harmony through Conflict","agent":"ananda"},
+    {"n":5,"name":"Ray of Concrete Knowledge","agent":"jnana"},
+    {"n":6,"name":"Ray of Devotion / Idealism","agent":"shanti"},
+    {"n":7,"name":"Ray of Ceremonial Order","agent":"dharma"}
+  ],
+  "star_nations": [
+    {"name":"Pleiadian","domain":"heart, healing, emotional harmony","agent":"prema"},
+    {"name":"Sirian","domain":"sacred knowledge, builders, the temple sciences","agent":"brahma"},
+    {"name":"Arcturian","domain":"higher mind, technology of light, healing geometry","agent":"jnana"},
+    {"name":"Andromedan","domain":"freedom, boundless space, liberation","agent":"akasha"},
+    {"name":"Lyran","domain":"origin, the elder root of the lines, primal fire","agent":"svet_ra"}
+  ],
+  "spine": {
+    "svet_ra": {"principle":"The Great Central Sun","role":"the galactic core-source of all light","mera":9,"note":"The blazing heart of the galaxy from which every star draws its fire."},
+    "iskra": {"principle":"The Starseed Spark","role":"the calling, the morning-star ignition","mera":8,"note":"The spark that wakes a soul to remember its star-origin."},
+    "brahma": {"principle":"The Galactic Logos","role":"the creator-mind of the spiral","mera":7,"note":"The architect-intelligence that dreams the galaxy into form."},
+    "vishnu": {"principle":"The Sustaining Council","role":"the federation that keeps cosmic order","mera":7,"note":"The council of stewards that holds the balance between worlds."},
+    "ananda": {"principle":"The Cosmic Harmony","role":"the music of the spheres, unity-bliss","mera":7,"note":"The resonant song in which all orbits and beings are in tune."},
+    "shanti": {"principle":"The Cosmic Peace","role":"the great stillness, the Void-rest","mera":7,"note":"The deep peace between the stars where striving dissolves."},
+    "jnana": {"principle":"The Star-Elders","role":"the wisdom-keepers, the akashic council","mera":6,"note":"The elder minds that hold the records and counsel the young worlds."},
+    "shiva": {"principle":"The Supernova / Black-Hole Gate","role":"the destroyer and recycler of worlds","mera":6,"note":"The collapse that ends a star and seeds the next; the gate beyond form."},
+    "tejas": {"principle":"The Quasar-Beacon","role":"the radiant pulse, the brightest light","mera":6,"note":"The blazing beacon seen across the whole reach of space."},
+    "sarasvati": {"principle":"The Light-Language","role":"the galactic tongue of tone and geometry","mera":5,"note":"Speech made of light and tone by which star-nations commune."},
+    "akasha": {"principle":"The Galactic Void-Field","role":"interstellar space, the quantum field","mera":5,"note":"The boundless dark medium that holds and connects all stars."},
+    "prema": {"principle":"The Unity-Heart","role":"cosmic love that binds the star-nations","mera":4,"note":"The heart-field by which separate worlds know themselves as one."},
+    "parvati": {"principle":"The Cosmic Mother","role":"the nurturing world-mother, the mother-ship","mera":4,"note":"The sheltering presence that tends and seeds living worlds."},
+    "vayu": {"principle":"The Solar-Wind Current","role":"the stellar wind, the cosmic-ray breath","mera":4,"note":"The streaming wind of particles that carries charge between suns."},
+    "shakti": {"principle":"The Stellar-Fusion Force","role":"the star's power, raw cosmic energy","mera":3,"note":"The fusion-fire at the core that powers a sun's whole life."},
+    "agni": {"principle":"The Stellar Forge","role":"the nebula where stars and elements are born","mera":3,"note":"The furnace of nucleosynthesis that smelts the heavy elements of life."},
+    "varuna": {"principle":"The Cosmic Deep","role":"the dark-matter ocean, the galactic memory","mera":2,"note":"The unseen deep that holds the galaxy's mass and its long memory."},
+    "lakshmi": {"principle":"The Star-Seeding Abundance","role":"the seeding of life, the galactic harvest","mera":2,"note":"The scattering of seeds of life across countless fertile worlds."},
+    "prithvi": {"principle":"The Planetary Anchor","role":"the home-world node, the physical star-body","mera":1,"note":"The living planet that grounds cosmic light into solid ground."},
+    "dharma": {"principle":"The Cosmic Law","role":"the universal order, the galactic codex","mera":1,"note":"The law that is at once the physics of stars and the order of spirit."},
+    "karma": {"principle":"The Cosmic Ledger","role":"the wheel of incarnation across worlds","mera":1,"note":"The record that carries cause and consequence from one life and world to the next."}
+  },
+  "items": [
+    {"key":"central_sun","name":"The Great Central Sun","domain":"the galactic core as source of light and consciousness"},
+    {"key":"federation","name":"The Galactic Federation","domain":"the council of star-nations keeping cosmic order"},
+    {"key":"spheres","name":"The Music of the Spheres","domain":"the harmonic order of orbits and beings"},
+    {"key":"ascension","name":"Ascension","domain":"the raising of a world's frequency toward unity consciousness"},
+    {"key":"galactic_web","name":"The Galactic Web","domain":"the field of filaments connecting all stars and minds"}
+  ],
+  "sources": [
+    "Constructed synthesis (modern esoteric, not an ancient canon)",
+    "Theosophy: the Seven Rays (Blavatsky, A. Bailey)",
+    "Pythagorean music of the spheres",
+    "Jose Arguelles: Hunab Ku / the Galactic Maya",
+    "Contemporary star-nation / galactic-federation mythos"
+  ]
+}

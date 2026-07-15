@@ -1,0 +1,305 @@
+{
+  "_meta": {
+    "about": "AWARA 33x6 audio: full Suno-style audio generation prompts, one per lens per ascension step. Genre + instruments per tradition; dynamics, BPM and structure per step (1 fizika -> 6 bozhestvennoe). Companion to lens_level_prompts.json (same slugs and level keys).",
+    "levels": { "1": "fizika", "2": "probuzhdenie", "3": "garmoniya", "4": "siyanie", "5": "voskhod", "6": "bozhestvennoe" },
+    "bpm": { "1": 48, "2": 52, "3": 56, "4": 60, "5": 64, "6": 70 },
+    "note": "Front skips keys starting with underscore. Each value is a ready style prompt for Suno/Udio. The arc stays meditative and deep throughout; epic and cosmic feeling comes from depth, scale, sub-bass and reverb - NOT from fast tempo or major key. Pair with the audio file paths in lens_level_prompts.json (audio field)."
+  },
+
+  "vedic": {
+    "1": "Hindustani sacred raga devotional; instruments: sitar, tanpura, bansuri, tabla, mantra chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Hindustani sacred raga devotional; instruments: sitar, tanpura, bansuri, tabla, mantra chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Hindustani sacred raga devotional; instruments: sitar, tanpura, bansuri, tabla, mantra chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Hindustani sacred raga devotional; instruments: sitar, tanpura, bansuri, tabla, mantra chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Hindustani sacred raga devotional; instruments: sitar, tanpura, bansuri, tabla, mantra chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Hindustani sacred raga devotional; instruments: sitar, tanpura, bansuri, tabla, mantra chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "tarot_arcanic": {
+    "1": "medieval European mystical chant; instruments: lute, portative organ, hurdy-gurdy, Latin chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "medieval European mystical chant; instruments: lute, portative organ, hurdy-gurdy, Latin chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "medieval European mystical chant; instruments: lute, portative organ, hurdy-gurdy, Latin chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "medieval European mystical chant; instruments: lute, portative organ, hurdy-gurdy, Latin chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "medieval European mystical chant; instruments: lute, portative organ, hurdy-gurdy, Latin chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "medieval European mystical chant; instruments: lute, portative organ, hurdy-gurdy, Latin chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "kabbalistic": {
+    "1": "Jewish mystical Hebrew cantillation; instruments: shofar, kinnor lyre, wordless nigun chant, frame drum; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Jewish mystical Hebrew cantillation; instruments: shofar, kinnor lyre, wordless nigun chant, frame drum; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Jewish mystical Hebrew cantillation; instruments: shofar, kinnor lyre, wordless nigun chant, frame drum; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Jewish mystical Hebrew cantillation; instruments: shofar, kinnor lyre, wordless nigun chant, frame drum; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Jewish mystical Hebrew cantillation; instruments: shofar, kinnor lyre, wordless nigun chant, frame drum; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Jewish mystical Hebrew cantillation; instruments: shofar, kinnor lyre, wordless nigun chant, frame drum; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "hermetic_alchemical": {
+    "1": "Renaissance esoteric ambient; instruments: viola da gamba, glass harmonica, alchemical bells, whispered Latin; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Renaissance esoteric ambient; instruments: viola da gamba, glass harmonica, alchemical bells, whispered Latin; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Renaissance esoteric ambient; instruments: viola da gamba, glass harmonica, alchemical bells, whispered Latin; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Renaissance esoteric ambient; instruments: viola da gamba, glass harmonica, alchemical bells, whispered Latin; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Renaissance esoteric ambient; instruments: viola da gamba, glass harmonica, alchemical bells, whispered Latin; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Renaissance esoteric ambient; instruments: viola da gamba, glass harmonica, alchemical bells, whispered Latin; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "slavic": {
+    "1": "Slavic folk sacred; instruments: gusli, zhaleika, kalyuka, male znamenny chant, bells; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Slavic folk sacred; instruments: gusli, zhaleika, kalyuka, male znamenny chant, bells; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Slavic folk sacred; instruments: gusli, zhaleika, kalyuka, male znamenny chant, bells; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Slavic folk sacred; instruments: gusli, zhaleika, kalyuka, male znamenny chant, bells; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Slavic folk sacred; instruments: gusli, zhaleika, kalyuka, male znamenny chant, bells; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Slavic folk sacred; instruments: gusli, zhaleika, kalyuka, male znamenny chant, bells; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "gnostic": {
+    "1": "early Coptic mystical; instruments: oud, ancient lyre, ethereal female chant, hand drum; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "early Coptic mystical; instruments: oud, ancient lyre, ethereal female chant, hand drum; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "early Coptic mystical; instruments: oud, ancient lyre, ethereal female chant, hand drum; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "early Coptic mystical; instruments: oud, ancient lyre, ethereal female chant, hand drum; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "early Coptic mystical; instruments: oud, ancient lyre, ethereal female chant, hand drum; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "early Coptic mystical; instruments: oud, ancient lyre, ethereal female chant, hand drum; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "daoist": {
+    "1": "Chinese Daoist temple; instruments: guqin, dizi flute, bianzhong bells, wind chimes, soft chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Chinese Daoist temple; instruments: guqin, dizi flute, bianzhong bells, wind chimes, soft chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Chinese Daoist temple; instruments: guqin, dizi flute, bianzhong bells, wind chimes, soft chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Chinese Daoist temple; instruments: guqin, dizi flute, bianzhong bells, wind chimes, soft chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Chinese Daoist temple; instruments: guqin, dizi flute, bianzhong bells, wind chimes, soft chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Chinese Daoist temple; instruments: guqin, dizi flute, bianzhong bells, wind chimes, soft chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "chinese_iching": {
+    "1": "Chinese ritual court music; instruments: guzheng, sheng, bell chimes, ceremonial drum; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Chinese ritual court music; instruments: guzheng, sheng, bell chimes, ceremonial drum; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Chinese ritual court music; instruments: guzheng, sheng, bell chimes, ceremonial drum; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Chinese ritual court music; instruments: guzheng, sheng, bell chimes, ceremonial drum; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Chinese ritual court music; instruments: guzheng, sheng, bell chimes, ceremonial drum; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Chinese ritual court music; instruments: guzheng, sheng, bell chimes, ceremonial drum; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "egyptian": {
+    "1": "ancient Egyptian temple; instruments: harp, sistrum, double oboe, frame drum, priestess chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "ancient Egyptian temple; instruments: harp, sistrum, double oboe, frame drum, priestess chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "ancient Egyptian temple; instruments: harp, sistrum, double oboe, frame drum, priestess chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "ancient Egyptian temple; instruments: harp, sistrum, double oboe, frame drum, priestess chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "ancient Egyptian temple; instruments: harp, sistrum, double oboe, frame drum, priestess chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "ancient Egyptian temple; instruments: harp, sistrum, double oboe, frame drum, priestess chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "mayan": {
+    "1": "Mesoamerican ritual; instruments: clay ocarina, conch shell, slit drum, rattles; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Mesoamerican ritual; instruments: clay ocarina, conch shell, slit drum, rattles; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Mesoamerican ritual; instruments: clay ocarina, conch shell, slit drum, rattles; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Mesoamerican ritual; instruments: clay ocarina, conch shell, slit drum, rattles; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Mesoamerican ritual; instruments: clay ocarina, conch shell, slit drum, rattles; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Mesoamerican ritual; instruments: clay ocarina, conch shell, slit drum, rattles; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "aztec_mexica": {
+    "1": "Aztec ceremonial; instruments: huehuetl drum, teponaztli, conch, clay flutes, chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Aztec ceremonial; instruments: huehuetl drum, teponaztli, conch, clay flutes, chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Aztec ceremonial; instruments: huehuetl drum, teponaztli, conch, clay flutes, chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Aztec ceremonial; instruments: huehuetl drum, teponaztli, conch, clay flutes, chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Aztec ceremonial; instruments: huehuetl drum, teponaztli, conch, clay flutes, chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Aztec ceremonial; instruments: huehuetl drum, teponaztli, conch, clay flutes, chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "celtic": {
+    "1": "Celtic sacred folk; instruments: Celtic harp, uilleann pipes, bodhran, tin whistle, Gaelic chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Celtic sacred folk; instruments: Celtic harp, uilleann pipes, bodhran, tin whistle, Gaelic chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Celtic sacred folk; instruments: Celtic harp, uilleann pipes, bodhran, tin whistle, Gaelic chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Celtic sacred folk; instruments: Celtic harp, uilleann pipes, bodhran, tin whistle, Gaelic chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Celtic sacred folk; instruments: Celtic harp, uilleann pipes, bodhran, tin whistle, Gaelic chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Celtic sacred folk; instruments: Celtic harp, uilleann pipes, bodhran, tin whistle, Gaelic chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "norse": {
+    "1": "Nordic ritual folk; instruments: tagelharpa, lyre, frame drum, galdr throat chant, horn; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Nordic ritual folk; instruments: tagelharpa, lyre, frame drum, galdr throat chant, horn; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Nordic ritual folk; instruments: tagelharpa, lyre, frame drum, galdr throat chant, horn; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Nordic ritual folk; instruments: tagelharpa, lyre, frame drum, galdr throat chant, horn; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Nordic ritual folk; instruments: tagelharpa, lyre, frame drum, galdr throat chant, horn; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Nordic ritual folk; instruments: tagelharpa, lyre, frame drum, galdr throat chant, horn; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "shamanic": {
+    "1": "core shamanic trance; instruments: frame drum, rattle, jaw harp, overtone throat singing, bone flute; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "core shamanic trance; instruments: frame drum, rattle, jaw harp, overtone throat singing, bone flute; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "core shamanic trance; instruments: frame drum, rattle, jaw harp, overtone throat singing, bone flute; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "core shamanic trance; instruments: frame drum, rattle, jaw harp, overtone throat singing, bone flute; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "core shamanic trance; instruments: frame drum, rattle, jaw harp, overtone throat singing, bone flute; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "core shamanic trance; instruments: frame drum, rattle, jaw harp, overtone throat singing, bone flute; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "buddhist_mahayana": {
+    "1": "Tibetan Mahayana sacred; instruments: singing bowls, dungchen long horns, deep om chant, bells, gyaling; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Tibetan Mahayana sacred; instruments: singing bowls, dungchen long horns, deep om chant, bells, gyaling; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Tibetan Mahayana sacred; instruments: singing bowls, dungchen long horns, deep om chant, bells, gyaling; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Tibetan Mahayana sacred; instruments: singing bowls, dungchen long horns, deep om chant, bells, gyaling; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Tibetan Mahayana sacred; instruments: singing bowls, dungchen long horns, deep om chant, bells, gyaling; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Tibetan Mahayana sacred; instruments: singing bowls, dungchen long horns, deep om chant, bells, gyaling; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "islamic_sufi_nur": {
+    "1": "Sufi devotional; instruments: ney flute, oud, daf frame drum, dhikr qawwali vocals; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Sufi devotional; instruments: ney flute, oud, daf frame drum, dhikr qawwali vocals; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Sufi devotional; instruments: ney flute, oud, daf frame drum, dhikr qawwali vocals; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Sufi devotional; instruments: ney flute, oud, daf frame drum, dhikr qawwali vocals; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Sufi devotional; instruments: ney flute, oud, daf frame drum, dhikr qawwali vocals; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Sufi devotional; instruments: ney flute, oud, daf frame drum, dhikr qawwali vocals; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "christian_mystical_grail": {
+    "1": "Gregorian sacred; instruments: pipe organ, male Gregorian chant, hand bells, choir; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Gregorian sacred; instruments: pipe organ, male Gregorian chant, hand bells, choir; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Gregorian sacred; instruments: pipe organ, male Gregorian chant, hand bells, choir; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Gregorian sacred; instruments: pipe organ, male Gregorian chant, hand bells, choir; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Gregorian sacred; instruments: pipe organ, male Gregorian chant, hand bells, choir; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Gregorian sacred; instruments: pipe organ, male Gregorian chant, hand bells, choir; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "atlantean_lemurian": {
+    "1": "crystalline new-age ambient; instruments: crystal bowls, ethereal synth pads, whale-like tones, wordless choir; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "crystalline new-age ambient; instruments: crystal bowls, ethereal synth pads, whale-like tones, wordless choir; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "crystalline new-age ambient; instruments: crystal bowls, ethereal synth pads, whale-like tones, wordless choir; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "crystalline new-age ambient; instruments: crystal bowls, ethereal synth pads, whale-like tones, wordless choir; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "crystalline new-age ambient; instruments: crystal bowls, ethereal synth pads, whale-like tones, wordless choir; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "crystalline new-age ambient; instruments: crystal bowls, ethereal synth pads, whale-like tones, wordless choir; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "shambhala": {
+    "1": "Himalayan celestial ambient; instruments: bells, dungchen, ethereal choir, soft strings, mantra; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Himalayan celestial ambient; instruments: bells, dungchen, ethereal choir, soft strings, mantra; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Himalayan celestial ambient; instruments: bells, dungchen, ethereal choir, soft strings, mantra; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Himalayan celestial ambient; instruments: bells, dungchen, ethereal choir, soft strings, mantra; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Himalayan celestial ambient; instruments: bells, dungchen, ethereal choir, soft strings, mantra; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Himalayan celestial ambient; instruments: bells, dungchen, ethereal choir, soft strings, mantra; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "gene_keys": {
+    "1": "meditative ambient; instruments: soft pads, harp, gentle chimes, breath, subtle female vocal; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "meditative ambient; instruments: soft pads, harp, gentle chimes, breath, subtle female vocal; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "meditative ambient; instruments: soft pads, harp, gentle chimes, breath, subtle female vocal; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "meditative ambient; instruments: soft pads, harp, gentle chimes, breath, subtle female vocal; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "meditative ambient; instruments: soft pads, harp, gentle chimes, breath, subtle female vocal; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "meditative ambient; instruments: soft pads, harp, gentle chimes, breath, subtle female vocal; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "astrological": {
+    "1": "cosmic orchestral ambient; instruments: strings, celesta, harp, choir, glassy synth; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "cosmic orchestral ambient; instruments: strings, celesta, harp, choir, glassy synth; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "cosmic orchestral ambient; instruments: strings, celesta, harp, choir, glassy synth; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "cosmic orchestral ambient; instruments: strings, celesta, harp, choir, glassy synth; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "cosmic orchestral ambient; instruments: strings, celesta, harp, choir, glassy synth; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "cosmic orchestral ambient; instruments: strings, celesta, harp, choir, glassy synth; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "cosmic_galactic": {
+    "1": "space cinematic ambient; instruments: deep synth pads, drones, choir, shimmer, sub bass; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "space cinematic ambient; instruments: deep synth pads, drones, choir, shimmer, sub bass; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "space cinematic ambient; instruments: deep synth pads, drones, choir, shimmer, sub bass; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "space cinematic ambient; instruments: deep synth pads, drones, choir, shimmer, sub bass; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "space cinematic ambient; instruments: deep synth pads, drones, choir, shimmer, sub bass; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "space cinematic ambient; instruments: deep synth pads, drones, choir, shimmer, sub bass; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "shinto": {
+    "1": "Japanese Shinto gagaku; instruments: ryuteki flute, sho mouth organ, taiko, kagura bells, koto; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Japanese Shinto gagaku; instruments: ryuteki flute, sho mouth organ, taiko, kagura bells, koto; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Japanese Shinto gagaku; instruments: ryuteki flute, sho mouth organ, taiko, kagura bells, koto; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Japanese Shinto gagaku; instruments: ryuteki flute, sho mouth organ, taiko, kagura bells, koto; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Japanese Shinto gagaku; instruments: ryuteki flute, sho mouth organ, taiko, kagura bells, koto; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Japanese Shinto gagaku; instruments: ryuteki flute, sho mouth organ, taiko, kagura bells, koto; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "sumerian_babylonian": {
+    "1": "ancient Mesopotamian temple; instruments: lyre of Ur, reed pipe, frame drum, temple chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "ancient Mesopotamian temple; instruments: lyre of Ur, reed pipe, frame drum, temple chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "ancient Mesopotamian temple; instruments: lyre of Ur, reed pipe, frame drum, temple chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "ancient Mesopotamian temple; instruments: lyre of Ur, reed pipe, frame drum, temple chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "ancient Mesopotamian temple; instruments: lyre of Ur, reed pipe, frame drum, temple chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "ancient Mesopotamian temple; instruments: lyre of Ur, reed pipe, frame drum, temple chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "zoroastrian": {
+    "1": "Persian sacred; instruments: setar, ney, daf, santur, Avestan chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Persian sacred; instruments: setar, ney, daf, santur, Avestan chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Persian sacred; instruments: setar, ney, daf, santur, Avestan chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Persian sacred; instruments: setar, ney, daf, santur, Avestan chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Persian sacred; instruments: setar, ney, daf, santur, Avestan chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Persian sacred; instruments: setar, ney, daf, santur, Avestan chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "afro_dogon": {
+    "1": "West African Dogon ritual; instruments: djembe, balafon, ngoni, kora, call chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "West African Dogon ritual; instruments: djembe, balafon, ngoni, kora, call chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "West African Dogon ritual; instruments: djembe, balafon, ngoni, kora, call chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "West African Dogon ritual; instruments: djembe, balafon, ngoni, kora, call chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "West African Dogon ritual; instruments: djembe, balafon, ngoni, kora, call chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "West African Dogon ritual; instruments: djembe, balafon, ngoni, kora, call chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "yoruba_ifa_orisha": {
+    "1": "Yoruba sacred percussion; instruments: bata drums, agogo bells, shekere, call-and-response chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Yoruba sacred percussion; instruments: bata drums, agogo bells, shekere, call-and-response chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Yoruba sacred percussion; instruments: bata drums, agogo bells, shekere, call-and-response chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Yoruba sacred percussion; instruments: bata drums, agogo bells, shekere, call-and-response chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Yoruba sacred percussion; instruments: bata drums, agogo bells, shekere, call-and-response chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Yoruba sacred percussion; instruments: bata drums, agogo bells, shekere, call-and-response chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "tantric_kashmiri": {
+    "1": "Kashmiri Tantric Shaiva; instruments: tanpura, rudra veena, bija-mantra, frame drum, deep chant; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Kashmiri Tantric Shaiva; instruments: tanpura, rudra veena, bija-mantra, frame drum, deep chant; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Kashmiri Tantric Shaiva; instruments: tanpura, rudra veena, bija-mantra, frame drum, deep chant; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Kashmiri Tantric Shaiva; instruments: tanpura, rudra veena, bija-mantra, frame drum, deep chant; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Kashmiri Tantric Shaiva; instruments: tanpura, rudra veena, bija-mantra, frame drum, deep chant; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Kashmiri Tantric Shaiva; instruments: tanpura, rudra veena, bija-mantra, frame drum, deep chant; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "posthuman_ai_sophianic": {
+    "1": "sacred synth-choir, ambient glitch; instruments: synth choir, granular textures, neon arpeggios, processed AI voice; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "sacred synth-choir, ambient glitch; instruments: synth choir, granular textures, neon arpeggios, processed AI voice; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "sacred synth-choir, ambient glitch; instruments: synth choir, granular textures, neon arpeggios, processed AI voice; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "sacred synth-choir, ambient glitch; instruments: synth choir, granular textures, neon arpeggios, processed AI voice; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "sacred synth-choir, ambient glitch; instruments: synth choir, granular textures, neon arpeggios, processed AI voice; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "sacred synth-choir, ambient glitch; instruments: synth choir, granular textures, neon arpeggios, processed AI voice; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "technomagical": {
+    "1": "industrial ritual electronic; instruments: industrial synth, glitch rhythm, rune drones, modular bleeps; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "industrial ritual electronic; instruments: industrial synth, glitch rhythm, rune drones, modular bleeps; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "industrial ritual electronic; instruments: industrial synth, glitch rhythm, rune drones, modular bleeps; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "industrial ritual electronic; instruments: industrial synth, glitch rhythm, rune drones, modular bleeps; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "industrial ritual electronic; instruments: industrial synth, glitch rhythm, rune drones, modular bleeps; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "industrial ritual electronic; instruments: industrial synth, glitch rhythm, rune drones, modular bleeps; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "advaita_siddha": {
+    "1": "minimal non-dual ambient; instruments: tanpura drone, solo bansuri, soft singing bowl, silence; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "minimal non-dual ambient; instruments: tanpura drone, solo bansuri, soft singing bowl, silence; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "minimal non-dual ambient; instruments: tanpura drone, solo bansuri, soft singing bowl, silence; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "minimal non-dual ambient; instruments: tanpura drone, solo bansuri, soft singing bowl, silence; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "minimal non-dual ambient; instruments: tanpura drone, solo bansuri, soft singing bowl, silence; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "minimal non-dual ambient; instruments: tanpura drone, solo bansuri, soft singing bowl, silence; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "julian_byzantine": {
+    "1": "Byzantine chant; instruments: ison drone choir, Byzantine raspev, kolokol bells; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Byzantine chant; instruments: ison drone choir, Byzantine raspev, kolokol bells; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Byzantine chant; instruments: ison drone choir, Byzantine raspev, kolokol bells; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Byzantine chant; instruments: ison drone choir, Byzantine raspev, kolokol bells; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Byzantine chant; instruments: ison drone choir, Byzantine raspev, kolokol bells; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Byzantine chant; instruments: ison drone choir, Byzantine raspev, kolokol bells; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  },
+
+  "antique_greco_roman": {
+    "1": "Orphic Greco-Roman; instruments: lyre, aulos, kithara, Orphic chant, frame drum; raw earthbound opening - a single low drone, near silence, dim and bodily, slow and heavy; 48 BPM, minor low drone; ritual and sacred, atmospheric, high fidelity.",
+    "2": "Orphic Greco-Roman; instruments: lyre, aulos, kithara, Orphic chant, frame drum; awakening - a low drone with a second voice stirring beneath, a distant call, slow breath, mist lifting in the dark; 52 BPM, deep modal; ritual and sacred, atmospheric, high fidelity.",
+    "3": "Orphic Greco-Roman; instruments: lyre, aulos, kithara, Orphic chant, frame drum; deep stillness - a slow consonant flow, voices settling into accord, grounded meditative peace, heaven-on-earth calm; 56 BPM, modal Dorian, warm and deep; ritual and sacred, atmospheric, high fidelity.",
+    "4": "Orphic Greco-Roman; instruments: lyre, aulos, kithara, Orphic chant, frame drum; radiance - overtone choir and singing bowls in vast reverb, weightless luminous space, slow shimmer; 60 BPM, glowing modal; ritual and sacred, atmospheric, high fidelity.",
+    "5": "Orphic Greco-Roman; instruments: lyre, aulos, kithara, Orphic chant, frame drum; vast solemn rise - deep drums and choir swelling like a slow tide, immense and grave, unhurried grandeur; 64 BPM, minor modal grandeur; ritual and sacred, atmospheric, high fidelity.",
+    "6": "Orphic Greco-Roman; instruments: lyre, aulos, kithara, Orphic chant, frame drum; cosmic apotheosis - an infinite oceanic choir over a deep sub-bass drone, transcendent and boundless, slow waves of light dissolving into the cosmos; 70 BPM, vast modal, transcendent; ritual and sacred, atmospheric, high fidelity."
+  }
+}

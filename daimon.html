@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Daimon Guardian · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#c9a84c;
+  --gold-bright:#ffd700;
+  --gold-light:#fff8d6;
+  --bg:#02010a;
+  --line:rgba(201,168,76,0.18);
+  --text:rgba(255,248,214,0.85);
+  --text-soft:rgba(255,248,214,0.55);
+  --text-mute:rgba(255,255,255,0.35);
+}
+html,body{background:var(--bg);color:var(--text);min-height:100vh}
+body{
+  font-family:'JetBrains Mono',monospace;
+  padding:18px 14px 110px;
+  background:
+    radial-gradient(ellipse at 20% 18%, rgba(124,58,237,0.40), transparent 38%),
+    radial-gradient(ellipse at 82% 72%, rgba(245,158,11,0.22), transparent 40%),
+    radial-gradient(ellipse at 50% 110%, rgba(80,40,160,0.30), transparent 55%),
+    linear-gradient(180deg,#070318 0%,#0d0626 45%,#05021a 100%),
+    var(--bg);
+  -webkit-font-smoothing:antialiased;
+  position:relative;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url('assets/starfield.svg');
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:0.95;
+}
+.wrap{max-width:580px;margin:0 auto;position:relative;z-index:1}
+
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;gap:8px;
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 14px;min-height:44px;
+  border:1px solid var(--line);border-radius:10px;
+  font-family:Cinzel,serif;font-size:11px;
+  letter-spacing:0.2em;color:var(--text-soft);
+  text-decoration:none;cursor:pointer;transition:all 0.3s;
+}
+.back-link:hover{border-color:var(--gold);color:var(--gold)}
+
+.daimon-title{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(16px,4vw,22px);
+  color:var(--gold);letter-spacing:0.15em;
+  text-align:center;margin-bottom:6px;
+}
+.daimon-sub{
+  font-size:9px;letter-spacing:0.2em;
+  color:var(--text-mute);text-align:center;margin-bottom:28px;
+}
+
+.daimon-card{
+  border:1px solid rgba(201,168,76,0.20);border-radius:14px;
+  padding:clamp(16px,4vw,24px);margin-bottom:16px;
+  background:rgba(14,8,32,0.28);
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(8px) saturate(130%);
+  -webkit-backdrop-filter:blur(8px) saturate(130%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),0 6px 22px rgba(0,0,0,0.32);
+}
+.daimon-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,0.06),transparent 60%);
+  pointer-events:none;
+}
+
+.section-title{
+  font-family:Cinzel,serif;font-size:9px;
+  letter-spacing:0.2em;color:rgba(201,168,76,0.45);
+  margin-bottom:12px;
+}
+
+.d-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:6px 0;border-bottom:1px solid rgba(201,168,76,0.06);
+}
+.d-label{font-size:9px;letter-spacing:0.1em;color:var(--text-mute)}
+.d-value{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(13px,3vw,15px);color:var(--text);
+}
+.d-value-gold{color:var(--gold)}
+
+/* --- Форма Даймона (центральная визуализация) --- */
+.daimon-form-visual{
+  display:flex;flex-direction:column;align-items:center;
+  padding:24px 16px 20px;gap:12px;
+}
+.daimon-glyph{
+  width:clamp(80px,22vw,120px);
+  height:clamp(80px,22vw,120px);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(36px,10vw,56px);
+  border:2px solid rgba(201,168,76,0.25);
+  box-shadow:
+    0 0 30px rgba(124,58,237,0.25),
+    inset 0 0 20px rgba(201,168,76,0.08);
+  transition:all 0.5s;
+}
+.daimon-glyph.fire{background:radial-gradient(circle,rgba(255,100,30,0.18),rgba(14,8,32,0.6))}
+.daimon-glyph.water{background:radial-gradient(circle,rgba(30,100,255,0.18),rgba(14,8,32,0.6))}
+.daimon-glyph.earth{background:radial-gradient(circle,rgba(100,180,60,0.18),rgba(14,8,32,0.6))}
+.daimon-glyph.air{background:radial-gradient(circle,rgba(200,220,255,0.18),rgba(14,8,32,0.6))}
+.daimon-glyph.ether{background:radial-gradient(circle,rgba(180,100,255,0.18),rgba(14,8,32,0.6))}
+
+.daimon-name-display{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(18px,5vw,26px);
+  color:var(--gold-bright);
+  text-shadow:0 0 14px rgba(255,215,0,0.25);
+  text-align:center;
+}
+.daimon-archetype{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(13px,3.5vw,16px);
+  color:var(--text-soft);
+  text-align:center;
+}
+.daimon-description{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(12px,3vw,14px);
+  line-height:1.5;
+  color:var(--text-soft);
+  text-align:center;
+  max-width:360px;
+  margin-top:4px;
+}
+
+/* --- Прогресс-бар чакры --- */
+.chakra-progress{
+  margin-top:8px;
+}
+.chakra-bar{
+  height:8px;border-radius:99px;overflow:hidden;
+  background:rgba(255,255,255,0.08);border:1px solid rgba(201,168,76,0.10);
+}
+.chakra-bar-fill{
+  height:100%;width:0%;border-radius:99px;
+  background:linear-gradient(90deg,rgba(124,58,237,0.55),rgba(201,168,76,0.85),#ffd700);
+  box-shadow:0 0 12px rgba(255,215,0,0.25);
+  transition:width 0.5s ease;
+}
+.chakra-labels{
+  display:flex;justify-content:space-between;margin-top:6px;
+}
+.chakra-current{font-size:8px;letter-spacing:0.1em;color:var(--gold)}
+.chakra-next{font-size:8px;letter-spacing:0.1em;color:var(--text-mute)}
+
+/* --- Сетка характеристик --- */
+.stat-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+  gap:8px;margin-top:8px;
+}
+.stat-cell{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:10px 6px;border-radius:8px;
+  background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.08);
+}
+.stat-label{font-size:7px;letter-spacing:0.12em;color:var(--text-mute);text-transform:uppercase}
+.stat-val{
+  font-family:'Cinzel',serif;font-size:clamp(14px,3.5vw,18px);
+  color:var(--gold-light);
+}
+.stat-sub{font-size:7px;color:var(--text-mute)}
+
+/* --- Навигация --- */
+.daimon-nav-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+}
+.daimon-nav-link{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;min-height:44px;
+  border:1px solid rgba(201,168,76,0.12);border-radius:10px;
+  background:rgba(201,168,76,0.04);
+  font-family:Cinzel,serif;font-size:10px;
+  letter-spacing:0.1em;color:var(--text-soft);
+  text-decoration:none;cursor:pointer;transition:all 0.3s;
+}
+.daimon-nav-link:hover{
+  border-color:var(--gold);color:var(--gold);
+  background:rgba(201,168,76,0.10);
+}
+.daimon-nav-icon{font-size:16px;flex-shrink:0}
+@media(max-width:420px){
+  .daimon-nav-grid{grid-template-columns:1fr}
+}
+
+/* --- Пустое состояние --- */
+.empty-state{
+  text-align:center;padding:40px 16px;
+}
+.empty-title{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(16px,4vw,20px);
+  color:var(--text-soft);margin-bottom:12px;
+}
+.empty-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(13px,3vw,15px);
+  color:var(--text-mute);line-height:1.5;
+  max-width:320px;margin:0 auto 20px;
+}
+.empty-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;min-height:44px;
+  border:1px solid var(--gold);border-radius:10px;
+  font-family:Cinzel,serif;font-size:12px;
+  letter-spacing:0.15em;color:var(--gold);
+  background:rgba(201,168,76,0.08);
+  cursor:pointer;transition:all 0.3s;
+  text-decoration:none;
+}
+.empty-btn:hover{
+  background:rgba(201,168,76,0.18);
+  box-shadow:0 0 16px rgba(201,168,76,0.15);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="back-link" href="index.html" data-i18n="nav.lobby">&larr; ЛОББИ</a>
+    <div style="font-family:Cinzel,serif;font-size:9px;letter-spacing:0.15em;color:var(--text-mute);">AWARA</div>
+  </div>
+
+  <div class="daimon-title" data-i18n="daimon.title">ДАЙМОН-ХРАНИТЕЛЬ</div>
+  <div class="daimon-sub" data-i18n="daimon.subtitle">ТВОЙ КОСМИЧЕСКИЙ СПУТНИК</div>
+
+  <div id="daimon-content"></div>
+
+  <!-- Космос Даймона (js/daimonCosmos.js) — вне #daimon-content, чтобы innerHTML-перерисовки его не трогали -->
+  <div class="daimon-card" id="daimon-cosmos-card" style="display:none">
+    <div class="section-title" id="daimon-cosmos-title">КОСМОС ДАЙМОНА</div>
+    <div id="daimon-cosmos-host"></div>
+  </div>
+
+</div>
+
+<script src="awara-lens-styles.js?v=1"></script>
+<script src="js/daimonCosmos.js?v=1"></script>
+<script type="module">
+import { t, initLang, applyTranslations } from './js/i18n.js';
+import {
+  getDaimon,
+  generateDaimon,
+  getDaimonProgress,
+  getDaimonStage,
+  getResonanceBonus,
+  loadDaimonForms,
+  getCurrentEvolutionStage,
+  getDNAStrands,
+  getGranthiStatus,
+  getDaimonHint
+} from './js/daimon-module.js';
+import { getAscentState, getNextUnlock, MERA } from './js/daimonAscent.js';
+import { lex, labelHtml, toggleSacredMode, injectLexStyles } from './js/lexicon.js';
+initLang();
+injectLexStyles();
+
+const FORM_GLYPHS = {
+  stag: '\u{1F98C}',
+  phoenix: '\u{1F525}',
+  swan: '\u{1F9A2}',
+  dolphin: '\u{1F42C}',
+  naga: '\u{1F40D}',
+  lion: '\u{1F981}',
+  tiger: '\u{1F405}',
+  bear: '\u{1F43B}',
+  raven: '\u{1F426}',
+  unicorn: '\u{1F984}',
+  owl: '\u{1F989}',
+  dragon: '\u{1F409}',
+  kirin: '\u{1F984}',
+  eagle: '\u{1F985}',
+  garuda: '\u{1F985}',
+  wolf: '\u{1F43A}',
+  deer: '\u{1F98C}',
+  elephant: '\u{1F418}'
+};
+
+const ELEMENT_RU = {
+  fire: t('pass.el.fire'),
+  water: t('pass.el.water'),
+  earth: t('pass.el.earth'),
+  air: t('pass.el.air'),
+  ether: t('pass.el.ether')
+};
+
+function escapeHtml(val) {
+  return String(val ?? '').replace(/[&<>"]/g, ch =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+}
+
+function renderDaimon(daimon) {
+  const glyph = FORM_GLYPHS[daimon.form] || '\u2728';
+  const elemRu = ELEMENT_RU[daimon.element] || daimon.element;
+  const secondElemRu = daimon.secondaryElement ? (ELEMENT_RU[daimon.secondaryElement] || daimon.secondaryElement) : null;
+  const progress = getDaimonProgress();
+  const stage = getDaimonStage();
+
+  let elemDisplay = elemRu;
+  if (secondElemRu) {
+    elemDisplay = elemRu + ' + ' + secondElemRu;
+  }
+
+  let progressPct = 0;
+  let progressLabel = '';
+  if (progress && !progress.isMaxLevel) {
+    progressPct = Math.round(progress.progress * 100);
+    progressLabel = progress.experienceToNext + ' ' + t('daimon.xp.to') + ' ' + progress.nextChakra.name;
+  } else if (progress && progress.isMaxLevel) {
+    progressPct = 100;
+    progressLabel = t('daimon.max.level');
+  }
+
+  const content = document.getElementById('daimon-content');
+  content.innerHTML = '' +
+    '<div class="daimon-card">' +
+      '<div class="daimon-form-visual">' +
+        '<div class="daimon-glyph ' + escapeHtml(daimon.element) + '">' + glyph + '</div>' +
+        '<div class="daimon-name-display">' + escapeHtml(daimon.name) + '</div>' +
+        '<div class="daimon-archetype">' + escapeHtml(daimon.archetype) + '</div>' +
+        '<div class="daimon-description">' + escapeHtml(daimon.description) + '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="daimon-card">' +
+      '<div class="section-title">' + t('daimon.characteristics') + '</div>' +
+      '<div class="d-row">' +
+        '<span class="d-label">' + t('daimon.nakshatra') + '</span>' +
+        '<span class="d-value">' + escapeHtml(daimon.nakshatraName) + ' <span style="color:var(--text-mute);font-size:10px;">(' + escapeHtml(daimon.sanskrit) + ')</span></span>' +
+      '</div>' +
+      '<div class="d-row">' +
+        '<span class="d-label">' + t('daimon.form') + '</span>' +
+        '<span class="d-value d-value-gold">' + escapeHtml(daimon.formName) + '</span>' +
+      '</div>' +
+      '<div class="d-row">' +
+        '<span class="d-label">' + t('daimon.element') + '</span>' +
+        '<span class="d-value">' + escapeHtml(elemDisplay) + '</span>' +
+      '</div>' +
+      '<div class="d-row">' +
+        '<span class="d-label">' + t('daimon.planet') + '</span>' +
+        '<span class="d-value">' + escapeHtml(daimon.ruler) + '</span>' +
+      '</div>' +
+      (daimon.dosha ? '<div class="d-row">' +
+        '<span class="d-label">' + t('daimon.dosha') + '</span>' +
+        '<span class="d-value">' + escapeHtml(daimon.dosha) + '</span>' +
+      '</div>' : '') +
+      (daimon.strongestPlanet ? '<div class="d-row">' +
+        '<span class="d-label">' + t('daimon.strongest.planet') + '</span>' +
+        '<span class="d-value">' + escapeHtml(daimon.strongestPlanet) + '</span>' +
+      '</div>' : '') +
+    '</div>' +
+
+    '<div class="daimon-card">' +
+      '<div class="section-title">' + t('daimon.development') + '</div>' +
+      '<div class="stat-grid">' +
+        '<div class="stat-cell">' +
+          '<div class="stat-label">' + t('daimon.chakra') + '</div>' +
+          '<div class="stat-val">' + escapeHtml(daimon.chakra) + '</div>' +
+          '<div class="stat-sub">' + escapeHtml(daimon.chakraName) + '</div>' +
+        '</div>' +
+        '<div class="stat-cell">' +
+          '<div class="stat-label">' + t('daimon.rank') + '</div>' +
+          '<div class="stat-val">' + escapeHtml(stage.id) + '</div>' +
+          '<div class="stat-sub">' + escapeHtml(stage.name) + '</div>' +
+        '</div>' +
+        '<div class="stat-cell">' +
+          '<div class="stat-label">' + t('daimon.experience') + '</div>' +
+          '<div class="stat-val">' + (daimon.experience || 0) + '</div>' +
+          '<div class="stat-sub">XP</div>' +
+        '</div>' +
+        '<div class="stat-cell">' +
+          '<div class="stat-label">' + t('daimon.resonance') + '</div>' +
+          '<div class="stat-val">+' + ((daimon.resonanceBonus || 0) * 100).toFixed(0) + '%</div>' +
+          '<div class="stat-sub">' + t('daimon.element.bonus') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="chakra-progress">' +
+        '<div class="chakra-bar"><div class="chakra-bar-fill" style="width:' + progressPct + '%"></div></div>' +
+        '<div class="chakra-labels">' +
+          '<span class="chakra-current">' + escapeHtml(daimon.chakraName) + '</span>' +
+          '<span class="chakra-next">' + escapeHtml(progressLabel) + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  renderEvolutionPanel(content);
+  renderAscentPanel(content, daimon);
+  renderDialoguePanel(content, daimon);
+  renderNavPanel(content);
+  mountCosmos(daimon);
+}
+
+/* --- Космос Даймона: генеративная орбитальная визуализация под активную линзу --- */
+function mountCosmos(daimon) {
+  try {
+    if (!window.DaimonCosmos || !daimon) return;
+    const card = document.getElementById('daimon-cosmos-card');
+    const host = document.getElementById('daimon-cosmos-host');
+    if (!card || !host) return;
+    card.style.display = '';
+    const _lang = (window.getLang && window.getLang()) || 'ru';
+    const titleEl = document.getElementById('daimon-cosmos-title');
+    if (titleEl) titleEl.textContent = _lang === 'en' ? 'DAIMON COSMOS' : 'КОСМОС ДАЙМОНА';
+    window.DaimonCosmos.mount(host, daimon, { mera: MERA, granthi: getGranthiStatus() });
+  } catch (e) { console.warn('[DaimonCosmos]', e); }
+}
+
+async function renderEvolutionPanel(container) {
+  const mod = await import('./js/daimon-module.js');
+  const currentStage = await mod.getCurrentEvolutionStage();
+  const dnaStrands = await mod.getDNAStrands();
+  const granthi = mod.getGranthiStatus();
+  const currentNum = currentStage ? currentStage.stage : 1;
+
+  const STAGE_DATA = [
+    { stage: 1, name: labelHtml(lex('stage','pashu')), dna: 2, mult: 'x1.0', granthi: null },
+    { stage: 2, name: labelHtml(lex('stage','vira')), dna: 4, mult: 'x1.5', granthi: 'brahma' },
+    { stage: 3, name: labelHtml(lex('stage','sadhaka')), dna: 7, mult: 'x2.0', granthi: 'vishnu' },
+    { stage: 4, name: labelHtml(lex('stage','jivanmukta')), dna: 10, mult: 'x3.0', granthi: 'rudra' },
+    { stage: 5, name: labelHtml(lex('stage','paramukti')), dna: 12, mult: 'x4.0', granthi: null }
+  ];
+
+  const GRANTHI_NAMES = { brahma: labelHtml(lex('granthi','brahma')), vishnu: labelHtml(lex('granthi','vishnu')), rudra: labelHtml(lex('granthi','rudra')) };
+
+  let stagesHtml = '';
+  for (const s of STAGE_DATA) {
+    const isCurrent = s.stage === currentNum;
+    const isPast = s.stage < currentNum;
+    const nodeColor = isCurrent ? '#ffd700' : isPast ? 'rgba(201,168,76,0.7)' : 'rgba(255,248,214,0.15)';
+    const textColor = isCurrent ? '#ffd700' : isPast ? 'rgba(201,168,76,0.6)' : 'rgba(255,248,214,0.25)';
+    const lineColor = isPast ? 'rgba(201,168,76,0.4)' : 'rgba(255,248,214,0.08)';
+    const shadow = isCurrent ? 'box-shadow:0 0 10px rgba(255,215,0,0.4);' : '';
+
+    stagesHtml += '<div style="display:flex;align-items:flex-start;gap:12px;">';
+    stagesHtml += '  <div style="display:flex;flex-direction:column;align-items:center;width:16px;">';
+    stagesHtml += '    <div style="width:12px;height:12px;border-radius:50%;background:' + nodeColor + ';flex-shrink:0;' + shadow + '"></div>';
+    if (s.stage < 5) {
+      stagesHtml += '    <div style="width:2px;height:28px;background:' + lineColor + ';"></div>';
+    }
+    stagesHtml += '  </div>';
+    stagesHtml += '  <div style="flex:1;padding-bottom:8px;">';
+    stagesHtml += '    <div style="font-family:\'Cinzel\',serif;font-size:12px;color:' + textColor + ';letter-spacing:0.08em;">' + s.name + '</div>';
+    stagesHtml += '    <div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;color:' + textColor + ';opacity:0.7;margin-top:2px;">' + s.dna + ' ' + t('daimon.dna') + '  ' + s.mult + '</div>';
+    stagesHtml += '  </div>';
+    stagesHtml += '</div>';
+  }
+
+  const GRANTHI_REQ = {
+    brahma: { chakra: 4, chakraName: 'Анахата', prereq: null },
+    vishnu: { chakra: 5, chakraName: 'Вишуддха', prereq: 'brahma' },
+    rudra: { chakra: 6, chakraName: 'Аджна', prereq: 'vishnu' }
+  };
+  const daimonNow = getDaimon() || {};
+  const chakraNow = daimonNow.chakra || 1;
+
+  let granthiHtml = '';
+  for (const [id, name] of Object.entries(GRANTHI_NAMES)) {
+    const pierced = granthi[id];
+    const req = GRANTHI_REQ[id];
+    const eligible = !pierced && chakraNow >= req.chakra && (!req.prereq || granthi[req.prereq]);
+    const color = pierced ? '#ffd700' : (eligible ? '#ffd700' : 'rgba(255,248,214,0.2)');
+    const border = pierced ? '2px solid #ffd700' : (eligible ? '2px solid rgba(255,215,0,0.5)' : '2px solid rgba(255,248,214,0.15)');
+    const gShadow = pierced ? 'box-shadow:0 0 8px rgba(255,215,0,0.3);' : (eligible ? 'box-shadow:0 0 10px rgba(255,215,0,0.35);' : '');
+    let action = '';
+    if (pierced) {
+      action = '<div style="font-size:7px;color:rgba(201,168,76,0.6);letter-spacing:0.1em;">пройдено</div>';
+    } else if (eligible) {
+      action = '<button data-granthi-pierce="' + id + '" style="margin-top:2px;padding:5px 9px;min-height:30px;border:1px solid #ffd700;border-radius:6px;background:rgba(255,215,0,0.12);color:#ffd700;font-size:8px;letter-spacing:0.12em;cursor:pointer;">ПРОБОДИТЬ</button>';
+    } else {
+      action = '<div style="font-size:7px;color:rgba(255,248,214,0.3);letter-spacing:0.05em;">нужна ' + req.chakraName + '</div>';
+    }
+    granthiHtml += '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;width:88px;">';
+    granthiHtml += '  <div style="width:18px;height:18px;border-radius:50%;border:' + border + ';background:' + (pierced ? 'rgba(255,215,0,0.15)' : 'transparent') + ';' + gShadow + '"></div>';
+    granthiHtml += '  <div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;color:' + color + ';letter-spacing:0.1em;">' + name + '</div>';
+    granthiHtml += '  ' + action;
+    granthiHtml += '</div>';
+  }
+
+  const panel = '' +
+    '<div class="daimon-card">' +
+      '<div class="section-title">' + t('daimon.evolution.path') + '</div>' +
+      '<div style="padding:8px 0;">' + stagesHtml + '</div>' +
+      '<div style="margin-top:8px;padding-top:12px;border-top:1px solid rgba(201,168,76,0.1);">' +
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;letter-spacing:0.2em;color:rgba(201,168,76,0.4);margin-bottom:8px;text-align:center;">' + t('daimon.granthis') + '</div>' +
+        '<div style="display:flex;justify-content:center;gap:24px;">' + granthiHtml + '</div>' +
+      '</div>' +
+      '<div style="margin-top:12px;text-align:center;">' +
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;color:rgba(201,168,76,0.5);">' + t('daimon.dna.strands') + ' <span style="color:#ffd700;">' + dnaStrands + ' / 12</span></div>' +
+      '</div>' +
+    '</div>';
+
+  container.innerHTML += panel;
+}
+
+async function renderAscentPanel(container, daimon) {
+  let agents = [];
+  try { const res = await fetch('data/agents.json'); agents = await res.json(); } catch (e) { agents = []; }
+  let state = {};
+  try { state = JSON.parse(localStorage.getItem('awara_v258_state') || '{}'); } catch (e) { state = {}; }
+
+  const a = getAscentState(daimon, state, agents);
+  const next = getNextUnlock((daimon && daimon.chakra) || 1);
+  const _lang = (window.getLang && window.getLang()) || 'ru';
+  function L(ru, en) { return _lang === 'en' ? en : ru; }
+
+  function row(label, val) {
+    return '<div class="d-row"><span class="d-label">' + label + '</span><span class="d-value">' + val + '</span></div>';
+  }
+
+  let meraHtml = '';
+  for (let i = MERA.length - 1; i >= 0; i--) {
+    const m = MERA[i];
+    const isCur = m.mera === a.chakra;
+    const isPast = m.mera < a.chakra;
+    const dot = isCur ? m.color : (isPast ? 'rgba(201,168,76,0.55)' : 'rgba(255,248,214,0.14)');
+    const tcol = isCur ? '#ffd700' : (isPast ? 'rgba(201,168,76,0.6)' : 'rgba(255,248,214,0.28)');
+    const glow = isCur ? 'box-shadow:0 0 10px ' + m.color + ';' : '';
+    meraHtml += '<div style="display:flex;align-items:center;gap:10px;padding:3px 0;">' +
+      '<div style="width:12px;height:12px;border-radius:50%;background:' + dot + ';flex-shrink:0;' + glow + '"></div>' +
+      '<div style="font-size:10px;color:' + tcol + ';letter-spacing:0.06em;">' + L('М', 'M') + m.mera + ' · ' + m.chakra + ' <span style="opacity:0.55;">(' + m.element + ')</span></div>' +
+    '</div>';
+    if (m.mera === 4) {
+      meraHtml += '<div style="display:flex;align-items:center;gap:8px;margin:3px 0 3px 2px;">' +
+        '<div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0.5),transparent);"></div>' +
+        '<div style="font-size:8px;letter-spacing:0.2em;color:rgba(201,168,76,0.6);">' + L('ПУП · ПОРОГ ВОСХОЖДЕНИЯ', 'NAVEL · ASCENT THRESHOLD') + '</div>' +
+        '<div style="flex:1;height:1px;background:linear-gradient(270deg,rgba(201,168,76,0.5),transparent);"></div>' +
+      '</div>';
+    }
+  }
+
+  const patronHtml = a.patron ? (a.patron.name + ' <span style="opacity:0.6;">· ' + a.patron.domain + '</span>') : '—';
+  const nextHtml = next ? (L('М', 'M') + next.mera.mera + ' · ' + next.mera.chakra + (next.crossesNavel ? L(' · переход Пупа', ' · navel crossing') : '') + (next.changesContour ? L(' · контур ', ' · contour ') + next.newContour : '')) : L('высшая Мера достигнута', 'highest Mera reached');
+  const cap = a.assemblage.cappedByLight ? L(' <span style="opacity:0.6;">(ждёт Света)</span>', ' <span style="opacity:0.6;">(awaiting Light)</span>') : '';
+
+  const panel = '' +
+    '<div class="daimon-card">' +
+      '<div class="section-title">' + L('ПУТЬ ВОСХОЖДЕНИЯ · 9 МЕР', 'PATH OF ASCENT · 9 MERAS') + '</div>' +
+      '<div style="padding:6px 0;">' + meraHtml + '</div>' +
+      '<div style="margin-top:10px;padding-top:12px;border-top:1px solid rgba(201,168,76,0.1);">' +
+        row(L('Группа', 'Group'), a.group.name) +
+        row(L('Фаза', 'Phase'), a.phase) +
+        row(L('Точка Сборки', 'Assemblage Point'), a.assemblage.name + ' · ' + a.assemblage.pos + cap) +
+        row(L('Контур', 'Contour'), a.contour) +
+        row(L('Патрон', 'Patron'), patronHtml) +
+        row(L('Союзники', 'Allies'), a.allies.length + L(' из 21', ' of 21')) +
+        row(L('Дальше', 'Next'), nextHtml) +
+      '</div>' +
+    '</div>';
+
+  container.innerHTML += panel;
+}
+
+function renderDialoguePanel(container, daimon) {
+  const hint = getDaimonHint();
+  if (!hint) return;
+
+  const name = daimon.name || t('daimon.default.name');
+  const panel = '' +
+    '<div class="daimon-card">' +
+      '<div class="section-title">' + t('daimon.guardian.message') + '</div>' +
+      '<div style="padding:12px;background:rgba(124,58,237,0.04);border-radius:8px;border:1px solid rgba(124,58,237,0.12);">' +
+        '<div style="font-family:\'Cinzel\',serif;font-size:10px;color:rgba(124,58,237,0.5);letter-spacing:0.15em;margin-bottom:6px;">' + escapeHtml(name).toUpperCase() + ' ' + t('daimon.speaks') + '</div>' +
+        '<div style="font-family:\'Cormorant Garamond\',serif;font-size:14px;color:rgba(255,248,214,0.75);line-height:1.5;font-style:italic;">' + escapeHtml(hint.text) + '</div>' +
+      '</div>' +
+    '</div>';
+
+  container.innerHTML += panel;
+}
+
+function renderNavPanel(container) {
+  const NAV_ITEMS = [
+    { href: 'pages/dosha-quiz.html', key: 'daimon.nav.quiz', icon: '\u2638' },
+    { href: 'pages/nutrition.html', key: 'daimon.nav.nutrition', icon: '\u2615' },
+    { href: 'pages/generate-image.html', key: 'daimon.nav.image', icon: '\u2728' },
+    { href: 'pages/daily-practice.html', key: 'daimon.nav.practice', icon: '\u2600' },
+    { href: 'pages/daimon-create.html', key: 'daimon.nav.create', icon: '\u2726' }
+  ];
+  var items = '';
+  for (var i = 0; i < NAV_ITEMS.length; i++) {
+    var n = NAV_ITEMS[i];
+    items += '<a href="' + n.href + '" class="daimon-nav-link">' +
+      '<span class="daimon-nav-icon">' + n.icon + '</span>' +
+      '<span>' + t(n.key) + '</span>' +
+    '</a>';
+  }
+  container.innerHTML += '' +
+    '<div class="daimon-card">' +
+      '<div class="section-title">' + t('daimon.nav.section') + '</div>' +
+      '<div class="daimon-nav-grid">' + items + '</div>' +
+    '</div>';
+}
+
+function renderEmpty() {
+  const content = document.getElementById('daimon-content');
+  content.innerHTML = '' +
+    '<div class="daimon-card">' +
+      '<div class="empty-state">' +
+        '<div class="empty-title">' + t('daimon.not.summoned') + '</div>' +
+        '<div class="empty-text">' + t('daimon.not.summoned.desc') + '</div>' +
+        '<button class="empty-btn" id="btn-summon">' + t('daimon.summon') + '</button>' +
+      '</div>' +
+    '</div>';
+
+  document.getElementById('btn-summon').addEventListener('click', async () => {
+    const daimon = await generateDaimon({});
+    if (daimon) renderDaimon(daimon);
+  });
+
+  renderNavPanel(content);
+}
+
+document.addEventListener('click', async function (ev) {
+  const btn = ev.target && ev.target.closest ? ev.target.closest('[data-granthi-pierce]') : null;
+  if (!btn) return;
+  const id = btn.getAttribute('data-granthi-pierce');
+  const mod = await import('./js/daimon-module.js');
+  if (typeof mod.evolveToNextStage === 'function') {
+    await mod.evolveToNextStage(id);
+  }
+  const daimon = mod.getDaimon();
+  if (daimon) renderDaimon(daimon);
+});
+
+async function init() {
+  await loadDaimonForms();
+  const daimon = getDaimon();
+  if (daimon) {
+    renderDaimon(daimon);
+  } else {
+    renderEmpty();
+  }
+}
+
+window.__toggleSacred = function() {
+  toggleSacredMode();
+  if (window.__daimonRefresh) window.__daimonRefresh();
+};
+window.__daimonRefresh = function() {
+  const d = getDaimon();
+  if (d) { renderDaimon(d); } else { renderEmpty(); }
+};
+
+init().catch(e => {
+  console.error('[Daimon Page]', e);
+  document.getElementById('daimon-content').innerHTML =
+    '<div class="daimon-card"><div style="color:#f00;padding:20px;">' + t('daimon.error') + ': ' + e.message + '</div></div>';
+});
+applyTranslations();
+</script>
+
+<!-- Подсказки (M-006) -->
+<button class="hint-btn" title="Подсказки" data-i18n-title="app.help" style="top:56px;right:12px;">?</button>
+<script type="module">
+import { initHints } from './js/hints-module.js';
+initHints('daimon');
+</script>
+
+<!-- M-040: Сакральный язык -->
+<button id="btn-sacred" onclick="window.__toggleSacred&&window.__toggleSacred()" title="Сакральный язык" style="position:fixed;top:100px;right:12px;z-index:100;min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:14px;cursor:pointer;border-radius:50%;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">☯</button>
+
+<!-- M-033: RU/EN переключатель -->
+<div style="position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px">
+  <button id="lang-ru" onclick="localStorage.setItem('awara_lang','ru');if(window.switchLang)window.switchLang('ru');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">RU</button>
+  <button id="lang-en" onclick="localStorage.setItem('awara_lang','en');if(window.switchLang)window.switchLang('en');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">EN</button>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang } from './js/i18n.js';
+window.switchLang = function(lang) {
+  setLang(lang);
+  if (window.__daimonRefresh) window.__daimonRefresh();
+  translatePage();
+  document.querySelectorAll('#lang-ru,#lang-en').forEach(function(b){
+    b.style.borderColor = b.textContent === lang.toUpperCase() ? '#ffd700' : 'rgba(201,168,76,.2)';
+    b.style.color = b.textContent === lang.toUpperCase() ? '#ffd700' : '#c9a84c';
+  });
+};
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  var cur = getLang();
+  if (window.switchLang) window.switchLang(cur);
+});
+</script>
+</body>
+</html>

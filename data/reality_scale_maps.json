@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "purpose": "Defines nested reality maps through which the player gradually learns to orient consciousness from body and home to planet, galaxy and cosmic creation.",
+  "core_principle": "The same laws repeat through scales: inner structure mirrors outer structure, microcosm mirrors macrocosm, game world bridges into real world.",
+  "scales": [
+    {
+      "id": "consciousness_map",
+      "title": "Карта сознания",
+      "layer": "soul",
+      "unlocked_by_default": true,
+      "description": "The first map: channels of perception, mind space, incoming and outgoing signal, attention and distortion.",
+      "tracked_resources": ["attention", "clarity", "distortion", "light", "manas"],
+      "directions": [],
+      "practice_domains": ["meditation", "reflection", "oracle_dialogue", "tigel"]
+    },
+    {
+      "id": "body_map",
+      "title": "Карта тела",
+      "layer": "soul",
+      "unlocked_by_default": true,
+      "description": "Body as the first temple: senses, posture, breath, organs of action and perception.",
+      "tracked_resources": ["prana", "sthula_sharira", "linga_sharira", "earth", "water"],
+      "directions": ["head", "heart", "belly", "feet", "hands", "spine"],
+      "practice_domains": ["breath", "movement", "food", "rest", "body_awareness"]
+    },
+    {
+      "id": "soul_map",
+      "title": "Карта души",
+      "layer": "soul",
+      "unlocked_by_default": true,
+      "description": "The initiation space of feet, heart, head and cooperation where daily experience becomes light.",
+      "tracked_resources": ["soul_light", "feet", "heart", "head", "cooperation", "elements", "principles"],
+      "directions": ["feet", "heart", "head", "cooperation"],
+      "practice_domains": ["tigel", "daily_key", "shadow_integration", "card_crystallization"]
+    },
+    {
+      "id": "room_map",
+      "title": "Карта комнаты",
+      "layer": "earth",
+      "unlocked_by_default": false,
+      "description": "The player's immediate physical space, desk, bed, altar, tools and daily environment.",
+      "tracked_resources": ["order", "cleanliness", "focus", "rest", "earth_light"],
+      "directions": ["north", "east", "south", "west", "center"],
+      "practice_domains": ["cleaning", "altar", "desk_order", "sleep_space", "lighting"]
+    },
+    {
+      "id": "home_map",
+      "title": "Карта дома / квартиры",
+      "layer": "earth",
+      "unlocked_by_default": false,
+      "description": "Home as the first Star Temple: directions, rooms, elemental zones, daily rituals and family field.",
+      "tracked_resources": ["vastu_balance", "family_light", "earth", "water", "fire", "air", "ether"],
+      "directions": ["north", "north_east", "east", "south_east", "south", "south_west", "west", "north_west", "center"],
+      "practice_domains": ["vastu", "feng_shui", "food", "relationship", "home_altar", "craft"]
+    },
+    {
+      "id": "land_map",
+      "title": "Карта земли / сада",
+      "layer": "earth",
+      "unlocked_by_default": false,
+      "description": "The living land around the player: garden, plants, stones, outdoor practice, local spirits of place.",
+      "tracked_resources": ["plant_light", "mineral_light", "service", "seasonal_cycles"],
+      "directions": ["north", "east", "south", "west", "center"],
+      "practice_domains": ["plants", "stones", "garden", "seasonal_ritual", "land_care"]
+    },
+    {
+      "id": "city_map",
+      "title": "Карта города / поселения",
+      "layer": "earth",
+      "unlocked_by_default": false,
+      "description": "The player begins to see streets, work, community, service and movement as part of a larger field.",
+      "tracked_resources": ["community_light", "movement", "service", "work", "exchange"],
+      "directions": ["home", "work", "water_places", "temple_places", "market", "nature"],
+      "practice_domains": ["walking", "service", "community", "local_projects", "light_exchange"]
+    },
+    {
+      "id": "country_map",
+      "title": "Карта страны",
+      "layer": "cosmos",
+      "unlocked_by_default": false,
+      "description": "Cultural field, ancestral memory, sacred geography and larger collective patterns.",
+      "tracked_resources": ["ancestral_resonance", "cultural_matrix", "service_network", "pilgrimage"],
+      "directions": ["sacred_places", "ancestral_places", "rivers", "mountains", "cities"],
+      "practice_domains": ["pilgrimage", "cultural_study", "collective_service", "history_integration"]
+    },
+    {
+      "id": "planet_map",
+      "title": "Карта планеты",
+      "layer": "cosmos",
+      "unlocked_by_default": false,
+      "description": "Planetary Logos, grid of power places, planetary elements and collective awakening.",
+      "tracked_resources": ["logos_resonance", "planetary_light", "grid_nodes", "collective_practice"],
+      "directions": ["planetary_nodes", "continents", "oceans", "mountain_chains", "sacred_grid"],
+      "practice_domains": ["planetary_meditation", "grid_work", "festival", "collective_light"]
+    },
+    {
+      "id": "galaxy_map",
+      "title": "Карта галактики",
+      "layer": "cosmos",
+      "unlocked_by_default": false,
+      "description": "The player learns to relate to star fields, galactic myths and cosmic-scale consciousness.",
+      "tracked_resources": ["stellar_light", "cosmic_routes", "agent_domains", "mythic_worlds"],
+      "directions": ["solar_system", "stellar_paths", "galactic_center", "constellations"],
+      "practice_domains": ["star_meditation", "cosmic_cards", "dream_navigation", "higher_guidance"]
+    },
+    {
+      "id": "universe_map",
+      "title": "Карта вселенной",
+      "layer": "divine_game",
+      "unlocked_by_default": false,
+      "description": "The universe becomes a playable divine field of cards, laws, lokas, domains and created worlds.",
+      "tracked_resources": ["universe_light", "created_worlds", "divine_moves", "mythic_laws"],
+      "directions": ["lokas", "domains", "cosmic_cycles", "void", "source"],
+      "practice_domains": ["divine_board", "card_combinations", "world_creation", "cooperative_games"]
+    },
+    {
+      "id": "cosmic_creation_map",
+      "title": "Карта мироздания",
+      "layer": "divine_game",
+      "unlocked_by_default": false,
+      "description": "The final creative scale where the player acts as a conscious co-creator of a living game universe.",
+      "tracked_resources": ["source_resonance", "creator_light", "living_universes", "collective_logos"],
+      "directions": ["source", "emanation", "worlds", "beings", "laws", "return"],
+      "practice_domains": ["creation_ritual", "festival_board", "logos_service", "new_universe_design"]
+    }
+  ],
+  "physical_board_requirements": {
+    "must_represent": [
+      "soul_center",
+      "four_initiation_spheres",
+      "five_elements",
+      "seven_principles",
+      "star_temple",
+      "vastu_directions",
+      "mythological_worlds",
+      "planetary_grid",
+      "cosmic_gates",
+      "divine_board"
+    ],
+    "play_modes": ["solo_daily", "family", "community", "festival", "planetary_ritual"],
+    "card_correspondence": "Every printed card should correspond to a digital card_id when possible."
+  }
+}

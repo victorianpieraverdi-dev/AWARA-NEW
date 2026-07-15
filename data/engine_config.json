@@ -1,0 +1,3432 @@
+{
+  "_meta": {
+    "version": "2.3",
+    "name": "AWARA Тигель — Единый Движок",
+    "purpose": "Объединённый конфиг: данные + формулы + сенсорика + Мера + течение света",
+    "files_this_replaces": [
+      "experience_generator.json — сенсорика, Suno, карточки (включено)",
+      "profiling_screen.json — онбординг (включено)",
+      "experience_development_map.json — оси, профили (ссылка)",
+      "vedic_loka_body_map.json — локи, чакры (ссылка)"
+    ],
+    "data_files_referenced": {
+      "matrix_quests/*.json": "2475 квестов с базовыми reward (7 осей)",
+      "all_location_quests.json": "3033 квеста с 7-осевыми reward",
+      "experience_development_map.json": "33 профиля традиций × 7 осей + сенсорка",
+      "vedic_loka_body_map.json": "14 лок + чакры + профилирование",
+      "lens_level_prompts.json": "33×6 промптов для карточек и музыки",
+      "quest-cultural-keys.json": "33 традиции: агенты, символы, голоса"
+    },
+    "changelog": [
+      "v2.0 — добавлены: pacing, mastery_bonus, coop_bonus, creativity_bonus, media_bonus, depth_gates",
+      "v2.1 — добавлены: life_activities (75 деятельностей), passive_flow, longterm_planning, intention_classification, daily_checkin, intentions в player_state",
+      "v2.2 — суточный цикл эфира (daily_cycle), частицы (particles) вместо прямого света, световые структуры (light_structures, 6 штук, Мера 4-9), связь с Духом, player_state расширен (ether_state, particles_today, structures_built, day_phase)",
+      "v2.2a — daily_cycle переписан: эфир = состояние сознания (не таймер). Привязка к суткам — лишь практический слой. Аскет держит эфир 24/7, новичок — на пару квестов. Добавлен decay/sustain по Ring.",
+      "v2.3 — Луч восприятия (ray_of_perception): нисходящий Творец, точка сборки, 14 лок. Сила излучения Ра (ra_radiance): планетарный Логос, всегда доступен, освобождение. Чувствительность (sensitivity): главное качество игры, 5 уровней, лёгкая метрика. Двусторонняя связь Луч↔Эфир.",
+      "v2.3a — foundational_myth: гностический миф об Ильдабаофе и пробуждающемся Логосе. Игра маскирует учение под геймплей. ra_radiance дополнен: загрязнение каналов, самость/иллюзия. sensitivity: связь с чистотой каналов. Ссылка на РАДОСВЕТ как базу знаний.",
+      "v2.3b — Глубокое обновление из 6 сессий Русского Мастера: ray_of_perception (Луч из Атмана, Формы на Луче, Групповая Душа), ra_radiance (Изначалие и Водитель Гэба, Внутреннее Солнце, безмерен), Цепочка: Связь с Ра → Радость → Пробуждение Эфира → Свет Луча проходит. foundational_myth дополнен: Гэб/Джива/Душа/Дух/Эфир точные определения из РМ. sensitivity связана с чистотой каналов (РМ С1-В9). Источники: все 6 сессий РМ + radosvet.in."
+    ]
+  },
+  "onboarding": {
+    "screen": {
+      "title_ru": "Что тебе интересно?",
+      "subtitle_ru": "Выбери 3-7 направлений, которые тебе близки",
+      "min_selections": 3,
+      "max_selections": 7,
+      "layout": "grid_3_columns",
+      "animation": "category_tap_expand_branches"
+    },
+    "categories": [
+      {
+        "id": "body",
+        "name": "Тело и Здоровье",
+        "icon": "💪",
+        "maps_to_loka": "Бхур-лока",
+        "maps_to_chakra": "Муладхара",
+        "maps_to_axis": "discipline",
+        "branches": [
+          {
+            "id": "body.yoga",
+            "name": "Йога",
+            "maps_to_lens": [
+              "vedic",
+              "tantric_kashmiri"
+            ],
+            "maps_to_lenses": [
+              "vedic",
+              "tantric_kashmiri"
+            ]
+          },
+          {
+            "id": "body.martial",
+            "name": "Боевые искусства",
+            "maps_to_lens": [
+              "daoist",
+              "shinto"
+            ],
+            "maps_to_lenses": [
+              "daoist",
+              "shinto"
+            ]
+          },
+          {
+            "id": "body.breathwork",
+            "name": "Дыхательные практики",
+            "maps_to_lens": [
+              "vedic",
+              "daoist",
+              "sufi"
+            ],
+            "maps_to_lenses": [
+              "vedic",
+              "daoist",
+              "sufi"
+            ]
+          },
+          {
+            "id": "body.nutrition",
+            "name": "Осознанное питание",
+            "maps_to_lens": [
+              "vedic",
+              "daoist",
+              "buddhist_mahayana"
+            ],
+            "maps_to_lenses": [
+              "vedic",
+              "daoist",
+              "buddhist_mahayana"
+            ]
+          },
+          {
+            "id": "body.dance",
+            "name": "Танец / Движение",
+            "maps_to_lens": [
+              "sufi",
+              "shamanic",
+              "afro_dogon"
+            ],
+            "maps_to_lenses": [
+              "sufi",
+              "shamanic",
+              "afro_dogon"
+            ]
+          },
+          {
+            "id": "body.sport",
+            "name": "Спорт / Выносливость",
+            "maps_to_lens": [
+              "norse",
+              "slavic"
+            ],
+            "maps_to_lenses": [
+              "norse",
+              "slavic"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emotion",
+        "name": "Эмоции и Отношения",
+        "icon": "💗",
+        "maps_to_loka": "Бхувар-лока",
+        "maps_to_chakra": "Свадхистхана",
+        "maps_to_axis": "compassion",
+        "branches": [
+          {
+            "id": "emotion.empathy",
+            "name": "Эмпатия / Сострадание",
+            "maps_to_lens": [
+              "buddhist_mahayana",
+              "christian_mystical_grail"
+            ],
+            "maps_to_lenses": [
+              "buddhist_mahayana",
+              "christian_mystical_grail"
+            ]
+          },
+          {
+            "id": "emotion.relationships",
+            "name": "Отношения / Семья",
+            "maps_to_lens": [
+              "slavic",
+              "celtic",
+              "yoruba_ifa_orisha"
+            ],
+            "maps_to_lenses": [
+              "slavic",
+              "celtic",
+              "yoruba_ifa_orisha"
+            ]
+          },
+          {
+            "id": "emotion.healing",
+            "name": "Исцеление травм",
+            "maps_to_lens": [
+              "shamanic",
+              "gnostic"
+            ],
+            "maps_to_lenses": [
+              "shamanic",
+              "gnostic"
+            ]
+          },
+          {
+            "id": "emotion.love",
+            "name": "Любовь как путь",
+            "maps_to_lens": [
+              "sufi",
+              "tantric_kashmiri",
+              "christian_mystical_grail"
+            ],
+            "maps_to_lenses": [
+              "sufi",
+              "tantric_kashmiri",
+              "christian_mystical_grail"
+            ]
+          },
+          {
+            "id": "emotion.ancestors",
+            "name": "Работа с родом / Предки",
+            "maps_to_lens": [
+              "slavic",
+              "shamanic",
+              "yoruba_ifa_orisha"
+            ],
+            "maps_to_lenses": [
+              "slavic",
+              "shamanic",
+              "yoruba_ifa_orisha"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "power",
+        "name": "Воля и Действие",
+        "icon": "🔥",
+        "maps_to_loka": "Свар-лока",
+        "maps_to_chakra": "Манипура",
+        "maps_to_axis": "will",
+        "branches": [
+          {
+            "id": "power.leadership",
+            "name": "Лидерство / Управление",
+            "maps_to_lens": [
+              "egyptian",
+              "aztec_mexica",
+              "norse"
+            ],
+            "maps_to_lenses": [
+              "egyptian",
+              "aztec_mexica",
+              "norse"
+            ]
+          },
+          {
+            "id": "power.entrepreneurship",
+            "name": "Предпринимательство",
+            "maps_to_lens": [
+              "hermetic_alchemical",
+              "technomagical"
+            ],
+            "maps_to_lenses": [
+              "hermetic_alchemical",
+              "technomagical"
+            ]
+          },
+          {
+            "id": "power.discipline",
+            "name": "Самодисциплина / Аскеза",
+            "maps_to_lens": [
+              "vedic",
+              "buddhist_mahayana",
+              "zoroastrian"
+            ],
+            "maps_to_lenses": [
+              "vedic",
+              "buddhist_mahayana",
+              "zoroastrian"
+            ]
+          },
+          {
+            "id": "power.strategy",
+            "name": "Стратегия / Игра",
+            "maps_to_lens": [
+              "chinese_iching",
+              "daoist"
+            ],
+            "maps_to_lenses": [
+              "chinese_iching",
+              "daoist"
+            ]
+          },
+          {
+            "id": "power.creativity",
+            "name": "Творчество / Созидание",
+            "maps_to_lens": [
+              "celtic",
+              "slavic",
+              "antique_greco_roman"
+            ],
+            "maps_to_lenses": [
+              "celtic",
+              "slavic",
+              "antique_greco_roman"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "heart",
+        "name": "Сердце и Служение",
+        "icon": "💚",
+        "maps_to_loka": "Махар-лока",
+        "maps_to_chakra": "Анахата",
+        "maps_to_axis": "devotion",
+        "branches": [
+          {
+            "id": "heart.service",
+            "name": "Служение / Волонтёрство",
+            "maps_to_lens": [
+              "christian_mystical_grail",
+              "buddhist_mahayana"
+            ],
+            "maps_to_lenses": [
+              "christian_mystical_grail",
+              "buddhist_mahayana"
+            ]
+          },
+          {
+            "id": "heart.nature",
+            "name": "Природа / Экология",
+            "maps_to_lens": [
+              "celtic",
+              "shamanic",
+              "shinto"
+            ],
+            "maps_to_lenses": [
+              "celtic",
+              "shamanic",
+              "shinto"
+            ]
+          },
+          {
+            "id": "heart.music",
+            "name": "Музыка",
+            "maps_to_lens": [
+              "sufi",
+              "vedic",
+              "afro_dogon",
+              "antique_greco_roman"
+            ],
+            "maps_to_lenses": [
+              "sufi",
+              "vedic",
+              "afro_dogon",
+              "antique_greco_roman"
+            ]
+          },
+          {
+            "id": "heart.poetry",
+            "name": "Поэзия / Слово",
+            "maps_to_lens": [
+              "sufi",
+              "celtic",
+              "kabbalistic"
+            ],
+            "maps_to_lenses": [
+              "sufi",
+              "celtic",
+              "kabbalistic"
+            ]
+          },
+          {
+            "id": "heart.animals",
+            "name": "Животные / Тотемы",
+            "maps_to_lens": [
+              "shamanic",
+              "celtic",
+              "norse"
+            ],
+            "maps_to_lenses": [
+              "shamanic",
+              "celtic",
+              "norse"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "knowledge",
+        "name": "Знание и Мудрость",
+        "icon": "📖",
+        "maps_to_loka": "Джана-лока",
+        "maps_to_chakra": "Вишуддха",
+        "maps_to_axis": "clarity",
+        "branches": [
+          {
+            "id": "knowledge.philosophy",
+            "name": "Философия",
+            "maps_to_lens": [
+              "advaita_siddha",
+              "gnostic",
+              "antique_greco_roman"
+            ],
+            "maps_to_lenses": [
+              "advaita_siddha",
+              "gnostic",
+              "antique_greco_roman"
+            ]
+          },
+          {
+            "id": "knowledge.mythology",
+            "name": "Мифология / Архетипы",
+            "maps_to_lens": [
+              "norse",
+              "egyptian",
+              "mayan",
+              "slavic"
+            ],
+            "maps_to_lenses": [
+              "norse",
+              "egyptian",
+              "mayan",
+              "slavic"
+            ]
+          },
+          {
+            "id": "knowledge.science",
+            "name": "Наука / Космос",
+            "maps_to_lens": [
+              "cosmic_galactic",
+              "posthuman_ai_sophianic"
+            ],
+            "maps_to_lenses": [
+              "cosmic_galactic",
+              "posthuman_ai_sophianic"
+            ]
+          },
+          {
+            "id": "knowledge.symbols",
+            "name": "Символы / Языки",
+            "maps_to_lens": [
+              "kabbalistic",
+              "hermetic_alchemical",
+              "sumerian_babylonian"
+            ],
+            "maps_to_lenses": [
+              "kabbalistic",
+              "hermetic_alchemical",
+              "sumerian_babylonian"
+            ]
+          },
+          {
+            "id": "knowledge.astrology",
+            "name": "Астрология / Циклы",
+            "maps_to_lens": [
+              "astrological",
+              "chinese_iching",
+              "mayan"
+            ],
+            "maps_to_lenses": [
+              "astrological",
+              "chinese_iching",
+              "mayan"
+            ]
+          },
+          {
+            "id": "knowledge.tarot",
+            "name": "Таро / Оракулы",
+            "maps_to_lens": [
+              "tarot_arcanic",
+              "chinese_iching"
+            ],
+            "maps_to_lenses": [
+              "tarot_arcanic",
+              "chinese_iching"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "vision",
+        "name": "Видение и Интуиция",
+        "icon": "👁",
+        "maps_to_loka": "Тапа-лока",
+        "maps_to_chakra": "Аджна",
+        "maps_to_axis": "transformation",
+        "branches": [
+          {
+            "id": "vision.meditation",
+            "name": "Медитация",
+            "maps_to_lens": [
+              "buddhist_mahayana",
+              "daoist",
+              "advaita_siddha"
+            ],
+            "maps_to_lenses": [
+              "buddhist_mahayana",
+              "daoist",
+              "advaita_siddha"
+            ]
+          },
+          {
+            "id": "vision.dreams",
+            "name": "Сновидения / Осознанные сны",
+            "maps_to_lens": [
+              "shamanic",
+              "gnostic",
+              "atlantean_lemurian"
+            ],
+            "maps_to_lenses": [
+              "shamanic",
+              "gnostic",
+              "atlantean_lemurian"
+            ]
+          },
+          {
+            "id": "vision.psychic",
+            "name": "Ясновидение / Тонкое восприятие",
+            "maps_to_lens": [
+              "shamanic",
+              "tantric_kashmiri"
+            ],
+            "maps_to_lenses": [
+              "shamanic",
+              "tantric_kashmiri"
+            ]
+          },
+          {
+            "id": "vision.alchemy",
+            "name": "Алхимия / Трансформация",
+            "maps_to_lens": [
+              "hermetic_alchemical",
+              "daoist"
+            ],
+            "maps_to_lenses": [
+              "hermetic_alchemical",
+              "daoist"
+            ]
+          },
+          {
+            "id": "vision.art",
+            "name": "Визионерское искусство",
+            "maps_to_lens": [
+              "mayan",
+              "aztec_mexica",
+              "celtic"
+            ],
+            "maps_to_lenses": [
+              "mayan",
+              "aztec_mexica",
+              "celtic"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "unity",
+        "name": "Единство и Запредельное",
+        "icon": "✨",
+        "maps_to_loka": "Сатья-лока",
+        "maps_to_chakra": "Сахасрара",
+        "maps_to_axis": "unity",
+        "branches": [
+          {
+            "id": "unity.nonduality",
+            "name": "Недвойственность",
+            "maps_to_lens": [
+              "advaita_siddha",
+              "buddhist_mahayana",
+              "daoist"
+            ],
+            "maps_to_lenses": [
+              "advaita_siddha",
+              "buddhist_mahayana",
+              "daoist"
+            ]
+          },
+          {
+            "id": "unity.mysticism",
+            "name": "Мистицизм",
+            "maps_to_lens": [
+              "sufi",
+              "christian_mystical_grail",
+              "kabbalistic"
+            ],
+            "maps_to_lenses": [
+              "sufi",
+              "christian_mystical_grail",
+              "kabbalistic"
+            ]
+          },
+          {
+            "id": "unity.cosmos",
+            "name": "Космическое сознание",
+            "maps_to_lens": [
+              "cosmic_galactic",
+              "shambhala"
+            ],
+            "maps_to_lenses": [
+              "cosmic_galactic",
+              "shambhala"
+            ]
+          },
+          {
+            "id": "unity.silence",
+            "name": "Тишина / Ретрит",
+            "maps_to_lens": [
+              "buddhist_mahayana",
+              "julian_byzantine"
+            ],
+            "maps_to_lenses": [
+              "buddhist_mahayana",
+              "julian_byzantine"
+            ]
+          },
+          {
+            "id": "unity.death",
+            "name": "Смерть и Перерождение",
+            "maps_to_lens": [
+              "egyptian",
+              "gnostic",
+              "shamanic"
+            ],
+            "maps_to_lenses": [
+              "egyptian",
+              "gnostic",
+              "shamanic"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "shadow",
+        "name": "Тень и Глубина",
+        "icon": "🌑",
+        "maps_to_loka": "Атала → Патала (низшие локи)",
+        "maps_to_chakra": "Теневые отражения чакр",
+        "maps_to_axis": "transformation",
+        "branches": [
+          {
+            "id": "shadow.psychology",
+            "name": "Психология / Тень Юнга",
+            "maps_to_lens": [
+              "gnostic",
+              "tarot_arcanic"
+            ],
+            "maps_to_lenses": [
+              "gnostic",
+              "tarot_arcanic"
+            ]
+          },
+          {
+            "id": "shadow.power_games",
+            "name": "Игры власти / Манипуляция",
+            "maps_to_lens": [
+              "aztec_mexica",
+              "sumerian_babylonian"
+            ],
+            "maps_to_lenses": [
+              "aztec_mexica",
+              "sumerian_babylonian"
+            ]
+          },
+          {
+            "id": "shadow.addiction",
+            "name": "Зависимости / Привязанности",
+            "maps_to_lens": [
+              "buddhist_mahayana",
+              "gnostic"
+            ],
+            "maps_to_lenses": [
+              "buddhist_mahayana",
+              "gnostic"
+            ]
+          },
+          {
+            "id": "shadow.rage",
+            "name": "Гнев / Агрессия",
+            "maps_to_lens": [
+              "norse",
+              "aztec_mexica"
+            ],
+            "maps_to_lenses": [
+              "norse",
+              "aztec_mexica"
+            ]
+          },
+          {
+            "id": "shadow.fear",
+            "name": "Страх / Фобии",
+            "maps_to_lens": [
+              "shamanic",
+              "egyptian"
+            ],
+            "maps_to_lenses": [
+              "shamanic",
+              "egyptian"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "future",
+        "name": "Будущее и Технологии",
+        "icon": "🚀",
+        "maps_to_loka": "Транс-локальное",
+        "maps_to_chakra": "Монада (8-я мерность)",
+        "maps_to_axis": "clarity",
+        "branches": [
+          {
+            "id": "future.ai",
+            "name": "ИИ и Сознание",
+            "maps_to_lens": [
+              "posthuman_ai_sophianic",
+              "technomagical"
+            ],
+            "maps_to_lenses": [
+              "posthuman_ai_sophianic",
+              "technomagical"
+            ]
+          },
+          {
+            "id": "future.biotech",
+            "name": "Биохакинг / Генетика",
+            "maps_to_lens": [
+              "gene_keys",
+              "posthuman_ai_sophianic"
+            ],
+            "maps_to_lenses": [
+              "gene_keys",
+              "posthuman_ai_sophianic"
+            ]
+          },
+          {
+            "id": "future.virtual",
+            "name": "VR / Метавселенные",
+            "maps_to_lens": [
+              "technomagical",
+              "atlantean_lemurian"
+            ],
+            "maps_to_lenses": [
+              "technomagical",
+              "atlantean_lemurian"
+            ]
+          },
+          {
+            "id": "future.evolution",
+            "name": "Эволюция человечества",
+            "maps_to_lens": [
+              "cosmic_galactic",
+              "shambhala",
+              "gene_keys"
+            ],
+            "maps_to_lenses": [
+              "cosmic_galactic",
+              "shambhala",
+              "gene_keys"
+            ]
+          }
+        ]
+      }
+    ],
+    "mapping_algorithm": {
+      "steps": [
+        {
+          "step": 1,
+          "action": "collect_all_maps_to_lenses",
+          "description": "Собрать все линзы из выбранных веток"
+        },
+        {
+          "step": 2,
+          "action": "count_lens_frequency",
+          "description": "Подсчитать частоту каждой линзы → ТОП-3 = стартовые линзы"
+        },
+        {
+          "step": 3,
+          "action": "collect_axes",
+          "description": "Каждая категория → maps_to_axis → подсчитать доминантные оси"
+        },
+        {
+          "step": 4,
+          "action": "collect_lokas",
+          "description": "Каждая категория → maps_to_loka → определить вертикальный фокус"
+        },
+        {
+          "step": 5,
+          "action": "generate_first_quest",
+          "description": "Взять TOP-1 линзу + TOP-1 ось → L1 квест из matrix_quests[slug].levels['1']"
+        }
+      ],
+      "pseudocode": "\nfunction buildProfile(selectedBranches) {\n    // Step 1-2: Find starting lenses\n    const lensCounts = {};\n    const axisCounts = {};\n    const lokaCounts = {};\n    \n    selectedBranches.forEach(branch => {\n        (branch.maps_to_lenses || []).forEach(lens => {\n            lensCounts[lens] = (lensCounts[lens] || 0) + 1;\n        });\n        // axis comes from parent category\n        axisCounts[branch.parent_axis] = (axisCounts[branch.parent_axis] || 0) + 1;\n        lokaCounts[branch.parent_loka] = (lokaCounts[branch.parent_loka] || 0) + 1;\n    });\n    \n    // Step 3: Sort by frequency\n    const startLenses = Object.entries(lensCounts)\n        .sort((a,b) => b[1]-a[1])\n        .slice(0, 3)\n        .map(e => e[0]);\n    \n    const dominantAxes = Object.entries(axisCounts)\n        .sort((a,b) => b[1]-a[1])\n        .slice(0, 2)\n        .map(e => e[0]);\n    \n    // Step 4: Generate first quest\n    const firstLens = startLenses[0];\n    const firstQuest = matrixQuests[firstLens].levels['1'][0];\n    \n    return {\n        startLenses,\n        dominantAxes,\n        verticalFocus: Object.entries(lokaCounts).sort((a,b) => b[1]-a[1])[0][0],\n        firstQuest\n    };\n}\n"
+    },
+    "adaptive_profiling": {
+      "title": "Адаптивное профилирование — после онбординга",
+      "_comment": "Дополнение: после первого выбора ИИ продолжает уточнять профиль по поведению",
+      "signal_sources": [
+        "Какие квесты берёт / пропускает",
+        "В каких локах проводит время",
+        "Какие типы активности предпочитает (do/meditate/observe/reflect/create/study/ritual)",
+        "Скорость прохождения уровней по линзам",
+        "Баланс верх/низ (высшие vs низшие локи)",
+        "Работа с теневыми аспектами"
+      ],
+      "ai_actions": [
+        "Мягко предлагать непрокачанные оси как 'новый вкус'",
+        "При перекосе верх/низ — предлагать баланс",
+        "Показывать паттерны: 'ты часто выбираешь огненные квесты — хочешь попробовать водное?'",
+        "ИИ не оценивает — ИИ отражает"
+      ]
+    }
+  },
+  "daily_energy": {
+    "_comment": "7 календарных систем → стихия дня → множитель резонанса",
+    "systems": {
+      "tropical": {
+        "name": "Тропическая астрология",
+        "maps_to": "element",
+        "cycle": "planetary_day_ruler",
+        "mapping": {
+          "Солнце": "Огонь",
+          "Луна": "Вода",
+          "Марс": "Огонь",
+          "Меркурий": "Эфир",
+          "Юпитер": "Эфир",
+          "Венера": "Вода",
+          "Сатурн": "Земля"
+        }
+      },
+      "chinese": {
+        "name": "Китайская система",
+        "maps_to": "element",
+        "cycle": "day_stem_branch",
+        "elements": [
+          "Дерево",
+          "Огонь",
+          "Земля",
+          "Металл",
+          "Вода"
+        ],
+        "element_to_awara": {
+          "Дерево": "Воздух",
+          "Огонь": "Огонь",
+          "Земля": "Земля",
+          "Металл": "Земля",
+          "Вода": "Вода"
+        }
+      },
+      "mayan": {
+        "name": "Майя — Цолькин",
+        "maps_to": "element",
+        "cycle": "kin_number",
+        "glyphs_to_element": {
+          "Имиш": "Вода",
+          "Ик": "Воздух",
+          "Акбаль": "Земля",
+          "Кан": "Огонь",
+          "Чикчан": "Огонь",
+          "Кими": "Земля",
+          "Маник": "Воздух",
+          "Ламат": "Огонь",
+          "Мулук": "Вода",
+          "Ок": "Воздух",
+          "Чуэн": "Эфир",
+          "Эб": "Земля",
+          "Бен": "Огонь",
+          "Иш": "Земля",
+          "Мен": "Воздух",
+          "Киб": "Земля",
+          "Кабан": "Огонь",
+          "Эцнаб": "Воздух",
+          "Кавак": "Вода",
+          "Ахау": "Эфир"
+        }
+      },
+      "numerology": {
+        "name": "Нумерология",
+        "maps_to": "element",
+        "cycle": "day_digit_sum",
+        "number_to_element": {
+          "1": "Огонь",
+          "2": "Вода",
+          "3": "Огонь",
+          "4": "Земля",
+          "5": "Эфир",
+          "6": "Вода",
+          "7": "Воздух",
+          "8": "Земля",
+          "9": "Огонь"
+        }
+      },
+      "human_design": {
+        "name": "Дизайн Человека",
+        "maps_to": "element",
+        "cycle": "gate_channel",
+        "type_to_element": {
+          "Канал": "Вода",
+          "Ворота": "Воздух",
+          "Центр": "Огонь"
+        }
+      },
+      "slavic": {
+        "name": "Славянская система",
+        "maps_to": "element",
+        "cycle": "slavic_day_name",
+        "day_to_element": {
+          "Понедельник": "Вода",
+          "Вторник": "Огонь",
+          "Среда": "Воздух",
+          "Четверг": "Эфир",
+          "Пятница": "Вода",
+          "Суббота": "Земля",
+          "Воскресенье": "Огонь"
+        }
+      },
+      "shambhala": {
+        "name": "Шамбала / Тибетская",
+        "maps_to": "element",
+        "cycle": "tibetan_day",
+        "elements": [
+          "Земля",
+          "Вода",
+          "Огонь",
+          "Воздух",
+          "Эфир"
+        ]
+      }
+    },
+    "dominance_calculation": {
+      "method": "count_element_frequency",
+      "description": "Подсчёт: какая стихия встречается чаще всего из 7 систем → доминанта дня",
+      "resonance_multiplier": {
+        "0_matches": 1.0,
+        "1_match": 1.15,
+        "2_matches": 1.3,
+        "3_matches": 1.45,
+        "4_matches": 1.6,
+        "5_matches": 1.75,
+        "6_matches": 1.9,
+        "7_matches": 2.1
+      }
+    },
+    "agent_of_day": {
+      "_comment": "Агент дня = планета-управитель → его стихия определяет резонанс с ответом",
+      "day_to_agent": {
+        "Понедельник": {
+          "planet": "Луна",
+          "element": "Вода",
+          "agent": "Чандра"
+        },
+        "Вторник": {
+          "planet": "Марс",
+          "element": "Огонь",
+          "agent": "Мангала"
+        },
+        "Среда": {
+          "planet": "Меркурий",
+          "element": "Эфир",
+          "agent": "Будха"
+        },
+        "Четверг": {
+          "planet": "Юпитер",
+          "element": "Эфир",
+          "agent": "Гуру"
+        },
+        "Пятница": {
+          "planet": "Венера",
+          "element": "Вода",
+          "agent": "Шукра"
+        },
+        "Суббота": {
+          "planet": "Сатурн",
+          "element": "Земля",
+          "agent": "Шани"
+        },
+        "Воскресенье": {
+          "planet": "Солнце",
+          "element": "Огонь",
+          "agent": "Сурья"
+        }
+      },
+      "agent_resonance_multiplier": {
+        "match": 1.2,
+        "no_match": 1.0
+      }
+    }
+  },
+  "ai_evaluation": {
+    "_comment": "Даймон анализирует текст ответа игрока и возвращает 5 параметров",
+    "fallback_on_check": {
+      "description": "Если proof=check и нет текста → fallback без ИИ",
+      "default_values": {
+        "element": "Земля",
+        "guna": "rajas",
+        "quality_score": 0.5,
+        "fullness_score": 0.1,
+        "loka": 7
+      }
+    },
+    "ai_prompt_schema": {
+      "input": "Текст ответа игрока + контекст квеста + традиция",
+      "output": {
+        "element": {
+          "type": "enum",
+          "values": [
+            "Земля",
+            "Вода",
+            "Огонь",
+            "Воздух",
+            "Эфир"
+          ],
+          "description": "Доминирующая стихия ответа"
+        },
+        "guna": {
+          "type": "enum",
+          "values": [
+            "sattva",
+            "rajas",
+            "tamas"
+          ],
+          "description": "Качество сознания: sattva=ясное, rajas=активное, tamas=инертное"
+        },
+        "quality_score": {
+          "type": "float",
+          "range": [
+            0.0,
+            1.0
+          ],
+          "description": "Искренность, глубина, конкретность ответа"
+        },
+        "fullness_score": {
+          "type": "float",
+          "range": [
+            0.0,
+            1.0
+          ],
+          "description": "Сколько уровней затронуто (тело+ум+чувства+воля+дух)"
+        },
+        "loka": {
+          "type": "int",
+          "range": [
+            1,
+            14
+          ],
+          "description": "1=Сатья(высшая) ... 7=Бхур(земля) ... 14=Патала(низшая тень)"
+        },
+        "shadow_detected": {
+          "type": "string|null",
+          "description": "Если игрок назвал и проработал тень → ID дисторсии"
+        },
+        "creativity_level": {
+          "type": "string",
+          "values": [
+            "none",
+            "lyrical",
+            "poetry",
+            "art_reference",
+            "original_creation"
+          ],
+          "description": "Уровень творческого выражения в ответе"
+        }
+      }
+    },
+    "element_to_axes": {
+      "Земля": {
+        "primary": "discipline",
+        "secondary": "will"
+      },
+      "Вода": {
+        "primary": "compassion",
+        "secondary": "devotion"
+      },
+      "Огонь": {
+        "primary": "will",
+        "secondary": "transformation"
+      },
+      "Воздух": {
+        "primary": "clarity",
+        "secondary": "compassion"
+      },
+      "Эфир": {
+        "primary": "clarity",
+        "secondary": "unity"
+      }
+    }
+  },
+  "multipliers": {
+    "_comment": "Итоговый свет = base_reward × product(all_multipliers)",
+    "formula": "light = sum(base_reward.values()) × lens_depth × daily_energy × agent_resonance × loka_density × guna × quality",
+    "lens_depth": {
+      "description": "Глубина линзы: чем выше уровень, тем больше множитель",
+      "values": {
+        "1": 1.0,
+        "2": 1.2,
+        "3": 1.4,
+        "4": 1.6,
+        "5": 1.8,
+        "6": 2.0
+      }
+    },
+    "daily_energy_resonance": {
+      "description": "Совпадение стихии ответа с доминантой дня (из 7 систем)",
+      "_see": "daily_energy.dominance_calculation.resonance_multiplier"
+    },
+    "agent_resonance": {
+      "description": "Совпадение стихии ответа со стихией агента дня",
+      "match": 1.2,
+      "no_match": 1.0
+    },
+    "loka_density": {
+      "description": "Плотность локи: высшие локи дают больше за счёт density",
+      "values": {
+        "1": 9,
+        "2": 8,
+        "3": 7,
+        "4": 6,
+        "5": 5,
+        "6": 4,
+        "7": 1,
+        "8": 1,
+        "9": 2,
+        "10": 3,
+        "11": 4,
+        "12": 5,
+        "13": 6,
+        "14": 7
+      },
+      "formula": "1 + (density - 1) * 0.05",
+      "note": "Лока 7 (Бхур, земля) = density 1 → ×1.0. Лока 1 (Сатья) = density 9 → ×1.4. Теневые локи тоже дают плотность."
+    },
+    "guna": {
+      "description": "Качество сознания в ответе",
+      "values": {
+        "sattva": 1.5,
+        "rajas": 1.0,
+        "tamas": 0.6
+      }
+    },
+    "quality": {
+      "description": "Множитель по quality_score от ИИ",
+      "formula": "0.5 + quality_score * 0.5",
+      "range": [
+        0.5,
+        1.0
+      ],
+      "note": "quality=0 → ×0.5, quality=0.5 → ×0.75, quality=1.0 → ×1.0"
+    },
+    "mastery_bonus": {
+      "description": "Множитель за продвинутость игрока (ring × quality_avg)",
+      "thresholds": [
+        {
+          "ring_min": -3,
+          "quality_min": 0,
+          "multiplier": 1.0
+        },
+        {
+          "ring_min": 1,
+          "quality_min": 0.5,
+          "multiplier": 1.15
+        },
+        {
+          "ring_min": 3,
+          "quality_min": 0.6,
+          "multiplier": 1.3
+        },
+        {
+          "ring_min": 5,
+          "quality_min": 0.7,
+          "multiplier": 1.5
+        },
+        {
+          "ring_min": 7,
+          "quality_min": 0.8,
+          "multiplier": 1.8
+        },
+        {
+          "ring_min": 9,
+          "quality_min": 0.9,
+          "multiplier": 2.0
+        }
+      ]
+    },
+    "coop_bonus": {
+      "description": "Множитель за совместный квест",
+      "values": {
+        "1": 1.0,
+        "2": 1.3,
+        "3": 1.5,
+        "4": 1.7
+      },
+      "note": "Ключ = количество участников (4 = 4 и более)"
+    },
+    "creativity_bonus": {
+      "description": "Множитель за творческое выражение в ответе",
+      "levels": {
+        "none": {
+          "multiplier": 1.0,
+          "description": "Обычный текст"
+        },
+        "lyrical": {
+          "multiplier": 1.2,
+          "description": "Лиричный, поэтичный стиль"
+        },
+        "poetry": {
+          "multiplier": 1.4,
+          "description": "Стихи + глубокое чувство"
+        },
+        "art_reference": {
+          "multiplier": 1.5,
+          "description": "Упоминание/отсылка к музыке, живописи"
+        },
+        "original_creation": {
+          "multiplier": 1.7,
+          "description": "Оригинальный стих, песня, рисунок, музыка"
+        }
+      }
+    },
+    "media_bonus": {
+      "description": "Множитель за приложенные медиа-файлы",
+      "values": {
+        "none": 1.0,
+        "photo_1": 1.2,
+        "photo_2plus": 1.3,
+        "audio": 1.4,
+        "video": 1.5,
+        "mixed": 1.6
+      },
+      "note": "Вовлечение тела и реальности через медиа усиливает опыт"
+    }
+  },
+  "mera_windows": {
+    "_comment": "Свет попадает в одно из 9 окон в зависимости от итогового множителя",
+    "windows": [
+      {
+        "id": "daimon",
+        "mera": 0,
+        "name": "Даймон",
+        "threshold": "< 0.5",
+        "description": "Формальное действие без осознанности"
+      },
+      {
+        "id": "locations",
+        "mera": 1,
+        "name": "Физика / Локации",
+        "threshold": "0.5 - 1.5",
+        "description": "Простое действие, земной уровень"
+      },
+      {
+        "id": "emf",
+        "mera": 2,
+        "name": "ЭМ-Поле",
+        "threshold": "1.5 - 3.0",
+        "description": "Эмоциональный отклик, чувственный уровень"
+      },
+      {
+        "id": "newmatrix",
+        "mera": 3,
+        "name": "Рай / Новая Матрица",
+        "threshold": "3.0 - 5.0",
+        "description": "Творческий акт, работа с тенью"
+      },
+      {
+        "id": "soul",
+        "mera": 4,
+        "name": "Душа",
+        "threshold": "5.0 - 7.0",
+        "description": "Глубокая рефлексия, касание сути"
+      },
+      {
+        "id": "daimon_soul",
+        "mera": 5,
+        "name": "Целостность",
+        "threshold": "7.0 - 10.0",
+        "description": "Даймон + Душа резонируют, саттва + глубина"
+      },
+      {
+        "id": "chronicle",
+        "mera": 6,
+        "name": "Хроника",
+        "threshold": "10.0 - 15.0",
+        "description": "Запись в вечную хронику игрока"
+      },
+      {
+        "id": "hram",
+        "mera": 7,
+        "name": "Храм",
+        "threshold": "15.0 - 25.0",
+        "description": "Храмовый уровень осознанности"
+      },
+      {
+        "id": "cosmos",
+        "mera": 8,
+        "name": "Космос",
+        "threshold": "25.0 - 50.0",
+        "description": "Космическое сознание"
+      },
+      {
+        "id": "supergame",
+        "mera": 9,
+        "name": "Супер-Игра",
+        "threshold": "> 50.0",
+        "description": "Трансцендентный опыт, мета-уровень"
+      }
+    ],
+    "window_selection": "Итоговый свет → попадает в окно по threshold"
+  },
+  "light_flow": {
+    "_comment": "Ночью свет из высших окон стекает вниз, подпитывая низшие",
+    "overnight_rules": [
+      {
+        "rule": "cascade_down",
+        "description": "Свет из окна Меры N заряжает все окна ниже",
+        "ratio": 0.1,
+        "note": "10% света из высшего окна стекает в каждое нижнее"
+      },
+      {
+        "rule": "daimon_charge",
+        "description": "Свет из высших окон (5+) подпитывает Даймона → новые грани осознанности"
+      },
+      {
+        "rule": "soul_birth",
+        "description": "Накопление в окне Soul (4) → зарождение новой сферы на Борде"
+      },
+      {
+        "rule": "emf_particles",
+        "description": "Свет в EMF (2) → собирает частицы для ЭМ-поля игрока"
+      }
+    ],
+    "supergame_board_thresholds": {
+      "description": "Общий свет → кольцо на Борде Супер-Игры",
+      "rings": {
+        "-3 to 0": "Даймон (ч/б)",
+        "1-3": "Душа",
+        "4-6": "Джива + Искра",
+        "7-9": "Дух (цвет)"
+      },
+      "light_thresholds": {
+        "ring_-3": 0,
+        "ring_-2": 5,
+        "ring_-1": 15,
+        "ring_0": 30,
+        "ring_1": 50,
+        "ring_2": 100,
+        "ring_3": 200,
+        "ring_4": 400,
+        "ring_5": 700,
+        "ring_6": 1200,
+        "ring_7": 2000,
+        "ring_8": 3500,
+        "ring_9": 6000
+      }
+    }
+  },
+  "shadows": {
+    "_comment": "Тени = искажения, привязанные к нижним локам (8-14). Проработка = бонус.",
+    "distortions": {
+      "inertia": {
+        "loka": 8,
+        "chakra_shadow": "Муладхара",
+        "description": "Лень, откладывание, инерция"
+      },
+      "attachment": {
+        "loka": 9,
+        "chakra_shadow": "Свадхистхана",
+        "description": "Зависимости, привязанности к удовольствиям"
+      },
+      "manipulation": {
+        "loka": 10,
+        "chakra_shadow": "Манипура",
+        "description": "Власть, контроль, манипуляция"
+      },
+      "envy": {
+        "loka": 11,
+        "chakra_shadow": "Анахата",
+        "description": "Зависть, ревность, закрытое сердце"
+      },
+      "deception": {
+        "loka": 12,
+        "chakra_shadow": "Вишуддха",
+        "description": "Ложь, самообман, молчание вместо правды"
+      },
+      "illusion": {
+        "loka": 13,
+        "chakra_shadow": "Аджна",
+        "description": "Иллюзии, проекции, ложное видение"
+      },
+      "separation": {
+        "loka": 14,
+        "chakra_shadow": "Сахасрара",
+        "description": "Изоляция, отделённость, отчаяние"
+      }
+    },
+    "shadow_bonus": {
+      "description": "Если ИИ обнаружил, что игрок назвал и проработал тень",
+      "reward": "distortion_id → -0.02 (уменьшение искажения)",
+      "light_bonus": "+10% к итоговому свету"
+    }
+  },
+  "sensory": {
+    "mode_mapping": {
+      "sound": {
+        "do": {
+          "1": "earth_temple",
+          "2": "nature",
+          "3": "ambient",
+          "4": "ritual_drums",
+          "5": "celestial",
+          "6": "cosmic"
+        },
+        "meditate": {
+          "1": "silence",
+          "2": "ambient",
+          "3": "mantra",
+          "4": "nature",
+          "5": "celestial",
+          "6": "cosmic"
+        },
+        "observe": {
+          "1": "silence",
+          "2": "nature",
+          "3": "ambient",
+          "4": "earth_temple",
+          "5": "celestial",
+          "6": "cosmic"
+        },
+        "reflect": {
+          "1": "silence",
+          "2": "ambient",
+          "3": "nature",
+          "4": "mantra",
+          "5": "celestial",
+          "6": "cosmic"
+        },
+        "create": {
+          "1": "ambient",
+          "2": "nature",
+          "3": "ritual_drums",
+          "4": "earth_temple",
+          "5": "celestial",
+          "6": "cosmic"
+        },
+        "study": {
+          "1": "silence",
+          "2": "silence",
+          "3": "ambient",
+          "4": "mantra",
+          "5": "celestial",
+          "6": "cosmic"
+        },
+        "ritual": {
+          "1": "ritual_drums",
+          "2": "mantra",
+          "3": "earth_temple",
+          "4": "celestial",
+          "5": "celestial",
+          "6": "cosmic"
+        }
+      },
+      "visual": {
+        "do": {
+          "1": "inner_soul_space",
+          "2": "elemental_field",
+          "3": "star_temple",
+          "4": "planetary_grid",
+          "5": "loka_space",
+          "6": "divine_board"
+        },
+        "meditate": {
+          "1": "inner_soul_space",
+          "2": "inner_soul_space",
+          "3": "elemental_field",
+          "4": "star_temple",
+          "5": "loka_space",
+          "6": "divine_board"
+        },
+        "observe": {
+          "1": "inner_soul_space",
+          "2": "elemental_field",
+          "3": "elemental_field",
+          "4": "star_temple",
+          "5": "planetary_grid",
+          "6": "divine_board"
+        },
+        "reflect": {
+          "1": "inner_soul_space",
+          "2": "inner_soul_space",
+          "3": "star_temple",
+          "4": "planetary_grid",
+          "5": "loka_space",
+          "6": "divine_board"
+        },
+        "create": {
+          "1": "elemental_field",
+          "2": "elemental_field",
+          "3": "star_temple",
+          "4": "planetary_grid",
+          "5": "loka_space",
+          "6": "divine_board"
+        },
+        "study": {
+          "1": "inner_soul_space",
+          "2": "star_temple",
+          "3": "star_temple",
+          "4": "planetary_grid",
+          "5": "loka_space",
+          "6": "divine_board"
+        },
+        "ritual": {
+          "1": "elemental_field",
+          "2": "earth_temple",
+          "3": "star_temple",
+          "4": "loka_space",
+          "5": "loka_space",
+          "6": "divine_board"
+        }
+      },
+      "breath": {
+        "do": {
+          "1": "grounding",
+          "2": "grounding",
+          "3": "fire_activation",
+          "4": "fire_activation",
+          "5": "air_clarity",
+          "6": "ether_silence"
+        },
+        "meditate": {
+          "1": "grounding",
+          "2": "heart_softening",
+          "3": "air_clarity",
+          "4": "air_clarity",
+          "5": "ether_silence",
+          "6": "ether_silence"
+        },
+        "observe": {
+          "1": "grounding",
+          "2": "grounding",
+          "3": "heart_softening",
+          "4": "air_clarity",
+          "5": "air_clarity",
+          "6": "ether_silence"
+        },
+        "reflect": {
+          "1": "heart_softening",
+          "2": "heart_softening",
+          "3": "air_clarity",
+          "4": "air_clarity",
+          "5": "ether_silence",
+          "6": "ether_silence"
+        },
+        "create": {
+          "1": "fire_activation",
+          "2": "fire_activation",
+          "3": "heart_softening",
+          "4": "air_clarity",
+          "5": "air_clarity",
+          "6": "ether_silence"
+        },
+        "study": {
+          "1": "grounding",
+          "2": "air_clarity",
+          "3": "air_clarity",
+          "4": "air_clarity",
+          "5": "ether_silence",
+          "6": "ether_silence"
+        },
+        "ritual": {
+          "1": "grounding",
+          "2": "fire_activation",
+          "3": "heart_softening",
+          "4": "air_clarity",
+          "5": "ether_silence",
+          "6": "ether_silence"
+        }
+      },
+      "body": {
+        "do": {
+          "1": "walk",
+          "2": "stretch",
+          "3": "craft",
+          "4": "service_action",
+          "5": "stillness",
+          "6": "stillness"
+        },
+        "meditate": {
+          "1": "stillness",
+          "2": "stillness",
+          "3": "stillness",
+          "4": "stillness",
+          "5": "stillness",
+          "6": "stillness"
+        },
+        "observe": {
+          "1": "walk",
+          "2": "walk",
+          "3": "stillness",
+          "4": "stillness",
+          "5": "stillness",
+          "6": "stillness"
+        },
+        "reflect": {
+          "1": "stillness",
+          "2": "stretch",
+          "3": "stillness",
+          "4": "stillness",
+          "5": "stillness",
+          "6": "stillness"
+        },
+        "create": {
+          "1": "craft",
+          "2": "craft",
+          "3": "craft",
+          "4": "craft",
+          "5": "stillness",
+          "6": "stillness"
+        },
+        "study": {
+          "1": "stillness",
+          "2": "stillness",
+          "3": "stillness",
+          "4": "walk",
+          "5": "stillness",
+          "6": "stillness"
+        },
+        "ritual": {
+          "1": "cleaning",
+          "2": "stretch",
+          "3": "craft",
+          "4": "service_action",
+          "5": "stillness",
+          "6": "stillness"
+        }
+      }
+    },
+    "suno_prompt_config": {
+      "do": {
+        "style": "cinematic, percussive, grounding",
+        "mood_by_level": {
+          "1": "minimal, raw, earthy drums",
+          "2": "awakening pulse, growing rhythm",
+          "3": "harmonious flow, layered percussion",
+          "4": "powerful, dual instruments, ascending",
+          "5": "epic, orchestral elements, soaring",
+          "6": "transcendent, full orchestra, divine"
+        }
+      },
+      "meditate": {
+        "style": "ambient, drone, meditative",
+        "mood_by_level": {
+          "1": "silence with distant drone",
+          "2": "soft pad, slow breath rhythm",
+          "3": "harmonic layers, gentle mantra",
+          "4": "deep resonance, overtone singing",
+          "5": "celestial choir, crystal bowls",
+          "6": "cosmic om, infinite space"
+        }
+      },
+      "observe": {
+        "style": "field recording, nature ambient",
+        "mood_by_level": {
+          "1": "wind and silence",
+          "2": "birds, distant water",
+          "3": "forest canopy, rain",
+          "4": "ocean depth, whale song",
+          "5": "mountain peaks, eagle cry",
+          "6": "aurora, cosmic wind"
+        }
+      },
+      "reflect": {
+        "style": "piano, acoustic, introspective",
+        "mood_by_level": {
+          "1": "single piano note, long decay",
+          "2": "slow piano melody, minor key",
+          "3": "piano + strings, bittersweet",
+          "4": "chamber ensemble, reflective",
+          "5": "full strings, cathartic",
+          "6": "orchestral resolution, peace"
+        }
+      },
+      "create": {
+        "style": "experimental, generative, evolving",
+        "mood_by_level": {
+          "1": "found sounds, collage",
+          "2": "rhythmic experiment, playful",
+          "3": "layered textures, building",
+          "4": "complex patterns, weaving",
+          "5": "symphonic creation, flowering",
+          "6": "divine creation, everything at once"
+        }
+      },
+      "study": {
+        "style": "lo-fi, calm, focused",
+        "mood_by_level": {
+          "1": "lo-fi beats, soft",
+          "2": "gentle study focus, warm",
+          "3": "classical minimalism, clarity",
+          "4": "Bach-like structure, precise",
+          "5": "sacred geometry in sound",
+          "6": "music of the spheres"
+        }
+      },
+      "ritual": {
+        "style": "ritual, drums, chanting",
+        "mood_by_level": {
+          "1": "single drum, heartbeat",
+          "2": "drum circle, low chanting",
+          "3": "multi-instrument ritual, fire",
+          "4": "temple ceremony, bells and gongs",
+          "5": "cathedral organ, sacred choir",
+          "6": "cosmic liturgy, all traditions merge"
+        }
+      }
+    },
+    "suno_prompt_builder": {
+      "_comment": "Формула: style + tradition_element + mood_by_level + instrument_hint",
+      "template": "[style], [tradition_culture] influence, [mood], [instrument]; instrumental, 2 minutes, no vocals",
+      "example": "ambient, drone, meditative, Vedic Indian influence, soft pad slow breath rhythm, sitar tanpura; instrumental, 2 minutes, no vocals"
+    },
+    "oracle_reflection_templates": {
+      "do": "Ты сделал {title}. {agent_voice}. Твоя {dominant_axis_name} укрепилась — {sensory_text}.",
+      "meditate": "В тишине {title} ты прикоснулся к {dominant_axis_name}. {sensory_text}. {agent_voice}.",
+      "observe": "Ты увидел то, что скрыто — {title}. {dominant_axis_name} обострилась. {sensory_text}.",
+      "reflect": "Размышление о {title} открыло новый слой. {dominant_axis_name} — {sensory_text}. {agent_voice}.",
+      "create": "Ты создал {title}. Это акт {dominant_axis_name}. {sensory_text}. {agent_voice}.",
+      "study": "Изучая {title}, ты углубил {dominant_axis_name}. {sensory_text}. {agent_voice}.",
+      "ritual": "Ритуал {title} совершён. {dominant_axis_name} пробуждена — {sensory_text}. {agent_voice}."
+    }
+  },
+  "axes_system": {
+    "axes": [
+      "discipline",
+      "compassion",
+      "clarity",
+      "will",
+      "devotion",
+      "transformation",
+      "unity"
+    ],
+    "quest_type_to_primary_axis": {
+      "do": "discipline",
+      "meditate": "clarity",
+      "observe": "clarity",
+      "reflect": "transformation",
+      "create": "will",
+      "study": "clarity",
+      "ritual": "devotion"
+    },
+    "quest_type_to_element": {
+      "do": "Земля",
+      "meditate": "Эфир",
+      "observe": "Воздух",
+      "reflect": "Вода",
+      "create": "Огонь",
+      "study": "Воздух",
+      "ritual": "Огонь"
+    },
+    "elements": [
+      "Земля",
+      "Вода",
+      "Огонь",
+      "Воздух",
+      "Эфир"
+    ],
+    "principles": {
+      "sthula": {
+        "name": "Стхула (грубое)",
+        "elements": [
+          "Земля"
+        ],
+        "description": "Физическое тело, действие"
+      },
+      "prana": {
+        "name": "Прана (жизненная сила)",
+        "elements": [
+          "Вода",
+          "Огонь"
+        ],
+        "description": "Эмоции, воля, энергия"
+      },
+      "manas": {
+        "name": "Манас (ум)",
+        "elements": [
+          "Воздух",
+          "Эфир"
+        ],
+        "description": "Ясность, интуиция, единство"
+      }
+    }
+  },
+  "player_state": {
+    "_comment": "Полная схема состояния игрока, обновляется после каждого квеста",
+    "schema": {
+      "profile": {
+        "start_lenses": "string[] — стартовые линзы из профилирования",
+        "dominant_axes": "string[] — доминантные оси",
+        "vertical_focus": "string — стартовая лока"
+      },
+      "progress": {
+        "total_light": "float — общий накопленный свет",
+        "current_ring": "int — кольцо на Борде Супер-Игры (-3..9)",
+        "days_played": "int",
+        "quests_completed": "int"
+      },
+      "axes": {
+        "discipline": "float",
+        "compassion": "float",
+        "clarity": "float",
+        "will": "float",
+        "devotion": "float",
+        "transformation": "float",
+        "unity": "float"
+      },
+      "elements": {
+        "earth": "float",
+        "water": "float",
+        "fire": "float",
+        "air": "float",
+        "ether": "float"
+      },
+      "principles": {
+        "sthula": "float",
+        "prana": "float",
+        "manas": "float"
+      },
+      "shadows": {
+        "inertia": "float",
+        "attachment": "float",
+        "manipulation": "float",
+        "envy": "float",
+        "deception": "float",
+        "illusion": "float",
+        "separation": "float"
+      },
+      "mera_windows": {
+        "daimon": "float",
+        "locations": "float",
+        "emf": "float",
+        "newmatrix": "float",
+        "soul": "float",
+        "daimon_soul": "float",
+        "chronicle": "float",
+        "hram": "float",
+        "cosmos": "float",
+        "supergame": "float"
+      },
+      "lenses": {
+        "_each_lens": {
+          "level": "int (1-6)",
+          "quests_done": "int",
+          "quests_total": "int",
+          "passive_light": "float — накопленный пассивный свет",
+          "state": "string — active|filling|sleeping",
+          "sources": "string[] — IDs практик/дисциплин"
+        }
+      },
+      "daily": {
+        "quality_avg": "float — средний quality за день",
+        "fullness_avg": "float — средний fullness за день",
+        "dominant_guna": "string — sattva/rajas/tamas"
+      },
+      "intentions": {
+        "practices": [
+          {
+            "text": "string",
+            "activity_id": "string",
+            "lenses": "string[]",
+            "axes": "string[]",
+            "created": "string"
+          }
+        ],
+        "disciplines": [
+          {
+            "text": "string",
+            "activity_id": "string",
+            "schedule": "string — daily | weekly_N",
+            "time": "string|null",
+            "lenses": "string[]",
+            "axes": "string[]",
+            "streak": "int",
+            "best_streak": "int",
+            "created": "string"
+          }
+        ]
+      },
+      "particles_today": "int — частицы собранные сегодня (обнуляется ночью после конвертации)",
+      "particles_total_collected": "int — всего частиц собрано за всё время (статистика)",
+      "ether_state": "string — sleeping|awakening|awakened (обнуляется каждую ночь)",
+      "ether_awakened_carry": "float — % эфира сохранённый от Якоря Вечности (0-0.2)",
+      "structures_built": "string[] — ID построенных структур",
+      "structures_in_progress": {
+        "structure_id": "string",
+        "light_invested": "float"
+      },
+      "day_phase": "string — morning_sleeping|awakening|day_active|evening_distribution|night_cooling",
+      "sensitivity": "float — уровень Чувствительности (0+). Не ощущаемость, а Чувствительность к Свету.",
+      "assembly_point_loka": "int — текущая лока точки сборки (1-14+). Движение по Лучу восприятия."
+    }
+  },
+  "runtime_flow": {
+    "description": "Полный цикл обработки одного квеста",
+    "steps": [
+      {
+        "step": 1,
+        "name": "get_daily_energy",
+        "action": "Рассчитать 7 энергосистем дня → доминанта стихии + агент дня",
+        "source": "daily_energy"
+      },
+      {
+        "step": 2,
+        "name": "present_quest",
+        "action": "Показать квест игроку с сенсорным слоем (звук, визуал, ��ыхание)",
+        "source": "sensory.mode_mapping + quest data"
+      },
+      {
+        "step": 3,
+        "name": "receive_response",
+        "action": "Получить ответ: чекбокс ИЛИ текст",
+        "branch": "text.length > 20 → ИИ-оценка, иначе fallback"
+      },
+      {
+        "step": 4,
+        "name": "ai_evaluate",
+        "action": "Даймон анализирует текст → element, guna, quality, fullness, loka, shadow",
+        "source": "ai_evaluation"
+      },
+      {
+        "step": 5,
+        "name": "compute_multipliers",
+        "action": "Перемножить: lens_depth × daily_energy × agent_resonance × loka_density × guna × quality",
+        "source": "multipliers"
+      },
+      {
+        "step": 6,
+        "name": "compute_light",
+        "action": "base_reward_sum × total_multiplier → итоговый свет",
+        "source": "quest.reward (из matrix_quests/location_quests)"
+      },
+      {
+        "step": 7,
+        "name": "assign_window",
+        "action": "Итоговый свет → окно Меры (по threshold)",
+        "source": "mera_windows"
+      },
+      {
+        "step": 8,
+        "name": "update_state",
+        "action": "Обновить player_state: оси, элементы, принципы, тени, окна, свет",
+        "source": "player_state"
+      },
+      {
+        "step": 9,
+        "name": "generate_experience",
+        "action": "Собрать experience card: карточка + Suno + оракул + агент",
+        "source": "sensory + traditions config"
+      },
+      {
+        "step": 10,
+        "name": "show_result",
+        "action": "Показать игроку: карточку, свет, оси, рефлексию оракула, музыку"
+      }
+    ],
+    "end_of_day": {
+      "action": "Ночное течение света: высшие окна → питают низшие",
+      "source": "light_flow.overnight_rules"
+    }
+  },
+  "pacing": {
+    "_comment": "Система пейсинга — растягивает игру на 6+ месяцев",
+    "ai_evals_by_ring": {
+      "-3": 3,
+      "-2": 3,
+      "-1": 5,
+      "0": 5,
+      "1": 7,
+      "2": 8,
+      "3": 10,
+      "4": 12,
+      "5": 15,
+      "6": 20,
+      "7": 25,
+      "8": 30,
+      "9": 999
+    },
+    "daily_quest_cap_by_ring": {
+      "-3": 5,
+      "-2": 5,
+      "-1": 5,
+      "0": 5,
+      "1": 6,
+      "2": 6,
+      "3": 6,
+      "4": 8,
+      "5": 8,
+      "6": 8,
+      "7": 10,
+      "8": 10,
+      "9": 12
+    },
+    "depth_gates": {
+      "2": {
+        "quests_in_lens": 5,
+        "quality_avg": 0
+      },
+      "3": {
+        "quests_in_lens": 13,
+        "quality_avg": 0.4
+      },
+      "4": {
+        "quests_in_lens": 25,
+        "quality_avg": 0.5
+      },
+      "5": {
+        "quests_in_lens": 43,
+        "quality_avg": 0.6
+      },
+      "6": {
+        "quests_in_lens": 68,
+        "quality_avg": 0.7
+      }
+    },
+    "dev_mode_key": "awara_dev_mode"
+  },
+  "life_activities": {
+    "_comment": "Полный каталог жизненных деятельностей → линзы. Используется ИИ для классификации свободного текста + предлагается на экране Долгосрочного планирования",
+    "activities": [
+      {
+        "id": "yoga_hatha",
+        "name": "Хатха-йога / Виньяса",
+        "lenses": [
+          "vedic",
+          "tantric_kashmiri"
+        ],
+        "axes": [
+          "discipline",
+          "will"
+        ]
+      },
+      {
+        "id": "yoga_love",
+        "name": "Йога любви / Бхакти",
+        "lenses": [
+          "tantric_kashmiri",
+          "sufi",
+          "vedic"
+        ],
+        "axes": [
+          "devotion",
+          "compassion"
+        ]
+      },
+      {
+        "id": "yoga_kundalini",
+        "name": "Кундалини-йога",
+        "lenses": [
+          "tantric_kashmiri",
+          "vedic"
+        ],
+        "axes": [
+          "will",
+          "transformation"
+        ]
+      },
+      {
+        "id": "yoga_nidra",
+        "name": "Йога-нидра / Осознанное расслабление",
+        "lenses": [
+          "vedic",
+          "buddhist_mahayana"
+        ],
+        "axes": [
+          "clarity",
+          "discipline"
+        ]
+      },
+      {
+        "id": "martial_arts",
+        "name": "Боевые искусства",
+        "lenses": [
+          "daoist",
+          "shinto",
+          "norse"
+        ],
+        "axes": [
+          "discipline",
+          "will"
+        ]
+      },
+      {
+        "id": "tai_chi_qigong",
+        "name": "Тайцзи / Цигун",
+        "lenses": [
+          "daoist",
+          "chinese_iching"
+        ],
+        "axes": [
+          "discipline",
+          "clarity"
+        ]
+      },
+      {
+        "id": "breathwork",
+        "name": "Пранаяма / Дыхательные практики",
+        "lenses": [
+          "vedic",
+          "daoist",
+          "sufi"
+        ],
+        "axes": [
+          "discipline",
+          "will"
+        ]
+      },
+      {
+        "id": "cold_exposure",
+        "name": "Закаливание / Холод",
+        "lenses": [
+          "norse",
+          "slavic",
+          "vedic"
+        ],
+        "axes": [
+          "will",
+          "discipline"
+        ]
+      },
+      {
+        "id": "fasting",
+        "name": "Пост / Голодание",
+        "lenses": [
+          "vedic",
+          "christian_mystical_grail",
+          "zoroastrian"
+        ],
+        "axes": [
+          "discipline",
+          "transformation"
+        ]
+      },
+      {
+        "id": "nutrition",
+        "name": "Осознанное питание / Аюрведа",
+        "lenses": [
+          "vedic",
+          "daoist",
+          "buddhist_mahayana"
+        ],
+        "axes": [
+          "discipline",
+          "compassion"
+        ]
+      },
+      {
+        "id": "dance",
+        "name": "Танец / Экстатическое движение",
+        "lenses": [
+          "sufi",
+          "shamanic",
+          "afro_dogon"
+        ],
+        "axes": [
+          "devotion",
+          "transformation"
+        ]
+      },
+      {
+        "id": "sport",
+        "name": "Спорт / Физическая выносливость",
+        "lenses": [
+          "norse",
+          "slavic",
+          "antique_greco_roman"
+        ],
+        "axes": [
+          "will",
+          "discipline"
+        ]
+      },
+      {
+        "id": "running",
+        "name": "Бег / Ходьба как практика",
+        "lenses": [
+          "buddhist_mahayana",
+          "daoist",
+          "shamanic"
+        ],
+        "axes": [
+          "discipline",
+          "clarity"
+        ]
+      },
+      {
+        "id": "swimming",
+        "name": "Плавание / Водные практики",
+        "lenses": [
+          "celtic",
+          "shamanic"
+        ],
+        "axes": [
+          "will",
+          "transformation"
+        ]
+      },
+      {
+        "id": "parenting",
+        "name": "Осознанное родительство",
+        "lenses": [
+          "slavic",
+          "vedic",
+          "christian_mystical_grail"
+        ],
+        "axes": [
+          "compassion",
+          "devotion"
+        ]
+      },
+      {
+        "id": "service_children",
+        "name": "Служение детям",
+        "lenses": [
+          "christian_mystical_grail",
+          "buddhist_mahayana",
+          "slavic"
+        ],
+        "axes": [
+          "compassion",
+          "devotion"
+        ]
+      },
+      {
+        "id": "partnership",
+        "name": "Осознанные отношения / Партнёрство",
+        "lenses": [
+          "tantric_kashmiri",
+          "slavic",
+          "sufi"
+        ],
+        "axes": [
+          "compassion",
+          "devotion"
+        ]
+      },
+      {
+        "id": "elder_care",
+        "name": "Забота о старших / Род",
+        "lenses": [
+          "slavic",
+          "yoruba_ifa_orisha",
+          "celtic"
+        ],
+        "axes": [
+          "compassion",
+          "devotion"
+        ]
+      },
+      {
+        "id": "ancestor_work",
+        "name": "Работа с родом / Предки",
+        "lenses": [
+          "slavic",
+          "shamanic",
+          "yoruba_ifa_orisha"
+        ],
+        "axes": [
+          "devotion",
+          "transformation"
+        ]
+      },
+      {
+        "id": "therapy",
+        "name": "Психотерапия / Работа с травмой",
+        "lenses": [
+          "gnostic",
+          "shamanic",
+          "tarot_arcanic"
+        ],
+        "axes": [
+          "transformation",
+          "clarity"
+        ]
+      },
+      {
+        "id": "forgiveness",
+        "name": "Прощение / Примирение",
+        "lenses": [
+          "christian_mystical_grail",
+          "buddhist_mahayana",
+          "sufi"
+        ],
+        "axes": [
+          "compassion",
+          "transformation"
+        ]
+      },
+      {
+        "id": "music_playing",
+        "name": "Игра на инструменте / Музыка",
+        "lenses": [
+          "sufi",
+          "vedic",
+          "afro_dogon",
+          "antique_greco_roman"
+        ],
+        "axes": [
+          "devotion",
+          "clarity"
+        ]
+      },
+      {
+        "id": "singing",
+        "name": "Пение / Мантра / Киртан",
+        "lenses": [
+          "vedic",
+          "sufi",
+          "afro_dogon"
+        ],
+        "axes": [
+          "devotion",
+          "unity"
+        ]
+      },
+      {
+        "id": "poetry_writing",
+        "name": "Поэзия / Писательство",
+        "lenses": [
+          "sufi",
+          "celtic",
+          "kabbalistic"
+        ],
+        "axes": [
+          "clarity",
+          "devotion"
+        ]
+      },
+      {
+        "id": "visual_art",
+        "name": "Рисование / Живопись / Скульптура",
+        "lenses": [
+          "celtic",
+          "mayan",
+          "antique_greco_roman"
+        ],
+        "axes": [
+          "clarity",
+          "transformation"
+        ]
+      },
+      {
+        "id": "photography",
+        "name": "Фотография / Видео",
+        "lenses": [
+          "shamanic",
+          "celtic",
+          "technomagical"
+        ],
+        "axes": [
+          "clarity",
+          "compassion"
+        ]
+      },
+      {
+        "id": "crafts",
+        "name": "Ремесло / Рукоделие / Гончарство",
+        "lenses": [
+          "slavic",
+          "celtic",
+          "shinto"
+        ],
+        "axes": [
+          "discipline",
+          "clarity"
+        ]
+      },
+      {
+        "id": "cooking_art",
+        "name": "Кулинария как искусство",
+        "lenses": [
+          "daoist",
+          "slavic",
+          "vedic"
+        ],
+        "axes": [
+          "discipline",
+          "compassion"
+        ]
+      },
+      {
+        "id": "gardening",
+        "name": "Садоводство / Земледелие",
+        "lenses": [
+          "celtic",
+          "slavic",
+          "shinto"
+        ],
+        "axes": [
+          "discipline",
+          "compassion"
+        ]
+      },
+      {
+        "id": "architecture",
+        "name": "Архитектура / Пространство",
+        "lenses": [
+          "hermetic_alchemical",
+          "egyptian",
+          "julian_byzantine"
+        ],
+        "axes": [
+          "clarity",
+          "will"
+        ]
+      },
+      {
+        "id": "tea_ceremony",
+        "name": "Чайная церемония / Чайный мастер",
+        "lenses": [
+          "chinese_iching",
+          "daoist",
+          "shinto"
+        ],
+        "axes": [
+          "discipline",
+          "clarity"
+        ]
+      },
+      {
+        "id": "ritual_work",
+        "name": "Ритуальная практика / Обряды",
+        "lenses": [
+          "slavic",
+          "shamanic",
+          "vedic"
+        ],
+        "axes": [
+          "devotion",
+          "will"
+        ]
+      },
+      {
+        "id": "fire_ceremony",
+        "name": "Работа с огнём / Хома / Агнихотра",
+        "lenses": [
+          "vedic",
+          "zoroastrian",
+          "slavic"
+        ],
+        "axes": [
+          "devotion",
+          "transformation"
+        ]
+      },
+      {
+        "id": "meditation_sitting",
+        "name": "Сидячая медитация / Дзадзен",
+        "lenses": [
+          "buddhist_mahayana",
+          "daoist",
+          "advaita_siddha"
+        ],
+        "axes": [
+          "clarity",
+          "discipline"
+        ]
+      },
+      {
+        "id": "vipassana",
+        "name": "Випассана / Наблюдение",
+        "lenses": [
+          "buddhist_mahayana",
+          "advaita_siddha"
+        ],
+        "axes": [
+          "clarity",
+          "discipline"
+        ]
+      },
+      {
+        "id": "contemplation",
+        "name": "Созерцание / Умное делание",
+        "lenses": [
+          "julian_byzantine",
+          "christian_mystical_grail",
+          "advaita_siddha"
+        ],
+        "axes": [
+          "clarity",
+          "devotion"
+        ]
+      },
+      {
+        "id": "prayer",
+        "name": "Молитва / Намаз / Зикр",
+        "lenses": [
+          "christian_mystical_grail",
+          "sufi",
+          "julian_byzantine"
+        ],
+        "axes": [
+          "devotion",
+          "unity"
+        ]
+      },
+      {
+        "id": "mantra",
+        "name": "Джапа / Мантра-повторение",
+        "lenses": [
+          "vedic",
+          "buddhist_mahayana",
+          "tantric_kashmiri"
+        ],
+        "axes": [
+          "devotion",
+          "discipline"
+        ]
+      },
+      {
+        "id": "lucid_dreaming",
+        "name": "Осознанные сновидения",
+        "lenses": [
+          "shamanic",
+          "gnostic",
+          "atlantean_lemurian"
+        ],
+        "axes": [
+          "clarity",
+          "will"
+        ]
+      },
+      {
+        "id": "energy_work",
+        "name": "Работа с энергией / Рэйки",
+        "lenses": [
+          "shamanic",
+          "tantric_kashmiri",
+          "daoist"
+        ],
+        "axes": [
+          "compassion",
+          "transformation"
+        ]
+      },
+      {
+        "id": "channeling",
+        "name": "Ченнелинг / Медиумизм",
+        "lenses": [
+          "shamanic",
+          "gnostic",
+          "cosmic_galactic"
+        ],
+        "axes": [
+          "clarity",
+          "unity"
+        ]
+      },
+      {
+        "id": "daoist_alchemy",
+        "name": "Даосская алхимия / Нэйдань",
+        "lenses": [
+          "daoist",
+          "hermetic_alchemical",
+          "chinese_iching"
+        ],
+        "axes": [
+          "transformation",
+          "will"
+        ]
+      },
+      {
+        "id": "western_alchemy",
+        "name": "Западная алхимия / Герметизм",
+        "lenses": [
+          "hermetic_alchemical",
+          "antique_greco_roman",
+          "kabbalistic"
+        ],
+        "axes": [
+          "transformation",
+          "clarity"
+        ]
+      },
+      {
+        "id": "tantra",
+        "name": "Тантра / Кашмирский шиваизм",
+        "lenses": [
+          "tantric_kashmiri",
+          "vedic"
+        ],
+        "axes": [
+          "transformation",
+          "unity"
+        ]
+      },
+      {
+        "id": "kabbalah",
+        "name": "Каббала / Древо Жизни",
+        "lenses": [
+          "kabbalistic",
+          "hermetic_alchemical"
+        ],
+        "axes": [
+          "clarity",
+          "unity"
+        ]
+      },
+      {
+        "id": "philosophy_study",
+        "name": "Изучение философии",
+        "lenses": [
+          "advaita_siddha",
+          "gnostic",
+          "antique_greco_roman"
+        ],
+        "axes": [
+          "clarity",
+          "will"
+        ]
+      },
+      {
+        "id": "astrology",
+        "name": "Астрология / Джьотиш",
+        "lenses": [
+          "astrological",
+          "vedic",
+          "mayan"
+        ],
+        "axes": [
+          "clarity",
+          "discipline"
+        ]
+      },
+      {
+        "id": "tarot_divination",
+        "name": "Таро / Оракулы / Гадание",
+        "lenses": [
+          "tarot_arcanic",
+          "chinese_iching",
+          "shamanic"
+        ],
+        "axes": [
+          "clarity",
+          "transformation"
+        ]
+      },
+      {
+        "id": "iching_study",
+        "name": "Изучение И-Цзин",
+        "lenses": [
+          "chinese_iching",
+          "daoist"
+        ],
+        "axes": [
+          "clarity",
+          "will"
+        ]
+      },
+      {
+        "id": "scripture_study",
+        "name": "Изучение священных текстов",
+        "lenses": [
+          "vedic",
+          "christian_mystical_grail",
+          "sufi",
+          "kabbalistic"
+        ],
+        "axes": [
+          "clarity",
+          "devotion"
+        ]
+      },
+      {
+        "id": "mythology_study",
+        "name": "Изучение мифологии",
+        "lenses": [
+          "norse",
+          "egyptian",
+          "mayan",
+          "slavic"
+        ],
+        "axes": [
+          "clarity",
+          "transformation"
+        ]
+      },
+      {
+        "id": "science_research",
+        "name": "Научное исследование / Космология",
+        "lenses": [
+          "cosmic_galactic",
+          "posthuman_ai_sophianic"
+        ],
+        "axes": [
+          "clarity",
+          "will"
+        ]
+      },
+      {
+        "id": "gene_keys_hd",
+        "name": "Gene Keys / Human Design",
+        "lenses": [
+          "gene_keys",
+          "astrological"
+        ],
+        "axes": [
+          "clarity",
+          "transformation"
+        ]
+      },
+      {
+        "id": "programming",
+        "name": "Программирование / ИИ / Техно",
+        "lenses": [
+          "technomagical",
+          "posthuman_ai_sophianic"
+        ],
+        "axes": [
+          "clarity",
+          "discipline"
+        ]
+      },
+      {
+        "id": "volunteering",
+        "name": "Волонтёрство / Карма-йога",
+        "lenses": [
+          "christian_mystical_grail",
+          "buddhist_mahayana",
+          "vedic"
+        ],
+        "axes": [
+          "compassion",
+          "devotion"
+        ]
+      },
+      {
+        "id": "teaching",
+        "name": "Преподавание / Наставничество",
+        "lenses": [
+          "vedic",
+          "advaita_siddha",
+          "buddhist_mahayana"
+        ],
+        "axes": [
+          "compassion",
+          "clarity"
+        ]
+      },
+      {
+        "id": "healing",
+        "name": "Целительство / Терапия",
+        "lenses": [
+          "shamanic",
+          "vedic",
+          "christian_mystical_grail"
+        ],
+        "axes": [
+          "compassion",
+          "transformation"
+        ]
+      },
+      {
+        "id": "leadership",
+        "name": "Лидерство / Руководство",
+        "lenses": [
+          "egyptian",
+          "norse",
+          "aztec_mexica"
+        ],
+        "axes": [
+          "will",
+          "discipline"
+        ]
+      },
+      {
+        "id": "entrepreneurship",
+        "name": "Предпринимательство / Бизнес",
+        "lenses": [
+          "hermetic_alchemical",
+          "technomagical",
+          "chinese_iching"
+        ],
+        "axes": [
+          "will",
+          "discipline"
+        ]
+      },
+      {
+        "id": "activism",
+        "name": "Активизм / Защита природы",
+        "lenses": [
+          "celtic",
+          "shamanic",
+          "shinto"
+        ],
+        "axes": [
+          "will",
+          "compassion"
+        ]
+      },
+      {
+        "id": "nature_walks",
+        "name": "Прогулки в природе / Лесотерапия",
+        "lenses": [
+          "celtic",
+          "shamanic",
+          "shinto"
+        ],
+        "axes": [
+          "clarity",
+          "compassion"
+        ]
+      },
+      {
+        "id": "animal_work",
+        "name": "Работа с животными / Тотемы",
+        "lenses": [
+          "shamanic",
+          "celtic",
+          "norse"
+        ],
+        "axes": [
+          "compassion",
+          "clarity"
+        ]
+      },
+      {
+        "id": "herbalism",
+        "name": "Траволечение / Фитотерапия",
+        "lenses": [
+          "slavic",
+          "celtic",
+          "shamanic",
+          "vedic"
+        ],
+        "axes": [
+          "compassion",
+          "discipline"
+        ]
+      },
+      {
+        "id": "pilgrimage",
+        "name": "Паломничество / Странствие",
+        "lenses": [
+          "sufi",
+          "christian_mystical_grail",
+          "shinto",
+          "buddhist_mahayana"
+        ],
+        "axes": [
+          "devotion",
+          "will"
+        ]
+      },
+      {
+        "id": "shadow_work",
+        "name": "Работа с тенью / Юнг",
+        "lenses": [
+          "gnostic",
+          "tarot_arcanic",
+          "shamanic"
+        ],
+        "axes": [
+          "transformation",
+          "clarity"
+        ]
+      },
+      {
+        "id": "addiction_recovery",
+        "name": "Выход из зависимости",
+        "lenses": [
+          "buddhist_mahayana",
+          "gnostic",
+          "christian_mystical_grail"
+        ],
+        "axes": [
+          "transformation",
+          "will"
+        ]
+      },
+      {
+        "id": "grief_work",
+        "name": "Работа с горем / Утратой",
+        "lenses": [
+          "egyptian",
+          "shamanic",
+          "celtic"
+        ],
+        "axes": [
+          "transformation",
+          "compassion"
+        ]
+      },
+      {
+        "id": "anger_management",
+        "name": "Работа с гневом",
+        "lenses": [
+          "norse",
+          "aztec_mexica",
+          "buddhist_mahayana"
+        ],
+        "axes": [
+          "transformation",
+          "will"
+        ]
+      },
+      {
+        "id": "silence_retreat",
+        "name": "Ретрит тишины / Випассана",
+        "lenses": [
+          "buddhist_mahayana",
+          "julian_byzantine",
+          "advaita_siddha"
+        ],
+        "axes": [
+          "clarity",
+          "discipline"
+        ]
+      },
+      {
+        "id": "digital_detox",
+        "name": "Цифровой детокс",
+        "lenses": [
+          "shinto",
+          "celtic",
+          "buddhist_mahayana"
+        ],
+        "axes": [
+          "discipline",
+          "clarity"
+        ]
+      },
+      {
+        "id": "journaling",
+        "name": "Дневник / Рефлексия",
+        "lenses": [
+          "gnostic",
+          "tarot_arcanic",
+          "hermetic_alchemical"
+        ],
+        "axes": [
+          "clarity",
+          "transformation"
+        ]
+      },
+      {
+        "id": "early_rising",
+        "name": "Ранний подъём / Брахма-мухурта",
+        "lenses": [
+          "vedic",
+          "buddhist_mahayana",
+          "zoroastrian"
+        ],
+        "axes": [
+          "discipline",
+          "will"
+        ]
+      },
+      {
+        "id": "celibacy",
+        "name": "Брахмачарья / Воздержание",
+        "lenses": [
+          "vedic",
+          "buddhist_mahayana",
+          "julian_byzantine"
+        ],
+        "axes": [
+          "discipline",
+          "will"
+        ]
+      },
+      {
+        "id": "shambhala_training",
+        "name": "Шамбала / Воинская доброта",
+        "lenses": [
+          "shambhala",
+          "buddhist_mahayana"
+        ],
+        "axes": [
+          "compassion",
+          "will"
+        ]
+      },
+      {
+        "id": "sumerian_rituals",
+        "name": "Шумерские ритуалы / Месопотамия",
+        "lenses": [
+          "sumerian_babylonian",
+          "egyptian"
+        ],
+        "axes": [
+          "devotion",
+          "transformation"
+        ]
+      }
+    ]
+  },
+  "passive_flow": {
+    "_comment": "Пассивное наполнение линз от жизненных практик и самодисциплин",
+    "practices_passive": {
+      "description": "Жизненные практики — фоновый свет, не требует ежедневного подтверждения",
+      "light_per_day_per_lens": 0.1,
+      "note": "Игрок указал 'Я чайный мастер' → chinese_iching, daoist, shinto получают +0.1/день каждая"
+    },
+    "disciplines_active": {
+      "description": "Самодисциплины — подтверждает ежедневно → больше света",
+      "base_light_per_day_per_lens": 0.3,
+      "streak_multiplier": {
+        "1_7": {
+          "days": "1-7",
+          "multiplier": 1.0,
+          "label": "Начало"
+        },
+        "8_21": {
+          "days": "8-21",
+          "multiplier": 1.3,
+          "label": "Привычка формируется"
+        },
+        "22_60": {
+          "days": "22-60",
+          "multiplier": 1.6,
+          "label": "Привычка"
+        },
+        "61_plus": {
+          "days": "61+",
+          "multiplier": 2.0,
+          "label": "Практика стала частью тебя"
+        }
+      },
+      "streak_break": {
+        "miss_1_day": "streak → 0, без осуждения",
+        "miss_3_days": "практика деактивируется, можно перезапустить"
+      }
+    },
+    "passive_vs_active_cap": {
+      "description": "Пассивный свет не может превышать квестовый свет более чем в 0.5×",
+      "note": "Если игрок за день получил 10 света от квестов, макс пассивный = 5. Если 0 квестов, пассивный всё равно капает (минимум 0.1 на линзу)"
+    },
+    "lens_activation_threshold": {
+      "description": "Когда пассивный свет в спящей линзе достигает порога, линза 'пробуждается'",
+      "threshold": 5.0,
+      "effect": "Линза появляется на экране как 'наливающаяся', подсказка: 'Твоя практика чайной церемонии пробудила линзу И-Цзин'"
+    },
+    "overnight_passive": {
+      "description": "Пассивный свет начисляется в ночном течении, после основного cascade_down",
+      "order": "1. cascade_down (окна) → 2. passive_flow (линзы) → 3. ring_recalc"
+    }
+  },
+  "longterm_planning": {
+    "_comment": "Экран Долгосрочного Планирования — панорама 33 линз + управление намерениями",
+    "screen": {
+      "title_ru": "Долгосрочное планирование",
+      "subtitle_ru": "Твой путь через 33 линзы"
+    },
+    "lens_states": {
+      "active": {
+        "label": "Активная",
+        "visual": "яркая, с уровнем L1-L6",
+        "condition": "есть хотя бы 1 пройденный квест"
+      },
+      "filling": {
+        "label": "Наливающаяся",
+        "visual": "полупрозрачная, индикатор заполнения",
+        "condition": "получает пассивный свет от практик/дисциплин"
+      },
+      "sleeping": {
+        "label": "Спящая",
+        "visual": "тусклая",
+        "condition": "нет потока"
+      }
+    },
+    "actions": [
+      "Добавить жизненную практику (свободный текст или выбор из каталога)",
+      "Добавить самодисциплину (с расписанием: ежедневно / N раз в неделю)",
+      "Убрать практику / дисциплину",
+      "Поставить цель-линзу → система подсказывает подходящие практики",
+      "Посмотреть стрики по дисциплинам",
+      "Посмотреть источники света для каждой линзы (квесты vs пассив)"
+    ],
+    "goal_setting": {
+      "description": "Игрок тыкает на спящую линзу → 'Хочу открыть'",
+      "system_response": "Показывает: какие практики из каталога помогут, какие дисциплины подойдут, примерный срок пробуждения"
+    }
+  },
+  "intention_classification": {
+    "_comment": "ИИ-промпт для классификации свободного текста намерений → линзы + оси",
+    "input": "Свободный текст игрока: 'Я чайный мастер' / 'Практикую йогу любви' / 'Бегаю по утрам'",
+    "output": {
+      "activity_id": "string — ближайший ID из каталога life_activities, или 'custom'",
+      "lenses": "string[] — 1-3 линзы",
+      "axes": "string[] — 1-2 оси",
+      "type": "practice | discipline",
+      "confidence": "float 0-1"
+    },
+    "rules": [
+      "Сначала ищи совпадение в каталоге life_activities",
+      "Если нет прямого совпадения — определи по смыслу ближайшие линзы (макс 3)",
+      "Оси определяй по характеру деятельности",
+      "Если текст описывает регулярное действие с временем → type=discipline, иначе practice"
+    ]
+  },
+  "daily_checkin": {
+    "_comment": "Ежедневная проверка самодисциплин при входе в Тигель",
+    "trigger": "Первый вход за день",
+    "display": {
+      "title_ru": "☉ Проверка дня",
+      "style": "мягкий, без давления",
+      "buttons_per_discipline": [
+        "✅ Да",
+        "❌ Нет"
+      ],
+      "skip_button": "Позже"
+    },
+    "on_confirm": {
+      "actions": [
+        "streak += 1",
+        "Начислить passive_flow.disciplines_active.base_light × streak_multiplier на каждую линзу",
+        "Начислить долю на соответствующие оси"
+      ]
+    },
+    "on_deny": {
+      "actions": [
+        "streak = 0",
+        "Даймон мягко: 'Ничего. Завтра — новый день.'",
+        "Если 3 отказа подряд → предложить пересмотреть дисциплину"
+      ]
+    },
+    "on_skip": "Спросить при следующем входе (макс 1 раз в день)"
+  },
+  "daily_cycle": {
+    "_comment": "Цикл эфира — это цикл СОЗНАНИЯ, не времени суток. Пробуждение эфира = пробуждение осознанности в живом существе. Привязка к 24 часам — лишь практический слой (ночью конвертация), но суть — про трансформацию и состояния.",
+    "core_concept": {
+      "description": "Эфир в Тигеле — отражение состояния сознания игрока. До Меры 4 дживы (душа, ум, манас) сонные, эфир мёртвый/спящий. Действия — квесты, медитация, служение, аскеза — пробуждают эфир. Частицы света — кирпичи осознанности, которые игрок собирает как ювелир, рассматривая себя через грани линз. Бог играет в человека.",
+      "ether_as_consciousness": "Эфир = осознанность. Спящий эфир = неосознанность. Пробуждённый = присутствие, ясность, связь с Духом.",
+      "not_a_timer": "Эфир НЕ привязан к часам. Аскет с практикой может держать эфир пробуждённым 24/7. Новичок пробудит на час и заснёт обратно. Время — лишь естественный ритм, не ограничение.",
+      "ether_rm_definition": "Эфир — пятый элемент, объединяющий четыре стихии. Когда доминирует одна стихия — сознание погружается в Душу. Когда стихии выравниваются — три тела переходят в единый поток дживы = чистый Эфир. (РМ, Сессия 2, вопрос 9). Пробудить эфир = установить Связь с Ра через Чувства.",
+      "main_task": "Основная задача — разбудить Эфир и просветлить сознание. (РМ, Сессия 5, вопрос 16)"
+    },
+    "ether_states": {
+      "sleeping": {
+        "name_ru": "Спящий эфир",
+        "color": "чёрный → серый",
+        "description": "Сознание рассеяно. Действия механические. Частицы капают слабо.",
+        "particle_multiplier": 1.0,
+        "default_state": true,
+        "note": "Каждый раз когда игрок теряет осознанность — эфир засыпает"
+      },
+      "awakening": {
+        "name_ru": "Пробуждающийся эфир",
+        "color": "серый → светлеющий",
+        "description": "Осознанность нарастает. Практика начинает действовать.",
+        "particle_multiplier": 1.1,
+        "trigger": "Набрал порог частиц за сессию (зависит от Ring)",
+        "thresholds_by_ring": {
+          "ring_neg3_to_0": 3,
+          "ring_1_to_3": 5,
+          "ring_4_to_6": 8,
+          "ring_7_to_9": 12
+        },
+        "note": "Порог ниже для новичков — им легче испытать первое пробуждение"
+      },
+      "awakened": {
+        "name_ru": "Пробуждённый эфир",
+        "color": "радужный",
+        "description": "Полная осознанность. Присутствие. Связь с Духом. Всё яснее, глубже, точнее.",
+        "particle_multiplier": 1.2,
+        "trigger": "Порог пройден, подтверждён качеством (ИИ-оценка ≥ 0.5)",
+        "sustain": {
+          "description": "Сколько эфир держится пробуждённым — зависит от Ring и аскезы",
+          "by_ring": {
+            "ring_neg3_to_0": "Пробуждается на 1-3 квеста, потом медленно засыпает",
+            "ring_1_to_3": "Держится дольше, медленнее затухает",
+            "ring_4_to_6": "Устойчивое пробуждение на большую часть сессии",
+            "ring_7_to_9": "Может держать постоянно при регулярной практике"
+          },
+          "decay_note": "Затухание — не наказание, а естественный процесс. Даймон мягко: 'Эфир затихает. Практикуй, если хочешь удержать.'"
+        }
+      }
+    },
+    "practical_layer_24h": {
+      "_comment": "Практический слой привязки к суткам — для конвертации и начислений. Не ломает концепцию сознания, а дополняет её ритмом планеты.",
+      "morning_entry": {
+        "description": "Первый вход за день → daily_checkin (проверка дисциплин). Эфир по умолчанию sleeping (остыл за ночь), если нет Якоря Вечности.",
+        "with_eternity_anchor": "20% эфира сохраняется → стартует с awakening, не с нуля"
+      },
+      "evening_distribution": {
+        "description": "Вечерний итог: частицы дня → по линзам. Авто + 30% ручное перераспределение.",
+        "trigger": "Последний вход за день или кнопка 'Завершить день'"
+      },
+      "night_conversion": {
+        "description": "Ночной процесс (автоматический): частицы → свет, пассивный поток, пересчёт Ring",
+        "process": [
+          "1. Частицы дня × ether_conversion_rate → свет",
+          "2. Свет → cascade_down по окнам Меры",
+          "3. Пассивный поток от практик/дисциплин → линзы",
+          "4. Пересчёт Ring",
+          "5. Эфир → sleeping (если нет Якоря)"
+        ]
+      }
+    },
+    "ether_conversion": {
+      "_comment": "Сколько частиц → сколько света при ночной конвертации",
+      "base_rate": 0.7,
+      "note": "70% частиц становятся светом, 30% 'испаряются' — не всё осознанное закрепляется. Это не потеря, а естественный процесс.",
+      "bonus_by_ring": {
+        "ring_neg3_to_0": 0.7,
+        "ring_1_to_3": 0.75,
+        "ring_4_to_6": 0.82,
+        "ring_7_to_9": 0.9
+      },
+      "bonus_structures": {
+        "description": "Световые структуры увеличивают конвертацию — сердце удерживает больше света",
+        "per_structure_level": 0.02,
+        "max_total_rate": 0.95,
+        "note": "Полностью без потерь невозможно — 5% всегда возвращается в источник"
+      }
+    }
+  },
+  "particles": {
+    "_comment": "Частицы света — сырьё осознанности, кирпичи пробуждения",
+    "symbol": "✧",
+    "name_ru": "частица света",
+    "plural_ru": "частицы света",
+    "source": "Квесты, медитации, дисциплины, служение — всё что пробуждает осознанность",
+    "per_quest": {
+      "description": "Формула та же что была для зёрен: base_grain × multipliers",
+      "rename_note": "Все 'зёрна' и 'свет от квеста' → 'частицы'. Свет — только после ночной конвертации."
+    },
+    "display": {
+      "quest_result": "✧ +N частиц",
+      "daily_total": "✧ N частиц собрано",
+      "converted": "☀ N света пробуждено"
+    }
+  },
+  "light_structures": {
+    "_comment": "Световые структуры — высокоуровневая механика, связь с Духом",
+    "unlock_mera": 4,
+    "name_ru": "Световые структуры",
+    "description": "Игрок строит структуры из накопленного света. Структуры = сердце, связь с Духом, Богом, Вечностью. Через них — противостояние тьме и невежеству.",
+    "structures": [
+      {
+        "id": "heart_core",
+        "name_ru": "Сердечное ядро",
+        "unlock_mera": 4,
+        "description": "Первая структура. Центр, из которого растут остальные. Связь игрока с собственным сердцем.",
+        "light_to_build": 100,
+        "effect": "ether_conversion +0.05, базовый якорь для остальных структур"
+      },
+      {
+        "id": "spirit_channel",
+        "name_ru": "Канал Духа",
+        "unlock_mera": 5,
+        "description": "Связь вверх — к Духу. Призыв и получение.",
+        "light_to_build": 250,
+        "requires": [
+          "heart_core"
+        ],
+        "effect": "Открывает механику 'Призыв Духа', бонус к devotion-квестам"
+      },
+      {
+        "id": "purification_ring",
+        "name_ru": "Кольцо очищения",
+        "unlock_mera": 5,
+        "description": "Очистка энергии. Противостояние теням.",
+        "light_to_build": 250,
+        "requires": [
+          "heart_core"
+        ],
+        "effect": "Снижает влияние теней на ×0.7, бонус к shadow-квестам"
+      },
+      {
+        "id": "circulation_web",
+        "name_ru": "Сеть циркуляции",
+        "unlock_mera": 6,
+        "description": "Свет течёт между линзами, усиливая слабые.",
+        "light_to_build": 500,
+        "requires": [
+          "heart_core",
+          "spirit_channel"
+        ],
+        "effect": "Автоматический перелив 10% света из сильных линз в слабые"
+      },
+      {
+        "id": "eternity_anchor",
+        "name_ru": "Якорь Вечности",
+        "unlock_mera": 7,
+        "description": "Связь с Вечностью. Свет больше не полностью остывает за ночь.",
+        "light_to_build": 1000,
+        "requires": [
+          "heart_core",
+          "spirit_channel",
+          "purification_ring"
+        ],
+        "effect": "Утром 20% эфира сохраняется пробуждённым — быстрее старт дня"
+      },
+      {
+        "id": "radiance_body",
+        "name_ru": "Тело сияния",
+        "unlock_mera": 9,
+        "description": "Финальная структура. Все остальные объединяются. Полная связь с Духом.",
+        "light_to_build": 3000,
+        "requires": [
+          "heart_core",
+          "spirit_channel",
+          "purification_ring",
+          "circulation_web",
+          "eternity_anchor"
+        ],
+        "effect": "Максимальная конвертация (0.95), все линзы связаны, эфир пробуждается мгновенно"
+      }
+    ],
+    "building": {
+      "description": "Строительство структуры — вложение накопленного света (не частиц, а уже конвертированного света)",
+      "process": "Игрок выбирает структуру → вкладывает свет порциями → когда порог достигнут, структура активируется",
+      "partial_build": "Можно строить постепенно, по чуть-чуть каждый день"
+    }
+  },
+  "ray_of_perception": {
+    "_comment": "Луч Восприятия — из учения Русского Мастера (Сессии 4-6). Лучи пронизывают всё Мироздание, включая Тман.",
+    "concept": {
+      "description": "Всё Мироздание пронизано Лучами Восприятия. Они исходят от Единого Истока. Творцы 'берут' эти Лучи и надевают на них Формы (Искра — наименьшая форма, Дух — бо́льшая). Луч начинается в Атмане (Реальность), попадая в Тман (Непроявленное Пространство), он тускнеет, теряя Изначальную Светимость.",
+      "source_quote_s5": "«Основная задача — разбудить Эфир и просветлить сознание. Разумность — это Принцип Мироздания, позволяющий пропускать Свет Луча Восприятия и действовать от его Имени.» — РМ, Сессия 5",
+      "source_quote_s4": "«Чувства помогут выйти на рубеж, когда Луч Восприятия будет вами так же свободно читаться, как этот текст.» — РМ, Сессия 4",
+      "forms_on_ray": "На одном Луче может быть целая 'гроздь' Тонких Форм — ряд Искровых или Духовых Форм. Это Групповая Душа. Ордена — объединения Духов на Луче.",
+      "assembly_point": {
+        "name_ru": "Точка сборки",
+        "description": "Точка сборки сознания движется по Лучу Восприятия — от нижних миров и подсознания (14 лок / Чатура-лока) до высших миров и за пределы яйца. Концепция частично раскрыта у Кастанеды.",
+        "range": "14 лок → высшие Меры → за пределы Тмана → Атман"
+      }
+    },
+    "relation_to_ether": {
+      "chain": "Связь с Ра → Радость → Пробуждение Эфира → Свет Луча Восприятия проходит",
+      "source_quote_s6": "«Радость означает установленную Связь с RA, что влечёт за собой Пробуждение. Что пробуждается? Эфир.» — РМ, Сессия 6",
+      "bidirectional": true,
+      "description": "Когда игрок настроен на Луч — эфир пробуждается сильнее. Когда эфир пробуждён — Луч Восприятия ярче, осознанность глубже. Разбудить Эфир = пропустить Свет Луча."
+    },
+    "in_gameplay": {
+      "description": "Луч не отдельная кнопка. Он проявляется через всё: глубину ответа, качество осознанности, Чувствительность. ИИ-оценка quality — косвенная мера настройки на Луч.",
+      "visual_hint": "Чем выше quality квеста, тем ярче визуальный Луч на экране",
+      "14_lokas_connection": "Движение точки сборки по 14 локам = навигация по мирам пирамиды"
+    }
+  },
+  "ra_radiance": {
+    "_comment": "Ра — Изначалие и Водитель Планетарного Существа (Гэба). Из Атмана (Реальности). Внутреннее Солнце в противовес Яриле. Из учения Русского Мастера.",
+    "concept": {
+      "description": "Ра — Изначалие и Водитель Планетарного Существа (Гэба). Из мира Атмана (Реальности). Безмерен — может оперировать любыми Мерностями. Свободен от замыкания на какой-либо Лик. Мудрее Ильдабаофа, так как не обладает качествами Тмана.",
+      "inner_sun": "Ра = Внутреннее Солнце (в противовес Яриле — внешнему солнцу иллюзии). Обращение к Ра — это не слова и не текст, а поворот чувств.",
+      "always_present": true,
+      "perception_channels": "Ра излучает всегда. Но при загрязнении каналов восприятия и погружённости сознания в иллюзию — импульсы пропускаются слабо. Чем чище каналы, чем пробуждённее эфир — тем сильнее проходит свет Ра.",
+      "source_quote_s5": "«Изначалием и Водителем Планетарного Существа является Ра. Ра не обладает качествами Тмана и, следовательно, мудрее Ильдабаофа. Кроме того, Ра безмерен.» — РМ, Сессия 5",
+      "liberation": "Игрок находится во власти иллюзий и самости. Учится альтруизму. Дух Ра разрушает иллюзию (маха-майя), освобождает от оков тленности. Местная джива — не осознаёт процессы, уничтожена иллюзией одинокости."
+    },
+    "chain_to_ether": {
+      "description": "Связь с Ра → Радость → Пробуждение Эфира",
+      "source_quote_s6": "«svastika означает Наделение Радостью. Радость означает установленную Связь с RA, что влечёт за собой Пробуждение. Что пробуждается? Эфир.» — РМ, Сессия 6"
+    },
+    "in_gameplay": {
+      "description": "Ра не метрика, которую прокачивают. Это фон, контекст, присутствие — Внутреннее Солнце.",
+      "manifestations": [
+        "Даймон в моменты глубокого пробуждения говорит от имени Ра",
+        "На высоких Ring (7+) — 'послания Ра' после квестов",
+        "Световые структуры — способ удержать свет Ра",
+        "Канал Духа (Мера 5) — прямая линия к Ра",
+        "Обращение к Ра = поворот чувств, не слова"
+      ]
+    }
+  },
+  "sensitivity": {
+    "_comment": "Чувствительность — главное качество, развиваемое в игре. НЕ ощущаемость (sensations), а Чувствительность к Свету, Сострадание, Чувства (с большой буквы).",
+    "concept": {
+      "name_ru": "Чувствительность",
+      "description": "Чувствительность (не ощущаемость!) — главное качество, развиваемое в игре. Ощущаемость — уровень ниже, это ощущения тела и ума. Чувствительность — к Свету, к Духу, Сострадание, Чувства. Это способность души воспринимать тонкое, различать истинное. «Чувства помогут выйти на рубеж, когда Луч Восприятия будет вами так же свободно читаться, как этот текст» — РМ, Сессия 4.",
+      "hierarchy": {
+        "ощущаемость": "низший уровень — тело, ум, реакции",
+        "чувствительность": "высший уровень — Свет, Дух, Сострадание, Чувства"
+      },
+      "channel_clarity": "Чувствительность = чистота каналов восприятия. Загрязнённые каналы = самость, иллюзия, эго. Чистые каналы = альтруизм, сострадание, Чувства. Чистый — тот, кто способен проводить энергию Служения в обход пелены астрала (РМ, Сессия 1, вопрос 9)."
+    },
+    "metric": {
+      "name": "sensitivity",
+      "description": "Лёгкая метрика, не перегружает. Растёт от глубины и качества, не от количества.",
+      "sources": [
+        "ИИ-оценка quality > 0.7 → чувствительность растёт",
+        "Квесты на compassion-оси → прямой вклад",
+        "Пробуждённый эфир усиливает рост",
+        "Служение, сострадание, творчество"
+      ],
+      "effect": [
+        "Увеличивает particle_multiplier при пробуждённом эфире (+0.05 за уровень)",
+        "Открывает более тонкие тексты Даймона",
+        "Визуально: свет в Тигеле становится мягче, глубже, не ярче"
+      ],
+      "levels": {
+        "0": {
+          "name_ru": "Спящая",
+          "range": "0-5",
+          "note": "Обычное состояние"
+        },
+        "1": {
+          "name_ru": "Пробуждающаяся",
+          "range": "5-20",
+          "note": "Начинает различать"
+        },
+        "2": {
+          "name_ru": "Тонкая",
+          "range": "20-50",
+          "note": "Чувствует свет, тени, связи"
+        },
+        "3": {
+          "name_ru": "Глубокая",
+          "range": "50-100",
+          "note": "Сострадание как состояние"
+        },
+        "4": {
+          "name_ru": "Чистая",
+          "range": "100+",
+          "note": "Прямое восприятие Ра"
+        }
+      }
+    }
+  },
+  "foundational_myth": {
+    "_comment": "Фундамент игры — гностический миф. Мы маскируем глубокое учение под игру. Подробнее — в папке РАДОСВЕТ (C:\\AWARA\\РАДОСВЕТ).",
+    "core": {
+      "description": "В основе лежит гностический миф о Творце-Ильдабаофе (Демиурге) и пробуждающемся планетарном Логосе. Игрок — сознание, погружённое в иллюзию, во власти самости. Через линзы, частицы света, пробуждение эфира — учится альтруизму, вспоминает свою истинную природу.",
+      "ildabaoth": "Ильдабаоф — Отец-Творец Гэба. Не демон, но самозамкнут, обладает качествами Тмана. «Рождённый из Яйца». Отвергает Иерархию, свободу Сына, помещает живое в астральную тюрьму. По мере освобождения, Сын указывает Отцу, что есть и выше — Единый. (РМ, Сессия 1)",
+      "planetary_logos": "Гэб — Планетарное Существо, Планетарный Логос. Творец дживы. Мужское начало. Молодой Бог. Ра — его Изначалие и Водитель из Атмана. Служение — уникальный вид энергии Гэба: помощь Ему и всему живому. Пробуждение Гэба = пробуждение эфира во всех живых существах. (РМ, Сессии 1-6)",
+      "game_as_disguise": "Игра маскирует учение. Человек играет — и через игру получает то, что не получил бы через прямое учение. Механика = духовная практика, замаскированная под геймплей.",
+      "geb": {
+        "name": "Гэб",
+        "description": "Планетарное Существо. Сварог (славянский аналог). Творец дживы. Мужское начало. Не осознаёт своей природы полностью. Принцип ахимса — всегда неразрушения, любви, помощи.",
+        "djiva": "Джива — единица жизни, свободно текущая энергия Гэба. НЕ душа.",
+        "dusha": "Душа = осквернённое (санскрит). Джива, запертая в темницу трёх тел (физическое/эфирное/астральное). Информационное искажение дживы.",
+        "duh": "Дух — продукт Вечности, не этого места. Искра Единого. Ведёт по Пути.",
+        "ether": "Эфир — пятый элемент, объединяющий четыре стихии (Земля/Вода/Огонь/Воздух). Иерархически выше всех. Пробуждённый эфир = господство над первоэлементами. Спящий эфир = разбитая джива, три отдельных тела. Пробудить эфир = объединить три тела в единую текучую дживу."
+      }
+    },
+    "player_arc": {
+      "start": "Погружён в иллюзию, самость. Каналы восприятия загрязнены. Эфир мёртвый.",
+      "middle": "Пробуждает эфир. Собирает частицы осознанности. Учится альтруизму. Очищает каналы.",
+      "end": "Связь с Духом. Точка сборки — на высших локах. Тело сияния. Выход за пределы яйца."
+    },
+    "knowledge_base": {
+      "path": "C:\\AWARA\\РАДОСВЕТ",
+      "description": "Папка РАДОСВЕТ — библиотека первоисточников, на которых основана игра.",
+      "sections": [
+        "Ведизм — Бхагавад-гита, Йога-сутры, учение о телах",
+        "Дао — даосская алхимия, Тайна Золотого цветка",
+        "Знание Тольтеков — точка сборки, нагуализм",
+        "Инсайдеры — М.П. Холл, гностическое христианство, оккультная анатомия",
+        "Учения Махатм — Блаватская, Агни-Йога, оккультизм",
+        "Суфизм — суфийские практики, зикр",
+        "Наука — научные основания",
+        "Русский Мастер — славянская традиция",
+        "Творчество — творческие практики",
+        "Меняем Мир — практическая трансформация"
+      ]
+    },
+    "source": {
+      "primary": "Русский Мастер — 6 сессий (2011-2013), radosvet.net → radosvet.in",
+      "archive": "jehovih.ru/index.php/sistemy-miroponimaniya/russkij-master/",
+      "local_path": "C:\\AWARA\\РАДОСВЕТ\\Русский Мастер\\",
+      "supplementary": "Папка РАДОСВЕТ — библиотека первоисточников"
+    }
+  }
+}

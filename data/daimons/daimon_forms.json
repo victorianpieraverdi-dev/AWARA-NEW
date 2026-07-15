@@ -1,0 +1,406 @@
+{
+  "version": "1.0.0",
+  "total_planned": 240,
+  "kingdoms": ["Beast", "Avian", "Aquatic", "Serpent", "Flora", "Crystal", "Mythic"],
+  "forms": [
+    {
+      "id": "beast_001_bear",
+      "kingdom": "Beast",
+      "species": { "en": "Bear", "ru": "Медведь" },
+      "archetype": "Guardian",
+      "element": "Earth",
+      "guna": "Tamas",
+      "chakra_affinity": [1, 4],
+      "natal_indicators": {
+        "planets": ["Saturn", "Mars"],
+        "signs": ["Taurus", "Capricorn"],
+        "elements": ["Earth"],
+        "nakshatras": ["Pushya", "Uttara_Bhadrapada"]
+      },
+      "description": {
+        "en": "Powerful guardian of earth, protector of boundaries",
+        "ru": "Могущественный хранитель земли, защитник границ"
+      }
+    },
+    {
+      "id": "beast_002_wolf",
+      "kingdom": "Beast",
+      "species": { "en": "Wolf", "ru": "Волк" },
+      "archetype": "Wanderer",
+      "element": "Air",
+      "guna": "Rajas",
+      "chakra_affinity": [3, 5],
+      "natal_indicators": {
+        "planets": ["Mars", "Rahu"],
+        "signs": ["Aries", "Scorpio"],
+        "elements": ["Fire", "Air"],
+        "nakshatras": ["Ardra", "Mula"]
+      },
+      "description": {
+        "en": "Wild pathfinder, guide through chaos and storm",
+        "ru": "Дикий следопыт, проводник сквозь хаос и бурю"
+      }
+    },
+    {
+      "id": "beast_003_tiger",
+      "kingdom": "Beast",
+      "species": { "en": "Tiger", "ru": "Тигр" },
+      "archetype": "Sovereign",
+      "element": "Fire",
+      "guna": "Rajas",
+      "chakra_affinity": [3, 6],
+      "natal_indicators": {
+        "planets": ["Sun", "Mars"],
+        "signs": ["Leo", "Aries"],
+        "elements": ["Fire"],
+        "nakshatras": ["Purva_Phalguni", "Krittika"]
+      },
+      "description": {
+        "en": "Fierce sovereign of the jungle, embodiment of royal power",
+        "ru": "Яростный властелин джунглей, воплощение царской силы"
+      }
+    },
+    {
+      "id": "avian_001_eagle",
+      "kingdom": "Avian",
+      "species": { "en": "Eagle", "ru": "Орёл" },
+      "archetype": "Sage",
+      "element": "Air",
+      "guna": "Sattva",
+      "chakra_affinity": [5, 6],
+      "natal_indicators": {
+        "planets": ["Jupiter", "Sun"],
+        "signs": ["Sagittarius", "Leo"],
+        "elements": ["Fire", "Air"],
+        "nakshatras": ["Jyeshtha", "Uttara_Ashadha"]
+      },
+      "description": {
+        "en": "Majestic vision-keeper, soaring above illusions",
+        "ru": "Величественный хранитель зрения, парящий над иллюзиями"
+      }
+    },
+    {
+      "id": "avian_002_owl",
+      "kingdom": "Avian",
+      "species": { "en": "Owl", "ru": "Сова" },
+      "archetype": "Sage",
+      "element": "Ether",
+      "guna": "Sattva",
+      "chakra_affinity": [6, 7],
+      "natal_indicators": {
+        "planets": ["Rahu", "Mercury"],
+        "signs": ["Aquarius", "Gemini"],
+        "elements": ["Air", "Ether"],
+        "nakshatras": ["Swati", "Shatabhisha"]
+      },
+      "description": {
+        "en": "Silent wisdom keeper, seer through darkness",
+        "ru": "Молчаливый хранитель мудрости, видящий сквозь тьму"
+      }
+    },
+    {
+      "id": "avian_003_phoenix",
+      "kingdom": "Avian",
+      "species": { "en": "Phoenix", "ru": "Феникс" },
+      "archetype": "Alchemist",
+      "element": "Fire",
+      "guna": "Rajas",
+      "chakra_affinity": [3, 7],
+      "natal_indicators": {
+        "planets": ["Sun", "Ketu"],
+        "signs": ["Aries", "Leo"],
+        "elements": ["Fire"],
+        "nakshatras": ["Krittika", "Dhanishta"]
+      },
+      "description": {
+        "en": "Eternal flame of rebirth, burning illusions to reveal truth",
+        "ru": "Вечное пламя перерождения, сжигающее иллюзии ради истины"
+      }
+    },
+    {
+      "id": "aquatic_001_dolphin",
+      "kingdom": "Aquatic",
+      "species": { "en": "Dolphin", "ru": "Дельфин" },
+      "archetype": "Healer",
+      "element": "Water",
+      "guna": "Sattva",
+      "chakra_affinity": [2, 4],
+      "natal_indicators": {
+        "planets": ["Moon", "Venus"],
+        "signs": ["Cancer", "Pisces"],
+        "elements": ["Water"],
+        "nakshatras": ["Pushya", "Revati"]
+      },
+      "description": {
+        "en": "Joyful healer of emotional waters, bridge between worlds",
+        "ru": "Радостный целитель эмоциональных вод, мост между мирами"
+      }
+    },
+    {
+      "id": "aquatic_002_whale",
+      "kingdom": "Aquatic",
+      "species": { "en": "Whale", "ru": "Кит" },
+      "archetype": "Guardian",
+      "element": "Water",
+      "guna": "Tamas",
+      "chakra_affinity": [1, 2],
+      "natal_indicators": {
+        "planets": ["Saturn", "Moon"],
+        "signs": ["Cancer", "Capricorn"],
+        "elements": ["Water", "Earth"],
+        "nakshatras": ["Shravana", "Uttara_Bhadrapada"]
+      },
+      "description": {
+        "en": "Ancient keeper of deep memory, guardian of cosmic ocean",
+        "ru": "Древний хранитель глубинной памяти, страж космического океана"
+      }
+    },
+    {
+      "id": "aquatic_003_kraken",
+      "kingdom": "Aquatic",
+      "species": { "en": "Kraken", "ru": "Кракен" },
+      "archetype": "Alchemist",
+      "element": "Water",
+      "guna": "Tamas",
+      "chakra_affinity": [1, 3],
+      "natal_indicators": {
+        "planets": ["Rahu", "Mars"],
+        "signs": ["Scorpio", "Pisces"],
+        "elements": ["Water"],
+        "nakshatras": ["Ashlesha", "Purva_Bhadrapada"]
+      },
+      "description": {
+        "en": "Abyssal transformer, master of deep alchemical currents",
+        "ru": "Бездонный преобразователь, мастер глубинных алхимических потоков"
+      }
+    },
+    {
+      "id": "serpent_001_naga",
+      "kingdom": "Serpent",
+      "species": { "en": "Naga", "ru": "Нага" },
+      "archetype": "Alchemist",
+      "element": "Fire",
+      "guna": "Rajas",
+      "chakra_affinity": [1, 6],
+      "natal_indicators": {
+        "planets": ["Mercury", "Rahu"],
+        "signs": ["Scorpio", "Virgo"],
+        "elements": ["Water", "Fire"],
+        "nakshatras": ["Ashlesha", "Anuradha"]
+      },
+      "description": {
+        "en": "Keeper of kundalini fire, serpent of sacred transformation",
+        "ru": "Хранитель огня кундалини, змей сакральной трансформации"
+      }
+    },
+    {
+      "id": "serpent_002_basilisk",
+      "kingdom": "Serpent",
+      "species": { "en": "Basilisk", "ru": "Василиск" },
+      "archetype": "Sovereign",
+      "element": "Earth",
+      "guna": "Tamas",
+      "chakra_affinity": [1, 3],
+      "natal_indicators": {
+        "planets": ["Saturn", "Ketu"],
+        "signs": ["Capricorn", "Scorpio"],
+        "elements": ["Earth"],
+        "nakshatras": ["Mula", "Uttara_Ashadha"]
+      },
+      "description": {
+        "en": "Petrifying gaze of truth, king of primordial serpents",
+        "ru": "Окаменяющий взгляд истины, царь первозданных змей"
+      }
+    },
+    {
+      "id": "serpent_003_ouroboros",
+      "kingdom": "Serpent",
+      "species": { "en": "Ouroboros", "ru": "Уроборос" },
+      "archetype": "Sage",
+      "element": "Ether",
+      "guna": "Sattva",
+      "chakra_affinity": [7, 1],
+      "natal_indicators": {
+        "planets": ["Ketu", "Jupiter"],
+        "signs": ["Pisces", "Sagittarius"],
+        "elements": ["Ether", "Water"],
+        "nakshatras": ["Revati", "Purva_Bhadrapada"]
+      },
+      "description": {
+        "en": "Eternal cycle keeper, unity of beginning and end",
+        "ru": "Хранитель вечного цикла, единство начала и конца"
+      }
+    },
+    {
+      "id": "flora_001_lotus",
+      "kingdom": "Flora",
+      "species": { "en": "Lotus", "ru": "Лотос" },
+      "archetype": "Healer",
+      "element": "Water",
+      "guna": "Sattva",
+      "chakra_affinity": [4, 7],
+      "natal_indicators": {
+        "planets": ["Venus", "Moon"],
+        "signs": ["Libra", "Taurus"],
+        "elements": ["Water", "Earth"],
+        "nakshatras": ["Rohini", "Hasta"]
+      },
+      "description": {
+        "en": "Sacred bloom rising from muddy waters into pure light",
+        "ru": "Священный цветок, восходящий из грязных вод к чистому свету"
+      }
+    },
+    {
+      "id": "flora_002_yggdrasil",
+      "kingdom": "Flora",
+      "species": { "en": "World Tree", "ru": "Мировое Древо" },
+      "archetype": "Guardian",
+      "element": "Earth",
+      "guna": "Sattva",
+      "chakra_affinity": [1, 7],
+      "natal_indicators": {
+        "planets": ["Jupiter", "Saturn"],
+        "signs": ["Sagittarius", "Capricorn"],
+        "elements": ["Earth", "Ether"],
+        "nakshatras": ["Punarvasu", "Vishakha"]
+      },
+      "description": {
+        "en": "Axis of all worlds, connecting roots to crown",
+        "ru": "Ось всех миров, соединяющая корни с кроной"
+      }
+    },
+    {
+      "id": "flora_003_mandrake",
+      "kingdom": "Flora",
+      "species": { "en": "Mandrake", "ru": "Мандрагора" },
+      "archetype": "Alchemist",
+      "element": "Earth",
+      "guna": "Tamas",
+      "chakra_affinity": [1, 2],
+      "natal_indicators": {
+        "planets": ["Mercury", "Saturn"],
+        "signs": ["Virgo", "Capricorn"],
+        "elements": ["Earth"],
+        "nakshatras": ["Hasta", "Shravana"]
+      },
+      "description": {
+        "en": "Root of transformation, bridge between plant and spirit",
+        "ru": "Корень трансформации, мост между растением и духом"
+      }
+    },
+    {
+      "id": "crystal_001_diamond",
+      "kingdom": "Crystal",
+      "species": { "en": "Diamond", "ru": "Алмаз" },
+      "archetype": "Sovereign",
+      "element": "Ether",
+      "guna": "Sattva",
+      "chakra_affinity": [7, 6],
+      "natal_indicators": {
+        "planets": ["Venus", "Sun"],
+        "signs": ["Libra", "Leo"],
+        "elements": ["Ether", "Fire"],
+        "nakshatras": ["Chitra", "Magha"]
+      },
+      "description": {
+        "en": "Indestructible clarity, purest expression of compressed light",
+        "ru": "Нерушимая ясность, чистейшее выражение сжатого света"
+      }
+    },
+    {
+      "id": "crystal_002_obsidian",
+      "kingdom": "Crystal",
+      "species": { "en": "Obsidian", "ru": "Обсидиан" },
+      "archetype": "Guardian",
+      "element": "Fire",
+      "guna": "Tamas",
+      "chakra_affinity": [1, 3],
+      "natal_indicators": {
+        "planets": ["Saturn", "Mars"],
+        "signs": ["Scorpio", "Capricorn"],
+        "elements": ["Fire", "Earth"],
+        "nakshatras": ["Mula", "Jyeshtha"]
+      },
+      "description": {
+        "en": "Volcanic mirror of shadow, protector against psychic intrusion",
+        "ru": "Вулканическое зеркало тени, защитник от психического вторжения"
+      }
+    },
+    {
+      "id": "crystal_003_amethyst",
+      "kingdom": "Crystal",
+      "species": { "en": "Amethyst", "ru": "Аметист" },
+      "archetype": "Healer",
+      "element": "Ether",
+      "guna": "Sattva",
+      "chakra_affinity": [6, 7],
+      "natal_indicators": {
+        "planets": ["Jupiter", "Moon"],
+        "signs": ["Pisces", "Sagittarius"],
+        "elements": ["Ether", "Water"],
+        "nakshatras": ["Purva_Bhadrapada", "Punarvasu"]
+      },
+      "description": {
+        "en": "Crown jewel of spiritual sobriety and intuitive vision",
+        "ru": "Коронная драгоценность духовной трезвости и интуитивного видения"
+      }
+    },
+    {
+      "id": "mythic_001_garuda",
+      "kingdom": "Mythic",
+      "species": { "en": "Garuda", "ru": "Гаруда" },
+      "archetype": "Sovereign",
+      "element": "Air",
+      "guna": "Rajas",
+      "chakra_affinity": [5, 7],
+      "natal_indicators": {
+        "planets": ["Sun", "Jupiter"],
+        "signs": ["Leo", "Sagittarius"],
+        "elements": ["Fire", "Air"],
+        "nakshatras": ["Magha", "Uttara_Ashadha"]
+      },
+      "description": {
+        "en": "Divine eagle of Vishnu, destroyer of serpents of ignorance",
+        "ru": "Божественный орёл Вишну, разрушитель змей невежества"
+      }
+    },
+    {
+      "id": "mythic_002_dragon",
+      "kingdom": "Mythic",
+      "species": { "en": "Dragon", "ru": "Дракон" },
+      "archetype": "Alchemist",
+      "element": "Fire",
+      "guna": "Rajas",
+      "chakra_affinity": [3, 5],
+      "natal_indicators": {
+        "planets": ["Mars", "Rahu"],
+        "signs": ["Aries", "Scorpio"],
+        "elements": ["Fire"],
+        "nakshatras": ["Vishakha", "Shatabhisha"]
+      },
+      "description": {
+        "en": "Primordial fire-keeper, master of elemental transmutation",
+        "ru": "Первозданный хранитель огня, мастер стихийной трансмутации"
+      }
+    },
+    {
+      "id": "mythic_003_unicorn",
+      "kingdom": "Mythic",
+      "species": { "en": "Unicorn", "ru": "Единорог" },
+      "archetype": "Healer",
+      "element": "Ether",
+      "guna": "Sattva",
+      "chakra_affinity": [6, 4],
+      "natal_indicators": {
+        "planets": ["Venus", "Moon"],
+        "signs": ["Taurus", "Libra"],
+        "elements": ["Ether", "Water"],
+        "nakshatras": ["Rohini", "Chitra"]
+      },
+      "description": {
+        "en": "Pure-hearted healer, horn channeling divine light",
+        "ru": "Чистосердечный целитель, рог направляющий божественный свет"
+      }
+    }
+  ]
+}

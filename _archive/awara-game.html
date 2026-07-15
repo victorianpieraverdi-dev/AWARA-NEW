@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>AWARA · Большая Игра</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05050d;--panel:#0d0d1a;--violet:#7b62c9;--violet-soft:#9d86e0;--gold:#c9a84c;--spark:#ffd27a;--line:rgba(255,255,255,.08);--ink:#ece8ff;--mut:#9a93c0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#000;font-family:Manrope,system-ui,sans-serif;color:var(--ink);display:flex;justify-content:center;min-height:100vh;-webkit-font-smoothing:antialiased;}
+.phone{position:relative;width:390px;max-width:100%;min-height:100vh;background:radial-gradient(120% 80% at 50% 0%,#12122a 0%,var(--bg) 55%,#02020a 100%);overflow:hidden;}
+#stars{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;padding:18px 16px 40px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;}
+.back{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--violet-soft);border-radius:999px;padding:7px 12px;font-size:13px;cursor:pointer;transition:.2s;}
+.back:hover{border-color:var(--violet);color:#fff;}
+.title{font-family:Cinzel,serif;font-size:14px;letter-spacing:.1em;color:var(--spark);text-transform:uppercase;text-align:center;}
+.light{font-size:12px;color:var(--mut);white-space:nowrap;}
+.light b{color:var(--spark);}
+.lead{font-size:12.5px;color:var(--mut);text-align:center;margin:10px 4px 0;line-height:1.5;}
+.mandala{position:relative;width:300px;height:300px;margin:18px auto 6px;}
+.mandala .ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--line);}
+.mandala .ring.r2{inset:34px;border-color:rgba(123,98,201,.25);}
+.mandala .ring.r3{inset:74px;border-color:rgba(201,168,76,.18);}
+.center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:118px;height:118px;border-radius:50%;background:radial-gradient(circle at 50% 40%,rgba(201,168,76,.22),rgba(123,98,201,.12) 60%,transparent);border:1px solid rgba(201,168,76,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:.25s;}
+.center:hover{border-color:var(--gold);box-shadow:0 0 26px rgba(201,168,76,.35);}
+.center .cglyph{font-size:26px;}
+.center .clbl{font-family:Cinzel,serif;font-size:10.5px;letter-spacing:.08em;color:var(--spark);margin-top:3px;text-transform:uppercase;}
+.node{position:absolute;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:rgba(13,13,26,.85);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.2s;backdrop-filter:blur(2px);}
+.node:hover{border-color:var(--violet);transform:scale(1.08);}
+.node.locked{opacity:.5;}
+.node .ng{font-size:19px;line-height:1;}
+.node .nn{position:absolute;top:56px;font-size:9px;color:var(--mut);white-space:nowrap;text-align:center;width:80px;left:50%;transform:translateX(-50%);}
+.node .nx{position:absolute;top:-7px;right:-3px;font-family:Cinzel,serif;font-size:9px;color:var(--gold);background:#05050d;border:1px solid var(--line);border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;}
+.sect{font-family:Cinzel,serif;font-size:11px;letter-spacing:.12em;color:var(--violet-soft);text-transform:uppercase;margin:30px 4px 10px;}
+.cards{display:flex;flex-direction:column;gap:9px;}
+.card{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;transition:.2s;}
+.card:hover{border-color:var(--violet);background:rgba(123,98,201,.08);}
+.card.locked{opacity:.55;cursor:default;}
+.card.locked:hover{border-color:var(--line);background:rgba(255,255,255,.035);}
+.card .ci{font-size:22px;width:30px;text-align:center;}
+.card .cb{flex:1;}
+.card .ct{font-size:14px;color:var(--ink);font-weight:600;display:flex;align-items:center;gap:7px;}
+.card .cn{font-family:Cinzel,serif;font-size:10px;color:var(--gold);}
+.card .cd{font-size:11.5px;color:var(--mut);margin-top:2px;line-height:1.4;}
+.card .cgo{font-size:16px;color:var(--violet-soft);}
+.soon{font-size:9px;letter-spacing:.05em;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:1px 7px;text-transform:uppercase;}
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(20px);background:rgba(13,13,26,.95);border:1px solid var(--gold);color:var(--spark);padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:.3s;z-index:50;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.foot{text-align:center;font-size:10.5px;color:var(--mut);margin-top:26px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="phone">
+<canvas id="stars"></canvas>
+<div class="wrap">
+  <div class="topbar">
+    <button class="back" onclick="backToTigel()">‹ Тигель</button>
+    <div class="title">Большая Игра</div>
+    <div class="light" id="lightTag">✦ —</div>
+  </div>
+  <div class="lead">Ты вошёл в мир AWARA через Тигель. В центре — <b>наша карта</b>, вокруг неё раскрываются миры.</div>
+  <div class="mandala" id="mandala">
+    <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+    <div class="center" onclick="openNode('center')"><div class="cglyph">☉</div><div class="clbl">Наша<br>Карта</div></div>
+  </div>
+  <div class="sect">Миры восхождения</div>
+  <div class="cards" id="cards"></div>
+  <div class="foot">AWARA · Держава РА<br>21 Агент · 33 Матрицы · 14 Лок · 9 Мер</div>
+</div>
+</div>
+<script>
+/* ===== Узлы навигационной космологии 0–7 ===== */
+var NODES=[
+  {id:0,n:'0',g:'✨',t:'Искра',cn:'Istok',d:'Начало пути — пустота и первая искра.',go:'tigel-app.html'},
+  {id:1,n:'1',g:'🌌',t:'Личная Вселенная',cn:'Cosmos',d:'Твоя натальная карта как живой космос.'},
+  {id:2,n:'2',g:'🥚',t:'Лобби · Яйцо Мира',cn:'Lobby',d:'Средоточие миров, вход в ветви.'},
+  {id:3,n:'3',g:'📜',t:'Хроника · Матрицы',cn:'Codex',d:'33 линзы восприятия и летопись.'},
+  {id:4,n:'4',g:'🐉',t:'Даймон',cn:'Daimon',d:'Дух-спутник: восхождение и мер-чакры.',go:'daimon.html'},
+  {id:5,n:'5',g:'🕊',t:'Душа',cn:'Soul',d:'Паспорт Души и путь Света.'},
+  {id:6,n:'6',g:'🎴',t:'Настольная · Карты',cn:'Mandala',d:'Круговая мандала-игра и колода.',go:'mandala-game.html'},
+  {id:7,n:'7',g:'👑',t:'Светоруссия',cn:'Derzhava',d:'Держава РА — венец пути.'}
+];
+
+/* ===== Общий стейт (мост с Тигелем) ===== */
+function readTigel(){try{return JSON.parse(localStorage.getItem('tigel_v1')||'{}');}catch(e){return{};}}
+function lightFromTigel(s){if(!s||typeof s.baseLight==='undefined')return null;var db=(s.trust>=50)?5:0;var ml=(s.mats?s.mats.length:0)*2;return Math.max(0,Math.min(100,(s.baseLight||0)+(s.lightBonus||0)+ml+db));}
+function renderLight(){var s=readTigel();var v=lightFromTigel(s);var tag=document.getElementById('lightTag');if(v===null){tag.innerHTML='✦ Свет —';}else{tag.innerHTML='✦ Свет <b>'+v+'</b>'+(s.daimon?(' · '+s.daimon.name):'');}}
+
+/* ===== Навигация ===== */
+function openNode(which){
+  if(which==='center'){showToast('Наша карта — сердце игры. Скоро оживёт.');return;}
+  var node=NODES.filter(function(n){return n.id===which;})[0];if(!node)return;
+  if(node.go){location.href=node.go;}else{showToast(node.t+' · скоро откроется');}
+}
+function backToTigel(){location.href='tigel-app.html';}
+
+/* ===== Рендер мандалы (узлы по кругу) ===== */
+function renderMandala(){
+  var box=document.getElementById('mandala');var R=130,cx=150,cy=150;
+  NODES.forEach(function(n,i){
+    var a=(-90+i*(360/NODES.length))*Math.PI/180;
+    var x=cx+R*Math.cos(a),y=cy+R*Math.sin(a);
+    var el=document.createElement('div');el.className='node'+(n.go?'':' locked');
+    el.style.left=x+'px';el.style.top=y+'px';
+    el.innerHTML='<span class="nx">'+n.n+'</span><span class="ng">'+n.g+'</span><span class="nn">'+n.t+'</span>';
+    el.onclick=function(){openNode(n.id);};
+    box.appendChild(el);
+  });
+}
+
+/* ===== Рендер карточек ===== */
+function renderCards(){
+  var box=document.getElementById('cards');box.innerHTML='';
+  NODES.forEach(function(n){
+    var el=document.createElement('div');el.className='card'+(n.go?'':' locked');
+    el.innerHTML='<div class="ci">'+n.g+'</div><div class="cb"><div class="ct">'+n.t+' <span class="cn">'+n.cn+'</span></div><div class="cd">'+n.d+'</div></div>'+(n.go?'<div class="cgo">›</div>':'<div class="soon">скоро</div>');
+    if(n.go)el.onclick=function(){openNode(n.id);};
+    box.appendChild(el);
+  });
+}
+
+/* ===== Тост ===== */
+function showToast(msg){var t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.querySelector('.phone').appendChild(t);}t.textContent='✦ '+msg;t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(function(){t.classList.remove('show');},2400);}
+
+/* ===== Звёздное поле (из tigel-app) ===== */
+function starfield(){var c=document.getElementById('stars');if(!c)return;var ctx=c.getContext('2d');function size(){c.width=c.offsetWidth;c.height=c.offsetHeight;}size();var stars=Array.from({length:90},function(){return{x:Math.random(),y:Math.random(),r:Math.random()*1.3+.2,t:Math.random()*6.28,s:Math.random()*.02+.005};});function loop(){ctx.clearRect(0,0,c.width,c.height);stars.forEach(function(st){st.t+=st.s;var a=.35+.55*Math.abs(Math.sin(st.t));ctx.beginPath();ctx.arc(st.x*c.width,st.y*c.height,st.r,0,6.28);ctx.fillStyle='rgba(255,240,210,'+a+')';ctx.fill();});requestAnimationFrame(loop);}loop();window.addEventListener('resize',size);}
+
+/* ===== Инициализация ===== */
+renderMandala();renderCards();renderLight();starfield();
+</script>
+</body>
+</html>

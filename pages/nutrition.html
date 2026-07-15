@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Nutrition · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/daimon-create.css">
+<style>
+.rec-section{
+  margin-bottom:28px;
+}
+.rec-heading{
+  font-family:'Cinzel',serif;
+  font-size:clamp(13px,2.8vw,16px);
+  color:#ffd700;
+  letter-spacing:0.15em;
+  margin-bottom:12px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(201,168,76,0.15);
+}
+.favorable-heading{color:rgba(100,200,100,0.9)}
+.unfavorable-heading{color:rgba(255,120,80,0.9)}
+.rec-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(13px,2.5vw,15px);
+  color:rgba(255,248,214,0.65);
+  line-height:1.6;
+}
+.food-category{
+  margin-bottom:14px;
+}
+.food-cat-label{
+  font-size:11px;
+  color:rgba(255,248,214,0.4);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.food-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.food-tag{
+  display:inline-block;
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:6px;
+  font-family:'JetBrains Mono',monospace;
+}
+.favorable .food-tag{
+  background:rgba(100,200,100,0.06);
+  border:1px solid rgba(100,200,100,0.15);
+  color:rgba(100,200,100,0.8);
+}
+.unfavorable .food-tag{
+  background:rgba(255,120,80,0.06);
+  border:1px solid rgba(255,120,80,0.15);
+  color:rgba(255,120,80,0.7);
+}
+.recipe-card{
+  background:rgba(201,168,76,0.04);
+  border:1px solid rgba(201,168,76,0.12);
+  border-radius:10px;
+  padding:16px;
+  margin-bottom:12px;
+}
+.recipe-name{
+  font-family:'Cinzel',serif;
+  font-size:14px;
+  color:#c9a84c;
+  letter-spacing:0.1em;
+  margin-bottom:6px;
+}
+.recipe-desc{
+  font-family:'Cormorant Garamond',serif;
+  font-size:13px;
+  color:rgba(255,248,214,0.55);
+  line-height:1.5;
+  margin-bottom:10px;
+}
+.recipe-ingredients{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+}
+.ingredient-tag{
+  font-size:10px;
+  padding:2px 8px;
+  border-radius:4px;
+  background:rgba(201,168,76,0.06);
+  border:1px solid rgba(201,168,76,0.1);
+  color:rgba(255,248,214,0.45);
+  font-family:'JetBrains Mono',monospace;
+}
+</style>
+</head>
+<body>
+
+<div class="page-shell">
+  <header class="page-header">
+    <a href="../index.html" class="back-link" data-i18n="app.back">LOBBY</a>
+    <h1 class="page-title" data-i18n="nutr.title">NUTRITION</h1>
+    <div class="page-subtitle" data-i18n="nutr.subtitle">Ayurvedic dietary recommendations</div>
+  </header>
+
+  <div id="nutrition-content"></div>
+</div>
+
+<script type="module">
+import { init } from '../js/nutrition.js';
+init();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "tigel-core",
+  "version": "0.1.0",
+  "description": "Типизированное ядро движка AWARA / ТИГЕЛЬ: Ключ дня, Арт дня, Трек дня на реальных данных из data/*.json",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "bundle": "tsc -p tsconfig.json && copy dist\\index.js tigel-core.global.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang='ru'>
+<head>
+<meta charset='utf-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'/>
+<title>AWARA · Хроника</title>
+<link rel='preconnect' href='https://fonts.googleapis.com'/>
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin/>
+<link href='https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap' rel='stylesheet'/>
+<style>
+:root{--bg:#05050a;--gold:#d9b46a;--gold2:#e8c987;--ink:#ece6d6;--muted:#9a93a8;--line:rgba(217,180,106,.28);--panel:rgba(20,18,30,.55)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.5;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+.bg{position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 50% at 50% 16%,rgba(96,58,150,.38),transparent 70%),radial-gradient(45% 40% at 80% 72%,rgba(190,138,64,.18),transparent 70%),radial-gradient(50% 45% at 16% 76%,rgba(44,86,150,.20),transparent 70%),#05050a}
+.stars{position:fixed;inset:0;z-index:-1;opacity:.5;background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 70% 18%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 42% 70%,rgba(255,255,255,.6),transparent),radial-gradient(1px 1px at 85% 60%,rgba(255,255,255,.45),transparent),radial-gradient(1px 1px at 55% 44%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 32% 52%,rgba(255,255,255,.4),transparent)}
+.wrap{max-width:1100px;margin:0 auto;padding:26px 20px 130px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:6px}
+.back{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:8px 14px;text-decoration:none;transition:.25s;white-space:nowrap}
+.back:hover{color:var(--gold2);border-color:var(--gold)}
+.title{text-align:center;flex:1}
+.title h1{font-family:'Cinzel',serif;font-weight:600;font-size:30px;letter-spacing:.18em;color:var(--gold2);text-transform:uppercase}
+.title p{color:var(--muted);font-style:italic;font-size:16px;margin-top:2px}
+.spacer{width:92px}
+.stats{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:20px 0 30px}
+.stat{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:130px;padding:13px 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);backdrop-filter:blur(8px)}
+.stat .v{font-family:'JetBrains Mono',monospace;font-size:22px;color:var(--gold2)}
+.stat .k{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+section{margin:34px 0}
+.sec-h{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.sec-h h2{font-family:'Cinzel',serif;font-weight:500;font-size:20px;letter-spacing:.12em;color:var(--gold2);text-transform:uppercase;white-space:nowrap}
+.sec-h .rule{height:1px;flex:1;background:linear-gradient(90deg,var(--line),transparent)}
+.grid{display:grid;gap:16px}
+.matrices{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.mx{position:relative;border:1px solid var(--line);border-radius:16px;padding:18px;background:var(--panel);backdrop-filter:blur(8px);overflow:hidden;transition:.3s}
+.mx:hover{transform:translateY(-3px);border-color:var(--gold)}
+.mx.locked{opacity:.42;filter:grayscale(.6)}
+.mx .glyph{font-size:30px;margin-bottom:8px;filter:drop-shadow(0 0 8px currentColor)}
+.mx h3{font-family:'Cinzel',serif;font-weight:500;font-size:16px;letter-spacing:.04em;margin-bottom:2px}
+.mx .trad{font-size:14px;color:var(--muted);font-style:italic;margin-bottom:12px}
+.mx .lvl{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)}
+.bar{height:6px;flex:1;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.profile{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+@media(max-width:760px){.profile{grid-template-columns:1fr}}
+.portrait,.gen{border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--panel);backdrop-filter:blur(8px)}
+.portrait .arch{font-family:'Cinzel',serif;font-size:22px;color:var(--gold2);letter-spacing:.05em;margin-bottom:6px}
+.portrait .desc{font-size:17px}
+.gen h3{font-family:'Cinzel',serif;color:var(--gold2);letter-spacing:.05em;margin-bottom:8px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold2);border:1px solid var(--line);border-radius:999px;padding:5px 10px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#1a160e;background:linear-gradient(90deg,var(--gold),var(--gold2));border:none;border-radius:999px;padding:11px 18px;cursor:pointer;transition:.25s}
+.btn:hover{filter:brightness(1.1);box-shadow:0 0 18px rgba(217,180,106,.4)}
+.chests{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.chest{text-align:center;border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--panel);backdrop-filter:blur(8px);transition:.3s}
+.chest.ready{border-color:var(--gold)}
+.chest .ic{font-size:46px;filter:drop-shadow(0 0 10px rgba(217,180,106,.5))}
+.chest.ready .ic{animation:bob 2s ease-in-out infinite}
+.chest.locked{opacity:.5}
+.chest.opened .ic{opacity:.55}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.chest h3{font-family:'Cinzel',serif;font-size:16px;margin:8px 0 8px}
+.chest .req{font-size:14px;color:var(--muted);margin-bottom:12px;min-height:30px}
+.fab{position:fixed;right:22px;bottom:22px;z-index:30}
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(3,3,8,.7);backdrop-filter:blur(6px)}
+.modal.show{display:flex}
+.sheet{position:relative;width:100%;max-width:560px;max-height:86vh;overflow:auto;border:1px solid var(--gold);border-radius:20px;padding:26px;background:linear-gradient(180deg,rgba(28,24,40,.96),rgba(12,10,18,.97))}
+.sheet h2{font-family:'Cinzel',serif;color:var(--gold2);letter-spacing:.08em;margin-bottom:6px}
+.close{position:absolute;top:14px;right:18px;cursor:pointer;color:var(--muted);font-size:24px;line-height:1}
+.close:hover{color:var(--gold2)}
+.inv-item{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}
+.inv-item.dashed{border-style:dashed}
+.inv-item .gl{font-size:26px}
+.inv-item .nm{flex:1}
+.inv-item .price{font-family:'JetBrains Mono',monospace;color:var(--gold2)}
+.field{display:flex;gap:8px;margin-top:14px}
+.field input,.field select{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:16px}
+.reward{text-align:center;padding:10px}
+.reward .big{font-size:56px;filter:drop-shadow(0 0 16px var(--gold))}
+.reward .shard{display:inline-block;font-family:'JetBrains Mono',monospace;color:var(--gold2);font-size:20px;margin-top:10px}
+pre.prm{white-space:pre-wrap;font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:12px;padding:14px;margin:14px 0;color:var(--gold2)}
+.tomorrow{border:1px solid var(--gold);border-radius:16px;padding:20px;background:var(--panel);backdrop-filter:blur(8px)}
+.t-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.t-date{font-family:'Cinzel',serif;font-size:18px;color:var(--gold2);letter-spacing:.05em}
+.t-foci{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2);text-transform:uppercase;letter-spacing:.08em}
+.t-note{font-size:16px;margin-bottom:14px}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.mcell{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:11px;padding:9px 12px;background:rgba(255,255,255,.03)}
+.mk{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mv{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--gold2)}
+.day{border:1px solid var(--line);border-radius:14px;background:var(--panel);backdrop-filter:blur(8px);margin-bottom:12px;overflow:hidden}
+.day summary{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;cursor:pointer;list-style:none}
+.day summary::-webkit-details-marker{display:none}
+.d-when{font-family:'Cinzel',serif;font-size:16px;color:var(--gold2);min-width:90px}
+.d-meta{flex:1;color:var(--muted);font-style:italic;font-size:15px}
+.d-light{font-family:'JetBrains Mono',monospace;color:var(--gold2)}
+.d-body{padding:0 18px 16px}
+.d-prax{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+footer{text-align:center;color:var(--muted);font-style:italic;font-size:14px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class='bg'></div><div class='stars'></div>
+<div class='wrap'>
+  <header class='top'>
+    <a class='back' href='./app/istok.html'>← Исток</a>
+    <div class='title'><h1>Хроника</h1><p>летопись пройденного света и матриц</p></div>
+    <div class='spacer'></div>
+  </header>
+  <div class='stats' id='stats'></div>
+  <section>
+    <div class='sec-h'><h2>Вводка на завтра</h2><div class='rule'></div></div>
+    <div id='tomorrow'></div>
+  </section>
+  <section>
+    <div class='sec-h'><h2>Пройденные матрицы</h2><div class='rule'></div></div>
+    <div class='grid matrices' id='matrices'></div>
+  </section>
+  <section>
+    <div class='sec-h'><h2>Духовный профиль</h2><div class='rule'></div></div>
+    <div class='profile'>
+      <div class='portrait' id='portrait'></div>
+      <div class='gen'>
+        <h3>Генерация образа</h3>
+        <p style='color:var(--muted);font-size:15px'>Из активных матриц рождается уникальный образ твоего пути.</p>
+        <div style='margin-top:16px'><button class='btn' id='genBtn'>✶ Сгенерировать образ</button></div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class='sec-h'><h2>Сундуки</h2><div class='rule'></div></div>
+    <div class='grid chests' id='chests'></div>
+  </section>
+  <section>
+    <div class='sec-h'><h2>Дни пути</h2><div class='rule'></div></div>
+    <div id='days'></div>
+  </section>
+  <footer>Отдельная страница Хроники · на объединении с Истоком кнопка «Хроника» в яйце откроет её, а данные подтянутся из живого состояния игрока.</footer>
+</div>
+<div class='fab'><button class='btn' id='fabInv'>⬡ Инвентарь силы</button></div>
+
+<div class='modal' id='m-chest'><div class='sheet'><span class='close' data-close>×</span><div id='chestBody'></div></div></div>
+<div class='modal' id='m-gen'><div class='sheet'><span class='close' data-close>×</span><h2>Образ пути</h2><p style='color:var(--muted);font-size:15px'>Промт собран из твоих активных матриц. На объединении с Истоком он пойдёт прямо в генератор образов.</p><pre class='prm' id='prm'></pre><button class='btn' id='copyBtn'>Скопировать промт</button></div></div>
+<div class='modal' id='m-inv'><div class='sheet'><span class='close' data-close>×</span><h2>Инвентарь силы</h2><p style='color:var(--muted);font-size:15px'>Реальные предметы силы, оцифрованные и взвешенные в свете. Их свет-цена питает матрицы.</p><div id='invList'></div><div class='inv-item dashed'><span class='nm'>Итог свет-цены</span><span class='price' id='invTotal'></span></div><div class='field'><input id='invName' placeholder='Название предмета'/><select id='invType'><option value='🍵'>Чайное</option><option value='🪔'>Алтарное</option><option value='🗿'>Мурти</option><option value='📿'>Чётки</option><option value='🔔'>Звук</option><option value='✦'>Иное</option></select></div><div style='margin-top:12px'><button class='btn' id='addBtn'>Оцифровать предмет</button></div></div></div>
+
+<script>
+var KEY='awara_chronicle_v1';
+var ICON={prah:'🗃',rasplav:'🔥',siyanie:'🌟',voronka:'🌀'};
+var DEFAULT={
+ matrices:[
+  {id:'ved',name:'Ведическая',trad:'Веды · Ом',glyph:'🕉',color:'#e8c987',level:6},
+  {id:'tao',name:'Даосская',trad:'Дао · Тайцзи',glyph:'☯',color:'#7fd1c0',level:5},
+  {id:'tan',name:'Тантрическая',trad:'Тантра · Шакти',glyph:'🔱',color:'#e08ac9',level:4},
+  {id:'sha',name:'Шаманская',trad:'Перу · Рапэ',glyph:'🪶',color:'#d8a45a',level:3},
+  {id:'chr',name:'Христово-гностическая',trad:'Логос · Агапэ',glyph:'✝',color:'#cfd6ef',level:2},
+  {id:'kab',name:'Каббалистическая',trad:'Древо · Сфирот',glyph:'🌳',color:'#9aa0c0',level:0},
+  {id:'alc',name:'Алхимическая',trad:'Magnum Opus',glyph:'⚗',color:'#c9a86a',level:0}
+ ],
+ chests:[
+  {id:'prah',name:'Сундук Праха',req:'Открой светом ≥ 20',shards:3,card:null,state:'locked'},
+  {id:'rasplav',name:'Сундук Расплава',req:'Тантрическая ур. ≥ 4',shards:5,card:'tan',state:'locked'},
+  {id:'siyanie',name:'Сундук Сияния',req:'Открой светом ≥ 120',shards:8,card:'ved',state:'locked'},
+  {id:'voronka',name:'Звёздная воронка',req:'Свет ≥ 300 + 3 матрицы',shards:13,card:null,state:'locked'}
+ ],
+ shards:0,cards:[],
+ inventory:[{gl:'🍵',nm:'Чайная доска',price:12},{gl:'🪔',nm:'Алтарь',price:21},{gl:'🗿',nm:'Мурти',price:18}]
+};
+function load(){try{var r=localStorage.getItem(KEY);if(r)return JSON.parse(r);}catch(e){}var d=JSON.parse(JSON.stringify(DEFAULT));save(d);return d;}
+function save(s){try{localStorage.setItem(KEY,JSON.stringify(s));}catch(e){}}
+var ST=load();
+function el(id){return document.getElementById(id);}
+function lightState(){try{var L=window.AwaraLight;if(L&&L.state){var s=L.state();return s;}}catch(e){}return null;}
+function svetNow(){var s=lightState();return s&&typeof s.svet==='number'?Math.round(s.svet):42;}
+function mxLevel(id){var m=ST.matrices.find(function(x){return x.id===id;});return m?m.level:0;}
+function activeCount(){return ST.matrices.filter(function(m){return m.level>0;}).length;}
+function mera(){return Math.max.apply(null,ST.matrices.map(function(m){return m.level;}).concat([0]));}
+function chestReady(c){var sv=svetNow();if(c.id==='prah')return sv>=20;if(c.id==='rasplav')return mxLevel('tan')>=4;if(c.id==='siyanie')return sv>=120;if(c.id==='voronka')return sv>=300&&activeCount()>=3;return false;}
+function stat(v,k){return '<div class=\"stat\"><span class=\"v\">'+v+'</span><span class=\"k\">'+k+'</span></div>';}
+function renderStats(){var h=stat(svetNow(),'Свет осознанности')+stat(mera()+'/9','Мера пути')+stat(ST.shards,'Осколки светкоина')+stat(ST.cards.length,'Карты матриц');if(ST.shards>=9)h+='<div class=\"stat\" style=\"cursor:pointer;border-color:var(--gold)\" data-forge><span class=\"v\">⚒</span><span class=\"k\">Выковать карту</span></div>';el('stats').innerHTML=h;}
+function renderMatrices(){el('matrices').innerHTML=ST.matrices.map(function(m){var locked=m.level<=0;return '<div class=\"mx'+(locked?' locked':'')+'\" style=\"color:'+m.color+'\"><div class=\"glyph\">'+m.glyph+'</div><h3 style=\"color:var(--ink)\">'+m.name+'</h3><div class=\"trad\">'+m.trad+'</div><div class=\"lvl\"><span>ур.'+m.level+'</span><span class=\"bar\"><i style=\"width:'+(m.level/9*100)+'%\"></i></span><span>'+m.level+'/9</span></div></div>';}).join('');}
+function renderChests(){el('chests').innerHTML=ST.chests.map(function(c){var opened=c.state==='opened';var ready=!opened&&chestReady(c);var cls=opened?'opened':(ready?'ready':'locked');var body;if(opened)body='<div class=\"req\" style=\"color:var(--gold2)\">Открыт · +'+c.shards+' осколков</div>';else if(ready)body='<div class=\"req\">'+c.req+'</div><button class=\"btn\" data-open-chest=\"'+c.id+'\">Открыть</button>';else body='<div class=\"req\">🔒 '+c.req+'</div>';return '<div class=\"chest '+cls+'\"><div class=\"ic\">'+ICON[c.id]+'</div><h3>'+c.name+'</h3>'+body+'</div>';}).join('');}
+function profile(){var act=ST.matrices.filter(function(m){return m.level>0;}).slice().sort(function(a,b){return b.level-a.level;});if(!act.length)return{arch:'Странник Праха',desc:'Путь ещё не начат — матрицы спят.',tags:[]};var names={ved:'Жрец Ра',tao:'Бессмертный Потока',tan:'Алхимик Шакти',sha:'Ходящий между мирами',chr:'Носитель Логоса',kab:'Строитель Древа',alc:'Мастер Великого Делания'};var top=act[0];var arch=names[top.id]||'Восходящий';if(act.length>=3)arch=arch+' · Синтез';var desc='В тебе сплетаются '+act.slice(0,3).map(function(m){return m.name.toLowerCase()+' (ур.'+m.level+')';}).join(', ')+'. Ведущая грань — '+top.trad+', мера '+top.level+'/9.';return{arch:arch,desc:desc,tags:act.map(function(m){return m.name+' '+m.level;})};}
+function renderProfile(){var p=profile();el('portrait').innerHTML='<div class=\"arch\">'+p.arch+'</div><div class=\"desc\">'+p.desc+'</div>'+(p.tags.length?'<div class=\"tags\">'+p.tags.map(function(t){return '<span class=\"tag\">'+t+'</span>';}).join('')+'</div>':'');}
+function renderInv(){el('invList').innerHTML=ST.inventory.map(function(it){return '<div class=\"inv-item\"><span class=\"gl\">'+it.gl+'</span><span class=\"nm\">'+it.nm+'</span><span class=\"price\">'+it.price+' ✦</span></div>';}).join('');el('invTotal').textContent=ST.inventory.reduce(function(a,b){return a+b.price;},0)+' ✦';}
+var WD=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+var VARA=['Сурья (Солнце)','Чандра (Луна)','Мангала (Марс)','Будха (Меркурий)','Гуру (Юпитер)','Шукра (Венера)','Шани (Сатурн)'];
+var NAK=['Ашвини','Бхарани','Криттика','Рохини','Мригашира','Ардра','Пунарвасу','Пушья','Ашлеша','Магха','Пурва Пхалгуни','Уттара Пхалгуни','Хаста','Читра','Свати','Вишакха','Анурадха','Джьештха','Мула','Пурва Ашадха','Уттара Ашадха','Шравана','Дхаништха','Шатабхиша','Пурва Бхадрапада','Уттара Бхадрапада','Ревати'];
+var CHEL=['Дерево','Дерево','Огонь','Огонь','Земля','Земля','Металл','Металл','Вода','Вода'];
+var CHAN=['Крыса','Бык','Тигр','Кролик','Дракон','Змея','Лошадь','Коза','Обезьяна','Петух','Собака','Свинья'];
+var CHERT=['Дева','Вепрь','Щука','Лебедь','Змей','Ворон','Медведь','Бусел','Волк','Лиса','Тур','Лось','Финист','Конь','Орёл','Раса'];
+var PHASE=['Новолуние','Растущий серп','Первая четверть','Растущая луна','Полнолуние','Убывающая луна','Последняя четверть','Убывающий серп'];
+var FOCI={1:'Ведическая · намерение',2:'Тантрическая · полярность',3:'Творение образов',4:'Даосская · поток',5:'Шаманская · обнуление',6:'Служение · алтарь',7:'Тишина · медитация',8:'Светокоины · обмен',9:'Синтез · переход'};
+var DAYPRAX=[['Ведическая','Шаманская Рапэ','Тантрическая','Прогулка в горах','Чайная церемония'],['Хатха-йога','Мантра','Даосская циркуляция','Чайная'],['Медитация семьёй','Ведическая','Прогулка'],['Рапэ','Тантрическая','Работа над игрой']];
+function daynum(d){return Math.floor(d.getTime()/86400000);}
+function reduceNum(n){while(n>9){n=String(n).split('').reduce(function(a,c){return a+(+c);},0);}return n;}
+function numerology(d){var s=d.getFullYear()+(d.getMonth()+1)+d.getDate();var r=reduceNum(s);return r||9;}
+function moonPhase(d){var ref=Date.UTC(2000,0,6,18,14);var syn=29.530588853;var days=(d.getTime()-ref)/86400000;var pos=((days%syn)+syn)%syn;var idx=Math.floor(pos/syn*8+0.5)%8;return{name:PHASE[idx],day:Math.floor(pos)+1};}
+function metrics(d){var dn=daynum(d);var mp=moonPhase(d);var num=numerology(d);return{weekday:WD[d.getDay()],vara:VARA[d.getDay()],nakshatra:NAK[((dn%27)+27)%27],phase:mp.name,lunarDay:mp.day,element:CHEL[((dn%10)+10)%10],animal:CHAN[((dn%12)+12)%12],chertog:CHERT[((dn%16)+16)%16],num:num,focus:FOCI[num]||'Гармонизация'};}
+function fmtDate(d){return ('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+d.getFullYear();}
+function metricGrid(m){var items=[['День недели',m.weekday],['Ведический · вара',m.vara],['Накшатра',m.nakshatra],['Луна',m.phase+' · '+m.lunarDay+'-й л.д.'],['Китайский',m.element+' · '+m.animal],['Славянский · чертог',m.chertog],['Число дня',m.num],['Фокус дня',m.focus]];return '<div class="mgrid">'+items.map(function(it){return '<div class="mcell"><span class="mk">'+it[0]+'</span><span class="mv">'+it[1]+'</span></div>';}).join('')+'</div>';}
+function adviceFor(m){var f=m.focus;if(/Шаман/.test(f))return 'день обнуления и Рапэ.';if(/Тантр/.test(f))return 'день полярности и циркуляции.';if(/Даос/.test(f))return 'день потока и чайной церемонии.';if(/Ведич/.test(f))return 'день намерения и мантры.';if(/Служ/.test(f))return 'день алтаря и подношения.';if(/Творен/.test(f))return 'день рождения новых образов.';return 'день внутренней тишины.';}
+function renderTomorrow(){var t=new Date();t.setDate(t.getDate()+1);var m=metrics(t);el('tomorrow').innerHTML='<div class="tomorrow"><div class="t-head"><span class="t-date">'+fmtDate(t)+' · '+m.weekday+'</span><span class="t-foci">'+m.focus+'</span></div><p class="t-note">Завтра свет лучше всего собирать через грань <b>'+m.focus+'</b>. Накшатра '+m.nakshatra+', '+m.phase.toLowerCase()+' — '+adviceFor(m)+'</p>'+metricGrid(m)+'</div>';}
+function renderDays(){var out=[];for(var i=0;i<4;i++){var d=new Date();d.setDate(d.getDate()-i);var m=metrics(d);var prax=DAYPRAX[i%DAYPRAX.length];var light=4+(((daynum(d)%5)+5)%5);var label=i===0?'Сегодня':(i===1?'Вчера':fmtDate(d));out.push('<details class="day"'+(i===0?' open':'')+'><summary><span class="d-when">'+label+'</span><span class="d-meta">'+m.weekday+' · '+m.nakshatra+' · '+m.phase+'</span><span class="d-light">+'+light+' ✦</span></summary><div class="d-body"><div class="d-prax">'+prax.map(function(p){return '<span class="tag">'+p+'</span>';}).join('')+'</div>'+metricGrid(m)+'</div></details>');}el('days').innerHTML=out.join('');}
+function renderAll(){renderStats();renderMatrices();renderChests();renderProfile();renderDays();renderTomorrow();}
+function openChest(id){var c=ST.chests.find(function(x){return x.id===id;});if(!c||c.state==='opened')return;c.state='opened';ST.shards+=c.shards;var cardName='';if(c.card){var m=ST.matrices.find(function(x){return x.id===c.card;});cardName=m?m.name:c.card;if(ST.cards.indexOf(cardName)<0)ST.cards.push(cardName);}try{if(window.AwaraLight&&AwaraLight.addParticles)AwaraLight.addParticles(c.shards);}catch(e){}save(ST);el('chestBody').innerHTML='<div class=\"reward\"><div class=\"big\">'+ICON[id]+'</div><div class=\"shard\">+'+c.shards+' осколков светкоина</div>'+(cardName?'<div style=\"margin-top:10px;color:var(--gold2);font-family:Cinzel,serif\">✦ Карта матрицы: '+cardName+'</div>':'')+'<p style=\"color:var(--muted);margin-top:12px\">Осколки сложатся в карты матриц. Собери 9 — выкуёшь новую.</p></div>';show('m-chest');renderAll();}
+function forge(){if(ST.shards<9)return;ST.shards-=9;var nm='Карта Света #'+(ST.cards.length+1);ST.cards.push(nm);save(ST);el('chestBody').innerHTML='<div class=\"reward\"><div class=\"big\">✦</div><div class=\"shard\">Выкована: '+nm+'</div><p style=\"color:var(--muted);margin-top:12px\">9 осколков сплавлены в карту матрицы.</p></div>';show('m-chest');renderAll();}
+function addArt(){var n=(el('invName').value||'').trim();if(!n)return;var t=el('invType').value;var price=8+Math.floor(Math.random()*15);ST.inventory.push({gl:t,nm:n,price:price});save(ST);el('invName').value='';renderInv();renderStats();}
+function genImage(){var act=ST.matrices.filter(function(m){return m.level>0;}).sort(function(a,b){return b.level-a.level;});var p=profile();var prompt='Ethereal premium spiritual portrait, '+p.arch+', fusion of '+act.map(function(m){return m.name+' tradition (level '+m.level+')';}).join(' + ')+', sacred geometry, golden particles of awareness-light, deep cosmic indigo and gold palette, luminous chakra column, cinematic, highly detailed, mystical, 8k';el('prm').textContent=prompt;show('m-gen');}
+function copyPrm(){try{navigator.clipboard.writeText(el('prm').textContent);el('copyBtn').textContent='Скопировано ✓';setTimeout(function(){el('copyBtn').textContent='Скопировать промт';},1500);}catch(e){}}
+function show(id){el(id).classList.add('show');}
+function hide(id){el(id).classList.remove('show');}
+document.addEventListener('click',function(e){var oc=e.target.closest('[data-open-chest]');if(oc){openChest(oc.getAttribute('data-open-chest'));return;}var cl=e.target.closest('[data-close]');if(cl){cl.closest('.modal').classList.remove('show');return;}var fg=e.target.closest('[data-forge]');if(fg){forge();return;}if(e.target.classList&&e.target.classList.contains('modal'))e.target.classList.remove('show');});
+el('fabInv').addEventListener('click',function(){renderInv();show('m-inv');});
+el('copyBtn').addEventListener('click',copyPrm);
+el('addBtn').addEventListener('click',addArt);
+el('genBtn').addEventListener('click',genImage);
+renderAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "purpose": "Defines sensory, meditative and ritual layers for AWARA daily play: sound, visuals, movement, breath, food, cards and AI-generated guidance.",
+  "daily_ritual_flow": [
+    {
+      "step": "arrival",
+      "title": "Вход в пространство",
+      "description": "The player enters the game and receives the atmosphere of the day before any task appears.",
+      "outputs": ["day_visual_theme", "ambient_soundscape", "daily_key"]
+    },
+    {
+      "step": "attunement",
+      "title": "Настройка",
+      "description": "The game invites a short pause, breath, body scan or simple meditation.",
+      "outputs": ["breath_prompt", "body_prompt", "attention_anchor"]
+    },
+    {
+      "step": "tigel_entry",
+      "title": "Тигель",
+      "description": "The player writes, speaks or structures the lived experience through feet, heart, head and cooperation.",
+      "outputs": ["raw_entry", "structured_entry"]
+    },
+    {
+      "step": "oracle_reflection",
+      "title": "Ответ Разума Игры",
+      "description": "The Oracle returns poetic reflection and machine-readable rewards.",
+      "outputs": ["oracle_text", "light_awarded", "elements", "agents", "matrices", "cards"]
+    },
+    {
+      "step": "reward_reveal",
+      "title": "Открытие награды",
+      "description": "Cards, light, artifacts, advice and music are revealed as the crystallized result of the day.",
+      "outputs": ["card_reveal", "artifact", "music_prompt", "practice_tomorrow", "ayurvedic_advice"]
+    },
+    {
+      "step": "integration",
+      "title": "Перенос в жизнь",
+      "description": "The player receives one simple real-life practice for the next day.",
+      "outputs": ["tomorrow_action", "real_life_bridge"]
+    }
+  ],
+  "sensory_channels": {
+    "sound": {
+      "description": "Ambient sound, generated music, mantra-like textures, nature sounds and card reveal tones.",
+      "modes": ["silence", "ambient", "mantra", "nature", "ritual_drums", "celestial", "earth_temple", "cosmic"],
+      "ai_output_fields": ["music_prompt", "soundscape_tags", "tempo", "mood", "instruments"]
+    },
+    "visual": {
+      "description": "Backgrounds, particles, colors, card reveal animations, temple/cosmos transformations.",
+      "modes": ["inner_soul_space", "elemental_field", "star_temple", "planetary_grid", "loka_space", "divine_board"],
+      "ai_output_fields": ["visual_theme", "colors", "symbols", "card_prompt", "dashboard_shift"]
+    },
+    "breath": {
+      "description": "Short breath practices connected to daily energy and element balance.",
+      "modes": ["grounding", "heart_softening", "fire_activation", "air_clarity", "ether_silence"],
+      "linked_schema": "data/breath_path_layers.json",
+      "ai_output_fields": ["breath_path_stage", "breath_practice", "duration_minutes", "attention_anchor"]
+    },
+    "body": {
+      "description": "Embodied prompts for feet, posture, walking, rest, movement and physical grounding.",
+      "modes": ["walk", "stretch", "stillness", "cleaning", "craft", "service_action"],
+      "ai_output_fields": ["body_practice", "earth_action", "proof_suggestion"]
+    },
+    "food_and_ayurveda": {
+      "description": "Gentle advice around food, herbs, warmth, rest and daily energetic balance.",
+      "modes": ["warming", "cooling", "light", "grounding", "cleansing", "simple_food"],
+      "ai_output_fields": ["ayurvedic_advice", "food_hint", "herb_hint"]
+    },
+    "craft_and_materials": {
+      "description": "Real-life bridge into stones, minerals, clay, plants, oils, music and handmade practices.",
+      "modes": ["stone", "mineral", "clay", "plant", "oil", "music", "drawing", "altar", "temple_craft"],
+      "ai_output_fields": ["material_practice", "object_to_charge", "real_life_bridge"]
+    }
+  },
+  "layer_visual_evolution": {
+    "soul": {
+      "visual_mood": "dark luminous inner space, central spark, four initiation spheres, subtle particles",
+      "sound_mood": "soft drone, heartbeat, breath, distant bells",
+      "main_interaction": "Tigel, Oracle, Iskra, first cards"
+    },
+    "earth": {
+      "visual_mood": "Star Temple, Vastu grid, elemental rooms, warm golden earth light",
+      "sound_mood": "temple ambience, birds, clay, water, hearth, gentle instruments",
+      "main_interaction": "build spaces from light, complete embodied practices"
+    },
+    "cosmos": {
+      "visual_mood": "star maps, lokas, planetary links, agent domains, cosmic gates",
+      "sound_mood": "celestial pads, chimes, deep space resonance, mantra winds",
+      "main_interaction": "open lokas, tune planetary links, receive higher cards"
+    },
+    "divine_game": {
+      "visual_mood": "ornate sacred board, living cards, moving lights, multiplayer ritual field",
+      "sound_mood": "festival ritual music, drums, choir, cosmic orchestration",
+      "main_interaction": "play divine moves, combine cards, create universes"
+    }
+  },
+  "oracle_sensory_output_contract": {
+    "music_prompt": "Prompt for Suno or another music generator based on the day energy.",
+    "visual_prompt": "Prompt for daily visual atmosphere or generated image.",
+    "breath_practice": "Short breath practice for the player's current state.",
+    "body_practice": "Embodied practice connected to feet/body/earth.",
+    "ayurvedic_advice": "Simple food/rest/herb advice, not medical diagnosis.",
+    "material_practice": "Optional real-life practice with stone, plant, oil, clay, sound or craft.",
+    "tomorrow_energy": "Preview of tomorrow's energetic direction.",
+    "real_life_bridge": "One action that carries the game into ordinary life."
+  }
+}

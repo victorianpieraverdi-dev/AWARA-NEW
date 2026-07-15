@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Card Deck — AWARA</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(10, 6, 30, 0.9), transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(201, 120, 40, 0.15), transparent 45%),
+        radial-gradient(ellipse at 20% 80%, rgba(245, 158, 11, 0.14), transparent 45%),
+        linear-gradient(180deg, #020810 0%, #050119 45%, #030618 100%),
+        #000;
+      color: #dcd2be;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Звёзды */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,215,0,0.6), transparent),
+        radial-gradient(1px 1px at 30% 50%, rgba(255,215,0,0.4), transparent),
+        radial-gradient(1.5px 1.5px at 50% 15%, rgba(255,248,214,0.5), transparent),
+        radial-gradient(1px 1px at 70% 40%, rgba(201,168,76,0.5), transparent),
+        radial-gradient(1px 1px at 90% 70%, rgba(255,215,0,0.3), transparent),
+        radial-gradient(1.5px 1.5px at 15% 85%, rgba(255,248,214,0.4), transparent),
+        radial-gradient(1px 1px at 45% 75%, rgba(201,168,76,0.4), transparent),
+        radial-gradient(1px 1px at 80% 10%, rgba(255,215,0,0.5), transparent),
+        radial-gradient(1px 1px at 60% 90%, rgba(255,248,214,0.3), transparent),
+        radial-gradient(1.5px 1.5px at 25% 35%, rgba(201,168,76,0.6), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cards-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Хедер */
+    .cards-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding: 16px 20px;
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 12px;
+      background: rgba(10,6,30,0.6);
+    }
+
+    .cards-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #c9a84c;
+      text-decoration: none;
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+    .cards-back:hover { color: #ffd700; }
+
+    .cards-back-arrow {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .cards-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(16px, 4vw, 22px);
+      color: #c9a84c;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .cards-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: rgba(255,248,214,0.6);
+    }
+    .cards-counter b { color: #ffd700; }
+
+    /* Подзаголовок */
+    .cards-subtitle {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 14px;
+      color: rgba(255,248,214,0.5);
+      margin-bottom: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Фильтр */
+    .filter-section {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 20px;
+      color: rgba(255,248,214,0.5);
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .filter-btn:hover {
+      border-color: #c9a84c;
+      color: #ffd700;
+    }
+    .filter-btn.active {
+      background: rgba(201,168,76,0.15);
+      border-color: #c9a84c;
+      color: #ffd700;
+    }
+
+    /* Сетка карт */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (min-width: 480px) {
+      .cards-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width: 768px) {
+      .cards-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* Карта */
+    .card {
+      aspect-ratio: 2 / 3;
+      background: rgba(10,6,30,0.5);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 12px;
+      padding: 12px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      backdrop-filter: blur(4px);
+    }
+    .card:hover {
+      border-color: #ffd700;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(201,168,76,0.15);
+      background: rgba(201,168,76,0.05);
+    }
+
+    /* Рарность — рамки */
+    .card.rarity-common { border-color: rgba(160,160,160,0.35); }
+    .card.rarity-uncommon { border-color: rgba(80,190,160,0.42); }
+    .card.rarity-rare { border-color: rgba(255,215,0,0.52); }
+    .card.rarity-epic { border-color: rgba(170,90,255,0.58); }
+    .card.rarity-legendary {
+      border-color: rgba(255,248,214,0.82);
+      box-shadow: 0 0 18px rgba(255,248,214,0.18), inset 0 0 12px rgba(255,215,0,0.08);
+      animation: legendaryGlow 2.8s ease-in-out infinite;
+    }
+    @keyframes legendaryGlow {
+      0%, 100% { box-shadow: 0 0 16px rgba(255,248,214,0.14), inset 0 0 10px rgba(255,215,0,0.06); }
+      50% { box-shadow: 0 0 26px rgba(255,248,214,0.34), inset 0 0 18px rgba(255,215,0,0.14); }
+    }
+
+    /* Бейдж рарности */
+    .rarity-badge {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      font-size: 7px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.08em;
+      background: rgba(0,0,0,0.45);
+      border: 1px solid currentColor;
+    }
+    .rarity-badge.common { color: rgba(180,180,180,0.9); }
+    .rarity-badge.uncommon { color: rgba(92,220,170,0.95); }
+    .rarity-badge.rare { color: rgba(255,215,0,0.95); }
+    .rarity-badge.epic { color: rgba(190,120,255,0.95); }
+    .rarity-badge.legendary { color: rgba(255,248,214,1); text-shadow: 0 0 8px rgba(255,248,214,0.55); }
+
+    .card-symbol {
+      font-size: clamp(24px, 6vw, 36px);
+      margin-bottom: 8px;
+      color: #ffd700;
+    }
+
+    .card-agent {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(9px, 2.2vw, 12px);
+      color: #c9a84c;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .card-matrix {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(7px, 1.6vw, 9px);
+      color: rgba(255,248,214,0.4);
+      letter-spacing: 0.06em;
+    }
+
+    .card-cultural {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(7px, 1.6vw, 9px);
+      color: rgba(201,168,76,0.5);
+      margin-top: 4px;
+      line-height: 1.2;
+    }
+
+    /* Пустое состояние */
+    .cards-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 20px;
+      color: rgba(255,248,214,0.4);
+      font-style: italic;
+    }
+
+    /* Модалка: дополнительные стили для контента */
+    .modal-card-content {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .modal-card-content .modal-symbol {
+      font-size: 48px;
+      color: #ffd700;
+      margin-bottom: 12px;
+    }
+    .modal-card-content .modal-agent-name {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      color: #ffd700;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+    }
+    .modal-card-content .modal-cultural-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: rgba(201,168,76,0.7);
+      margin-bottom: 16px;
+    }
+    .modal-card-content .modal-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: rgba(255,248,214,0.6);
+      line-height: 2;
+      text-align: left;
+    }
+    .modal-card-content .modal-meta span {
+      color: #c9a84c;
+    }
+
+    /* Канон-лейбл */
+    .canon-label {
+      text-align: center;
+      margin-top: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,248,214,0.25);
+      letter-spacing: 0.1em;
+    }
+
+    /* Разделитель фильтров */
+    .filter-divider {
+      width: 100%;
+      height: 0;
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="cards-container">
+  <!-- Хедер -->
+  <div class="cards-header">
+    <a href="index.html" class="cards-back">
+      <span class="cards-back-arrow">&#9664;</span>
+      <span class="cards-title" data-i18n="cards.title">Колода Карт</span>
+    </a>
+    <div class="cards-counter" id="cards-counter" data-i18n="cards.counter.opened">Opened: <b>0</b> / 1578</div>
+  </div>
+
+  <div class="cards-subtitle" data-i18n="cards.subtitle">1578 Prosperity cards (693 core + 885 additional)</div>
+
+  <!-- Фильтр -->
+  <div class="filter-section" id="filter-section">
+    <button class="filter-btn active" data-filter="all" data-i18n="cards.filter.all">All</button>
+  </div>
+
+  <!-- Сетка карт -->
+  <div class="cards-grid" id="cards-grid"></div>
+
+  <!-- Канон -->
+  <div class="canon-label" id="canon-label"></div>
+</div>
+
+<!-- Модуль -->
+<script type="module">
+  import { loadAgents, loadMatrices, loadAgentMatrixMap } from './js/canon-module.js';
+  import { showModal } from './js/ui-module.js';
+  import { loadState, updateState } from './js/state-module.js';
+  import { t, initLang, createLangSwitcher, applyTranslations } from './js/i18n.js';
+  initLang();
+
+  const RARITY_LABELS = {
+    common: t('cards.rarity.common'), uncommon: t('cards.rarity.uncommon'), rare: t('cards.rarity.rare'),
+    epic: t('cards.rarity.epic'), legendary: t('cards.rarity.legendary')
+  };
+
+  let allCards = [];
+  let agents = [];
+  let matrixSubset = [];
+  let agentMatrixMap = [];
+  let cardPromptsMap = {};
+  let activeFilter = 'all';
+  let activeRarity = 'all';
+
+  // --- Загрузка данных ---
+  async function init() {
+    try {
+      agents = await loadAgents() || [];
+      const matrices = await loadMatrices() || [];
+      agentMatrixMap = await loadAgentMatrixMap() || [];
+
+      // Загружаем рарность из card_prompts.json
+      try {
+        const prompts = await fetch('data/card_prompts.json').then(r => r.json());
+        prompts.forEach(p => { cardPromptsMap[p.card_id] = p; });
+        console.log('[Cards] Загружено промптов с рарностью:', prompts.length);
+      } catch (e) { console.warn('[Cards] card_prompts.json не загружен:', e); }
+
+      console.log('[Canon] Загружено агентов:', agents.length);
+      console.log('[Canon] Загружено матриц:', matrices.length);
+      console.log('[Canon] Загружено связей agent_matrix_map:', agentMatrixMap.length);
+
+      // Используем все 33 матрицы для полной колоды
+      matrixSubset = matrices;
+      console.log('[Canon] Матрицы для колоды: все ' + matrices.length);
+
+      // Генерируем 693 core-карты (21 агентов x 33 матрицы)
+      allCards = [];
+      for (const agent of agents) {
+        for (const matrix of matrixSubset) {
+          const mapEntry = agentMatrixMap.find(
+            e => e.agent_id === agent.id && e.matrix_id === matrix.id
+          );
+
+          const promptKey = agent.slug + '__' + matrix.slug;
+          const promptData = cardPromptsMap[promptKey];
+          const rarity = promptData ? promptData.rarity : 'common';
+
+          allCards.push({
+            id: agent.id + '_' + matrix.id,
+            agent: agent,
+            matrix: matrix,
+            cardType: 'core_agent_matrix',
+            culturalName: mapEntry ? mapEntry.cultural_name : null,
+            rarity: rarity,
+            promptKey: promptKey
+          });
+        }
+      }
+
+      console.log('[Canon] Core-карт (21x33): ' + allCards.length);
+      console.assert(allCards.length === 693, '[Canon] Core-карт должно быть 693, а не ' + allCards.length);
+      console.log('[Canon] Карт сгенерировано: ' + allCards.length);
+
+      // Создаём кнопки фильтра
+      buildFilterButtons();
+
+      // Рендерим карты
+      renderCards();
+
+      // Обновляем канон-лейбл
+      document.getElementById('canon-label').textContent =
+        t('cards.canon.prefix') + agents.length + t('cards.canon.agents') + matrices.length + t('cards.canon.matrices') + allCards.length + t('cards.canon.cards');
+
+      console.log('[Cards] Экран Колоды Карт загружен');
+    } catch (err) {
+      console.error('[Cards] Ошибка инициализации:', err);
+    }
+  }
+
+  // --- Фильтр кнопки ---
+  function buildFilterButtons() {
+    const section = document.getElementById('filter-section');
+    section.innerHTML = '';
+
+    // Кнопка "Все матрицы"
+    const allBtn = document.createElement('button');
+    allBtn.className = 'filter-btn' + (activeFilter === 'all' ? ' active' : '');
+    allBtn.dataset.filter = 'all';
+    allBtn.textContent = t('cards.filter.all');
+    section.appendChild(allBtn);
+
+    // Кнопки матриц
+    for (const m of matrixSubset) {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (activeFilter === String(m.id) ? ' active' : '');
+      btn.dataset.filter = String(m.id);
+      btn.textContent = m.name;
+      section.appendChild(btn);
+    }
+
+    // Разделитель
+    const divider = document.createElement('div');
+    divider.className = 'filter-divider';
+    section.appendChild(divider);
+
+    // Кнопки рарности
+    const rarAll = document.createElement('button');
+    rarAll.className = 'filter-btn' + (activeRarity === 'all' ? ' active' : '');
+    rarAll.dataset.rarity = 'all';
+    rarAll.textContent = t('cards.filter.any.rarity');
+    section.appendChild(rarAll);
+
+    for (const [key, label] of Object.entries(RARITY_LABELS)) {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (activeRarity === key ? ' active' : '');
+      btn.dataset.rarity = key;
+      btn.textContent = label;
+      section.appendChild(btn);
+    }
+  }
+
+  // --- Обработка кликов фильтра ---
+  document.getElementById('filter-section').addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+
+    if (btn.dataset.rarity !== undefined) {
+      activeRarity = btn.dataset.rarity;
+    } else if (btn.dataset.filter !== undefined) {
+      activeFilter = btn.dataset.filter;
+    }
+    buildFilterButtons();
+    renderCards();
+  });
+
+  // --- Рендер карт ---
+  function renderCards() {
+    const grid = document.getElementById('cards-grid');
+    let filtered = allCards;
+
+    if (activeFilter !== 'all') {
+      const matrixId = parseInt(activeFilter, 10);
+      filtered = filtered.filter(c => c.matrix.id === matrixId);
+    }
+    if (activeRarity !== 'all') {
+      filtered = filtered.filter(c => c.rarity === activeRarity);
+    }
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="cards-empty">' + t('cards.empty') + '</div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(card => {
+      const symbol = getAgentSymbol(card.agent);
+      const agentName = escapeHtml(card.agent.name);
+      const matrixName = escapeHtml(card.matrix.name);
+      const cultural = card.culturalName ? escapeHtml(card.culturalName) : '';
+      const rarity = card.rarity || 'common';
+      const rarityLabel = RARITY_LABELS[rarity] || rarity;
+
+      return '<div class="card rarity-' + rarity + '" data-card-id="' + card.id + '">' +
+        '<div class="rarity-badge ' + rarity + '">' + rarityLabel + '</div>' +
+        '<div class="card-symbol">' + symbol + '</div>' +
+        '<div class="card-agent">' + agentName + '</div>' +
+        '<div class="card-matrix">' + matrixName + '</div>' +
+        (cultural ? '<div class="card-cultural">' + cultural + '</div>' : '') +
+        '</div>';
+    }).join('');
+
+    // Привязка кликов
+    grid.querySelectorAll('.card').forEach(el => {
+      el.addEventListener('click', () => {
+        const cardId = el.dataset.cardId;
+        const card = allCards.find(c => c.id === cardId);
+        if (card) showCardModal(card);
+      });
+    });
+
+    // Обновляем счётчик
+    document.getElementById('cards-counter').innerHTML =
+      t('cards.counter.opened') + ': <b>' + filtered.length + '</b> / ' + allCards.length;
+  }
+
+  // --- Модалка карты ---
+  function showCardModal(card) {
+    const symbol = getAgentSymbol(card.agent);
+    const cultural = card.culturalName || '---';
+
+    const rarity = card.rarity || 'common';
+    const rarityLabel = RARITY_LABELS[rarity] || rarity;
+
+    const content = '<div class="modal-card-content">' +
+      '<div class="modal-symbol">' + symbol + '</div>' +
+      '<div class="modal-agent-name">' + escapeHtml(card.agent.name) + '</div>' +
+      '<div class="modal-cultural-name">' + escapeHtml(cultural) + '</div>' +
+      '<div class="modal-meta">' +
+        '<div>' + t('cards.meta.matrix') + ' <span>' + escapeHtml(card.matrix.name) + '</span></div>' +
+        '<div>' + t('cards.meta.rarity') + ' <span>' + rarityLabel + '</span></div>' +
+        '<div>' + t('cards.meta.element') + ' <span>' + escapeHtml(card.agent.element || '---') + '</span></div>' +
+        '<div>' + t('cards.meta.guna') + ' <span>' + escapeHtml(card.agent.guna || '---') + '</span></div>' +
+        '<div>' + t('cards.meta.domain') + ' <span>' + escapeHtml(card.agent.domain || '---') + '</span></div>' +
+        '<div>' + t('cards.meta.zone') + ' <span>' + escapeHtml(card.agent.vastu_zone || '---') + '</span></div>' +
+        '<div>' + t('cards.meta.planet') + ' <span>' + escapeHtml(card.agent.planet || '---') + '</span></div>' +
+        '<div>' + t('cards.meta.ray') + ' <span>' + (card.agent.ray || '---') + '</span></div>' +
+      '</div>' +
+    '</div>';
+
+    showModal({
+      title: card.agent.name + ' / ' + card.matrix.name,
+      content: content
+    });
+  }
+
+  // --- Символ агента ---
+  function getAgentSymbol(agent) {
+    const symbols = {};
+    symbols[t('pass.el.fire')] = '&#9832;';
+    symbols[t('pass.el.water')] = '&#9783;';
+    symbols[t('pass.el.earth')] = '&#9795;';
+    symbols[t('pass.el.air')] = '&#9788;';
+    symbols[t('pass.el.ether')] = '&#10022;';
+    return symbols[agent.element] || '&#10022;';
+  }
+
+  // --- Экранирование HTML ---
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  init();
+</script>
+
+
+<!-- Подсказки (M-006) -->
+<button class="hint-btn" title="Hints" data-i18n-title="app.help">?</button>
+<script type="module">
+import { initHints } from './js/hints-module.js';
+initHints('cards');
+</script>
+
+<script type="module">
+  import { translatePage, setLang, getLang, t, createLangSwitcher, initLang } from './js/i18n.js';
+  initLang(); createLangSwitcher(); translatePage();
+</script>
+
+</body>
+</html>

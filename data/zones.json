@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "slug": "east",
+    "name": "Восток",
+    "direction": "Восток",
+    "element": "Огонь",
+    "planet": "Солнце",
+    "quality": "Здоровье и процветание"
+  },
+  {
+    "id": 2,
+    "slug": "southeast",
+    "name": "Юго-Восток",
+    "direction": "Юго-Восток",
+    "element": "Огонь",
+    "planet": "Венера",
+    "quality": "Энергия и сила"
+  },
+  {
+    "id": 3,
+    "slug": "south",
+    "name": "Юг",
+    "direction": "Юг",
+    "element": "Земля",
+    "planet": "Марс",
+    "quality": "Сила и дхарма"
+  },
+  {
+    "id": 4,
+    "slug": "southwest",
+    "name": "Юго-Запад",
+    "direction": "Юго-Запад",
+    "element": "Земля",
+    "planet": "Раху",
+    "quality": "Защита и стабильность"
+  },
+  {
+    "id": 5,
+    "slug": "west",
+    "name": "Запад",
+    "direction": "Запад",
+    "element": "Вода",
+    "planet": "Сатурн",
+    "quality": "Завершение и покой"
+  },
+  {
+    "id": 6,
+    "slug": "northwest",
+    "name": "Северо-Запад",
+    "direction": "Северо-Запад",
+    "element": "Воздух",
+    "planet": "Луна",
+    "quality": "Движение и перемена"
+  },
+  {
+    "id": 7,
+    "slug": "north",
+    "name": "Север",
+    "direction": "Север",
+    "element": "Воздух",
+    "planet": "Меркурий",
+    "quality": "Богатство и мудрость"
+  },
+  {
+    "id": 8,
+    "slug": "northeast",
+    "name": "Северо-Восток",
+    "direction": "Северо-Восток",
+    "element": "Эфир",
+    "planet": "Юпитер",
+    "quality": "Духовность и прозрение"
+  },
+  {
+    "id": 9,
+    "slug": "center",
+    "name": "Центр (Брахмастан)",
+    "direction": "Центр",
+    "element": "Эфир",
+    "planet": "Брахмастан",
+    "quality": "Единство и равновесие"
+  }
+]

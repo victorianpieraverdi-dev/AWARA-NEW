@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Natal Chart · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#c9a84c;
+  --gold-bright:#ffd700;
+  --gold-light:#fff8d6;
+  --bg:#02010a;
+  --line:rgba(201,168,76,0.18);
+  --text:rgba(255,248,214,0.85);
+  --text-soft:rgba(255,248,214,0.55);
+  --text-mute:rgba(255,255,255,0.35);
+  --accent:rgba(100,160,255,0.9);
+  --accent-dim:rgba(100,160,255,0.35);
+  --accent-bg:rgba(100,160,255,0.06);
+  --accent-line:rgba(100,160,255,0.18);
+}
+html,body{background:var(--bg);color:var(--text);min-height:100vh}
+body{
+  font-family:'JetBrains Mono',monospace;
+  padding:18px 14px 110px;
+  background:
+    radial-gradient(ellipse at 20% 18%, rgba(80,140,255,0.34), transparent 38%),
+    radial-gradient(ellipse at 82% 72%, rgba(124,58,237,0.32), transparent 40%),
+    radial-gradient(ellipse at 50% 110%, rgba(80,40,160,0.30), transparent 55%),
+    linear-gradient(180deg,#040714 0%,#0a1230 45%,#05021a 100%),
+    var(--bg);
+  -webkit-font-smoothing:antialiased;
+  position:relative;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url('assets/starfield.svg');
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:0.95;
+}
+.wrap{max-width:580px;margin:0 auto;position:relative;z-index:1}
+
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;gap:8px;
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 14px;min-height:44px;
+  border:1px solid var(--line);border-radius:10px;
+  font-family:Cinzel,serif;font-size:11px;
+  letter-spacing:0.2em;color:var(--text-soft);
+  text-decoration:none;cursor:pointer;transition:all 0.3s;
+}
+.back-link:hover{border-color:var(--gold);color:var(--gold)}
+
+.page-title{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(16px,4vw,22px);
+  color:var(--accent);letter-spacing:0.15em;
+  text-align:center;margin-bottom:6px;
+}
+.page-sub{
+  font-size:9px;letter-spacing:0.2em;
+  color:var(--text-mute);text-align:center;margin-bottom:28px;
+}
+
+.natal-card{
+  border:1px solid rgba(100,160,255,0.22);border-radius:14px;
+  padding:clamp(16px,4vw,24px);margin-bottom:16px;
+  background:rgba(14,16,40,0.28);
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(8px) saturate(130%);
+  -webkit-backdrop-filter:blur(8px) saturate(130%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),0 6px 22px rgba(0,0,0,0.32);
+}
+.natal-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(100,160,255,0.05),transparent 60%);
+  pointer-events:none;
+}
+
+.section-title{
+  font-family:Cinzel,serif;font-size:9px;
+  letter-spacing:0.2em;color:var(--accent-dim);
+  margin-bottom:16px;
+}
+
+.form-group{
+  margin-bottom:16px;
+}
+.form-label{
+  display:block;font-size:9px;letter-spacing:0.12em;
+  color:var(--text-mute);margin-bottom:6px;
+}
+.form-input{
+  width:100%;padding:10px 14px;min-height:44px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(14px,3.5vw,16px);
+  color:var(--text);
+  background:rgba(100,160,255,0.04);
+  border:1px solid var(--accent-line);
+  border-radius:10px;
+  outline:none;transition:all 0.3s;
+}
+.form-input:focus{
+  border-color:var(--accent);
+  background:rgba(100,160,255,0.08);
+  box-shadow:0 0 12px rgba(100,160,255,0.1);
+}
+.form-input::placeholder{
+  color:var(--text-mute);font-style:italic;
+}
+.form-hint{
+  font-size:8px;color:var(--text-mute);
+  margin-top:4px;letter-spacing:0.05em;
+}
+
+.btn-calculate{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:14px 20px;min-height:48px;
+  font-family:Cinzel,serif;font-size:clamp(12px,3vw,14px);
+  letter-spacing:0.2em;
+  color:var(--accent);
+  background:linear-gradient(135deg,rgba(100,160,255,0.08),rgba(80,120,220,0.04));
+  border:1px solid rgba(100,160,255,0.3);
+  border-radius:12px;cursor:pointer;
+  transition:all 0.3s;margin-top:8px;
+}
+.btn-calculate:hover{
+  border-color:rgba(100,160,255,0.6);
+  background:linear-gradient(135deg,rgba(100,160,255,0.16),rgba(80,120,220,0.08));
+  box-shadow:0 0 20px rgba(100,160,255,0.15);
+}
+.btn-calculate:active{transform:scale(0.98)}
+.btn-calculate:disabled{
+  opacity:0.4;cursor:not-allowed;
+}
+
+.saved-badge{
+  display:none;align-items:center;justify-content:center;gap:6px;
+  margin-top:12px;padding:8px 14px;
+  font-size:9px;letter-spacing:0.1em;
+  color:rgba(100,220,160,0.8);
+  background:rgba(100,220,160,0.06);
+  border:1px solid rgba(100,220,160,0.2);
+  border-radius:8px;
+}
+.saved-badge.visible{display:flex}
+
+.result-card{
+  display:none;margin-top:16px;
+  border:1px solid rgba(100,160,255,0.22);border-radius:14px;
+  padding:clamp(16px,4vw,24px);
+  background:rgba(14,16,40,0.28);
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(8px) saturate(130%);
+  -webkit-backdrop-filter:blur(8px) saturate(130%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),0 6px 22px rgba(0,0,0,0.32);
+}
+.result-card.visible{display:block}
+.result-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 100%,rgba(100,160,255,0.04),transparent 60%);
+  pointer-events:none;
+}
+.result-card .section-title{margin-bottom:12px}
+
+.lagna-block{
+  text-align:center;margin-bottom:16px;
+  padding:12px;border:1px solid rgba(100,160,255,0.12);
+  border-radius:10px;background:rgba(100,160,255,0.03);
+}
+.lagna-label{
+  font-size:8px;letter-spacing:0.2em;color:var(--text-mute);margin-bottom:4px;
+}
+.lagna-value{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(18px,5vw,24px);
+  color:var(--accent);letter-spacing:0.1em;
+}
+.lagna-deg{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--text-mute);margin-top:2px;
+}
+
+.planets-grid{
+  display:grid;gap:1px;
+  background:rgba(100,160,255,0.08);
+  border:1px solid rgba(100,160,255,0.12);
+  border-radius:10px;overflow:hidden;
+  margin-bottom:16px;
+}
+.planet-header,.planet-row{
+  display:grid;grid-template-columns:2fr 1.2fr 1fr 1.5fr;
+  gap:0;
+}
+.planet-header{background:rgba(100,160,255,0.08)}
+.planet-header div{
+  padding:8px 10px;font-size:8px;letter-spacing:0.15em;
+  color:var(--accent-dim);font-family:Cinzel,serif;
+}
+.planet-row{background:var(--bg)}
+.planet-row div{
+  padding:7px 10px;font-size:clamp(11px,2.8vw,13px);
+  color:var(--text-soft);
+}
+.planet-row .p-name{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--text);font-weight:600;
+}
+.planet-row .p-sign{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--accent);
+}
+.planet-row .p-deg{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--text-mute);
+}
+.planet-row .p-nak{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(10px,2.5vw,12px);
+  color:var(--text-soft);
+}
+
+.houses-block{margin-bottom:16px}
+.houses-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+}
+.house-cell{
+  text-align:center;padding:8px 4px;
+  border:1px solid rgba(100,160,255,0.1);border-radius:8px;
+  background:rgba(100,160,255,0.02);
+}
+.house-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;color:var(--accent-dim);letter-spacing:0.1em;
+}
+.house-sign{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(11px,2.8vw,13px);color:var(--accent);
+  margin-top:2px;
+}
+
+.dosha-block{
+  margin-bottom:16px;padding:12px;
+  border:1px solid rgba(201,168,76,0.16);border-radius:10px;
+  background:rgba(201,168,76,0.04);
+}
+.dosha-block .section-title{color:rgba(201,168,76,0.62)}
+.dosha-dominant{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(13px,3vw,15px);color:var(--text-soft);
+  margin-bottom:10px;
+}
+.dosha-dominant span{color:var(--gold-light);font-weight:600}
+.dosha-grid{display:grid;gap:8px}
+.dosha-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--text-soft);margin-bottom:4px;
+}
+.dosha-meta span{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text)}
+.dosha-meta b{font-weight:400;color:var(--gold)}
+.dosha-bar{
+  height:6px;border-radius:999px;overflow:hidden;
+  background:rgba(255,255,255,0.06);
+}
+.dosha-bar i{
+  display:block;height:100%;border-radius:999px;
+  background:linear-gradient(90deg,rgba(201,168,76,0.42),rgba(255,215,0,0.86));
+}
+
+.calc-status{
+  text-align:center;padding:16px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(13px,3vw,15px);
+  color:var(--text-soft);line-height:1.6;
+}
+.calc-status.error{color:rgba(255,120,100,0.8)}
+
+.geo-info{
+  font-size:8px;letter-spacing:0.05em;color:var(--text-mute);
+  text-align:center;margin-top:8px;
+}
+
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+.loading{animation:pulse 1.2s ease-in-out infinite}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="back-link" href="index.html" data-i18n="nav.lobby">&larr; ЛОББИ</a>
+    <div style="font-family:Cinzel,serif;font-size:9px;letter-spacing:0.15em;color:var(--text-mute);">AWARA</div>
+  </div>
+
+  <div class="page-title" data-i18n="natal.title">НАТАЛЬНАЯ КАРТА</div>
+  <div class="page-sub" data-i18n="natal.birth.map">КАРТА ТВОЕГО РОЖДЕНИЯ</div>
+
+  <div class="natal-card">
+    <div class="section-title" data-i18n="natal.data.title">ДАННЫЕ РОЖДЕНИЯ</div>
+
+    <div class="form-group">
+      <label class="form-label" for="natal-date" data-i18n="natal.birth.date">ДАТА РОЖДЕНИЯ</label>
+      <input class="form-input" type="date" id="natal-date">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="natal-time" data-i18n="natal.birth.time">ВРЕМЯ РОЖДЕНИЯ</label>
+      <input class="form-input" type="time" id="natal-time" step="60">
+      <div class="form-hint" data-i18n="natal.time.hint">если точное время неизвестно, укажите приблизительное</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="natal-city" data-i18n="natal.birth.city">ГОРОД РОЖДЕНИЯ</label>
+      <input class="form-input" type="text" id="natal-city" placeholder="например, Москва" data-i18n-placeholder="natal.placeholder.city" autocomplete="off">
+      <div class="form-hint" data-i18n="natal.coords.auto">координаты определяются автоматически через OpenStreetMap</div>
+    </div>
+
+    <button class="btn-calculate" id="btn-calc" data-i18n="natal.calc.btn">
+      РАССЧИТАТЬ КАРТУ
+    </button>
+
+    <div class="saved-badge" id="saved-badge" data-i18n="natal.data.saved">ДАННЫЕ СОХРАНЕНЫ</div>
+  </div>
+
+  <div class="result-card" id="result-block">
+    <div class="section-title" data-i18n="natal.calc.title">РАСЧЁТ НАТАЛЬНОЙ КАРТЫ</div>
+    <div id="calc-content">
+      <div class="calc-status">
+        <span data-i18n="natal.calc.hint">Введите данные рождения и нажмите «РАССЧИТАТЬ КАРТУ»</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+import { t, initLang, applyTranslations } from './js/i18n.js';
+import { calculateDosha, renderDoshaHtml, saveDosha } from './js/dosha.js';
+initLang();
+
+const STORAGE_KEY = 'awara_natal_data';
+const STORAGE_CHART = 'awara_natal_chart';
+
+const SIGNS = [
+  t('natal.sign.aries'),t('natal.sign.taurus'),t('natal.sign.gemini'),t('natal.sign.cancer'),t('natal.sign.leo'),t('natal.sign.virgo'),
+  t('natal.sign.libra'),t('natal.sign.scorpio'),t('natal.sign.sagittarius'),t('natal.sign.capricorn'),t('natal.sign.aquarius'),t('natal.sign.pisces')
+];
+const SIGN_SYMBOLS = [
+  '\u2648','\u2649','\u264A','\u264B','\u264C','\u264D',
+  '\u264E','\u264F','\u2650','\u2651','\u2652','\u2653'
+];
+const NAKSHATRAS = [
+  t('natal.nak.ashvini'),t('natal.nak.bharani'),t('natal.nak.krittika'),t('natal.nak.rohini'),t('natal.nak.mrigashira'),
+  t('natal.nak.ardra'),t('natal.nak.punarvasu'),t('natal.nak.pushya'),t('natal.nak.ashlesha'),t('natal.nak.magha'),
+  t('natal.nak.pphal'),t('natal.nak.uphal'),t('natal.nak.hasta'),t('natal.nak.chitra'),t('natal.nak.svati'),
+  t('natal.nak.vishakha'),t('natal.nak.anuradha'),t('natal.nak.jyeshtha'),t('natal.nak.mula'),t('natal.nak.pashad'),
+  t('natal.nak.uashad'),t('natal.nak.shravana'),t('natal.nak.dhanishta'),t('natal.nak.shatabh'),
+  t('natal.nak.pbhadra'),t('natal.nak.ubhadra'),t('natal.nak.revati')
+];
+const GRAHA_NAMES = [
+  {id:'sun',    name:t('natal.graha.sun'),    alt:t('natal.graha.sun.alt'),   symbol:'\u2609'},
+  {id:'moon',   name:t('natal.graha.moon'),   alt:t('natal.graha.moon.alt'),     symbol:'\u263D'},
+  {id:'mars',   name:t('natal.graha.mars'),   alt:t('natal.graha.mars.alt'),     symbol:'\u2642'},
+  {id:'mercury',name:t('natal.graha.mercury'),alt:t('natal.graha.mercury.alt'), symbol:'\u263F'},
+  {id:'jupiter',name:t('natal.graha.jupiter'),alt:t('natal.graha.jupiter.alt'),   symbol:'\u2643'},
+  {id:'venus',  name:t('natal.graha.venus'),  alt:t('natal.graha.venus.alt'),    symbol:'\u2640'},
+  {id:'saturn', name:t('natal.graha.saturn'), alt:t('natal.graha.saturn.alt'),    symbol:'\u2644'},
+  {id:'rahu',   name:t('natal.graha.rahu'),   alt:t('natal.graha.rahu.alt'), symbol:'\u260A'},
+  {id:'ketu',   name:t('natal.graha.ketu'),   alt:t('natal.graha.ketu.alt'),  symbol:'\u260B'}
+];
+
+function lahiriAyanamsha(jd) {
+  const T = (jd - 2451545.0) / 36525.0;
+  return 23.853056 + T * 1.3972222;
+}
+
+function toSidereal(tropicalLon, jd) {
+  let sid = tropicalLon - lahiriAyanamsha(jd);
+  if (sid < 0) sid += 360;
+  if (sid >= 360) sid -= 360;
+  return sid;
+}
+
+function getSignIndex(lon) { return Math.floor(lon / 30); }
+
+function formatDeg(lon) {
+  const inSign = lon % 30;
+  const deg = Math.floor(inSign);
+  const min = Math.floor((inSign - deg) * 60);
+  return deg + '\u00B0' + String(min).padStart(2,'0') + "'";
+}
+
+function getNakshatra(lon) {
+  const idx = Math.floor(lon / (360 / 27));
+  return NAKSHATRAS[idx % 27];
+}
+
+async function geocodeCity(city) {
+  const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(city);
+  const resp = await fetch(url, {headers:{'Accept-Language':'ru'}});
+  const data = await resp.json();
+  if (!data.length) throw new Error(t('natal.city.error') + ' ' + city);
+  return {
+    lat: parseFloat(data[0].lat),
+    lon: parseFloat(data[0].lon),
+    display: data[0].display_name.split(',').slice(0,2).join(',')
+  };
+}
+
+let sweInstance = null;
+let sweReady = false;
+let sweError = null;
+
+const SWE_PLANET = { Sun:0, Moon:1, Mercury:2, Venus:3, Mars:4, Jupiter:5, Saturn:6 };
+const SWE_LUNAR = { MeanNode:10, TrueNode:11 };
+const SWE_FLAGS = { MoshierSpeed: 260 };
+
+async function initSwe() {
+  if (sweReady) return sweInstance;
+  if (sweError) throw sweError;
+  try {
+    const mod = await import('./lib/swisseph/swisseph-browser.js');
+    const swe = new mod.SwissEphemeris();
+    await swe.init();
+    sweInstance = swe;
+    sweReady = true;
+    return swe;
+  } catch (e) {
+    sweError = e;
+    throw e;
+  }
+}
+
+async function calculateChart(dateStr, timeStr, lat, lon) {
+  const swe = await initSwe();
+
+  const parts = dateStr.split('-');
+  const year = parseInt(parts[0]);
+  const month = parseInt(parts[1]);
+  const day = parseInt(parts[2]);
+  let hour = 12;
+  if (timeStr) {
+    const tp = timeStr.split(':');
+    hour = parseInt(tp[0]) + parseInt(tp[1]) / 60;
+  }
+
+  const jd = swe.julianDay(year, month, day, hour);
+  const ayanamsha = lahiriAyanamsha(jd);
+
+  const planetBodies = [
+    {graha: 0, body: SWE_PLANET.Sun},
+    {graha: 1, body: SWE_PLANET.Moon},
+    {graha: 2, body: SWE_PLANET.Mars},
+    {graha: 3, body: SWE_PLANET.Mercury},
+    {graha: 4, body: SWE_PLANET.Jupiter},
+    {graha: 5, body: SWE_PLANET.Venus},
+    {graha: 6, body: SWE_PLANET.Saturn}
+  ];
+
+  const planets = [];
+  for (const pb of planetBodies) {
+    const pos = swe.calculatePosition(jd, pb.body, SWE_FLAGS.MoshierSpeed);
+    const sidLon = toSidereal(pos.longitude, jd);
+    planets.push({
+      ...GRAHA_NAMES[pb.graha],
+      longitude: sidLon,
+      sign: getSignIndex(sidLon),
+      deg: formatDeg(sidLon),
+      nakshatra: getNakshatra(sidLon),
+      speed: pos.longitudeSpeed
+    });
+  }
+
+  const rahuPos = swe.calculatePosition(jd, SWE_LUNAR.MeanNode, SWE_FLAGS.MoshierSpeed);
+  const rahuSid = toSidereal(rahuPos.longitude, jd);
+  planets.push({
+    ...GRAHA_NAMES[7],
+    longitude: rahuSid,
+    sign: getSignIndex(rahuSid),
+    deg: formatDeg(rahuSid),
+    nakshatra: getNakshatra(rahuSid),
+    speed: rahuPos.longitudeSpeed
+  });
+
+  let ketuSid = rahuSid + 180;
+  if (ketuSid >= 360) ketuSid -= 360;
+  planets.push({
+    ...GRAHA_NAMES[8],
+    longitude: ketuSid,
+    sign: getSignIndex(ketuSid),
+    deg: formatDeg(ketuSid),
+    nakshatra: getNakshatra(ketuSid),
+    speed: -rahuPos.longitudeSpeed
+  });
+
+  const houses = swe.calculateHouses(jd, lat, lon, 'W');
+  const ascSid = toSidereal(houses.ascendant, jd);
+
+  const houseSigns = [];
+  const ascSign = getSignIndex(ascSid);
+  for (let i = 0; i < 12; i++) {
+    houseSigns.push((ascSign + i) % 12);
+  }
+
+  return {
+    planets,
+    ascendant: ascSid,
+    ascSign,
+    houses: houseSigns,
+    ayanamsha,
+    julianDay: jd
+  };
+}
+
+function renderChart(chart, geoDisplay) {
+  const content = document.getElementById('calc-content');
+  let html = '';
+
+  html += '<div class="lagna-block">';
+  html += '<div class="lagna-label">' + t('natal.lagna') + '</div>';
+  html += '<div class="lagna-value">' + SIGN_SYMBOLS[chart.ascSign] + ' ' + SIGNS[chart.ascSign] + '</div>';
+  html += '<div class="lagna-deg">' + formatDeg(chart.ascendant) + '</div>';
+  html += '</div>';
+
+  const dosha = chart.dosha || calculateDosha(chart);
+  html += renderDoshaHtml(dosha);
+
+  html += '<div class="section-title" style="margin-top:16px">' + t('natal.navagrahi') + '</div>';
+  html += '<div class="planets-grid">';
+  html += '<div class="planet-header"><div>' + t('natal.col.graha') + '</div><div>' + t('natal.col.rashi') + '</div><div>' + t('natal.col.degree') + '</div><div>' + t('natal.col.nakshatra') + '</div></div>';
+  for (const p of chart.planets) {
+    const retro = p.speed < 0 ? ' \u211E' : '';
+    html += '<div class="planet-row">';
+    html += '<div class="p-name">' + p.symbol + ' ' + p.name + '</div>';
+    html += '<div class="p-sign">' + SIGN_SYMBOLS[p.sign] + ' ' + SIGNS[p.sign] + '</div>';
+    html += '<div class="p-deg">' + p.deg + retro + '</div>';
+    html += '<div class="p-nak">' + p.nakshatra + '</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  html += '<div class="houses-block">';
+  html += '<div class="section-title" style="margin-top:16px">' + t('natal.bhavas.title') + '</div>';
+  html += '<div class="houses-grid">';
+  for (let i = 0; i < 12; i++) {
+    const si = chart.houses[i];
+    html += '<div class="house-cell">';
+    html += '<div class="house-num">' + (i === 0 ? 'I' : toRoman(i + 1)) + '</div>';
+    html += '<div class="house-sign">' + SIGN_SYMBOLS[si] + ' ' + SIGNS[si] + '</div>';
+    html += '</div>';
+  }
+  html += '</div></div>';
+
+  if (geoDisplay) {
+    html += '<div class="geo-info">' + t('natal.coordinates') + ' ' + geoDisplay + ' | ' + t('natal.ayanamsha') + ' ' + chart.ayanamsha.toFixed(4) + '\u00B0</div>';
+  }
+
+  content.innerHTML = html;
+}
+
+function toRoman(n) {
+  const r = ['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+  return r[n] || String(n);
+}
+
+function showStatus(msg, isError) {
+  const content = document.getElementById('calc-content');
+  content.innerHTML = '<div class="calc-status' + (isError ? ' error' : '') + '">' + msg + '</div>';
+}
+
+function loadSavedData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (data.date) document.getElementById('natal-date').value = data.date;
+    if (data.time) document.getElementById('natal-time').value = data.time;
+    if (data.city) document.getElementById('natal-city').value = data.city;
+
+    const savedChart = localStorage.getItem(STORAGE_CHART);
+    if (savedChart) {
+      try {
+        const chart = JSON.parse(savedChart);
+        if (!chart.data.dosha) chart.data.dosha = calculateDosha(chart.data);
+        saveDosha(chart.data.dosha);
+        document.getElementById('result-block').classList.add('visible');
+        renderChart(chart.data, chart.geoDisplay);
+      } catch (e) { /* ignore */ }
+    }
+  } catch (e) { /* ignore corrupt data */ }
+}
+
+async function doCalculate() {
+  const dateVal = document.getElementById('natal-date').value;
+  const timeVal = document.getElementById('natal-time').value;
+  const cityVal = document.getElementById('natal-city').value.trim();
+
+  if (!dateVal) {
+    document.getElementById('natal-date').focus();
+    return;
+  }
+
+  const data = { date: dateVal, time: timeVal || null, city: cityVal || null, savedAt: new Date().toISOString() };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+  const badge = document.getElementById('saved-badge');
+  badge.classList.add('visible');
+  setTimeout(function() { badge.classList.remove('visible'); }, 2500);
+
+  const resultBlock = document.getElementById('result-block');
+  resultBlock.classList.add('visible');
+
+  const btn = document.getElementById('btn-calc');
+  btn.disabled = true;
+  btn.textContent = 'ЗАГРУЗКА...';
+
+  showStatus('<span class="loading">' + t('natal.loading.wasm') + '</span>', false);
+
+  try {
+    let lat = 55.7558, lon = 37.6173;
+    let geoDisplay = 'Москва (по умолчанию)';
+
+    if (cityVal) {
+      showStatus('<span class="loading">' + t('natal.detecting') + ' ' + cityVal + '...</span>', false);
+      try {
+        const geo = await geocodeCity(cityVal);
+        lat = geo.lat;
+        lon = geo.lon;
+        geoDisplay = geo.display + ' (' + lat.toFixed(4) + ', ' + lon.toFixed(4) + ')';
+      } catch (geoErr) {
+        showStatus(t('natal.city.notfound.prefix') + ' «' + cityVal + '» ' + t('natal.city.notfound.suffix'), true);
+        await new Promise(r => setTimeout(r, 1500));
+        geoDisplay = t('natal.city.moscow.fallback');
+      }
+    }
+
+    showStatus('<span class="loading">' + t('natal.loading.calc') + '</span>', false);
+    const chart = await calculateChart(dateVal, timeVal, lat, lon);
+    chart.dosha = calculateDosha(chart);
+    saveDosha(chart.dosha);
+    renderChart(chart, geoDisplay);
+
+    localStorage.setItem(STORAGE_CHART, JSON.stringify({ data: chart, geoDisplay, calculatedAt: new Date().toISOString() }));
+  } catch (err) {
+    console.error('Natal calc error:', err);
+    showStatus('Ошибка расчёта: ' + err.message + t('natal.wasm.error'), true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = t('natal.calc.btn');
+  }
+}
+
+document.getElementById('btn-calc').addEventListener('click', doCalculate);
+loadSavedData();
+applyTranslations();
+</script>
+
+<!-- Подсказки (M-006) -->
+<button class="hint-btn" title="Подсказки" data-i18n-title="app.help">?</button>
+<script type="module">
+import { initHints } from './js/hints-module.js';
+initHints('natal');
+</script>
+
+<!-- M-033: RU/EN переключатель -->
+<div style="position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px">
+  <button id="lang-ru" onclick="localStorage.setItem('awara_lang','ru');if(window.switchLang)window.switchLang('ru');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">RU</button>
+  <button id="lang-en" onclick="localStorage.setItem('awara_lang','en');if(window.switchLang)window.switchLang('en');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">EN</button>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang, createLangSwitcher } from './js/i18n.js';
+window.switchLang = function(lang) {
+  setLang(lang);
+  translatePage();
+  createLangSwitcher();
+  document.querySelectorAll('#lang-ru,#lang-en').forEach(function(b){
+    b.style.borderColor = b.textContent === lang.toUpperCase() ? '#ffd700' : 'rgba(201,168,76,.2)';
+    b.style.color = b.textContent === lang.toUpperCase() ? '#ffd700' : '#c9a84c';
+  });
+};
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  createLangSwitcher();
+  var cur = getLang();
+  if (window.switchLang) window.switchLang(cur);
+});
+</script>
+</body>
+</html>

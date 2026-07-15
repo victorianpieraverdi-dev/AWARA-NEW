@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARA Game Module Test</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    body { 
+      font-family: 'Cormorant Garamond', serif; 
+      background: #000; color: #c9a84c; 
+      padding: 20px; margin: 0; min-height: 100vh;
+    }
+    h1 { color: #ffd700; font-family: 'Cinzel', serif; }
+    .spaces-grid {
+      display: grid; gap: 12px; margin: 20px 0;
+      max-width: 500px;
+    }
+    .space-card {
+      padding: 16px; border: 1px solid #c9a84c;
+      border-radius: 8px; cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .space-card:hover {
+      background: rgba(201,168,76,0.1);
+      box-shadow: 0 0 15px rgba(255,215,0,0.4);
+    }
+    .space-symbol {
+      font-size: 2em; color: #ffd700; 
+      display: inline-block; margin-right: 12px;
+    }
+    .space-name {
+      font-family: 'Cinzel', serif; color: #ffd700;
+      font-size: 1.2em; letter-spacing: 0.1em;
+    }
+    .space-desc {
+      font-size: 0.9em; margin-top: 4px;
+    }
+    button { 
+      padding: 12px 20px; margin: 6px;
+      background: transparent; border: 1px solid #c9a84c;
+      color: #ffd700; cursor: pointer;
+      font-family: 'Cinzel', serif; text-transform: uppercase;
+    }
+    button:hover { background: rgba(201,168,76,0.1); }
+    .controls { 
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 20px; justify-content: center;
+    }
+    .log {
+      background: #0a0a14; padding: 12px;
+      border-radius: 8px; margin-top: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em; max-height: 250px;
+      overflow-y: auto; white-space: pre-wrap;
+    }
+    .stats {
+      text-align: center; margin: 20px 0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .stats span {
+      display: inline-block; padding: 6px 12px; margin: 4px;
+      border: 1px solid #c9a84c; border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h1>AWARA Game Module Test</h1>
+  <p>Тест логики игровых пространств (4 пространства)</p>
+  
+  <div class="stats" id="stats">Загрузка...</div>
+  
+  <div class="spaces-grid" id="spaces-grid"></div>
+  
+  <div class="controls">
+    <button id="btn-init">Init Game</button>
+    <button id="btn-menu">Show Game Menu</button>
+    <button id="btn-spaces">Open Spaces</button>
+    <button id="btn-earth">Open Earth</button>
+    <button id="btn-universe">Open Universe</button>
+    <button id="btn-creation">Open Creation</button>
+    <button id="btn-reset">Reset State</button>
+  </div>
+  
+  <div class="log" id="log">Лог событий...</div>
+  
+  <script type="module">
+    import { 
+      initGame, showGameMenu, openSpace,
+      getAllSpaces, getCurrentSpace, getGameState,
+      resetGameState, SPACES
+    } from './game-module.js';
+    
+    const log = document.getElementById('log');
+    const stats = document.getElementById('stats');
+    const grid = document.getElementById('spaces-grid');
+    
+    const addLog = (msg) => {
+      const time = new Date().toLocaleTimeString();
+      log.innerHTML = `[${time}] ${msg}\n` + log.innerHTML;
+    };
+    
+    const renderSpaces = () => {
+      grid.innerHTML = SPACES.map(space => `
+        <div class="space-card" data-space="${space.id}">
+          <span class="space-symbol">${space.symbol}</span>
+          <span class="space-name">${space.name}</span>
+          <div class="space-desc">${space.description}</div>
+        </div>
+      `).join('');
+      
+      grid.querySelectorAll('.space-card').forEach(card => {
+        card.addEventListener('click', () => {
+          openSpace(card.dataset.space);
+          addLog(`Открыто пространство: ${card.dataset.space}`);
+        });
+      });
+    };
+    
+    const updateStats = (state) => {
+      stats.innerHTML = `
+        <span>Агенты: ${state.agents?.length || 0}/21</span>
+        <span>Матрицы: ${state.matrices?.length || 0}/33</span>
+        <span>Локи: ${state.locas?.length || 0}/14</span>
+        <span>Пространств: ${SPACES.length}/4</span>
+      `;
+    };
+    
+    // Слушаем эвенты
+    window.addEventListener('awara:space:enter', (e) => {
+      addLog(`SPACE ENTER: ${e.detail.space.name}`);
+    });
+    
+    document.getElementById('btn-init').onclick = async () => {
+      addLog('Инициализация game-module...');
+      const state = await initGame();
+      updateStats(state);
+      addLog('Готово');
+    };
+    
+    document.getElementById('btn-menu').onclick = () => {
+      showGameMenu();
+      addLog('Меню ИГРА открыто');
+    };
+    
+    document.getElementById('btn-spaces').onclick = () => {
+      openSpace('spaces');
+      addLog('Открыто: ПРОСТРАНСТВА');
+    };
+    
+    document.getElementById('btn-earth').onclick = () => {
+      openSpace('earth');
+      addLog('Открыто: ЗЕМЛЯ');
+    };
+    
+    document.getElementById('btn-universe').onclick = () => {
+      openSpace('universe');
+      addLog('Открыто: ВСЕЛЕННАЯ');
+    };
+    
+    document.getElementById('btn-creation').onclick = () => {
+      openSpace('creation');
+      addLog('Открыто: МИРОЗДАНИЕ');
+    };
+    
+    document.getElementById('btn-reset').onclick = () => {
+      resetGameState();
+      addLog('State сброшен');
+    };
+    
+    // Авто-старт
+    renderSpaces();
+    (async () => {
+      const state = await initGame();
+      updateStats(state);
+      addLog('Авто-инициализация при загрузке');
+    })();
+  </script>
+</body>
+</html>

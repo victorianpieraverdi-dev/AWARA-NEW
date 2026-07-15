@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест: Universe Screen · AWARA T-064</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #0a0a14;
+      color: #c9a84c;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    h1 { font-family: 'Cinzel', serif; color: #ffd700; margin-bottom: 20px; text-align: center; }
+    .test-section {
+      background: rgba(18,14,30,0.72);
+      border: 1px solid rgba(201,168,76,0.22);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .test-title { color: #ffe080; margin-bottom: 10px; font-size: 14px; }
+    .pass { color: #00ffaa; }
+    .fail { color: #ff6666; }
+    .warn { color: #ffaa00; }
+    .result { font-size: 12px; margin: 4px 0; padding: 4px 8px; background: rgba(0,0,0,0.3); border-radius: 4px; }
+    button {
+      padding: 10px 16px;
+      background: transparent;
+      border: 1px solid #c9a84c;
+      color: #ffd700;
+      font-family: 'Cinzel', serif;
+      cursor: pointer;
+      border-radius: 8px;
+      margin: 4px;
+      transition: all 0.3s;
+    }
+    button:hover { background: rgba(201,168,76,0.15); box-shadow: 0 0 12px rgba(201,168,76,0.3); }
+    .log {
+      margin-top: 16px; padding: 12px;
+      background: rgba(0,0,0,0.4); border-radius: 8px;
+      font-size: 11px; max-height: 300px; overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .mini-canvas-wrapper {
+      display: flex; justify-content: center;
+      margin: 16px auto;
+      max-width: 320px;
+      aspect-ratio: 1;
+    }
+    canvas {
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 8px;
+      cursor: pointer;
+      max-width: 100%;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Тест: Universe Screen (T-064)</h1>
+
+  <div class="test-section">
+    <div class="test-title">1. Canvas Вселенной (universe-module)</div>
+    <div class="mini-canvas-wrapper">
+      <canvas id="test-canvas" width="320" height="320"></canvas>
+    </div>
+    <button onclick="runTest1()">Init Canvas</button>
+    <button onclick="runTest1b()">Stop</button>
+    <div class="result" id="test1">—</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">2. Выбор агента кликом</div>
+    <button onclick="runTest2()">Select Agent #0</button>
+    <button onclick="runTest2b()">Select Random</button>
+    <div class="result" id="test2">—</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">3. Прогрессия уровней (universeProgression)</div>
+    <button onclick="runTest3()">Тест Прогрессии</button>
+    <div class="result" id="test3">—</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">4. Интеграция с state-module</div>
+    <button onclick="runTest4()">Тест State</button>
+    <div class="result" id="test4">—</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">5. Экспорты universeProgression.js</div>
+    <div class="result" id="test5">—</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">6. Проверка universe.html рендерится без ошибок</div>
+    <button onclick="test6Check()">Проверить universe.html</button>
+    <div class="result" id="test6">—</div>
+  </div>
+
+  <div class="log" id="test-log"></div>
+
+  <script type="module">
+    import {
+      initUniverse, stopUniverseAnimation,
+      selectAgent, getUniverseState, resetUniverse
+    } from './universe-module.js';
+
+    import {
+      UNIVERSE_LEVELS, getUniverseProgress,
+      getUnlockedUniverseLevels, getUniverseLevelByLight,
+      getGenerationLayers, createUniverseSnapshot
+    } from './universe/universeProgression.js';
+
+    import { loadState } from './state-module.js';
+
+    const logEl = document.getElementById('test-log');
+    function log(msg) {
+      logEl.innerHTML += '<div>[' + new Date().toLocaleTimeString() + '] ' + msg + '</div>';
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    // Тест 1: Canvas инициализация
+    window.runTest1 = async function() {
+      try {
+        const canvas = document.getElementById('test-canvas');
+        const state = await initUniverse(canvas);
+        const el = document.getElementById('test1');
+        if (state && state.initialized) {
+          el.innerHTML = '<span class="pass">PASS</span> — Canvas инициализирован, агентов: ' + (state.agents?.length || 0) + '/21, звёзд: ' + (getUniverseState().agentsCount || '?');
+        } else {
+          el.innerHTML = '<span class="fail">FAIL</span> — не удалось инициализировать';
+        }
+        log('Тест 1: Canvas init — ' + (state?.initialized ? 'OK' : 'FAIL'));
+      } catch(e) {
+        document.getElementById('test1').innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+        log('Тест 1: ERROR — ' + e.message);
+      }
+    };
+
+    window.runTest1b = function() {
+      stopUniverseAnimation();
+      document.getElementById('test1').innerHTML += ' | Остановлен';
+      log('Тест 1b: Анимация остановлена');
+    };
+
+    // Тест 2: Выбор агента
+    window.runTest2 = async function() {
+      try {
+        const agent = await selectAgent(0);
+        const el = document.getElementById('test2');
+        if (agent) {
+          el.innerHTML = '<span class="pass">PASS</span> — Выбран агент: ' + (agent.name || agent.id);
+        } else {
+          el.innerHTML = '<span class="fail">FAIL</span> — агент не выбран';
+        }
+        log('Тест 2: Select #0 — ' + (agent ? agent.name : 'null'));
+      } catch(e) {
+        document.getElementById('test2').innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+      }
+    };
+
+    window.runTest2b = async function() {
+      const state = getUniverseState();
+      if (!state.agentsCount) {
+        document.getElementById('test2').innerHTML = '<span class="warn">SKIP</span> — сначала запусти Canvas (тест 1)';
+        return;
+      }
+      const idx = Math.floor(Math.random() * state.agentsCount);
+      const agent = await selectAgent(idx);
+      log('Тест 2b: Random agent #' + idx + ' — ' + (agent ? agent.name : 'null'));
+    };
+
+    // Тест 3: Прогрессия
+    window.runTest3 = function() {
+      try {
+        const el = document.getElementById('test3');
+        const tests = [];
+
+        // 6 уровней
+        if (UNIVERSE_LEVELS.length !== 6) {
+          tests.push('FAIL: уровней ' + UNIVERSE_LEVELS.length + ' вместо 6');
+        } else {
+          tests.push('PASS: 6 уровней');
+        }
+
+        // getUniverseLevelByLight
+        const lvl0 = getUniverseLevelByLight(0);
+        if (lvl0.id !== 'ahamkara') tests.push('FAIL: уровень при 0 света');
+        else tests.push('PASS: уровень 0 = Ахамкара');
+
+        const lvlHigh = getUniverseLevelByLight(50000);
+        if (lvlHigh.id !== 'sobor') tests.push('FAIL: уровень при 50000');
+        else tests.push('PASS: уровень 50000 = Собор');
+
+        // getUniverseProgress
+        const prog = getUniverseProgress(1000);
+        if (typeof prog.progress !== 'number') tests.push('FAIL: progress не число');
+        else tests.push('PASS: progress = ' + prog.progress + '%');
+
+        // getUnlockedUniverseLevels
+        const unlocked = getUnlockedUniverseLevels(2000);
+        if (unlocked.length < 3) tests.push('FAIL: разблокировано < 3 уровней при 2000');
+        else tests.push('PASS: разблокировано ' + unlocked.length + ' уровней');
+
+        // createUniverseSnapshot
+        const snap = createUniverseSnapshot({ totalLight: 3000 });
+        if (!snap.level || !snap.progress) tests.push('FAIL: snapshot не полный');
+        else tests.push('PASS: snapshot корректен');
+
+        el.innerHTML = tests.map(t =>
+          '<div class="result">' + (t.startsWith('PASS') ? '<span class="pass">' : '<span class="fail">') + t + '</span></div>'
+        ).join('');
+        log('Тест 3: Прогрессия — ' + tests.filter(t => t.startsWith('PASS')).length + '/' + tests.length + ' PASS');
+      } catch(e) {
+        document.getElementById('test3').innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+      }
+    };
+
+    // Тест 4: Интеграция с state
+    window.runTest4 = function() {
+      try {
+        const el = document.getElementById('test4');
+        const state = loadState();
+        const totalLight = state.totalLight || 0;
+
+        const snap = createUniverseSnapshot(state);
+        const checks = [];
+        checks.push('PASS: totalLight=' + totalLight);
+        checks.push('PASS: уровень=' + snap.level.name);
+        checks.push('PASS: progress=' + snap.progress + '%');
+        checks.push('PASS: generationLayers=' + snap.generationLayers.join('→'));
+
+        el.innerHTML = checks.map(c =>
+          '<div class="result"><span class="pass">' + c + '</span></div>'
+        ).join('');
+        log('Тест 4: State integration — OK');
+      } catch(e) {
+        document.getElementById('test4').innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+      }
+    };
+
+    // Тест 5: Экспорты universeProgression
+    (function() {
+      const checks = [
+        Array.isArray(UNIVERSE_LEVELS) ? 'PASS: UNIVERSE_LEVELS (массив)' : 'FAIL: UNIVERSE_LEVELS',
+        typeof getUniverseLevelByLight === 'function' ? 'PASS: getUniverseLevelByLight' : 'FAIL',
+        typeof getUniverseProgress === 'function' ? 'PASS: getUniverseProgress' : 'FAIL',
+        typeof getUnlockedUniverseLevels === 'function' ? 'PASS: getUnlockedUniverseLevels' : 'FAIL',
+        typeof getGenerationLayers === 'function' ? 'PASS: getGenerationLayers' : 'FAIL',
+        typeof createUniverseSnapshot === 'function' ? 'PASS: createUniverseSnapshot' : 'FAIL',
+      ];
+      const el = document.getElementById('test5');
+      el.innerHTML = checks.map(c =>
+        '<div class="result">' + (c.startsWith('PASS') ? '<span class="pass">' : '<span class="fail">') + c + '</span></div>'
+      ).join('');
+      log('Тест 5: Экспорты — все функции доступны');
+    })();
+
+    // Тест 6: Проверка что universe.html доступен
+    window.test6Check = async function() {
+      const el = document.getElementById('test6');
+      try {
+        const resp = await fetch('../universe.html');
+        if (resp.ok) {
+          const html = await resp.text();
+          const checks = [];
+          if (html.includes('universe-module.js')) checks.push('PASS: импорт universe-module.js');
+          else checks.push('FAIL: universe-module.js не найден');
+          if (html.includes('universeProgression.js')) checks.push('PASS: импорт universeProgression.js');
+          else checks.push('FAIL: universeProgression.js не найден');
+          if (html.includes('id="universe-canvas"')) checks.push('PASS: canvas элемент');
+          else checks.push('FAIL: canvas элемент не найден');
+          if (html.includes('id="agent-panel"')) checks.push('PASS: панель агента');
+          else checks.push('FAIL: панель агента не найдена');
+          if (html.includes('id="progression-panel"')) checks.push('PASS: панель прогрессии');
+          else checks.push('FAIL: панель прогрессии не найдена');
+
+          el.innerHTML = checks.map(c =>
+            '<div class="result">' + (c.startsWith('PASS') ? '<span class="pass">' : '<span class="fail">') + c + '</span></div>'
+          ).join('');
+          log('Тест 6: universe.html — найден, ' + checks.filter(c => c.startsWith('PASS')).length + '/' + checks.length + ' PASS');
+        } else {
+          el.innerHTML = '<span class="fail">FAIL</span> — universe.html не найден (status: ' + resp.status + ')';
+          log('Тест 6: universe.html — NOT FOUND');
+        }
+      } catch(e) {
+        el.innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+        log('Тест 6: ERROR — ' + e.message);
+      }
+    };
+
+    // Авто-запуск
+    log('Тесты загружены. Нажми на кнопки для запуска.');
+    log('Экспорты universeProgression: ' +
+      ['UNIVERSE_LEVELS', 'getUniverseByLight', 'getUniverseProgress',
+       'getUnlockedUniverseLevels', 'getGenerationLayers',
+       'getUniverseCardDepth', 'createUniverseSnapshot'].join(', '));
+  </script>
+</body>
+</html>

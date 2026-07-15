@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test: tigel-module.js — AWARA</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background:#0a0812;
+    color:#fff8d6;
+    font-family:'Cormorant Garamond',Georgia,serif;
+    min-height:100vh;
+    padding:20px;
+  }
+  h1 {
+    font-family:'Cinzel',serif;
+    text-align:center;
+    color:#c9a84c;
+    font-size:clamp(16px,4vw,22px);
+    margin-bottom:8px;
+    letter-spacing:0.15em;
+  }
+  .subtitle {
+    text-align:center;
+    color:rgba(201,168,76,0.5);
+    font-size:12px;
+    letter-spacing:0.1em;
+    margin-bottom:24px;
+  }
+
+  /* --- Секции --- */
+  .section {
+    max-width:700px;
+    margin:0 auto 24px;
+    padding:16px;
+    border:1px solid rgba(201,168,76,0.2);
+    border-radius:12px;
+    background:rgba(201,168,76,0.04);
+  }
+  .section-title {
+    font-family:'Cinzel',serif;
+    font-size:13px;
+    color:#c9a84c;
+    letter-spacing:0.15em;
+    margin-bottom:12px;
+    padding-bottom:8px;
+    border-bottom:1px solid rgba(201,168,76,0.15);
+  }
+
+  /* --- Кнопки --- */
+  .btn-row {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:12px;
+  }
+  .btn {
+    padding:8px 14px;
+    background:rgba(201,168,76,0.12);
+    border:1px solid rgba(201,168,76,0.4);
+    border-radius:8px;
+    color:#c9a84c;
+    font-family:'Cinzel',serif;
+    font-size:11px;
+    letter-spacing:0.1em;
+    cursor:pointer;
+    transition:all 0.3s;
+  }
+  .btn:hover {
+    background:rgba(201,168,76,0.25);
+    border-color:rgba(201,168,76,0.7);
+  }
+  .btn-green {
+    border-color:rgba(0,255,170,0.4);
+    color:rgba(0,255,170,0.9);
+    background:rgba(0,255,170,0.08);
+  }
+  .btn-green:hover {
+    background:rgba(0,255,170,0.2);
+    border-color:rgba(0,255,170,0.7);
+  }
+  .btn-red {
+    border-color:rgba(255,80,80,0.4);
+    color:rgba(255,80,80,0.9);
+    background:rgba(255,80,80,0.08);
+  }
+  .btn-red:hover {
+    background:rgba(255,80,80,0.2);
+  }
+
+  /* --- У-Син дисплей --- */
+  .wuxing-grid {
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+    margin:12px 0;
+  }
+  .wuxing-cell {
+    text-align:center;
+    padding:10px 4px;
+    border:1px solid rgba(201,168,76,0.15);
+    border-radius:8px;
+    background:rgba(201,168,76,0.04);
+    cursor:pointer;
+    transition:all 0.2s;
+  }
+  .wuxing-cell:hover {
+    background:rgba(201,168,76,0.12);
+    border-color:rgba(201,168,76,0.4);
+  }
+  .wuxing-icon { font-size:20px; margin-bottom:4px; }
+  .wuxing-name { font-size:10px; color:rgba(201,168,76,0.6); letter-spacing:0.08em; }
+  .wuxing-value { font-size:14px; color:#c9a84c; font-weight:bold; margin-top:4px; }
+
+  /* --- Тороид --- */
+  .toroid-display {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin:12px 0;
+  }
+  .channel-box {
+    padding:12px;
+    border:1px solid rgba(201,168,76,0.15);
+    border-radius:8px;
+    background:rgba(0,0,0,0.2);
+  }
+  .channel-label {
+    font-size:10px;
+    color:rgba(201,168,76,0.5);
+    letter-spacing:0.1em;
+    margin-bottom:6px;
+  }
+  .channel-bar {
+    height:8px;
+    background:rgba(201,168,76,0.1);
+    border-radius:4px;
+    overflow:hidden;
+    margin-bottom:4px;
+  }
+  .channel-fill {
+    height:100%;
+    border-radius:4px;
+    transition:width 0.5s ease;
+  }
+  .channel-pct {
+    font-size:12px;
+    font-weight:bold;
+  }
+
+  .balance-display {
+    text-align:center;
+    padding:16px;
+    border:1px solid rgba(201,168,76,0.2);
+    border-radius:8px;
+    background:rgba(201,168,76,0.04);
+    margin:12px 0;
+  }
+  .balance-icon { font-size:24px; margin-bottom:4px; }
+  .balance-value { font-size:20px; font-weight:bold; color:#c9a84c; }
+  .balance-label { font-size:10px; color:rgba(201,168,76,0.5); margin-top:4px; }
+
+  /* --- Ключ --- */
+  .key-display {
+    padding:16px;
+    border:2px solid rgba(201,168,76,0.3);
+    border-radius:12px;
+    background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(0,0,0,0.3));
+    margin:12px 0;
+    display:none;
+  }
+  .key-display.visible { display:block; }
+  .key-header { text-align:center; margin-bottom:12px; }
+  .key-name { font-family:'Cinzel',serif; font-size:16px; color:#c9a84c; }
+  .key-rarity { font-size:10px; letter-spacing:0.15em; padding:3px 10px; border-radius:12px; display:inline-block; margin-top:6px; }
+  .rarity-common    { background:rgba(128,128,128,0.2); color:rgba(192,192,192,0.9); }
+  .rarity-rare      { background:rgba(0,120,255,0.2); color:rgba(100,180,255,0.9); }
+  .rarity-epic      { background:rgba(138,43,226,0.2); color:rgba(186,85,211,0.9); }
+  .rarity-legendary { background:rgba(255,165,0,0.2); color:rgba(255,200,100,0.9); }
+  .rarity-mythic    { background:rgba(255,0,255,0.2); color:rgba(255,100,255,1); }
+  .key-stats {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
+    gap:8px;
+    margin:12px 0;
+  }
+  .key-stat {
+    padding:8px;
+    background:rgba(0,0,0,0.25);
+    border:1px solid rgba(201,168,76,0.1);
+    border-radius:6px;
+    text-align:center;
+  }
+  .key-stat-label { font-size:8px; color:rgba(201,168,76,0.4); letter-spacing:0.08em; }
+  .key-stat-value { font-size:12px; color:#c9a84c; margin-top:2px; }
+
+  /* --- Лог текстовый --- */
+  .log-input {
+    width:100%;
+    min-height:80px;
+    padding:12px;
+    background:rgba(0,0,0,0.3);
+    border:1px solid rgba(201,168,76,0.2);
+    border-radius:8px;
+    color:#fff8d6;
+    font-family:'Cormorant Garamond',serif;
+    font-size:14px;
+    resize:vertical;
+    margin-bottom:8px;
+  }
+  .log-input::placeholder { color:rgba(201,168,76,0.3); }
+
+  /* --- День Итог --- */
+  .summary-grid {
+    margin:12px 0;
+  }
+  .summary-row {
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:4px 0;
+    border-bottom:1px solid rgba(201,168,76,0.07);
+  }
+  .summary-label {
+    font-family:monospace;
+    font-size:10px;
+    color:rgba(201,168,76,0.4);
+    letter-spacing:0.05em;
+  }
+  .summary-value { color:rgba(255,248,214,0.85); font-size:13px; }
+
+  /* --- Лог событий --- */
+  .event-log {
+    max-width:700px;
+    margin:0 auto;
+    padding:12px;
+    border:1px solid rgba(201,168,76,0.1);
+    border-radius:8px;
+    background:rgba(0,0,0,0.3);
+    max-height:200px;
+    overflow-y:auto;
+    font-family:monospace;
+    font-size:11px;
+    line-height:1.6;
+    color:rgba(201,168,76,0.6);
+  }
+
+  /* --- Canvas --- */
+  #bg-canvas {
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    z-index:-1;
+    pointer-events:none;
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<h1>TIGEL-MODULE TEST</h1>
+<div class="subtitle">js/tigel-module.js — Вечерний Тигель</div>
+
+<!-- === СЕКЦИЯ: УПРАВЛЕНИЕ === -->
+<div class="section">
+  <div class="section-title">УПРАВЛЕНИЕ</div>
+  <div class="btn-row">
+    <button class="btn btn-green" onclick="doInit()">Init Tigel</button>
+    <button class="btn" onclick="doAutoTag()">Auto-Tag</button>
+    <button class="btn" onclick="doComputeToroid()">Compute Toroid</button>
+    <button class="btn" onclick="doGenerateKey()">Generate Key</button>
+    <button class="btn btn-green" onclick="doSynthesize()">Synthesize Day</button>
+    <button class="btn" onclick="doGather()">Gather Spheres</button>
+    <button class="btn btn-red" onclick="doReset()">Reset</button>
+  </div>
+</div>
+
+<!-- === СЕКЦИЯ: ВВОД ЛОГА === -->
+<div class="section">
+  <div class="section-title">ЛОГ ДНЯ</div>
+  <textarea id="log-input" class="log-input" placeholder="Опиши свой день: практики, работа, отдых, еда, общение...
+
+Примеры:
+- Утром 2ч джапа
+- Написал 400 строк кода
+- Чай пуэр с семьёй
+- Вечером пранаяма 40 мин
+- Прогулка в лесу 1ч"></textarea>
+  <div class="btn-row">
+    <button class="btn" onclick="fillSample()">Sample Text</button>
+  </div>
+</div>
+
+<!-- === СЕКЦИЯ: У-СИН === -->
+<div class="section">
+  <div class="section-title">У-СИН РАСПРЕДЕЛЕНИЕ</div>
+  <div class="wuxing-grid" id="wuxing-grid">
+    <div class="wuxing-cell" onclick="doAdjust('water', 0.05)">
+      <div class="wuxing-icon">W</div>
+      <div class="wuxing-name">Вода</div>
+      <div class="wuxing-value" id="wx-water">0%</div>
+    </div>
+    <div class="wuxing-cell" onclick="doAdjust('wood', 0.05)">
+      <div class="wuxing-icon">T</div>
+      <div class="wuxing-name">Дерево</div>
+      <div class="wuxing-value" id="wx-wood">0%</div>
+    </div>
+    <div class="wuxing-cell" onclick="doAdjust('fire', 0.05)">
+      <div class="wuxing-icon">F</div>
+      <div class="wuxing-name">Огонь</div>
+      <div class="wuxing-value" id="wx-fire">0%</div>
+    </div>
+    <div class="wuxing-cell" onclick="doAdjust('earth', 0.05)">
+      <div class="wuxing-icon">E</div>
+      <div class="wuxing-name">Земля</div>
+      <div class="wuxing-value" id="wx-earth">0%</div>
+    </div>
+    <div class="wuxing-cell" onclick="doAdjust('metal', 0.05)">
+      <div class="wuxing-icon">M</div>
+      <div class="wuxing-name">Металл</div>
+      <div class="wuxing-value" id="wx-metal">0%</div>
+    </div>
+  </div>
+  <div style="font-size:10px;color:rgba(201,168,76,0.4);text-align:center;">Клик = +5%. Правый клик = -5%.</div>
+</div>
+
+<!-- === СЕКЦИЯ: ТОРОИД === -->
+<div class="section">
+  <div class="section-title">ТОРОИДАЛЬНЫЙ БАЛАНС</div>
+  <div class="toroid-display">
+    <div class="channel-box">
+      <div class="channel-label">Yang ПИНГАЛА</div>
+      <div class="channel-bar">
+        <div class="channel-fill" id="pingala-fill" style="width:0%;background:linear-gradient(90deg,rgba(255,136,68,0.4),rgba(255,136,68,0.8));"></div>
+      </div>
+      <div class="channel-pct" id="pingala-pct" style="color:#ff8844;">0%</div>
+    </div>
+    <div class="channel-box">
+      <div class="channel-label">Yin ИДА</div>
+      <div class="channel-bar">
+        <div class="channel-fill" id="ida-fill" style="width:0%;background:linear-gradient(90deg,rgba(68,136,204,0.4),rgba(68,136,204,0.8));"></div>
+      </div>
+      <div class="channel-pct" id="ida-pct" style="color:#4488cc;">0%</div>
+    </div>
+  </div>
+  <div class="balance-display">
+    <div class="balance-icon" id="balance-icon">~</div>
+    <div class="balance-value" id="balance-value">—</div>
+    <div class="balance-label" id="balance-label">СУШУМНА</div>
+    <div id="balance-desc" style="font-size:10px;color:rgba(201,168,76,0.5);margin-top:4px;">Введи лог для расчёта</div>
+  </div>
+  <div style="display:flex;gap:12px;justify-content:center;margin-top:8px;">
+    <div style="text-align:center;">
+      <div style="font-size:9px;color:rgba(201,168,76,0.4);">МАЙНИНГ</div>
+      <div id="mining-value" style="font-size:16px;color:#c9a84c;font-weight:bold;">x1</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:9px;color:rgba(201,168,76,0.4);">СВЕТ</div>
+      <div id="light-value" style="font-size:16px;color:#c9a84c;font-weight:bold;">0 sv</div>
+    </div>
+  </div>
+</div>
+
+<!-- === СЕКЦИЯ: КЛЮЧ === -->
+<div class="section">
+  <div class="section-title">КЛЮЧ ДНЯ</div>
+  <div class="key-display" id="key-display">
+    <div class="key-header">
+      <div class="key-name" id="key-name">—</div>
+      <div class="key-rarity" id="key-rarity">—</div>
+    </div>
+    <div class="key-stats" id="key-stats"></div>
+  </div>
+  <div id="no-key" style="text-align:center;color:rgba(201,168,76,0.3);font-size:12px;padding:12px;">
+    Ключ ещё не сгенерирован. Введи лог и нажми Generate Key или Synthesize Day.
+  </div>
+</div>
+
+<!-- === СЕКЦИЯ: ИТОГИ ДНЯ === -->
+<div class="section" id="summary-section" style="display:none;">
+  <div class="section-title">ИТОГИ ДНЯ (7 ПАРАМЕТРОВ)</div>
+  <div class="summary-grid" id="summary-grid"></div>
+</div>
+
+<!-- === ЛОГ СОБЫТИЙ === -->
+<div class="event-log" id="event-log">
+  [System] Test page loaded. Awaiting module init...<br>
+</div>
+
+<script type="module">
+  import {
+    initTigel, getAgentName,
+    autoTagWuXing, adjustWuXing, getWuXing,
+    computeToroid, getRecommendations, saveToroidSnapshot, loadToroidHistory,
+    generateKey, saveKeyToInventory, loadKeyInventory,
+    synthesizeDay, gatherExperienceFromSpheres,
+    startBgAnimation, stopBgAnimation,
+    switchTab, getActiveTab,
+    getDaySummary, getTigelState, resetTigelState
+  } from './tigel-module.js';
+
+  const log = document.getElementById('event-log');
+  function addLog(msg) {
+    const time = new Date().toLocaleTimeString('ru-RU');
+    log.innerHTML += '[' + time + '] ' + msg + '<br>';
+    log.scrollTop = log.scrollHeight;
+  }
+
+  // --- Обновление UI У-Син ---
+  function updateWuXingUI(wx) {
+    if (!wx) return;
+    Object.entries(wx).forEach(([elem, val]) => {
+      const el = document.getElementById('wx-' + elem);
+      if (el) el.textContent = Math.round(val * 100) + '%';
+    });
+  }
+
+  // --- Обновление UI Тороида ---
+  function updateToroidUI(toroid) {
+    if (!toroid) return;
+    document.getElementById('pingala-fill').style.width = (toroid.pingala * 100) + '%';
+    document.getElementById('pingala-pct').textContent = Math.round(toroid.pingala * 100) + '%';
+    document.getElementById('ida-fill').style.width = (toroid.ida * 100) + '%';
+    document.getElementById('ida-pct').textContent = Math.round(toroid.ida * 100) + '%';
+    document.getElementById('balance-icon').textContent = toroid.sushumna.icon;
+    document.getElementById('balance-icon').style.color = toroid.sushumna.color;
+    document.getElementById('balance-value').textContent = Math.round(toroid.balance * 100) + '%';
+    document.getElementById('balance-desc').textContent = toroid.sushumna.desc;
+    document.getElementById('mining-value').textContent = 'x' + toroid.mining_multiplier;
+    document.getElementById('light-value').textContent = toroid.light_total + ' sv';
+  }
+
+  // --- Обновление UI Ключа ---
+  function updateKeyUI(keyResult) {
+    if (!keyResult) return;
+    const display = document.getElementById('key-display');
+    const noKey = document.getElementById('no-key');
+    display.classList.add('visible');
+    noKey.style.display = 'none';
+
+    document.getElementById('key-name').textContent = keyResult.key.name;
+    const rarityEl = document.getElementById('key-rarity');
+    rarityEl.textContent = keyResult.key.rarity.toUpperCase();
+    rarityEl.className = 'key-rarity rarity-' + keyResult.key.rarity;
+
+    const statsHTML = [
+      { l: 'МЕРНОСТЬ', v: keyResult.key.mernost + 'D' },
+      { l: 'ЭЛЕМЕНТ', v: keyResult.key.element },
+      { l: 'ГУНА', v: keyResult.key.guna },
+      { l: 'СВЕТ БАЗОВЫЙ', v: keyResult.key.light_base + ' sv' },
+      { l: 'СВЕТ ИТОГО', v: keyResult.key.light_total + ' sv' },
+      { l: 'СРОК', v: keyResult.key.expires_days + ' дней' }
+    ].map(s =>
+      '<div class="key-stat"><div class="key-stat-label">' + s.l + '</div><div class="key-stat-value">' + s.v + '</div></div>'
+    ).join('');
+    document.getElementById('key-stats').innerHTML = statsHTML;
+  }
+
+  // --- Обновление итогов дня ---
+  function updateSummaryUI(summary) {
+    if (!summary) return;
+    const section = document.getElementById('summary-section');
+    const grid = document.getElementById('summary-grid');
+    section.style.display = 'block';
+    grid.innerHTML = summary.map(p =>
+      '<div class="summary-row">' +
+        '<span class="summary-label">' + p.label + '</span>' +
+        '<span class="summary-value">' + p.value + (p.sub ? ' (' + p.sub + ')' : '') + '</span>' +
+      '</div>'
+    ).join('');
+  }
+
+  // --- Обработчики кнопок ---
+  window.doInit = async function() {
+    addLog('initTigel()...');
+    const result = await initTigel();
+    if (result) {
+      addLog('Тигель инициализирован. Агентов: ' + (result.agents?.length || 0));
+      // Запускаем фоновую анимацию
+      startBgAnimation(document.getElementById('bg-canvas'));
+      addLog('Фоновая анимация запущена');
+    } else {
+      addLog('ОШИБКА инициализации');
+    }
+  };
+
+  window.doAutoTag = function() {
+    const text = document.getElementById('log-input').value.trim();
+    if (!text) { addLog('Пустой лог — введи текст'); return; }
+    const wx = autoTagWuXing(text);
+    updateWuXingUI(wx);
+    addLog('У-Син: Вода=' + Math.round(wx.water*100) + '% Дерево=' + Math.round(wx.wood*100) +
+           '% Огонь=' + Math.round(wx.fire*100) + '% Земля=' + Math.round(wx.earth*100) +
+           '% Металл=' + Math.round(wx.metal*100) + '%');
+  };
+
+  window.doAdjust = function(elem, delta) {
+    const wx = adjustWuXing(elem, delta);
+    updateWuXingUI(wx);
+    const toroid = computeToroid(wx);
+    updateToroidUI(toroid);
+    addLog('У-Син скорректирован: ' + elem + ' ' + (delta > 0 ? '+' : '') + Math.round(delta*100) + '%');
+  };
+
+  window.doComputeToroid = function() {
+    const wx = getWuXing();
+    const sum = Object.values(wx).reduce((a,b) => a+b, 0);
+    if (sum === 0) { addLog('У-Син пуст — сначала введи лог или настрой стихии'); return; }
+    const toroid = computeToroid(wx);
+    updateToroidUI(toroid);
+    addLog('Тороид: Пингала=' + Math.round(toroid.pingala*100) + '% Ида=' + Math.round(toroid.ida*100) +
+           '% Баланс=' + Math.round(toroid.balance*100) + '% Майнинг=x' + toroid.mining_multiplier);
+  };
+
+  window.doGenerateKey = function() {
+    const text = document.getElementById('log-input').value.trim();
+    if (!text) { addLog('Пустой лог — введи текст для генерации ключа'); return; }
+    const wx = autoTagWuXing(text);
+    updateWuXingUI(wx);
+    const toroid = computeToroid(wx);
+    updateToroidUI(toroid);
+    const keyResult = generateKey(text, wx, toroid);
+    updateKeyUI(keyResult);
+    addLog('Ключ: ' + keyResult.key.name + ' [' + keyResult.key.rarity.toUpperCase() + '] Свет: ' + keyResult.key.light_total);
+  };
+
+  window.doSynthesize = function() {
+    const text = document.getElementById('log-input').value.trim();
+    if (!text) { addLog('Пустой лог — синтез невозможен'); return; }
+    const result = synthesizeDay(text);
+    if (result) {
+      updateWuXingUI(result.wuXing);
+      updateToroidUI(result.toroid);
+      updateKeyUI(result.key);
+      const summary = getDaySummary(result.wuXing, result.toroid);
+      updateSummaryUI(summary);
+      addLog('СИНТЕЗ ДНЯ: Свет +' + result.lightAwarded + ' | Ключ: ' + result.key.key.name + ' [' + result.key.key.rarity.toUpperCase() + ']');
+    }
+  };
+
+  window.doGather = function() {
+    const result = gatherExperienceFromSpheres();
+    if (result) {
+      const input = document.getElementById('log-input');
+      if (input.value.trim()) {
+        input.value += '\n\n' + result.text;
+      } else {
+        input.value = result.text;
+      }
+      addLog('Собрано ' + result.count + ' записей из ' + result.sphereNames.length + ' сфер');
+    } else {
+      addLog('Сферы пусты — нечего собирать');
+    }
+  };
+
+  window.doReset = function() {
+    resetTigelState();
+    updateWuXingUI({ water: 0, wood: 0, fire: 0, earth: 0, metal: 0 });
+    document.getElementById('pingala-fill').style.width = '0%';
+    document.getElementById('pingala-pct').textContent = '0%';
+    document.getElementById('ida-fill').style.width = '0%';
+    document.getElementById('ida-pct').textContent = '0%';
+    document.getElementById('balance-icon').textContent = '~';
+    document.getElementById('balance-value').textContent = '—';
+    document.getElementById('balance-desc').textContent = 'Введи лог для расчёта';
+    document.getElementById('mining-value').textContent = 'x1';
+    document.getElementById('light-value').textContent = '0 sv';
+    document.getElementById('key-display').classList.remove('visible');
+    document.getElementById('no-key').style.display = '';
+    document.getElementById('key-stats').innerHTML = '';
+    document.getElementById('summary-section').style.display = 'none';
+    addLog('Состояние сброшено');
+  };
+
+  window.fillSample = function() {
+    document.getElementById('log-input').value =
+      'Утром 2 часа джапа и мантра.\n' +
+      'Написал 400 строк кода для проекта.\n' +
+      'Чай пуэр с семьёй после обеда.\n' +
+      'Вечером пранаяма 40 минут и йога.\n' +
+      'Прогулка в лесу 1 час, созерцание природы.\n' +
+      'Планирование развития проекта на вечер.';
+    addLog('Sample text вставлен');
+  };
+
+  // Правый клик на У-Син
+  document.querySelectorAll('.wuxing-cell').forEach(cell => {
+    cell.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      const elem = ['water','wood','fire','earth','metal'][
+        Array.from(cell.parentElement.children).indexOf(cell)
+      ];
+      if (elem) window.doAdjust(elem, -0.05);
+    });
+  });
+
+  // Авто-инициализация
+  addLog('Автоматическая инициализация...');
+  doInit();
+</script>
+</body>
+</html>

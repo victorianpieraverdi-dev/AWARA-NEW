@@ -1,0 +1,802 @@
+{
+  "schema_version": 1,
+  "title": "Карта отражения 14 Лок в теле человека",
+  "purpose": "Связка ведической космологии (vedic_loka.json) с чакрами (chakras.json) и физическим телом. Каждая лока — не абстракция, а зона в теле, через которую игрок переживает этот мир.",
+  "principle": "Гора Меру = позвоночник. 7 высших лок нанизаны на чакры от корня до макушки. 7 низших лок отражены вниз от Муладхары через ноги к подошвам. Центр — Бхур-лока (Земля) = Муладхара = точка кармического действия.",
+  "center": {
+    "name": "Ра — Свет Центра",
+    "note": "Ра — изначальный Свет, монадические лучи-каналы которого пронизывают все 14 лок вдоль оси Меру, связывая высшие и низшие миры в единое Космическое Яйцо (Брахманду)."
+  },
+  "upper_lokas": [
+    {
+      "loka_id": 7,
+      "name": "Бхур-лока",
+      "sanskrit": "Bhūrloka",
+      "tier": "earth",
+      "density": 1,
+      "deity": "Агни · Варуна",
+      "chakra": "Муладхара",
+      "chakra_sanskrit": "Mūlādhāra",
+      "body_region": "Корень — основание позвоночника, копчик",
+      "element": "Земля",
+      "color_loka": "#66bbff",
+      "color_chakra": "Красный",
+      "mantra": "LAM",
+      "kosha": "Аннамайя-коша (оболочка пищи)",
+      "subtle_body": "Физическое",
+      "experience": "Здесь и сейчас. Тело, действие, материя. Точка отсчёта всего опыта.",
+      "loka_description": "Земля — мир кармического действия, где встречаются высшие и низшие силы."
+    },
+    {
+      "loka_id": 6,
+      "name": "Бхувар-лока",
+      "sanskrit": "Bhuvarloka",
+      "tier": "upper",
+      "density": 2,
+      "deity": "Сурья · Чандра",
+      "chakra": "Свадхистхана",
+      "chakra_sanskrit": "Svādhiṣṭhāna",
+      "body_region": "Крестец — ниже пупка",
+      "element": "Вода",
+      "color_loka": "#88ccff",
+      "color_chakra": "Оранжевый",
+      "mantra": "VAM",
+      "kosha": "Пранамайя-коша (оболочка праны)",
+      "subtle_body": "Эфирное",
+      "experience": "Эмоции, токи, астральные течения. Первое выход за пределы плоти.",
+      "loka_description": "Промежуточное пространство между Землёй и Солнцем — царство светил, полубогов и предков."
+    },
+    {
+      "loka_id": 5,
+      "name": "Свар-лока",
+      "sanskrit": "Svarloka",
+      "tier": "upper",
+      "density": 3,
+      "deity": "Индра",
+      "chakra": "Манипура",
+      "chakra_sanskrit": "Maṇipūra",
+      "body_region": "Солнечное сплетение",
+      "element": "Огонь",
+      "color_loka": "#a0c8ff",
+      "color_chakra": "Жёлтый",
+      "mantra": "RAM",
+      "kosha": "Маномайя-коша (оболочка ума)",
+      "subtle_body": "Астральное",
+      "experience": "Воля, власть, радость победы. Небеса деятельного духа.",
+      "loka_description": "Небеса Индры между Солнцем и Полярной звездой — обитель богов и праведников."
+    },
+    {
+      "loka_id": 4,
+      "name": "Махар-лока",
+      "sanskrit": "Maharloka",
+      "tier": "upper",
+      "density": 4,
+      "deity": "Бхригу Муни",
+      "chakra": "Анахата",
+      "chakra_sanskrit": "Anāhata",
+      "body_region": "Сердце",
+      "element": "Воздух",
+      "color_loka": "#b8b0ff",
+      "color_chakra": "Зелёный",
+      "mantra": "YAM",
+      "kosha": "Виджнянамайя-коша (оболочка различения)",
+      "subtle_body": "Ментальное",
+      "experience": "Равновесие, святость, пребывание за пределами циклов. Сердце как орган познания.",
+      "loka_description": "Мир великих святых и риши, переживающих космические циклы творения."
+    },
+    {
+      "loka_id": 3,
+      "name": "Джана-лока",
+      "sanskrit": "Janaloka",
+      "tier": "upper",
+      "density": 5,
+      "deity": "Кумары",
+      "chakra": "Вишуддха",
+      "chakra_sanskrit": "Viśuddha",
+      "body_region": "Горло",
+      "element": "Эфир",
+      "color_loka": "#d0c8ff",
+      "color_chakra": "Голубой",
+      "mantra": "HAM",
+      "kosha": "Анандамайя-коша (оболочка блаженства)",
+      "subtle_body": "Каузальное",
+      "experience": "Чистое знание, рождённое мыслью. Слово как творящая сила.",
+      "loka_description": "Мир мудрецов и сынов Брахмы — Кумаров, рождённых силой чистой мысли."
+    },
+    {
+      "loka_id": 2,
+      "name": "Тапа-лока",
+      "sanskrit": "Tapoloka",
+      "tier": "upper",
+      "density": 6,
+      "deity": "Санакади Муни",
+      "chakra": "Аджна",
+      "chakra_sanskrit": "Ājñā",
+      "body_region": "Третий глаз — межбровье",
+      "element": "Свет",
+      "color_loka": "#e8e0ff",
+      "color_chakra": "Индиго",
+      "mantra": "OM",
+      "kosha": "за пределами кош",
+      "subtle_body": "Буддхическое",
+      "experience": "Духовный жар аскезы. Видение сквозь иллюзию. Концентрация без объекта.",
+      "loka_description": "Мир подвижничества и духовного жара (тапаса), где пребывают великие аскеты-мудрецы."
+    },
+    {
+      "loka_id": 1,
+      "name": "Сатья-лока",
+      "sanskrit": "Satyaloka",
+      "tier": "upper",
+      "density": 7,
+      "deity": "Брахма",
+      "chakra": "Сахасрара",
+      "chakra_sanskrit": "Sahasrāra",
+      "body_region": "Макушка — корона",
+      "element": "Сознание",
+      "color_loka": "#ffffff",
+      "color_chakra": "Фиолетовый / Белый",
+      "mantra": "Тишина",
+      "kosha": "за пределами кош",
+      "subtle_body": "Атманическое",
+      "experience": "Единство с Абсолютом. Нет рождения, нет смерти. Чистая Истина.",
+      "loka_description": "Высший мир Истины, обитель Брахмы-творца. Здесь сознание едино с Абсолютом."
+    }
+  ],
+  "lower_lokas": [
+    {
+      "loka_id": 8,
+      "name": "Атала",
+      "sanskrit": "Atala",
+      "tier": "lower",
+      "density": -1,
+      "deity": "Бала",
+      "body_region": "Бёдра",
+      "shadow_chakra": "Тень Муладхары",
+      "color": "#ff9966",
+      "quality": "Иллюзия силы, колдовство, чувственные наслаждения",
+      "experience": "Привязанность к телесным удовольствиям, ложная опора",
+      "loka_description": "Первый из низших миров — царство колдовства и чувственных наслаждений."
+    },
+    {
+      "loka_id": 9,
+      "name": "Витала",
+      "sanskrit": "Vitala",
+      "tier": "lower",
+      "density": -2,
+      "deity": "Хара-Бхава",
+      "body_region": "Колени",
+      "shadow_chakra": "Тень Свадхистханы",
+      "color": "#ff8844",
+      "quality": "Глубинная трансформация, золото в тени",
+      "experience": "Встреча с подавленными эмоциями, скрытые сокровища",
+      "loka_description": "Мир, где Хара-Бхава со своими спутниками правит золотыми россыпями."
+    },
+    {
+      "loka_id": 10,
+      "name": "Сутала",
+      "sanskrit": "Sutala",
+      "tier": "lower",
+      "density": -3,
+      "deity": "Бали Махарадж",
+      "body_region": "Голени",
+      "shadow_chakra": "Тень Манипуры",
+      "color": "#ff7733",
+      "quality": "Благое подземелье, праведность в глубине",
+      "experience": "Дхарма, работающая из тени — добро не нуждается в свете",
+      "loka_description": "Благое подземное царство праведного царя Бали Махараджа."
+    },
+    {
+      "loka_id": 11,
+      "name": "Талатала",
+      "sanskrit": "Talatala",
+      "tier": "lower",
+      "density": -4,
+      "deity": "Майя Данава",
+      "body_region": "Лодыжки",
+      "shadow_chakra": "Тень Анахаты",
+      "color": "#ee6622",
+      "quality": "Матричная магия, архитектура иллюзий",
+      "experience": "Мастерство формы, которое может стать ловушкой или инструментом",
+      "loka_description": "Мир великого зодчего-демона Майи Данавы, мастера иллюзий."
+    },
+    {
+      "loka_id": 12,
+      "name": "Махатала",
+      "sanskrit": "Mahatala",
+      "tier": "lower",
+      "density": -5,
+      "deity": "Наги",
+      "body_region": "Подъём стопы",
+      "shadow_chakra": "Тень Вишуддхи",
+      "color": "#dd5511",
+      "quality": "Великие глубины, родовая память",
+      "experience": "Древняя мудрость, закодированная в ДНК, архетипы рода",
+      "loka_description": "Обитель многоглавых змеев-нагов, детей Кадру."
+    },
+    {
+      "loka_id": 13,
+      "name": "Расатала",
+      "sanskrit": "Rasatala",
+      "tier": "lower",
+      "density": -6,
+      "deity": "Дайтьи · Данавы",
+      "body_region": "Пальцы ног",
+      "shadow_chakra": "Тень Аджны",
+      "color": "#cc4400",
+      "quality": "Подземные потоки, инстинкты, титанические силы",
+      "experience": "Сырая энергия до-сознания, первобытная мощь",
+      "loka_description": "Мир дайтьев и данавов — древних титанов, противников богов."
+    },
+    {
+      "loka_id": 14,
+      "name": "Патала",
+      "sanskrit": "Patala",
+      "tier": "lower",
+      "density": -7,
+      "deity": "Васуки · Шеша",
+      "body_region": "Подошвы",
+      "shadow_chakra": "Тень Сахасрары",
+      "color": "#aa3300",
+      "quality": "Корневой каталог, основание всего, карма",
+      "experience": "Фундамент на котором стоит всё. Шеша держит вселенную — подошвы держат тело.",
+      "loka_description": "Самый нижний мир — царство нагов Васуки и Шеши, на чьих головах покоится вселенная."
+    }
+  ],
+  "beyond_14": {
+    "_comment": "Выход за 14 лок — через 8-ю и 9-ю мерности (из dimensions_9.json и chakras.json)",
+    "monad": {
+      "chakra_id": 8,
+      "name": "Монада",
+      "body_region": "Надастральный план (8-я мерность)",
+      "color": "Золотой",
+      "element": "Монадический Свет",
+      "experience": "Сверхдуша. Над-личное сознание, содержащее все 14 лок как опыт."
+    },
+    "absolute": {
+      "chakra_id": 9,
+      "name": "Абсолют (Параматман)",
+      "body_region": "Исходный Код (9-я мерность)",
+      "color": "Прозрачный",
+      "element": "Абсолют",
+      "experience": "Не-место. Источник, к которому Луч Восприятия возвращается."
+    }
+  },
+  "meru_axis": {
+    "title": "Ось Меру = Позвоночник",
+    "description": "Гора Меру пронизывает все 14 лок. В теле это позвоночник — сушумна. Луч Ра проходит через все чакры как поток Кундалини. Низшие локи — не 'плохое', а фундамент; без подошв нет стояния, без корней нет дерева.",
+    "flow_up": "Восходящий поток: Патала → Бхур → Сатья = Кундалини → Сахасрара",
+    "flow_down": "Нисходящий поток: Сатья → Бхур → Патала = Благодать → заземление",
+    "integration": "Полнота = оба потока одновременно. Не бегство вверх и не застревание внизу."
+  },
+  "player_profiling": {
+    "_status": "DRAFT — НЕ для релиза. Схема для обсуждения.",
+    "_purpose": "Зачем мы всё это связываем: чтобы при создании профиля игрок выбрал свои интересы через дерево категорий (как при регистрации в Twitter/Spotify), и ИИ сразу знал с чего начинать.",
+    "onboarding_interest_tree": {
+      "title": "Дерево Интересов — экран при создании профиля",
+      "concept": "При регистрации игрок видит дерево категорий-веток. Тыкает что ему близко. Не нужно знать про локи и чакры — он выбирает на языке своей жизни. Система маппит выбор на локи/оси/линзы под капотом.",
+      "ux_flow": [
+        "1. Экран: 'Что тебе интересно?' — сетка категорий с иконками",
+        "2. Тап на категорию → раскрываются подкатегории (ветки)",
+        "3. Выбрать 3-7 веток → профиль готов",
+        "4. ИИ маппит выборы на локи + оси + стартовые линзы",
+        "5. Первый квест генерируется персонально"
+      ],
+      "categories": [
+        {
+          "id": "body",
+          "name": "Тело и Здоровье",
+          "icon": "💪",
+          "maps_to_loka": "Бхур-лока",
+          "maps_to_chakra": "Муладхара",
+          "maps_to_axis": "discipline",
+          "branches": [
+            {
+              "id": "body.yoga",
+              "name": "Йога",
+              "maps_to_lens": [
+                "vedic",
+                "tantric_kashmiri"
+              ]
+            },
+            {
+              "id": "body.martial",
+              "name": "Боевые искусства",
+              "maps_to_lens": [
+                "daoist",
+                "shinto"
+              ]
+            },
+            {
+              "id": "body.breathwork",
+              "name": "Дыхательные практики",
+              "maps_to_lens": [
+                "vedic",
+                "daoist",
+                "sufi"
+              ]
+            },
+            {
+              "id": "body.nutrition",
+              "name": "Осознанное питание",
+              "maps_to_lens": [
+                "vedic",
+                "daoist",
+                "buddhist_mahayana"
+              ]
+            },
+            {
+              "id": "body.dance",
+              "name": "Танец / Движение",
+              "maps_to_lens": [
+                "sufi",
+                "shamanic",
+                "afro_dogon"
+              ]
+            },
+            {
+              "id": "body.sport",
+              "name": "Спорт / Выносливость",
+              "maps_to_lens": [
+                "norse",
+                "slavic"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "emotion",
+          "name": "Эмоции и Отношения",
+          "icon": "💗",
+          "maps_to_loka": "Бхувар-лока",
+          "maps_to_chakra": "Свадхистхана",
+          "maps_to_axis": "compassion",
+          "branches": [
+            {
+              "id": "emotion.empathy",
+              "name": "Эмпатия / Сострадание",
+              "maps_to_lens": [
+                "buddhist_mahayana",
+                "christian_mystical_grail"
+              ]
+            },
+            {
+              "id": "emotion.relationships",
+              "name": "Отношения / Семья",
+              "maps_to_lens": [
+                "slavic",
+                "celtic",
+                "yoruba_ifa_orisha"
+              ]
+            },
+            {
+              "id": "emotion.healing",
+              "name": "Исцеление травм",
+              "maps_to_lens": [
+                "shamanic",
+                "gnostic"
+              ]
+            },
+            {
+              "id": "emotion.love",
+              "name": "Любовь как путь",
+              "maps_to_lens": [
+                "sufi",
+                "tantric_kashmiri",
+                "christian_mystical_grail"
+              ]
+            },
+            {
+              "id": "emotion.ancestors",
+              "name": "Работа с родом / Предки",
+              "maps_to_lens": [
+                "slavic",
+                "shamanic",
+                "yoruba_ifa_orisha"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "power",
+          "name": "Воля и Действие",
+          "icon": "🔥",
+          "maps_to_loka": "Свар-лока",
+          "maps_to_chakra": "Манипура",
+          "maps_to_axis": "will",
+          "branches": [
+            {
+              "id": "power.leadership",
+              "name": "Лидерство / Управление",
+              "maps_to_lens": [
+                "egyptian",
+                "aztec_mexica",
+                "norse"
+              ]
+            },
+            {
+              "id": "power.entrepreneurship",
+              "name": "Предпринимательство",
+              "maps_to_lens": [
+                "hermetic_alchemical",
+                "technomagical"
+              ]
+            },
+            {
+              "id": "power.discipline",
+              "name": "Самодисциплина / Аскеза",
+              "maps_to_lens": [
+                "vedic",
+                "buddhist_mahayana",
+                "zoroastrian"
+              ]
+            },
+            {
+              "id": "power.strategy",
+              "name": "Стратегия / Игра",
+              "maps_to_lens": [
+                "chinese_iching",
+                "daoist"
+              ]
+            },
+            {
+              "id": "power.creativity",
+              "name": "Творчество / Созидание",
+              "maps_to_lens": [
+                "celtic",
+                "slavic",
+                "antique_greco_roman"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "heart",
+          "name": "Сердце и Служение",
+          "icon": "💚",
+          "maps_to_loka": "Махар-лока",
+          "maps_to_chakra": "Анахата",
+          "maps_to_axis": "devotion",
+          "branches": [
+            {
+              "id": "heart.service",
+              "name": "Служение / Волонтёрство",
+              "maps_to_lens": [
+                "christian_mystical_grail",
+                "buddhist_mahayana"
+              ]
+            },
+            {
+              "id": "heart.nature",
+              "name": "Природа / Экология",
+              "maps_to_lens": [
+                "celtic",
+                "shamanic",
+                "shinto"
+              ]
+            },
+            {
+              "id": "heart.music",
+              "name": "Музыка",
+              "maps_to_lens": [
+                "sufi",
+                "vedic",
+                "afro_dogon",
+                "antique_greco_roman"
+              ]
+            },
+            {
+              "id": "heart.poetry",
+              "name": "Поэзия / Слово",
+              "maps_to_lens": [
+                "sufi",
+                "celtic",
+                "kabbalistic"
+              ]
+            },
+            {
+              "id": "heart.animals",
+              "name": "Животные / Тотемы",
+              "maps_to_lens": [
+                "shamanic",
+                "celtic",
+                "norse"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "knowledge",
+          "name": "Знание и Мудрость",
+          "icon": "📖",
+          "maps_to_loka": "Джана-лока",
+          "maps_to_chakra": "Вишуддха",
+          "maps_to_axis": "clarity",
+          "branches": [
+            {
+              "id": "knowledge.philosophy",
+              "name": "Философия",
+              "maps_to_lens": [
+                "advaita_siddha",
+                "gnostic",
+                "antique_greco_roman"
+              ]
+            },
+            {
+              "id": "knowledge.mythology",
+              "name": "Мифология / Архетипы",
+              "maps_to_lens": [
+                "norse",
+                "egyptian",
+                "mayan",
+                "slavic"
+              ]
+            },
+            {
+              "id": "knowledge.science",
+              "name": "Наука / Космос",
+              "maps_to_lens": [
+                "cosmic_galactic",
+                "posthuman_ai_sophianic"
+              ]
+            },
+            {
+              "id": "knowledge.symbols",
+              "name": "Символы / Языки",
+              "maps_to_lens": [
+                "kabbalistic",
+                "hermetic_alchemical",
+                "sumerian_babylonian"
+              ]
+            },
+            {
+              "id": "knowledge.astrology",
+              "name": "Астрология / Циклы",
+              "maps_to_lens": [
+                "astrological",
+                "chinese_iching",
+                "mayan"
+              ]
+            },
+            {
+              "id": "knowledge.tarot",
+              "name": "Таро / Оракулы",
+              "maps_to_lens": [
+                "tarot_arcanic",
+                "chinese_iching"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vision",
+          "name": "Видение и Интуиция",
+          "icon": "👁",
+          "maps_to_loka": "Тапа-лока",
+          "maps_to_chakra": "Аджна",
+          "maps_to_axis": "transformation",
+          "branches": [
+            {
+              "id": "vision.meditation",
+              "name": "Медитация",
+              "maps_to_lens": [
+                "buddhist_mahayana",
+                "daoist",
+                "advaita_siddha"
+              ]
+            },
+            {
+              "id": "vision.dreams",
+              "name": "Сновидения / Осознанные сны",
+              "maps_to_lens": [
+                "shamanic",
+                "gnostic",
+                "atlantean_lemurian"
+              ]
+            },
+            {
+              "id": "vision.psychic",
+              "name": "Ясновидение / Тонкое восприятие",
+              "maps_to_lens": [
+                "shamanic",
+                "tantric_kashmiri"
+              ]
+            },
+            {
+              "id": "vision.alchemy",
+              "name": "Алхимия / Трансформация",
+              "maps_to_lens": [
+                "hermetic_alchemical",
+                "daoist"
+              ]
+            },
+            {
+              "id": "vision.art",
+              "name": "Визионерское искусство",
+              "maps_to_lens": [
+                "mayan",
+                "aztec_mexica",
+                "celtic"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "unity",
+          "name": "Единство и Запредельное",
+          "icon": "✨",
+          "maps_to_loka": "Сатья-лока",
+          "maps_to_chakra": "Сахасрара",
+          "maps_to_axis": "unity",
+          "branches": [
+            {
+              "id": "unity.nonduality",
+              "name": "Недвойственность",
+              "maps_to_lens": [
+                "advaita_siddha",
+                "buddhist_mahayana",
+                "daoist"
+              ]
+            },
+            {
+              "id": "unity.mysticism",
+              "name": "Мистицизм",
+              "maps_to_lens": [
+                "sufi",
+                "christian_mystical_grail",
+                "kabbalistic"
+              ]
+            },
+            {
+              "id": "unity.cosmos",
+              "name": "Космическое сознание",
+              "maps_to_lens": [
+                "cosmic_galactic",
+                "shambhala"
+              ]
+            },
+            {
+              "id": "unity.silence",
+              "name": "Тишина / Ретрит",
+              "maps_to_lens": [
+                "buddhist_mahayana",
+                "julian_byzantine"
+              ]
+            },
+            {
+              "id": "unity.death",
+              "name": "Смерть и Перерождение",
+              "maps_to_lens": [
+                "egyptian",
+                "gnostic",
+                "shamanic"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "shadow",
+          "name": "Тень и Глубина",
+          "icon": "🌑",
+          "maps_to_loka": "Атала → Патала (низшие локи)",
+          "maps_to_chakra": "Теневые отражения чакр",
+          "maps_to_axis": "transformation",
+          "branches": [
+            {
+              "id": "shadow.psychology",
+              "name": "Психология / Тень Юнга",
+              "maps_to_lens": [
+                "gnostic",
+                "tarot_arcanic"
+              ]
+            },
+            {
+              "id": "shadow.power_games",
+              "name": "Игры власти / Манипуляция",
+              "maps_to_lens": [
+                "aztec_mexica",
+                "sumerian_babylonian"
+              ]
+            },
+            {
+              "id": "shadow.addiction",
+              "name": "Зависимости / Привязанности",
+              "maps_to_lens": [
+                "buddhist_mahayana",
+                "gnostic"
+              ]
+            },
+            {
+              "id": "shadow.rage",
+              "name": "Гнев / Агрессия",
+              "maps_to_lens": [
+                "norse",
+                "aztec_mexica"
+              ]
+            },
+            {
+              "id": "shadow.fear",
+              "name": "Страх / Фобии",
+              "maps_to_lens": [
+                "shamanic",
+                "egyptian"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "future",
+          "name": "Будущее и Технологии",
+          "icon": "🚀",
+          "maps_to_loka": "Транс-локальное",
+          "maps_to_chakra": "Монада (8-я мерность)",
+          "maps_to_axis": "clarity",
+          "branches": [
+            {
+              "id": "future.ai",
+              "name": "ИИ и Сознание",
+              "maps_to_lens": [
+                "posthuman_ai_sophianic",
+                "technomagical"
+              ]
+            },
+            {
+              "id": "future.biotech",
+              "name": "Биохакинг / Генетика",
+              "maps_to_lens": [
+                "gene_keys",
+                "posthuman_ai_sophianic"
+              ]
+            },
+            {
+              "id": "future.virtual",
+              "name": "VR / Метавселенные",
+              "maps_to_lens": [
+                "technomagical",
+                "atlantean_lemurian"
+              ]
+            },
+            {
+              "id": "future.evolution",
+              "name": "Эволюция человечества",
+              "maps_to_lens": [
+                "cosmic_galactic",
+                "shambhala",
+                "gene_keys"
+              ]
+            }
+          ]
+        }
+      ],
+      "mapping_logic": {
+        "title": "Как выбор превращается в профиль",
+        "steps": [
+          "1. Игрок выбирает 3-7 веток из дерева",
+          "2. Каждая ветка → набор линз (maps_to_lens) + лока (maps_to_loka) + ось (maps_to_axis)",
+          "3. Подсчёт: какие линзы встречаются чаще → стартовые линзы (1-3)",
+          "4. Подсчёт: какие оси доминируют → начальный баланс профиля",
+          "5. Подсчёт: какие локи → стартовый вертикальный фокус",
+          "6. Генерация первого квеста из самой сильной связки линза+лока+ось"
+        ],
+        "example": "Игрок выбрал: Йога + Медитация + Мифология + Тишина → линзы: vedic(2), buddhist(2), daoist(1), norse(1) → старт: Ведическая линза, Бхур-лока, ось discipline+clarity → первый квест: ведическая утренняя практика с элементом наблюдения"
+      }
+    },
+    "adaptive_profiling": {
+      "title": "Адаптивное профилирование — после онбординга",
+      "_comment": "Дополнение: после первого выбора ИИ продолжает уточнять профиль по поведению",
+      "signal_sources": [
+        "Какие квесты берёт / пропускает",
+        "В каких локах проводит время",
+        "Какие типы активности предпочитает (do/meditate/observe/reflect/create/study/ritual)",
+        "Скорость прохождения уровней по линзам",
+        "Баланс верх/низ (высшие vs низшие локи)",
+        "Работа с теневыми аспектами"
+      ],
+      "ai_actions": [
+        "Мягко предлагать непрокачанные оси как 'новый вкус'",
+        "При перекосе верх/низ — предлагать баланс",
+        "Показывать паттерны: 'ты часто выбираешь огненные квесты — хочешь попробовать водное?'",
+        "ИИ не оценивает — ИИ отражает"
+      ]
+    }
+  }
+}

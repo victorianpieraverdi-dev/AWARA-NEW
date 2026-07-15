@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<title>AWARA · Эталон скина: Ведическая матрица</title>
+<style>
+  :root{--cream:#f4e7c8;--font-disp:"Cormorant Garamond","Georgia",serif;--font-body:"Inter",system-ui,sans-serif}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#0a0604;color:var(--cream);font-family:var(--font-body)}
+  body{display:flex;align-items:center;justify-content:center}
+  #app{position:relative;width:100%;max-width:430px;height:100vh;max-height:920px;overflow:hidden;isolation:isolate;
+    --dim:.88;--panel:linear-gradient(158deg,rgba(74,36,15,.30),rgba(34,16,8,.42));--glow:0px;--fw:12px;--frameSrc:none;--gtext:#e0c587;--aura:0}
+  #app .bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;transition:opacity .9s,filter .9s}
+  #app .ov{position:absolute;inset:0;z-index:1;pointer-events:none;transition:background .9s;
+    background:radial-gradient(120% 80% at 50% 12%,transparent 0,rgba(20,8,3,.35) 60%,rgba(12,5,2,var(--dim)) 100%),linear-gradient(180deg,rgba(20,8,3,.2),rgba(8,3,1,.5))}
+  #app .yantra{position:absolute;z-index:2;left:50%;top:47%;width:135vw;max-width:640px;aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity 1s}
+  #app .yantra svg{width:100%;height:100%;display:block}
+  #app.motion .yantra{animation:spin 180s linear infinite}
+  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+  .screen{position:relative;z-index:3;height:100%;overflow-y:auto;padding:22px 18px 96px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .lensbadge{font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:5px 12px;border-radius:999px;color:rgba(240,205,110,1);background:rgba(10,5,2,.4);border:1px solid rgba(240,205,110,.4);backdrop-filter:blur(4px)}
+  .topbar .dot{width:30px;height:30px;border-radius:50%;border:1px solid rgba(240,205,110,.5);background:rgba(10,5,2,.35);box-shadow:0 0 var(--glow) rgba(240,205,110,.5)}
+  .title{font-family:var(--font-disp);font-weight:600;font-size:46px;line-height:1;margin:6px 0 2px;color:var(--gtext);letter-spacing:.02em;text-shadow:0 1px 0 rgba(0,0,0,.5),0 0 var(--glow) rgba(240,205,110,.6);transition:color .9s,text-shadow .9s}
+  .subtitle{font-family:var(--font-disp);font-style:italic;font-size:16px;opacity:.86;margin:0 0 22px;color:rgba(240,205,110,.85)}
+
+  /* ===== ОКНО-РАМКА ===== */
+  .card{position:relative;border-radius:16px;padding:34px 28px 28px;margin:26px 0 32px;background:var(--panel);
+    background-image:var(--pat,none),var(--panel);background-repeat:no-repeat;background-position:center;background-size:auto 86%,cover;transition:background-size .9s,background .9s;
+    backdrop-filter:blur(16px) saturate(125%);-webkit-backdrop-filter:blur(16px) saturate(125%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 16px 44px rgba(0,0,0,.5);overflow:visible;transition:background .9s}
+  /* божественный ореол вокруг окна */
+  .card::after{content:"";position:absolute;inset:-8px;border-radius:22px;pointer-events:none;z-index:-1;opacity:var(--aura);
+    background:radial-gradient(70% 55% at 50% 0%,rgba(255,228,155,.4),transparent 70%),radial-gradient(90% 95% at 50% 50%,rgba(240,205,110,.14),transparent 75%);
+    box-shadow:0 0 calc(var(--glow)*1.7) rgba(240,205,110,.55),inset 0 0 50px rgba(255,222,150,.15);transition:opacity .9s}
+  #app.motion .card::after{animation:auraPulse 5s ease-in-out infinite}
+  @keyframes auraPulse{0%,100%{opacity:calc(var(--aura)*.78)}50%{opacity:var(--aura)}}
+  .card .frame{position:absolute;inset:0;pointer-events:none;border-style:solid;border-width:var(--fw);
+    border-image-source:var(--frameSrc);border-image-slice:30%;border-image-width:var(--fw);border-image-repeat:round;
+    filter:drop-shadow(0 0 var(--glow) rgba(240,205,110,.45));transition:filter .8s;z-index:2}
+  .card .crest{position:absolute;top:-30px;left:50%;width:62px;height:62px;transform:translateX(-50%);opacity:0;
+    filter:drop-shadow(0 0 var(--glow) rgba(240,205,110,.85));transition:opacity .8s;z-index:5}
+  .card .crest svg{width:100%;height:100%}
+  #app.motion .card .crest{animation:breathe 5.5s ease-in-out infinite}
+  @keyframes breathe{0%,100%{filter:drop-shadow(0 0 calc(var(--glow)*.6) rgba(240,205,110,.5))}50%{filter:drop-shadow(0 0 calc(var(--glow)*1.6) rgba(240,205,110,1))}}
+  .card h2{font-family:var(--font-disp);font-size:24px;font-weight:600;margin:2px 0 8px;color:var(--gtext);text-shadow:0 0 var(--glow) rgba(240,205,110,.5)}
+  .card p{font-size:14px;line-height:1.62;margin:0 0 10px;color:#f0e6cf;opacity:.94}
+
+  ul.lotus{list-style:none;margin:8px 0 2px;padding:0}
+  ul.lotus li{position:relative;padding:6px 0 6px 28px;font-size:14px;line-height:1.5;color:#f0e6cf}
+  ul.lotus li::before{content:"";position:absolute;left:2px;top:8px;width:15px;height:15px;background:no-repeat center/contain;opacity:.85;background-image:var(--lotus)}
+
+  .divider{display:flex;align-items:center;gap:10px;margin:6px 4px 24px;color:rgba(240,205,110,1)}
+  .divider .ln{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(240,205,110,.5),transparent)}
+  .divider .gem{width:30px;height:16px}
+  .divider .gem svg{width:100%;height:100%}
+  .chat .who{font-family:var(--font-disp);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,205,110,1);margin-bottom:6px}
+  .btnrow{display:flex;gap:10px;margin-top:4px}
+  .btn{flex:1;padding:13px 14px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .5s;border:1px solid rgba(240,205,110,.5)}
+  .btn.primary{color:#231304;background:linear-gradient(160deg,rgba(240,205,110,.9),rgba(184,115,31,.92));box-shadow:0 6px 20px rgba(0,0,0,.4),0 0 var(--glow) rgba(240,205,110,.5)}
+  .btn.ghost{color:rgba(240,205,110,1);background:rgba(10,5,2,.3);backdrop-filter:blur(6px)}
+
+  .levelbar{position:absolute;z-index:9;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:6px;padding:7px 9px;border-radius:999px;background:rgba(8,4,2,.55);backdrop-filter:blur(8px);border:1px solid rgba(240,205,110,.3)}
+  .levelbar button{width:34px;height:34px;border-radius:50%;border:1px solid rgba(240,205,110,.35);background:transparent;color:rgba(240,205,110,1);font-family:var(--font-disp);font-size:15px;cursor:pointer;transition:all .3s}
+  .levelbar button.on{background:rgba(240,205,110,.92);color:#221202;font-weight:700}
+  .levelbar #demo{font-size:12px}
+  .hint{position:absolute;z-index:9;left:50%;bottom:58px;transform:translateX(-50%);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,205,110,.7);white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="app" class="lv1">
+  <div class="bg"></div>
+  <div class="ov"></div>
+  <div class="yantra" id="yantra"></div>
+
+  <div class="screen">
+    <div class="topbar"><span class="lensbadge" id="lensbadge">Ведическая · Горн · 1/6</span><span class="dot"></span></div>
+    <div class="title">Тигель</div>
+    <div class="subtitle">Ведическая матрица · путь к свету</div>
+
+    <div class="card">
+      <div class="frame"></div><span class="crest"></span>
+      <h2>Практика дня</h2>
+      <p>Дыши ровно. Каждый вдох — топливо для расплава. Сегодня матрица учит отпускать лишнее и держать внутренний огонь.</p>
+      <ul class="lotus"><li>Утренняя настройка — 7 минут тишины</li><li>Намерение дня записать в дневник</li><li>Вечерняя благодарность свету</li></ul>
+    </div>
+
+    <div class="divider"><span class="ln"></span><span class="gem" id="gem"></span><span class="ln"></span></div>
+
+    <div class="card chat">
+      <div class="frame"></div><span class="crest"></span>
+      <div class="who">Ардвен</div>
+      <p>Ты поднимаешься по ведической матрице. С каждой ступенью узоров вокруг больше, и ты вместе с ними раскрываешься.</p>
+    </div>
+
+    <div class="btnrow"><button class="btn primary">Войти в расплав</button><button class="btn ghost">Дневник</button></div>
+  </div>
+
+  <div class="hint" id="hint">Уровень 1 · Горн — сырой камень</div>
+  <div class="levelbar">
+    <button data-lv="1" class="on">1</button><button data-lv="2">2</button><button data-lv="3">3</button><button data-lv="4">4</button><button data-lv="5">5</button><button data-lv="6">6</button><button id="demo" title="Рост 1→6">&#9658;</button>
+  </div>
+</div>
+
+<script>
+  var app=document.getElementById('app');
+  var SVGNS='<svg xmlns="http://www.w3.org/2000/svg" ';
+
+  /* ===== ГЕНЕРАТОР БАГЕТА (border-image tile, 9-slice) ===== */
+  function tile(d, ga){
+    var S='rgba(240,205,110,'+ga+')', S2='rgba(240,205,110,'+(ga*0.62).toFixed(2)+')', S3='rgba(240,205,110,'+(ga*0.4).toFixed(2)+')';
+    var clv=d>=6?3:d===5?2:d===4?1:0, clA=clv===3?0.95:clv===2?0.85:clv===1?0.72:0, clN=clv===3?6:clv===2?3:1;
+    function CC(i){ var c=PAL[i%clN]; return 'rgba('+c[0]+','+c[1]+','+c[2]+','+clA+')'; }
+    var p=SVGNS+'width="200" height="200" viewBox="0 0 200 200" fill="none" stroke-linecap="round" stroke-linejoin="round">';
+    p+='<rect x="6" y="6" width="188" height="188" rx="10" stroke="'+S+'" stroke-width="2"/>';
+    if(d>=4) p+='<rect x="13" y="13" width="174" height="174" rx="8" stroke="'+CC(0)+'" stroke-width="2.6"/>';
+    if(d>=5) p+='<rect x="18" y="18" width="164" height="164" rx="7" stroke="'+CC(2)+'" stroke-width="2"/>';
+    if(d>=6) p+='<rect x="23" y="23" width="154" height="154" rx="6" stroke="'+CC(3)+'" stroke-width="2"/>';
+    var c='';
+    if(d>=2){ c+='<path d="M12 46 C12 25 25 12 46 12" stroke="'+S+'" stroke-width="1.6"/><circle cx="16" cy="16" r="2.6" fill="'+S+'"/>'; }
+    if(d>=3){ c+='<path d="M16 16 q11 3 15 13 M16 16 q3 11 13 15" stroke="'+S2+'" stroke-width="1"/><circle cx="42" cy="14" r="1.6" fill="'+S2+'"/><circle cx="14" cy="42" r="1.6" fill="'+S2+'"/>'; }
+    if(d>=4){ c+='<path d="M12 46 c10 -2 16 4 15 16" stroke="'+S2+'" stroke-width="1.3"/><path d="M24 24 q15 -2 18 13" stroke="'+S+'" stroke-width="1.1"/><circle cx="15" cy="15" r="6.5" fill="'+CC(0)+'"/><circle cx="15" cy="15" r="6.5" stroke="'+S+'" stroke-width="1.2"/>'; }
+    if(d>=5){ c+='<path d="M12 52 q11 -13 25 -11 M52 12 q-13 11 -11 25" stroke="'+S3+'" stroke-width="1"/><circle cx="15" cy="15" r="10" stroke="'+CC(2)+'" stroke-width="2.2"/>'; }
+    if(d>=6){ c+='<path d="M40 40 q4 -9 12 -9 M40 40 q-9 4 -9 12" stroke="'+S3+'" stroke-width="1"/><circle cx="15" cy="15" r="13.5" stroke="'+CC(3)+'" stroke-width="2"/>'; }
+    p+='<g>'+c+'</g><g transform="translate(200,0) scale(-1,1)">'+c+'</g><g transform="translate(200,200) scale(-1,-1)">'+c+'</g><g transform="translate(0,200) scale(1,-1)">'+c+'</g>';
+    var e='';
+    if(d>=3){ e+='<circle cx="100" cy="6" r="2.4" fill="'+S+'"/><circle cx="82" cy="6" r="1.4" fill="'+S2+'"/><circle cx="118" cy="6" r="1.4" fill="'+S2+'"/><path d="M100 8 v7" stroke="'+S+'" stroke-width="1.1"/><path d="M100 15 c-4 -3 -5 -8 0 -11 c5 3 4 8 0 11 Z" stroke="'+S+'" stroke-width="1"/>'; }
+    if(d>=4){ e+='<path d="M60 6 q10 11 20 0 q10 -11 20 0 q10 11 20 0 q10 -11 20 0" stroke="'+S2+'" stroke-width="1.2"/>'; }
+    if(d>=5){ e+='<circle cx="100" cy="7" r="3.8" fill="'+CC(1)+'"/>'; }
+    if(d>=6){ e+='<circle cx="100" cy="7" r="5.5" stroke="'+CC(5)+'" stroke-width="2"/><circle cx="100" cy="7" r="2" fill="'+CC(5)+'"/>'; }
+    p+='<g>'+e+'</g><g transform="rotate(90 100 100)">'+e+'</g><g transform="rotate(180 100 100)">'+e+'</g><g transform="rotate(270 100 100)">'+e+'</g>';
+    p+='</svg>';
+    return 'url("data:image/svg+xml;utf8,'+encodeURIComponent(p)+'")';
+  }
+
+  /* ===== МЕДАЛЬОН: геометрия 1-3, цветной лотос 4-6 ===== */
+  var PAL=[[217,154,43],[224,122,140],[42,120,170],[177,58,46],[80,165,115],[150,110,205]]; // шафран, роза, синий, киноварь, зелёный, фиолет
+  function medallion(n, ga, torana){
+    var S='rgba(240,205,110,'+ga+')', S2='rgba(240,205,110,'+(ga*0.55).toFixed(2)+')';
+    var pet = n<=2?0 : n===3?8 : n===4?12 : 16;
+    var colorLv = n>=6?3 : n===5?2 : n===4?1 : 0;
+    var calpha = colorLv===3?0.95 : colorLv===2?0.8 : colorLv===1?0.55 : 0;
+    var cn = colorLv===3?6 : colorLv===2?3 : 1;
+    var p=SVGNS+'viewBox="0 0 72 72" fill="none" stroke-linecap="round" stroke-linejoin="round">';
+    if(n>=5){ var ray=''; for(var k=0;k<24;k++){ ray+='<g transform="rotate('+(k*15)+' 36 36)"><line x1="36" y1="2" x2="36" y2="9" stroke="'+S+'" stroke-width="1"/></g>'; } p+=ray; p+='<circle cx="36" cy="36" r="33" stroke="'+S2+'" stroke-width=".8"/>'; }
+    p+='<circle cx="36" cy="36" r="27" fill="rgba(18,9,4,.92)" stroke="'+S+'" stroke-width="1.4"/>';
+    if(pet){ var r=''; for(var i=0;i<pet;i++){ r+='<g transform="rotate('+(i*360/pet).toFixed(1)+' 36 36)"><path d="M36 12 C40 20 40 26 36 32 C32 26 32 20 36 12 Z" stroke="'+S+'" stroke-width="1"/>'; if(colorLv){ var col=PAL[i%cn]; r+='<path d="M32.6 15.5 Q36 9.5 39.4 15.5" stroke="rgba('+col[0]+','+col[1]+','+col[2]+','+calpha+')" stroke-width="1.8"/>'; } r+='</g>'; } p+=r; }
+    if(n===1){ p+='<circle cx="36" cy="36" r="13" stroke="'+S2+'" stroke-width="1"/>'; }
+    if(n===2){ p+='<path d="M36 16 L54 52 L18 52 Z" stroke="'+S+'" stroke-width="1.2"/><path d="M36 56 L18 20 L54 20 Z" stroke="'+S+'" stroke-width="1.2"/><circle cx="36" cy="36" r="9" stroke="'+S2+'" stroke-width=".9"/>'; }
+    if(n>=5){ p+='<path d="M36 18 L52 48 L20 48 Z" stroke="'+S2+'" stroke-width=".9"/><path d="M36 54 L20 24 L52 24 Z" stroke="'+S2+'" stroke-width=".9"/>'; }
+    if(n===3||n===4){ p+='<path d="M36 28 L44 41 L28 41 Z" stroke="'+S+'" stroke-width="1"/>'; }
+    if(pet>=16){ p+='<circle cx="36" cy="36" r="15" stroke="'+S+'" stroke-width=".8" opacity=".7"/>'; }
+    p+='<circle cx="36" cy="36" r="2.8" fill="'+S+'"/>';
+    if(torana){ p+='<path d="M14 38 C14 20 28 11 36 11 C44 11 58 20 58 38" stroke="'+S+'" stroke-width="1.3"/><path d="M36 6 l3 5 -3 3 -3 -3 Z" fill="'+S+'"/>'; }
+    p+='</svg>'; return p;
+  }
+
+  /* ===== ШРИ-ЯНТРА фон ===== */
+  function yantra(lv, ga){
+    var S='rgba(240,205,110,'+ga+')', S2='rgba(240,205,110,'+(ga*0.6).toFixed(2)+')';
+    var p=SVGNS+'viewBox="0 0 200 200" fill="none" stroke="'+S+'" stroke-width=".8" stroke-linejoin="round">';
+    if(lv>=1){ p+='<circle cx="100" cy="100" r="86" stroke="'+S2+'"/><circle cx="100" cy="100" r="62" stroke="'+S2+'"/><circle cx="100" cy="100" r="3" fill="'+S+'"/>'; }
+    if(lv>=2){ p+='<path d="M100 40 L152 130 L48 130 Z" stroke="'+S+'"/><path d="M100 160 L48 70 L152 70 Z" stroke="'+S+'"/><circle cx="100" cy="100" r="74" stroke="'+S2+'"/>'; }
+    if(lv>=3){ var o=''; for(var i=0;i<16;i++){ o+='<g transform="rotate('+(i*22.5)+' 100 100)"><path d="M100 18 C106 30 106 40 100 50 C94 40 94 30 100 18 Z" stroke="'+S2+'"/></g>'; } p+=o;
+      var q=''; for(var j=0;j<8;j++){ q+='<g transform="rotate('+(j*45)+' 100 100)"><path d="M100 52 C105 62 105 70 100 78 C95 70 95 62 100 52 Z" stroke="'+S+'"/></g>'; } p+=q;
+      p+='<circle cx="100" cy="100" r="50" stroke="'+S2+'"/>'; }
+    if(lv>=5){ p+='<path d="M100 60 L138 126 L62 126 Z" stroke="'+S+'"/><path d="M100 140 L62 74 L138 74 Z" stroke="'+S+'"/><path d="M100 72 L126 118 L74 118 Z" stroke="'+S2+'"/><path d="M100 128 L74 82 L126 82 Z" stroke="'+S2+'"/><circle cx="100" cy="100" r="3" fill="'+S+'"/>'; }
+    if(lv>=6){ p+='<rect x="22" y="22" width="156" height="156" stroke="'+S+'"/><rect x="30" y="30" width="140" height="140" stroke="'+S2+'"/><path d="M92 22 v-8 h16 v8 M92 178 v8 h16 v-8 M22 92 h-8 v16 h8 M178 92 h8 v16 h-8" stroke="'+S+'"/>'; }
+    p+='</svg>'; return p;
+  }
+
+  var GEM='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 24" fill="none" stroke="rgba(240,205,110,1)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 4 L39 12 L30 20 L21 12 Z"/><circle cx="30" cy="12" r="2.6"/><path d="M21 12 H4 M39 12 H56" opacity=".7"/></svg>';
+  var LOTUSBULLET="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23f0cd6e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21 C7 18 4 15 4 11 C7 12 9 13 12 17 C15 13 17 12 20 11 C20 15 17 18 12 21 Z"/><path d="M12 19 C11 14 11 9 12 4 C13 9 13 14 12 19 Z"/></svg>');
+  document.getElementById('gem').innerHTML=GEM;
+  app.style.setProperty('--lotus','url("'+LOTUSBULLET+'")');
+
+  /* ===== ВНУТРЕННИЙ УЗОР ОКНА: мандала + слог Ом ===== */
+  function innerPat(n){
+    var a = n>=6?.17 : n===5?.14 : n===4?.115 : n===3?.09 : n===2?.06 : .04;
+    var G='rgba(240,205,110,'+a+')', G2='rgba(240,205,110,'+(a*0.68).toFixed(3)+')';
+    var p=SVGNS+'viewBox="0 0 200 200" fill="none" stroke="'+G+'" stroke-width="1" stroke-linejoin="round">';
+    p+='<circle cx="100" cy="100" r="90" stroke="'+G2+'"/>';
+    if(n>=3) p+='<circle cx="100" cy="100" r="74" stroke="'+G2+'"/>';
+    var pet = n<=2?0 : n===3?8 : n===4?12 : 16;
+    if(pet){ var r=''; for(var i=0;i<pet;i++){ r+='<g transform="rotate('+(i*360/pet).toFixed(1)+' 100 100)"><path d="M100 14 C108 32 108 48 100 62 C92 48 92 32 100 14 Z" stroke="'+G+'"/></g>'; } p+=r; }
+    if(n>=5){ var q=''; for(var j=0;j<8;j++){ q+='<g transform="rotate('+(j*45)+' 100 100)"><path d="M100 66 C104 74 104 82 100 90 C96 82 96 74 100 66 Z" stroke="'+G2+'"/></g>'; } p+=q; }
+    if(n>=2) p+='<text x="100" y="132" text-anchor="middle" font-family="serif" font-size="88" fill="'+G+'" stroke="none">\u0950</text>';
+    p+='<circle cx="100" cy="100" r="2.6" fill="'+G+'"/>';
+    if(n>=6) p+='<rect x="22" y="22" width="156" height="156" stroke="'+G2+'"/>';
+    p+='</svg>';
+    return 'url("data:image/svg+xml;utf8,'+encodeURIComponent(p)+'")';
+  }
+
+  var LEVELS=[
+    {n:1,name:'Горн',    tag:'бинду в круге — исток',   bgo:.40,fw:12,glow:0, ga:.5, frame:1,petals:0, yan:1,yanA:.07,aura:0,  dim:.88},
+    {n:2,name:'Расплав', tag:'шаткона — союз',      bgo:.46,fw:15,glow:6, ga:.65,frame:2,petals:1, yan:2,yanA:.10,aura:0,  dim:.78},
+    {n:3,name:'Бассейн', tag:'лотос раскрывается',  bgo:.54,fw:18,glow:12,ga:.8, frame:3,petals:8, yan:3,yanA:.16,aura:.18,dim:.66},
+    {n:4,name:'Призма',  tag:'цвет лотоса — шафран',  bgo:.60,fw:22,glow:20,ga:.92,frame:4,petals:12,yan:4,yanA:.24,aura:.5, dim:.54},
+    {n:5,name:'Воронка', tag:'сияние и полихромия',bgo:.66,fw:25,glow:30,ga:.98,frame:5,petals:16,yan:5,yanA:.34,aura:.8, dim:.44},
+    {n:6,name:'Квант',   tag:'божественный расцвет',bgo:.72,fw:28,glow:42,ga:1,  frame:6,petals:16,yan:6,yanA:.42,aura:1,  dim:.34,torana:true}
+  ];
+
+  function applyLevel(n){
+    var L=LEVELS[n-1];
+    app.className='lv'+n+(n>=5?' motion':'');
+    var bg=app.querySelector('.bg');
+    bg.style.backgroundImage='url("exports/generated_cards/lens_levels/vedic_l'+n+'.webp")';
+    bg.style.opacity=String(L.bgo);
+    bg.style.filter='saturate('+(0.85+0.05*n)+') brightness('+(0.68+0.06*n)+')';
+    app.style.setProperty('--dim',String(L.dim));
+    app.style.setProperty('--panel','linear-gradient(158deg,rgba(74,36,15,'+(0.3+0.02*n)+'),rgba(34,16,8,'+(0.42+0.02*n)+'))');
+    app.style.setProperty('--glow',L.glow+'px');
+    app.style.setProperty('--fw',L.fw+'px');
+    app.style.setProperty('--aura',String(L.aura));
+    app.style.setProperty('--frameSrc',tile(L.frame,L.ga));
+    app.style.setProperty('--pat',innerPat(n));
+    app.style.setProperty('--gtext', n>=4?'#f6dd9a':'#e0c587');
+    var yl=document.getElementById('yantra'); yl.innerHTML=L.yan?yantra(L.yan,L.ga):''; yl.style.opacity=String(L.yanA);
+    Array.prototype.forEach.call(document.querySelectorAll('.crest'),function(c){ c.innerHTML=medallion(n,L.ga,!!L.torana); c.style.opacity='1'; });
+    document.getElementById('lensbadge').textContent='Ведическая · '+L.name+' · '+n+'/6';
+    document.getElementById('hint').textContent='Уровень '+n+' · '+L.name+' — '+L.tag;
+    Array.prototype.forEach.call(document.querySelectorAll('.levelbar button[data-lv]'),function(btn){btn.classList.toggle('on',+btn.dataset.lv===n);});
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.levelbar button[data-lv]'),function(btn){btn.addEventListener('click',function(){applyLevel(+btn.dataset.lv);});});
+  document.getElementById('demo').addEventListener('click',function(){var n=1;applyLevel(1);var t=setInterval(function(){n++;if(n>6){clearInterval(t);return;}applyLevel(n);},1500);});
+  applyLevel(1);
+</script>
+</body>
+</html>

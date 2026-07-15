@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · 9-Мерная Система</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Cormorant Garamond',serif;color:#c9a84c;touch-action:pan-x pan-y}
+body{display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 35%,rgba(35,105,135,.15),transparent 50%),radial-gradient(ellipse at 50% 72%,rgba(120,35,160,.12),transparent 50%),#02010a}
+canvas#c{position:fixed;inset:0;z-index:1;touch-action:none}
+
+.hud-top{position:fixed;top:0;left:0;right:0;z-index:10;padding:10px 14px;background:linear-gradient(180deg,rgba(0,0,0,.85),transparent);display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}
+.hud-top>*{pointer-events:auto}
+.back{color:#c9a84c;text-decoration:none;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;padding:6px 10px;border:1px solid rgba(201,168,76,.2);border-radius:8px;transition:all .3s;flex-shrink:0;backdrop-filter:blur(8px);background:rgba(0,0,0,.5)}
+.back:hover{border-color:#ffd700;color:#ffd700}
+.hud-center{text-align:center;flex:1}
+.hud-center h1{font-family:'Cinzel Decorative',serif;font-size:clamp(11px,3vw,14px);color:#ffd700;letter-spacing:.12em;text-shadow:0 0 20px rgba(255,215,0,.3)}
+.hud-center .sub{font-size:clamp(7px,1.8vw,8px);color:rgba(201,168,76,.35);font-family:'JetBrains Mono',monospace;letter-spacing:.15em}
+.layer-label{font-family:'JetBrains Mono',monospace;font-size:clamp(8px,2vw,10px);color:rgba(201,168,76,.6);text-align:right;flex-shrink:0}
+
+.info-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:8px 16px;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.2);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,.5);pointer-events:none;z-index:3;text-align:center;max-width:90vw;backdrop-filter:blur(12px);transition:opacity .3s}
+
+.layer-nav{position:fixed;bottom:58px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;width:min(94vw,560px)}
+.layer-link{padding:8px 14px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;text-decoration:none;letter-spacing:.09em;white-space:nowrap;backdrop-filter:blur(8px);min-height:44px;display:flex;align-items:center}
+.layer-link:hover{background:rgba(201,168,76,.15);color:#ffd700}
+
+/* Measure detail panel */
+#measure-panel{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);z-index:20;width:min(360px,90vw);background:rgba(4,2,16,.95);border:1px solid rgba(201,168,76,.25);border-radius:16px;padding:18px 20px;backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:all .35s}
+#measure-panel.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all}
+.mp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.mp-title{font-family:'Cinzel',serif;font-size:14px;letter-spacing:.12em}
+.mp-close{background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:18px;padding:4px;line-height:1}
+.mp-body{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,.6);line-height:1.6}
+.mp-body b{color:#ffd700;font-size:10px}
+
+.kosha-bar{position:fixed;bottom:102px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:0;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.18);border-radius:24px;padding:4px 6px;backdrop-filter:blur(12px)}
+.kosha-dot{display:flex;align-items:center;gap:4px;padding:5px 8px;text-decoration:none;color:rgba(201,168,76,.35);font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.06em;border-radius:16px;transition:all .3s;white-space:nowrap;min-height:28px}
+.kosha-dot:hover{color:rgba(201,168,76,.7);background:rgba(201,168,76,.06)}
+.kosha-dot.active{color:#ffd700;background:rgba(255,215,0,.1);text-shadow:0 0 12px rgba(255,215,0,.4)}
+.kosha-dot .kd-circle{width:6px;height:6px;border-radius:50%;background:rgba(201,168,76,.2);transition:all .3s;flex-shrink:0}
+.kosha-dot.active .kd-circle{background:#ffd700;box-shadow:0 0 8px rgba(255,215,0,.5)}
+.kosha-sep{width:12px;height:1px;background:rgba(201,168,76,.12);flex-shrink:0}
+
+.lang-switch{position:fixed;top:8px;right:8px;z-index:15;display:flex;gap:4px}
+.lang-switch button{padding:3px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:8px;cursor:pointer;border-radius:4px;backdrop-filter:blur(8px)}
+
+@media(max-width:480px){.kosha-dot span{display:none}.kosha-dot{padding:6px}.kosha-bar{gap:0;padding:4px 8px}}
+@media(max-width:375px){.hud-top{padding:8px 10px}.hud-center h1{font-size:11px}.layer-nav{gap:6px}.layer-link{font-size:9px;padding:6px 10px}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="hud-top">
+  <a href="index.html" class="back" id="t-back">← ЛОББИ</a>
+  <div class="hud-center">
+    <h1 id="t-title">9-МЕРНАЯ СИСТЕМА</h1>
+    <div class="sub" id="t-sub">СЛОЙ 1Б · 9 МЕР · 3 ГРУППЫ · 4-Е ТЕЛО</div>
+  </div>
+  <div class="layer-label">1Б</div>
+</div>
+
+<div class="info-bar" id="info-bar">вращай · нажми на меру</div>
+
+<!-- Pancha-Kosha bar -->
+<div class="kosha-bar">
+  <a href="earth-player.html" class="kosha-dot" title="Аннамайя-коша"><div class="kd-circle"></div><span>АННА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="aura-pole.html" class="kosha-dot" title="Пранамайя-коша"><div class="kd-circle"></div><span>ПРАНА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="mind-space.html" class="kosha-dot" title="Маномайя-коша"><div class="kd-circle"></div><span>МАНАС</span></a>
+  <div class="kosha-sep"></div>
+  <a href="vedic-cosmos.html" class="kosha-dot" title="Виджнянамайя-коша"><div class="kd-circle"></div><span>ВИДЖНЯНА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="cosmic-forces.html" class="kosha-dot" title="Анандамайя-коша"><div class="kd-circle"></div><span>АНАНДА</span></a>
+</div>
+
+<nav class="layer-nav">
+  <a href="aura-pole.html" class="layer-link" id="t-nav-aura">АУРА · ЧАКРЫ</a>
+  <a href="region-map.html" class="layer-link" id="t-nav-region">НАРУЖУ · РЕГИОН</a>
+  <a href="index.html" class="layer-link" id="t-nav-lobby">ЛОББИ</a>
+</nav>
+
+<!-- Measure detail panel -->
+<div id="measure-panel">
+  <div class="mp-header">
+    <div class="mp-title" id="mp-name"></div>
+    <button class="mp-close" id="mp-close">&times;</button>
+  </div>
+  <div class="mp-body" id="mp-body"></div>
+</div>
+
+<div class="lang-switch">
+<button onclick="localStorage.setItem('awara_lang','ru');location.reload()">RU</button>
+<button onclick="localStorage.setItem('awara_lang','en');location.reload()">EN</button>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.157.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+/* ══════════════════════════════════════════
+   DATA
+   ══════════════════════════════════════════ */
+
+const MEASURES = [
+  { id:'m1', nameRu:'1 МЕРА',  nameEn:'MEASURE 1', descRu:'основание',      descEn:'foundation',     y:-2.0, color:0xff3333, hex:'#ff3333', group:1 },
+  { id:'m2', nameRu:'2 МЕРА',  nameEn:'MEASURE 2', descRu:'движение',        descEn:'movement',       y:-1.5, color:0xff6633, hex:'#ff6633', group:1 },
+  { id:'m3', nameRu:'3 МЕРА',  nameEn:'MEASURE 3', descRu:'ниже пупка',      descEn:'below navel',    y:-1.0, color:0xffaa33, hex:'#ffaa33', group:1 },
+  { id:'m4', nameRu:'4 МЕРА',  nameEn:'MEASURE 4', descRu:'сердечный вход',  descEn:'heart entry',    y:-0.3, color:0x33cc66, hex:'#33cc66', group:2 },
+  { id:'m5', nameRu:'5 МЕРА',  nameEn:'MEASURE 5', descRu:'целостный поток', descEn:'integral flow',  y: 0.2, color:0x33ffaa, hex:'#33ffaa', group:2 },
+  { id:'m6', nameRu:'6 МЕРА',  nameEn:'MEASURE 6', descRu:'первоматерия',    descEn:'prima materia',  y: 0.7, color:0x33ccff, hex:'#33ccff', group:2 },
+  { id:'m7', nameRu:'7 МЕРА',  nameEn:'MEASURE 7', descRu:'луч',             descEn:'ray',            y: 1.3, color:0x6633ff, hex:'#6633ff', group:3 },
+  { id:'m8', nameRu:'8 МЕРА',  nameEn:'MEASURE 8', descRu:'восприятие',      descEn:'perception',     y: 1.8, color:0x9933ff, hex:'#9933ff', group:3 },
+  { id:'m9', nameRu:'9 МЕРА',  nameEn:'MEASURE 9', descRu:'верхняя связь',   descEn:'upper link',     y: 2.3, color:0xcc33ff, hex:'#cc33ff', group:3 }
+];
+
+const GROUPS = [
+  { id:1, nameRu:'Группа 1 · основание',       nameEn:'Group 1 · foundation',    color:0xff5533 },
+  { id:2, nameRu:'Солнце Первоматерии · сердце', nameEn:'Sun of Prima Materia',   color:0x33ddaa },
+  { id:3, nameRu:'Группа 3 · луч восприятия',   nameEn:'Group 3 · perception ray', color:0x9944ff }
+];
+
+// i18n
+const _lang = localStorage.getItem('awara_lang')||'ru';
+const isEn = _lang==='en';
+if(isEn){
+  document.getElementById('t-title').textContent='9-MEASURE SYSTEM';
+  document.getElementById('t-sub').textContent='LAYER 1B · 9 MEASURES · 3 GROUPS · 4TH BODY';
+  document.getElementById('t-back').textContent='← LOBBY';
+  document.getElementById('t-nav-aura').textContent='AURA · CHAKRAS';
+  document.getElementById('t-nav-region').textContent='OUTWARD · REGION';
+  document.getElementById('t-nav-lobby').textContent='LOBBY';
+  document.getElementById('info-bar').textContent='rotate · tap a measure';
+}
+
+/* ══════════════════════════════════════════
+   THREE.JS SETUP
+   ══════════════════════════════════════════ */
+
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x030210, 0.04);
+
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 50);
+camera.position.set(0, 0.3, 6.5);
+
+const ambientLight = new THREE.AmbientLight(0x0a0818, 0.5);
+scene.add(ambientLight);
+const dirLight = new THREE.DirectionalLight(0x66ccff, 0.3);
+dirLight.position.set(3, 5, 4);
+scene.add(dirLight);
+
+// Stars
+const starsGeo = new THREE.BufferGeometry();
+const starPos = new Float32Array(800*3);
+for(let i=0;i<800*3;i+=3){
+  const r=8+Math.random()*12, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
+  starPos[i]=r*Math.sin(ph)*Math.cos(th); starPos[i+1]=r*Math.sin(ph)*Math.sin(th); starPos[i+2]=r*Math.cos(ph);
+}
+starsGeo.setAttribute('position',new THREE.BufferAttribute(starPos,3));
+scene.add(new THREE.Points(starsGeo,new THREE.PointsMaterial({color:0xffffff,size:.03,transparent:true,opacity:.35})));
+
+const sceneGroup = new THREE.Group();
+scene.add(sceneGroup);
+
+/* ══════════════════════════════════════════
+   HUMAN FIGURE (central axis)
+   ══════════════════════════════════════════ */
+
+// Spine / axis
+const spineGeo = new THREE.CylinderGeometry(0.015, 0.015, 5.2, 8);
+const spineMat = new THREE.MeshBasicMaterial({color:0xffffff, transparent:true, opacity:0.2});
+sceneGroup.add(new THREE.Mesh(spineGeo, spineMat));
+
+// Head
+const headGeo = new THREE.SphereGeometry(0.2, 32, 24);
+const headMat = new THREE.MeshStandardMaterial({color:0x1a1428, roughness:0.8, transparent:true, opacity:0.6});
+const head = new THREE.Mesh(headGeo, headMat);
+head.position.y = 2.7;
+sceneGroup.add(head);
+
+// Torso
+const torsoGeo = new THREE.CylinderGeometry(0.16, 0.12, 3.2, 16);
+const torsoMat = new THREE.MeshStandardMaterial({color:0x0a0816, roughness:0.9, transparent:true, opacity:0.4});
+const torso = new THREE.Mesh(torsoGeo, torsoMat);
+torso.position.y = 0.2;
+sceneGroup.add(torso);
+
+/* ══════════════════════════════════════════
+   4TH BODY — CRYSTAL / MERKABA (double diamond)
+   ══════════════════════════════════════════ */
+
+const crystalGroup = new THREE.Group();
+sceneGroup.add(crystalGroup);
+
+// Outer diamond (octahedron)
+const octaGeo = new THREE.OctahedronGeometry(1.8, 0);
+const octaMat = new THREE.MeshStandardMaterial({
+  color: 0x66ccff,
+  transparent: true,
+  opacity: 0.06,
+  roughness: 0.1,
+  metalness: 0.8,
+  wireframe: false,
+  side: THREE.DoubleSide,
+  depthWrite: false
+});
+const octaMesh = new THREE.Mesh(octaGeo, octaMat);
+octaMesh.position.y = 0.15;
+octaMesh.scale.set(1, 1.4, 0.7);
+crystalGroup.add(octaMesh);
+
+// Wireframe overlay
+const wireGeo = new THREE.OctahedronGeometry(1.82, 0);
+const wireMat = new THREE.MeshBasicMaterial({color:0x66ccff, wireframe:true, transparent:true, opacity:0.15, depthWrite:false});
+const wireMesh = new THREE.Mesh(wireGeo, wireMat);
+wireMesh.position.y = 0.15;
+wireMesh.scale.set(1, 1.4, 0.7);
+crystalGroup.add(wireMesh);
+
+// Inner counter-rotated diamond
+const innerOctaGeo = new THREE.OctahedronGeometry(1.2, 0);
+const innerOctaMat = new THREE.MeshBasicMaterial({color:0xff66cc, wireframe:true, transparent:true, opacity:0.08, depthWrite:false});
+const innerOcta = new THREE.Mesh(innerOctaGeo, innerOctaMat);
+innerOcta.position.y = 0.15;
+innerOcta.scale.set(1, 1.4, 0.7);
+innerOcta.rotation.y = Math.PI / 4;
+crystalGroup.add(innerOcta);
+
+/* ══════════════════════════════════════════
+   WHITE LOTUS (top)
+   ══════════════════════════════════════════ */
+
+const lotusGroup = new THREE.Group();
+lotusGroup.position.y = 2.7;
+sceneGroup.add(lotusGroup);
+
+// Core sphere
+const lotusCore = new THREE.Mesh(
+  new THREE.SphereGeometry(0.12, 24, 16),
+  new THREE.MeshStandardMaterial({color:0xffffff, emissive:0xffffff, emissiveIntensity:0.5, transparent:true, opacity:0.8})
+);
+lotusGroup.add(lotusCore);
+
+// Petals (small torus segments)
+for (let i = 0; i < 8; i++) {
+  const petalGeo = new THREE.TorusGeometry(0.2, 0.03, 8, 12, Math.PI * 0.5);
+  const petalMat = new THREE.MeshStandardMaterial({color:0xffffff, emissive:0xeeeeff, emissiveIntensity:0.3, transparent:true, opacity:0.4, depthWrite:false, side:THREE.DoubleSide});
+  const petal = new THREE.Mesh(petalGeo, petalMat);
+  petal.rotation.y = (i / 8) * Math.PI * 2;
+  petal.rotation.x = -Math.PI / 4;
+  lotusGroup.add(petal);
+}
+
+/* ══════════════════════════════════════════
+   GROUP ZONES (3 translucent bands)
+   ══════════════════════════════════════════ */
+
+GROUPS.forEach((g, i) => {
+  const measures = MEASURES.filter(m => m.group === g.id);
+  const yMin = Math.min(...measures.map(m => m.y)) - 0.2;
+  const yMax = Math.max(...measures.map(m => m.y)) + 0.2;
+  const h = yMax - yMin;
+  const yCenter = (yMin + yMax) / 2;
+
+  const bandGeo = new THREE.CylinderGeometry(0.5, 0.5, h, 24, 1, true);
+  const bandMat = new THREE.MeshBasicMaterial({color: g.color, transparent:true, opacity:0.04, side:THREE.DoubleSide, depthWrite:false});
+  const band = new THREE.Mesh(bandGeo, bandMat);
+  band.position.y = yCenter;
+  sceneGroup.add(band);
+});
+
+/* ══════════════════════════════════════════
+   MEASURE SPHERES (9 glowing orbs)
+   ══════════════════════════════════════════ */
+
+const measureMeshes = [];
+
+MEASURES.forEach((m) => {
+  const geo = new THREE.SphereGeometry(0.1, 32, 24);
+  const mat = new THREE.MeshStandardMaterial({
+    color: m.color,
+    emissive: m.color,
+    emissiveIntensity: 0.7,
+    roughness: 0.2,
+    metalness: 0.3,
+    transparent: true,
+    opacity: 0.9
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(0, m.y, 0);
+  mesh.userData = m;
+  sceneGroup.add(mesh);
+  measureMeshes.push(mesh);
+
+  // Glow ring
+  const ringGeo = new THREE.TorusGeometry(0.15, 0.006, 8, 32);
+  const ringMat = new THREE.MeshBasicMaterial({color: m.color, transparent:true, opacity:0.25, depthWrite:false});
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.position.set(0, m.y, 0);
+  ring.rotation.x = Math.PI / 2;
+  sceneGroup.add(ring);
+});
+
+/* ══════════════════════════════════════════
+   CORRESPONDENCE LINES (groups 1/3 left, 2 right)
+   ══════════════════════════════════════════ */
+
+MEASURES.forEach((m) => {
+  const dir = m.group === 2 ? 1 : -1;
+  const len = 1.2;
+  const pts = [
+    new THREE.Vector3(0, m.y, 0),
+    new THREE.Vector3(dir * len, m.y, 0)
+  ];
+  const geo = new THREE.BufferGeometry().setFromPoints(pts);
+  const mat = new THREE.LineBasicMaterial({color: m.color, transparent:true, opacity:0.2, depthWrite:false});
+  if (m.group !== 2) {
+    mat.dashSize = 0.05;
+    mat.gapSize = 0.03;
+  }
+  sceneGroup.add(new THREE.Line(geo, mat));
+});
+
+/* ══════════════════════════════════════════
+   DRAG ROTATION
+   ══════════════════════════════════════════ */
+
+let isDragging = false;
+let prevX = 0, prevY = 0;
+
+canvas.addEventListener('pointerdown', e => { isDragging = true; prevX = e.clientX; prevY = e.clientY; });
+canvas.addEventListener('pointermove', e => {
+  if (!isDragging) return;
+  const dx = e.clientX - prevX, dy = e.clientY - prevY;
+  sceneGroup.rotation.y += dx * 0.005;
+  sceneGroup.rotation.x = Math.max(-0.8, Math.min(0.8, sceneGroup.rotation.x + dy * 0.003));
+  prevX = e.clientX; prevY = e.clientY;
+});
+canvas.addEventListener('pointerup', () => isDragging = false);
+canvas.addEventListener('pointerleave', () => isDragging = false);
+
+/* ══════════════════════════════════════════
+   RAYCASTER — click measure for detail
+   ══════════════════════════════════════════ */
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+canvas.addEventListener('click', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(measureMeshes);
+  if (hits.length > 0) {
+    showMeasurePanel(hits[0].object.userData);
+  }
+});
+
+function showMeasurePanel(m) {
+  const panel = document.getElementById('measure-panel');
+  const name = isEn ? m.nameEn : m.nameRu;
+  const desc = isEn ? m.descEn : m.descRu;
+  const grp = GROUPS.find(g => g.id === m.group);
+  const grpName = isEn ? grp.nameEn : grp.nameRu;
+  document.getElementById('mp-name').textContent = name;
+  document.getElementById('mp-name').style.color = m.hex;
+  document.getElementById('mp-body').innerHTML = '<b>' + name + '</b><br>' + desc +
+    '<br><br>' + grpName +
+    '<br>' + (isEn ? 'Measure ' : 'Мера ') + MEASURES.indexOf(m) + '/9';
+  panel.classList.add('show');
+}
+
+document.getElementById('mp-close').addEventListener('click', () => {
+  document.getElementById('measure-panel').classList.remove('show');
+});
+
+/* ══════════════════════════════════════════
+   ANIMATION LOOP
+   ══════════════════════════════════════════ */
+
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  if (!isDragging) {
+    sceneGroup.rotation.y += 0.0015;
+  }
+
+  // Crystal rotation
+  crystalGroup.rotation.y = t * 0.15;
+  if (innerOcta) innerOcta.rotation.y = Math.PI / 4 - t * 0.1;
+
+  // Measure pulse
+  measureMeshes.forEach((mesh, i) => {
+    const scale = 1 + Math.sin(t * 1.5 + i * 0.7) * 0.1;
+    mesh.scale.setScalar(scale);
+    mesh.material.emissiveIntensity = 0.5 + Math.sin(t * 2 + i * 0.5) * 0.3;
+  });
+
+  // Lotus breathe
+  lotusGroup.scale.setScalar(1 + Math.sin(t * 0.8) * 0.05);
+  lotusGroup.rotation.y = t * 0.3;
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

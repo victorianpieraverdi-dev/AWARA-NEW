@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AWARA — Игра Мироздания · мандала Тигля</title>
+<style>
+  :root{
+    --gold:#c9a84c; --gold-bright:#fff8d6; --spark:rgba(255,215,80,.55);
+    --ink:#05030f; --txt:#dcd2be; --txt-dim:rgba(201,168,76,.55);
+    --violet:#7c3aed; --amber:#f59e0b;
+    --panel:linear-gradient(135deg,rgba(18,14,30,.72),rgba(8,5,18,.62));
+    --panel-line:rgba(201,168,76,.22);
+    --c-common:#8b93a7; --c-uncommon:#46c46a; --c-rare:#3b6fe2;
+    --c-epic:#9b4ff3; --c-legendary:#f6c948; --c-mythic:#ff7a3c;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;color:var(--txt);font-family:'Cormorant Garamond','Times New Roman',serif;
+    background:
+      radial-gradient(ellipse at 18% 14%, rgba(124,58,237,.34), transparent 40%),
+      radial-gradient(ellipse at 84% 78%, rgba(245,158,11,.24), transparent 42%),
+      radial-gradient(ellipse at 50% 116%, rgba(80,40,160,.30), transparent 58%),
+      linear-gradient(180deg,#070318 0%,#0d0626 45%,#05021a 100%), #05030f;}
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;
+    background-image:
+      radial-gradient(1.4px 1.4px at 12% 22%, rgba(255,255,255,.8), transparent),
+      radial-gradient(1px 1px at 27% 64%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1.6px 1.6px at 47% 17%, rgba(255,240,200,.85), transparent),
+      radial-gradient(1px 1px at 63% 47%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1.3px 1.3px at 78% 27%, rgba(255,255,255,.65), transparent),
+      radial-gradient(1.5px 1.5px at 88% 70%, rgba(255,240,200,.7), transparent),
+      radial-gradient(1px 1px at 35% 86%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1.2px 1.2px at 70% 88%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1px 1px at 8% 52%, rgba(255,255,255,.4), transparent),
+      radial-gradient(1px 1px at 55% 74%, rgba(255,240,200,.5), transparent);}
+  body::after{content:'ॐ';position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);
+    font-family:Georgia,serif;font-size:min(60vh,560px);line-height:1;color:transparent;
+    -webkit-text-stroke:1px rgba(201,168,76,.07);pointer-events:none;z-index:0;}
+  #app{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column}
+  #topbar{display:flex;align-items:center;gap:18px;padding:12px 20px;z-index:6;position:relative;
+    border-bottom:1px solid var(--panel-line);
+    background:linear-gradient(180deg,rgba(8,5,18,.82),rgba(8,5,18,.22));backdrop-filter:blur(8px)}
+  #topbar::after{content:'';position:absolute;left:6%;right:6%;bottom:-1px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--spark),transparent);pointer-events:none}
+  #topbar .title{font-family:'Cinzel',serif;letter-spacing:.18em;font-size:15px;color:var(--gold);text-transform:uppercase;text-shadow:0 0 16px rgba(255,215,80,.35)}
+  #topbar .sub{font-size:13px;color:var(--txt-dim);letter-spacing:.06em}
+  .spacer{flex:1}
+  .stat{font-size:13px;color:var(--txt-dim);letter-spacing:.04em}
+  .stat b{color:var(--gold-bright);font-family:'JetBrains Mono',monospace;font-weight:600;text-shadow:0 0 10px rgba(255,215,80,.4)}
+  #stage{flex:1;position:relative;display:flex;align-items:stretch;min-height:0;z-index:1}
+  #boardWrap{flex:1;position:relative;display:flex;align-items:center;justify-content:center;perspective:1400px;min-width:0;margin-right:340px;transition:margin-right .42s cubic-bezier(.4,0,.2,1)}
+  #stage.side-collapsed #boardWrap{margin-right:0}
+  #boardWrap::before{content:'';position:absolute;width:78%;aspect-ratio:1;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle at 50% 50%, rgba(124,58,237,.20), rgba(245,158,11,.07) 45%, transparent 70%);filter:blur(24px)}
+  #boardTilt{transition:transform 1.2s cubic-bezier(.22,.61,.36,1);transform-style:preserve-3d;will-change:transform}
+  #boardTilt::after{content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;opacity:var(--vol,0);transition:opacity 1.2s ease;mix-blend-mode:soft-light;
+    background:radial-gradient(circle at 38% 30%, rgba(255,248,214,.55), rgba(255,248,214,0) 42%), radial-gradient(circle at 50% 60%, rgba(0,0,0,0) 48%, rgba(0,0,0,.62) 90%)}
+  canvas#board{display:block;position:relative;filter:saturate(.2) brightness(.85);transition:filter 1.4s ease}
+  #side{position:absolute;top:0;right:0;bottom:0;width:340px;z-index:5;display:block;overflow-y:auto;overscroll-behavior:contain;padding-bottom:20px;
+    border-left:1px solid var(--panel-line);transition:transform .42s cubic-bezier(.4,0,.2,1);
+    background:linear-gradient(180deg,rgba(8,5,18,.72),rgba(5,3,15,.55))}
+  #side.collapsed{transform:translateX(100%)}
+  #sideToggle{position:absolute;top:12px;right:352px;z-index:8;width:36px;height:36px;padding:0;border-radius:10px;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;background:rgba(8,5,18,.85);border:1px solid var(--panel-line);color:var(--gold);transition:right .42s cubic-bezier(.4,0,.2,1),color .25s,box-shadow .25s}
+  #sideToggle:hover{color:#fff8d6;border-color:var(--gold);box-shadow:0 0 16px rgba(201,168,76,.3)}
+  #stage.side-collapsed #sideToggle{right:12px}
+  .block{padding:16px;margin:10px 12px;border-radius:18px;position:relative;overflow:hidden;
+    background:var(--panel);border:1px solid var(--panel-line);box-shadow:inset 0 0 22px rgba(201,168,76,.03)}
+  .block::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,80,.35),transparent)}
+  .block h3{margin:0 0 10px;font-family:'Cinzel',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(201,168,76,.85)}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .cellinfo .big{font-family:'Cinzel',serif;font-size:18px;color:var(--gold-bright);text-shadow:0 0 14px rgba(255,215,80,.3)}
+  .cellinfo .meta{font-size:13px;color:var(--txt-dim);margin-top:3px;line-height:1.5}
+  .quest{margin-top:8px;font-size:14px;line-height:1.55;color:var(--txt);border-left:2px solid var(--gold);padding-left:10px}
+  button,select{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--txt);background:rgba(2,1,10,.45);border:1px solid var(--panel-line);border-radius:10px;padding:8px 12px;cursor:pointer;transition:.25s}
+  button:hover,select:hover{color:#fff8d6;border-color:var(--gold);box-shadow:0 0 16px rgba(201,168,76,.2)}
+  button.primary{background:linear-gradient(135deg,rgba(201,168,76,.18),rgba(255,215,80,.07));border-color:var(--gold);color:var(--gold-bright);font-weight:600;letter-spacing:.04em;box-shadow:0 0 18px rgba(201,168,76,.2),inset 0 0 0 1px rgba(255,215,80,.25);text-shadow:0 0 12px rgba(255,215,80,.5)}
+  button.big{font-size:16px;padding:11px 14px;width:100%;font-family:'Cinzel',serif;letter-spacing:.08em}
+  select{appearance:none;-webkit-appearance:none}
+  label.lbl{font-size:12px;color:var(--txt-dim);letter-spacing:.05em;display:block;margin-bottom:5px}
+  input[type=range]{width:100%;accent-color:var(--gold-bright)}
+  .toggle{display:flex;gap:6px}
+  .toggle button{flex:1;padding:6px 4px;font-size:13px}
+  .toggle button.on{background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(255,215,80,.07));border-color:var(--gold-bright);color:#fff8d6;box-shadow:0 0 16px rgba(201,168,76,.25),inset 0 0 0 1px rgba(255,215,80,.3);text-shadow:0 0 12px rgba(255,215,80,.5)}
+  .dice{font-family:'JetBrains Mono',monospace;font-size:30px;color:var(--gold-bright);min-width:46px;text-align:center;text-shadow:0 0 20px rgba(246,201,72,.7)}
+  .lensbar{font-size:13px;color:var(--txt-dim);line-height:1.55}
+  .lensbar b{color:var(--gold-bright)}
+  #hand{height:188px;flex:none;z-index:5;display:flex;align-items:center;gap:12px;padding:12px 16px;overflow-x:auto;overflow-y:hidden;
+    border-top:1px solid var(--panel-line);
+    background:linear-gradient(0deg,rgba(8,5,18,.92),rgba(8,5,18,.32))}
+  #hand .handlabel{writing-mode:vertical-rl;transform:rotate(180deg);font-family:'Cinzel',serif;font-size:11px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;flex:none;opacity:.8}
+  .card{flex:none;width:108px;height:152px;border-radius:12px;position:relative;cursor:pointer;overflow:hidden;border:1.5px solid var(--c-common);background:#0a0814;transition:transform .2s, box-shadow .2s;display:flex;flex-direction:column;justify-content:flex-end}
+  .card:hover{transform:translateY(-10px) scale(1.04);box-shadow:0 14px 32px rgba(0,0,0,.6)}
+  .card .art{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.9}
+  .card .veil{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.12) 55%,rgba(0,0,0,.4) 100%)}
+  .card .tlabel{position:absolute;top:6px;left:6px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:.12em;color:#fff;background:rgba(0,0,0,.5);padding:2px 5px;border-radius:4px}
+  .card .nm{position:relative;padding:7px 8px;font-family:'Cinzel',serif;font-size:11px;line-height:1.18;color:#fff;text-shadow:0 1px 3px #000}
+  .card .el{position:relative;padding:0 8px 7px;font-size:11px;color:var(--gold-bright)}
+  .card.rare-mythic{border-color:var(--c-mythic);box-shadow:0 0 16px rgba(255,122,60,.4)}
+  .card.rare-legendary{border-color:var(--c-legendary);box-shadow:0 0 14px rgba(246,201,72,.35)}
+  .card.rare-epic{border-color:var(--c-epic)}
+  .card.rare-rare{border-color:var(--c-rare)}
+  .card.rare-uncommon{border-color:var(--c-uncommon)}
+  #modal{position:fixed;inset:0;background:rgba(2,1,10,.84);backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;z-index:30}
+  #modal.show{display:flex}
+  .mbox{max-width:460px;text-align:center;padding:34px;border:1px solid var(--gold);border-radius:22px;background:radial-gradient(120% 120% at 50% 20%,rgba(40,30,8,.92),rgba(8,5,18,.97));box-shadow:0 0 70px rgba(246,201,72,.3),inset 0 0 40px rgba(201,168,76,.05)}
+  .mbox h2{font-family:'Cinzel',serif;color:var(--gold-bright);letter-spacing:.1em;margin:0 0 10px;text-shadow:0 0 18px rgba(255,215,80,.4)}
+  .mbox p{color:var(--txt);line-height:1.6;font-size:16px}
+  .toast{position:fixed;left:50%;bottom:210px;transform:translateX(-50%);background:rgba(8,5,18,.94);border:1px solid var(--gold);color:var(--gold-bright);padding:10px 18px;border-radius:30px;font-size:14px;letter-spacing:.03em;opacity:0;transition:.3s;z-index:25;pointer-events:none;text-align:center;max-width:80vw;box-shadow:0 0 22px rgba(201,168,76,.25)}
+  .toast.show{opacity:1;bottom:230px}
+  .hint{font-size:12px;color:var(--txt-dim);line-height:1.5;margin-top:6px}
+  #side::-webkit-scrollbar,#hand::-webkit-scrollbar{height:8px;width:8px}
+  #side::-webkit-scrollbar-thumb,#hand::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:8px}
+  /* selected card becomes the scene background; cosmos (stars + nebula) still shows through */
+  #cardBg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1s ease;
+    background-size:cover;background-position:center;background-repeat:no-repeat;
+    filter:saturate(.9) brightness(.46) contrast(1.02)}
+  #cardBg.show{opacity:.6}
+  #cardBg::after{content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% 42%, rgba(5,3,15,.12), rgba(5,3,15,.55) 76%, rgba(5,3,15,.84)),
+      linear-gradient(0deg, rgba(5,3,15,.58), rgba(5,3,15,.12) 42%, rgba(5,3,15,.48))}
+  .card.selected{outline:2px solid var(--gold-bright);outline-offset:1px;box-shadow:0 0 22px rgba(255,215,80,.55)}
+</style>
+<script>
+/* boot error trap */
+(function(){
+  function show(msg){
+    var d=document.getElementById('__bootErr');
+    if(!d){
+      d=document.createElement('div');
+      d.id='__bootErr';
+      d.style.cssText='position:fixed;z-index:999999;left:0;top:0;right:0;background:#b00020;color:#fff;font:13px/1.5 monospace;padding:10px;white-space:pre-wrap';
+      (document.body||document.documentElement).appendChild(d);
+    }
+    d.textContent+=msg+'\n';
+  }
+  window.addEventListener('error',function(e){
+    show('JS ERROR: '+(e.message||(e.error&&e.error.message)||'?')+'  ['+((e.filename||'').split('/').pop())+':'+(e.lineno||'?')+':'+(e.colno||'?')+']');
+  });
+  window.__BOOT_OK=false;
+  window.addEventListener('load',function(){
+    setTimeout(function(){ if(!window.__BOOT_OK) show('Основной скрипт не дошёл до конца (init не вызван).'); },300);
+  });
+})();
+</script>
+<script src="https://unpkg.com/three@0.149.0/build/three.min.js"></script>
+</head>
+<body>
+<div id="cardBg"></div>
+<div id="app">
+  <div id="topbar">
+    <div>
+      <div class="title">Игра Мироздания</div>
+      <div class="sub">живая мандала Тигля · прототип</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="stat">Стихия: <b id="stEl">Огонь</b></div>
+    <div class="stat">Чакра: <b id="stChakra">—</b></div>
+    <div class="stat">Уровень: <b id="stDim">0</b>/13</div>
+    <div class="stat">Свет: <b id="stLight">0%</b></div>
+  </div>
+
+  <div id="stage">
+    <button id="sideToggle" title="Свернуть / развернуть панель">&gt;</button>
+    <div id="boardWrap">
+      <div id="boardTilt"><canvas id="board"></canvas></div>
+      <canvas id="board3d" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:none;z-index:2"></canvas>
+    </div>
+
+    <div id="side">
+      <div class="block cellinfo">
+        <h3>Ячейка пути</h3>
+        <div class="big" id="ciName">Порог — вход</div>
+        <div class="meta" id="ciMeta">Выбери сторону света и брось кости.</div>
+        <div class="quest" id="ciQuest">Дорога возникает под ногами идущего.</div>
+      </div>
+
+      <div class="block">
+        <h3>Движение</h3>
+        <div class="row" style="justify-content:space-between">
+          <div class="dice" id="diceFace">·</div>
+          <button class="primary" id="rollBtn" style="flex:1">Бросить кости</button>
+        </div>
+        <div class="hint" id="moveHint">Движешься от периферии к Центру Ра по спирали через 13 уровней: 7 чакр × 9 мер → Творец, Единство, Созидание Света.</div>
+      </div>
+
+      <div class="block">
+        <h3>Вход — время и сторона</h3>
+        <div class="toggle" id="gateToggle" style="flex-wrap:wrap">
+          <button data-gate="N" style="flex:1 1 44%">Север · 22–4</button>
+          <button data-gate="S" style="flex:1 1 44%">Юг · 4–10</button>
+          <button data-gate="W" style="flex:1 1 44%">Запад · 10–16</button>
+          <button data-gate="E" class="on" style="flex:1 1 44%">Восток · 16–22</button>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <button id="timeBtn" class="primary" style="flex:1">Войти по времени · <span id="clock">--:--</span></button>
+        </div>
+        <div class="hint" id="windowHint">Сутки — спираль: 22–4 Север · 4–10 Юг · 10–16 Запад · 16–22 Восток.</div>
+        <label class="lbl" style="margin-top:10px">Круг времени</label>
+        <div class="toggle" id="secToggle">
+          <button data-sec="24" class="on">24 часа</button>
+          <button data-sec="12">12 сефирот / поясов</button>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Линза (культура / матрица)</h3>
+        <select id="lensSel"></select>
+        <div class="lensbar" id="lensInfo" style="margin-top:8px"></div>
+      </div>
+
+      <div class="block">
+        <h3>Мерность поля</h3>
+        <div class="toggle" id="dimToggle">
+          <button data-dim="1">1D</button>
+          <button data-dim="2" class="on">2D</button>
+          <button data-dim="3">3D</button>
+        </div>
+        <label class="lbl" style="margin-top:12px">Свет игрока — оживляет мир (ч/б → цвет)</label>
+        <input type="range" id="lightRange" min="0" max="100" value="14" />
+      </div>
+
+      <div class="block">
+        <h3>Мультиплеер</h3>
+        <div class="row">
+          <button id="summonBtn" style="flex:1">Призвать игрока</button>
+          <button id="chatBtn" style="flex:1">Чат</button>
+        </div>
+        <div class="hint">Одиночная или общая игра · общие квесты.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="hand">
+    <div class="handlabel">Колода игрока</div>
+    <div id="cards" style="display:flex;gap:12px"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div id="modal"><div class="mbox">
+  <h2 id="mTitle">Центр Ра</h2>
+  <p id="mBody"></p>
+  <div style="margin-top:18px;display:flex;gap:10px">
+    <button class="primary big" id="mDive">Занырнуть → супер-генерация</button>
+    <button class="big" id="mClose" style="flex:none;width:auto">Позже</button>
+  </div>
+</div></div>
+
+<script>
+"use strict";
+const RINGS = [
+  { name:"Бурый предел", chakra:"Ум вне игры", color:"#5a4632", task:"Уровень 0 · сознание за пределами игры, в пространстве ума." },
+  { name:"Мулдхара", chakra:"Мулдхара", color:"#e23b3b", task:"Уровень 1 · физический план: тело, опора, род, прошлое." },
+  { name:"Свадхистхана", chakra:"Свадхистхана", color:"#f3892b", task:"Уровень 2 · эмоции, желания, творчество, текучесть." },
+  { name:"Манипура", chakra:"Манипура", color:"#f6d033", task:"Уровень 3 · воля, сила, намерение." },
+  { name:"Анахата", chakra:"Анахата", color:"#46c46a", task:"Уровень 4 · сердце: связь, любовь, равновесие." },
+  { name:"Вишудха", chakra:"Вишудха", color:"#34c6d8", task:"Уровень 5 · выражение: истина, звук, слово." },
+  { name:"Аджна", chakra:"Аджна", color:"#3b6fe2", task:"Уровень 6 · видение: интуиция, созерцание, линзы." },
+  { name:"Сахасрара", chakra:"Сахасрара", color:"#9b4ff3", task:"Уровень 7 · дух: единство, выход за личность." },
+  { name:"Собор", chakra:"Собор", color:"#b9c4e0", task:"Уровень 8 · соборное сознание, общее «мы»." },
+  { name:"Дух", chakra:"Дух", color:"#cdb9f0", task:"Уровень 9 · чистый дух, девятая мера." },
+  { name:"Творец", chakra:"Творец", color:"#f2a85c", task:"Уровень 10 · Творец: со-творение реальности." },
+  { name:"Единство", chakra:"Единство", color:"#f6d36b", task:"Уровень 11 · Единство: слияние всех путей." },
+  { name:"Созидание Света", chakra:"Созидание Света", color:"#fdf0b0", task:"Уровень 12 · Созидание Света: рождение света." },
+  { name:"Центр Ра", chakra:"Центр · выход", color:"#fff7df", task:"Уровень 13 · Центр Ра: точка выхода, начало, смерть и жизнь." }
+];
+const RING_N = RINGS.length;
+let SECTORS = 24;
+
+const LENSES = [
+  { id:"vedic", name:"Ведическая", tint:"#f6c948", bonus:"Ключи лок и накшатр · +свет на восхождении." },
+  { id:"slavic", name:"Славянская", tint:"#46c46a", bonus:"Родовая сила · бонус на нижних чакрах." },
+  { id:"kabbalah", name:"Каббала", tint:"#9b4ff3", bonus:"Древо Сфирот · открывает скрытые пути." },
+  { id:"egypt", name:"Египетская", tint:"#f3892b", bonus:"Солнечный культ · бонус к Центру Ра." },
+  { id:"maya", name:"Майя / Цолькин", tint:"#34c6d8", bonus:"20 печатей · временные порталы." },
+  { id:"tao", name:"Даосская", tint:"#8be3c9", bonus:"Инь-Ян · баланс день/ночь, +ход." },
+  { id:"norse", name:"Скандинавская", tint:"#9fb4d8", bonus:"Руны · судьба и испытания." }
+];
+let lensIdx = 0;
+
+const GATE_TIME = { N:[22,4], S:[4,10], W:[10,16], E:[16,22] };
+const GATE_NAME = { N:"Север", S:"Юг", W:"Запад", E:"Восток" };
+function sectorOfHour(h){ h=((h%24)+24)%24; return Math.round(h/24*SECTORS) % SECTORS; }
+function gateCenterHour(g){ if(g==="N") return 1; const w=GATE_TIME[g]; return (w[0]+w[1])/2; }
+function gateSector(g){ return sectorOfHour(gateCenterHour(g)); }
+function timeToGate(h){ h=((h%24)+24)%24; if(h>=22||h<4) return "N"; if(h<10) return "S"; if(h<16) return "W"; return "E"; }
+function two(n){ return (n<10?"0":"")+n; }
+let gate = "E";
+
+const player = { t: gateSector("E"), element:"Огонь", light: 0.14 };
+const npc = { active:false, t: 0 };
+let dimMode = 2;
+let lastRoll = 0;
+let bonusNext = 0;
+let zoom = 1;
+let rotX = 0, rotY = 0;
+
+function posOf(t){ return { ring: Math.floor(t / SECTORS), sector: ((t % SECTORS)+SECTORS)%SECTORS }; }
+let GOAL_T = (RING_N-1) * SECTORS;
+
+/* купол: проекция полярной точки на полусферу (центр поднимается к зрителю) */
+let DOME_T = 0, DOME_H = 0;
+function proj(r, a){
+  const sinT = Math.sin(DOME_T), cosT = Math.cos(DOME_T);
+  const nr = MAXR>0 ? r/MAXR : 0;
+  const z = DOME_H * (1 - nr*nr);
+  return [ CX + Math.cos(a)*r, CY + Math.sin(a)*r*cosT - z*sinT ];
+}
+
+const cv = document.getElementById("board");
+const ctx = cv.getContext("2d");
+let CX=0, CY=0, MAXR=0, DPR=1;
+function resize(){
+  const wrap = document.getElementById("boardWrap");
+  const s = Math.max(320, Math.min(wrap.clientWidth||window.innerWidth, (wrap.clientHeight||window.innerHeight)) - 24);
+  DPR = window.devicePixelRatio || 1;
+  cv.width = s*DPR; cv.height = s*DPR; cv.style.width=s+"px"; cv.style.height=s+"px";
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  CX = s/2; CY = s/2; MAXR = s*0.42;
+}
+window.addEventListener("resize", resize);
+
+function hexToRgb(h){ h=h.replace('#',''); return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)]; }
+function rgbStr(c,a){ return "rgba("+(c[0]|0)+","+(c[1]|0)+","+(c[2]|0)+","+(a==null?1:a)+")"; }
+function mix(a,b,t){ return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t]; }
+const GRAY=[150,154,168];
+function ringColor(i){
+  let c = hexToRgb(RINGS[i].color);
+  const L = player.light;
+  c = mix(GRAY, c, 0.15 + 0.85*L);
+  const tint = hexToRgb(LENSES[lensIdx].tint);
+  c = mix(c, tint, 0.12);
+  return c;
+}
+
+let spin=0;
+function draw(){
+  spin += 0.0016;
+  if(dimMode===3){
+    DOME_T = (40 + player.light*26) * Math.PI/180;
+    DOME_H = MAXR * (0.30 + player.light*0.75);
+  } else { DOME_T = 0; DOME_H = 0; }
+  ctx.clearRect(0,0,cv.width,cv.height);
+  const g = ctx.createRadialGradient(CX,CY,0,CX,CY,MAXR*1.1);
+  const coreA = 0.25 + 0.5*player.light;
+  g.addColorStop(0, rgbStr([255,238,170], coreA));
+  g.addColorStop(0.5, rgbStr([60,50,20], 0.10));
+  g.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(CX,CY,MAXR*1.1,0,7); ctx.fill();
+
+  for(let i=0;i<RING_N;i++){
+    const rO = MAXR*(1 - i/RING_N);
+    const rI = MAXR*(1 - (i+1)/RING_N);
+    const c = ringColor(i);
+    const sinT=Math.sin(DOME_T), cosT=Math.cos(DOME_T);
+    const zO = DOME_H*(1-(rO/MAXR)*(rO/MAXR));
+    const zI = DOME_H*(1-(rI/MAXR)*(rI/MAXR));
+    ctx.beginPath();
+    ctx.ellipse(CX, CY - zO*sinT, rO, Math.max(0.3, rO*cosT), 0, 0, Math.PI*2, false);
+    ctx.ellipse(CX, CY - zI*sinT, rI, Math.max(0.3, rI*cosT), 0, 0, Math.PI*2, true);
+    ctx.fillStyle = rgbStr(c, 0.55 + 0.30*player.light);
+    ctx.fill("evenodd");
+    ctx.lineWidth=1.5; ctx.strokeStyle=rgbStr(c,0.9);
+    ctx.beginPath(); ctx.ellipse(CX, CY - zO*sinT, rO, Math.max(0.3, rO*cosT), 0, 0, Math.PI*2); ctx.stroke();
+  }
+  for(let s=0;s<SECTORS;s++){
+    const a = s/SECTORS*Math.PI*2 - Math.PI/2;
+    const p0 = proj(0,a), p1 = proj(MAXR,a);
+    ctx.beginPath(); ctx.moveTo(p0[0],p0[1]); ctx.lineTo(p1[0],p1[1]);
+    ctx.strokeStyle="rgba(255,255,255,0.05)"; ctx.lineWidth=1; ctx.stroke();
+  }
+  for(let s=0;s<SECTORS;s++){
+    const h = Math.round(s/SECTORS*24)%24;
+    const day = h>=6 && h<18;
+    const a0 = s/SECTORS*Math.PI*2 - Math.PI/2;
+    const a1 = (s+1)/SECTORS*Math.PI*2 - Math.PI/2;
+    ctx.beginPath();
+    for(let k=0;k<=5;k++){ const aa=a0+(a1-a0)*k/5; const p=proj(MAXR*1.03,aa); if(k===0)ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]); }
+    ctx.strokeStyle = day? "rgba(246,201,72,0.5)":"rgba(70,90,180,0.5)";
+    ctx.lineWidth=5; ctx.stroke();
+  }
+
+  for(const gn of ["N","S","W","E"]){
+    const gs = gateSector(gn);
+    const a = gs/SECTORS*Math.PI*2 - Math.PI/2;
+    const on = (gn===gate);
+    const gp=proj(MAXR+16,a), x=gp[0], y=gp[1];
+    ctx.fillStyle = on? "#f6c948":"rgba(201,168,76,0.45)";
+    ctx.beginPath(); ctx.arc(x,y,on?8:5,0,7); ctx.fill();
+    ctx.fillStyle = on? "#fff7df":"rgba(220,210,180,0.7)";
+    ctx.font = (on?"bold ":"")+"12px 'Cinzel',serif";
+    ctx.textAlign="center"; ctx.textBaseline="middle";
+    const lp=proj(MAXR+34,a), lx=lp[0], ly=lp[1];
+    ctx.fillText(GATE_NAME[gn], lx, ly);
+  }
+
+  highlightCell(player.t, "#f6c948");
+  if(npc.active) highlightCell(npc.t, "#34c6d8");
+
+  const rc = MAXR/RING_N*0.9;
+  const cpt = proj(0, 0);
+  const cg = ctx.createRadialGradient(cpt[0],cpt[1],0,cpt[0],cpt[1],rc);
+  cg.addColorStop(0,"#fff7df"); cg.addColorStop(0.6,rgbStr([246,201,72],0.9)); cg.addColorStop(1,"rgba(246,201,72,0)");
+  ctx.fillStyle=cg; ctx.beginPath(); ctx.arc(cpt[0],cpt[1],rc*(1+0.06*Math.sin(spin*6)),0,7); ctx.fill();
+
+  /* ОБЪЁМ в 3D: вогнутое затемнение к краям + блик-полусфера, растёт со светом */
+  if(dimMode===3 && player.light>0.01){
+    const L=player.light, sinT=Math.sin(DOME_T);
+    const topY = CY - DOME_H*sinT;
+    ctx.save();
+    ctx.globalCompositeOperation="lighter";
+    const hx=CX - MAXR*0.30, hy=topY + MAXR*0.12;
+    const hg=ctx.createRadialGradient(hx,hy,0, hx,hy,MAXR*0.95);
+    hg.addColorStop(0, rgbStr([255,248,214], 0.45*L));
+    hg.addColorStop(0.3, rgbStr([255,236,176], 0.15*L));
+    hg.addColorStop(1, "rgba(255,248,214,0)");
+    ctx.fillStyle=hg; ctx.beginPath(); ctx.arc(hx,hy,MAXR*0.95,0,7); ctx.fill();
+    ctx.restore();
+  }
+
+  drawToken(player.t, "#fff", "#f6c948");
+  if(npc.active) drawToken(npc.t, "#cfe9ff", "#34c6d8");
+
+  requestAnimationFrame(draw);
+}
+function cellXY(t){
+  const p=posOf(t);
+  const rMid = MAXR*(1 - (p.ring+0.5)/RING_N);
+  const a = p.sector/SECTORS*Math.PI*2 - Math.PI/2;
+  const pr = proj(rMid, a);
+  return { x:pr[0], y:pr[1], a, rMid };
+}
+function highlightCell(t,col){
+  const p=posOf(t);
+  const rO = MAXR*(1 - p.ring/RING_N), rI = MAXR*(1 - (p.ring+1)/RING_N);
+  const a0 = p.sector/SECTORS*Math.PI*2 - Math.PI/2;
+  const a1 = (p.sector+1)/SECTORS*Math.PI*2 - Math.PI/2;
+  ctx.beginPath();
+  for(let k=0;k<=6;k++){ const aa=a0+(a1-a0)*k/6; const pp=proj(rO,aa); if(k===0)ctx.moveTo(pp[0],pp[1]); else ctx.lineTo(pp[0],pp[1]); }
+  for(let k=6;k>=0;k--){ const aa=a0+(a1-a0)*k/6; const pp=proj(rI,aa); ctx.lineTo(pp[0],pp[1]); }
+  ctx.closePath();
+  ctx.fillStyle=rgbStr(hexToRgb(col),0.28);
+  ctx.fill();
+  ctx.strokeStyle=col; ctx.lineWidth=2; ctx.stroke();
+}
+function drawToken(t,fill,ring){
+  const c=cellXY(t);
+  ctx.save();
+  ctx.shadowColor=ring; ctx.shadowBlur=18;
+  ctx.fillStyle=fill; ctx.beginPath(); ctx.arc(c.x,c.y,7,0,7); ctx.fill();
+  ctx.shadowBlur=0; ctx.strokeStyle=ring; ctx.lineWidth=2.5; ctx.stroke();
+  ctx.restore();
+}
+
+function nakshatraHour(sector){ return Math.round(sector/SECTORS*24) % 24; }
+function monthName(sector){ const M=["Овен","Телец","Близнецы","Рак","Лев","Дева","Весы","Скорпион","Стрелец","Козерог","Водолей","Рыбы"]; return M[sector % 12]; }
+function updateCellInfo(){
+  const p = posOf(Math.min(player.t, GOAL_T));
+  const ring = RINGS[Math.min(p.ring, RING_N-1)];
+  const hour = nakshatraHour(p.sector);
+  const isDay = hour>=6 && hour<18;
+  const lvl = Math.min(13, p.ring);
+  const dim = Math.min(9, p.ring===0?1:p.ring);
+  document.getElementById("ciName").textContent = ring.chakra;
+  document.getElementById("ciMeta").innerHTML =
+    "Кольцо: "+ring.name+" · Уровень "+lvl+"/13 · Мера "+dim+"/9<br>"+
+    "Сектор "+(p.sector+1)+"/"+SECTORS+" · "+(isDay?"☀ день":"☾ ночь")+" · "+hour+":00 · "+monthName(p.sector);
+  const lens = LENSES[lensIdx];
+  document.getElementById("ciQuest").innerHTML =
+    ring.task+"<br><span style='color:var(--gold)'>Через линзу «"+lens.name+"»:</span> "+lens.bonus;
+  document.getElementById("stChakra").textContent = ring.chakra;
+  document.getElementById("stDim").textContent = lvl;
+  document.getElementById("stLight").textContent = Math.round(player.light*100)+"%";
+  document.getElementById("stEl").textContent = player.element;
+}
+function applyTilt(){
+  const tilt = document.getElementById("boardTilt");
+  let deg = 0, sc = 1;
+  if(dimMode===1){ deg = 78; sc = 0.9; }
+  else if(dimMode===2){ deg = 0; sc = 1; }
+  else { deg = 0; sc = 1; }
+  tilt.style.transform = "rotateX("+(deg+rotX).toFixed(2)+"deg) rotateY("+rotY.toFixed(2)+"deg) scale("+(sc*zoom).toFixed(3)+")";
+  const sat = 0.2 + player.light*1.0;
+  const br = 1.05 + player.light*0.35;
+  let filt = "saturate("+sat.toFixed(2)+") brightness("+br.toFixed(2)+")";
+  if(dimMode===3){ filt += " drop-shadow(0 "+(player.light*26).toFixed(0)+"px "+(player.light*30+10).toFixed(0)+"px rgba(0,0,0,.5))"; }
+  cv.style.filter = filt;
+  tilt.style.setProperty("--vol", (dimMode===3 ? Math.min(1, player.light) : 0).toFixed(2));
+}
+
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),2600); }
+
+function roll(){
+  const d = 1 + Math.floor(Math.random()*6) + bonusNext;
+  bonusNext = 0;
+  lastRoll = d;
+  document.getElementById("diceFace").textContent = d;
+  player.t = Math.min(player.t + d, GOAL_T);
+  setLight(player.light + 0.015);
+  if(npc.active) npc.t = Math.min(npc.t + 1 + Math.floor(Math.random()*6), GOAL_T);
+  updateCellInfo();
+  if(player.t >= GOAL_T){ openCenter(); }
+  else { toast("Ход "+d+" → "+RINGS[Math.min(posOf(player.t).ring,RING_N-1)].chakra); }
+}
+function setLight(v){ player.light = Math.max(0, Math.min(1, v)); document.getElementById("lightRange").value = Math.round(player.light*100); applyTilt(); updateCellInfo(); }
+
+function setGate(g){ gate=g; player.t = gateSector(g); document.querySelectorAll('#gateToggle button').forEach(b=>b.classList.toggle('on', b.dataset.gate===g)); updateCellInfo(); toast("Вход: "+GATE_NAME[g]+" · "+GATE_TIME[g][0]+"–"+GATE_TIME[g][1]+" ч"); }
+function enterByTime(){ const now=new Date(); const h=now.getHours(); const g=timeToGate(h); gate=g; player.t=sectorOfHour(h); document.querySelectorAll('#gateToggle button').forEach(b=>b.classList.toggle('on', b.dataset.gate===g)); updateCellInfo(); toast("Вход по времени "+two(h)+":"+two(now.getMinutes())+" → "+GATE_NAME[g]); }
+function setSectors(n){ SECTORS=n; GOAL_T=(RING_N-1)*SECTORS; player.t=gateSector(gate); if(npc.active) npc.t=gateSector("W"); document.querySelectorAll('#secToggle button').forEach(b=>b.classList.toggle('on', parseInt(b.dataset.sec,10)===n)); updateCellInfo(); toast(n===12?"12 сефирот / часовых поясов":"24 часа"); }
+function tickClock(){ const now=new Date(); const h=now.getHours(),m=now.getMinutes(); const c=document.getElementById("clock"); if(c) c.textContent=two(h)+":"+two(m); const g=timeToGate(h); const wh=document.getElementById("windowHint"); if(wh) wh.innerHTML="Сейчас "+two(h)+":"+two(m)+" → окно <b style='color:var(--gold)'>"+GATE_NAME[g]+"</b> ("+(h>=6&&h<18?"☀ день":"☾ ночь")+"). Спираль суток: 22–4 С · 4–10 Ю · 10–16 З · 16–22 В."; }
+
+function openCenter(){
+  document.getElementById("mTitle").textContent = "Центр Ра достигнут";
+  document.getElementById("mBody").textContent = "Ты прошёл все 13 уровней — через 7 чакр, Собор, Дух, Творца, Единство и Созидание Света — к Центру Ра. Это точка выхода: начало, смерть и жизнь. Занырни — супер-генерация: новая карта и рестарт из другой линзы / часового пояса.";
+  document.getElementById("modal").classList.add("show");
+}
+function dive(){
+  setLight(player.light + 0.2);
+  lensIdx = (lensIdx+1) % LENSES.length;
+  document.getElementById("lensSel").value = String(lensIdx);
+  updateLensInfo();
+  if(allCards.length){ const c = allCards[Math.floor(Math.random()*allCards.length)]; hand.unshift(c); renderHand(); }
+  player.t = gateSector(gate);
+  document.getElementById("modal").classList.remove("show");
+  updateCellInfo();
+  toast("Супер-генерация! Новая линза: "+LENSES[lensIdx].name);
+}
+
+const RARITY_ORDER = {common:0,uncommon:1,rare:2,epic:3,legendary:4,mythic:5};
+let allCards = [];
+let hand = [];
+var CARD_ART_BASE="exports/generated_cards/tarot_cards_webp/";
+function cardArtUrl(c){ if(!c.image_path) return null; var b=String(c.image_path).split("/").pop(); return CARD_ART_BASE+b; }
+function metaKeys(raw){
+  var ks=[];
+  if(raw.image_path) ks.push(String(raw.image_path).split("/").pop().toLowerCase());
+  if(raw.card_id) ks.push(raw.card_id.toLowerCase()+".webp");
+  if(raw.id) ks.push(raw.id.toLowerCase()+".webp");
+  if(raw.id) ks.push("extra__"+raw.id.split("__").join("_").toLowerCase()+".webp");
+  return ks;
+}
+function normalize(raw, fallbackType){
+  return {
+    name: raw.display_name || raw.name || raw.agent_name || raw.card_id || raw.id || "Карта",
+    type: raw.type_label || fallbackType || "КАРТА",
+    rarity: (raw.rarity||"common").toLowerCase(),
+    element: raw.element || raw.matrix_name || "—",
+    image_path: raw.image_path || null,
+    hint: (raw.game_significance && raw.game_significance.gameplay_hint) || raw.player_effect || raw.description || raw.gift_aspect || "Карта из колоды AWARA."
+  };
+}
+var TYPE_BY_PREFIX=[[/^domain/,"ДОМЕН"],[/^monad_path/,"ПУТЬ МОНАДЫ"],[/loka_being/,"СУЩЕСТВО"],[/loka/,"ЛОКА"],[/^extra/,"СУЩЕСТВО"]];
+function cardFromFile(fn, metaMap){
+  var key=fn.toLowerCase();
+  if(metaMap[key]){ var hit=Object.assign({}, metaMap[key]); hit.image_path=fn; return hit; }
+  var dot=fn.lastIndexOf("."); var base=dot>0?fn.substring(0,dot):fn;
+  var num=base.match(/^[0-9]+[ _-]+/); var noNum=num?base.substring(num[0].length):base;
+  var type="КАРТА";
+  for(var i=0;i<TYPE_BY_PREFIX.length;i++){ if(TYPE_BY_PREFIX[i][0].test(noNum)){ type=TYPE_BY_PREFIX[i][1]; break; } }
+  var nm=noNum.split("__").join(" · ").split("_").join(" ").trim();
+  if(nm.length) nm=nm.charAt(0).toUpperCase()+nm.slice(1);
+  return { name: nm||fn, type:type, rarity:"common", element:"—", image_path:fn, hint:"Карта из колоды AWARA." };
+}
+async function loadCards(){
+  const sources = [
+    ["data/domain_cards.json","ДОМЕН"],
+    ["data/monad_path_cards.json","ПУТЬ МОНАДЫ"],
+    ["data/vedic_loka_cards.json","ЛОКА"],
+    ["data/vedic_loka_being_cards.json","СУЩЕСТВО"],
+    ["data/extra_beings.json","СУЩЕСТВО"]
+  ];
+  var metaMap={}, jsonCards=[];
+  for(const [url,tl] of sources){
+    try{
+      const r = await fetch(url);
+      if(!r.ok) continue;
+      const arr = await r.json();
+      if(Array.isArray(arr)) arr.forEach(function(x){
+        var card=normalize(x,tl);
+        jsonCards.push(card);
+        metaKeys(x).forEach(function(k){ if(k && !metaMap[k]) metaMap[k]=card; });
+      });
+    }catch(e){}
+  }
+  var files=[];
+  try{
+    const dr = await fetch(CARD_ART_BASE);
+    if(dr.ok){
+      const html = await dr.text();
+      var re=/href="([^"?]+[.]webp)"/gi, mm;
+      while((mm=re.exec(html))){ files.push(decodeURIComponent(mm[1].split("/").pop())); }
+    }
+  }catch(e){}
+  if(files.length){
+    allCards = files.map(function(fn){ return cardFromFile(fn, metaMap); });
+  } else if(jsonCards.length){
+    allCards = jsonCards;
+  } else {
+    allCards = SEED.map(x=>normalize(x));
+  }
+  const shuffled = allCards.slice().sort(()=>Math.random()-0.5);
+  hand = shuffled.slice(0, 240);
+  renderHand();
+  if(window.toast) toast("Колода: "+allCards.length+" карт · показано "+hand.length);
+}
+const SEED = [
+  {display_name:"Гелиосфера",type_label:"ДОМЕН",rarity:"mythic",element:"Огонь",description:"Солнечная вселенная Света Ра."},
+  {display_name:"Океан Синхронности",type_label:"ДОМЕН",rarity:"legendary",element:"Вода",description:"Знаки пути и синхроны."},
+  {display_name:"I. Полярная раса",type_label:"ПУТЬ МОНАДЫ",rarity:"legendary",element:"Эфир",description:"Первичная невинность."},
+  {display_name:"Сатья-лока",type_label:"ЛОКА",rarity:"mythic",element:"Эфир",description:"Мир истины Брахмы."},
+  {display_name:"Кузница Фракталов",type_label:"ДОМЕН",rarity:"epic",element:"Воздух",description:"Творение форм."},
+  {display_name:"II. Гиперборейская раса",type_label:"ПУТЬ МОНАДЫ",rarity:"epic",element:"Воздух",description:"Дыхание жизни."}
+];
+function renderHand(){
+  const box = document.getElementById("cards");
+  box.innerHTML="";
+  hand.slice(0,240).forEach((c,idx)=>{
+    const el = document.createElement("div");
+    el.className = "card rare-"+c.rarity;
+    const art = cardArtUrl(c);
+    const cc = ({mythic:"#ff7a3c",legendary:"#f6c948",epic:"#9b4ff3",rare:"#3b6fe2",uncommon:"#46c46a",common:"#8b93a7"})[c.rarity]||"#8b93a7";
+    const grad = 'radial-gradient(120% 100% at 50% 20%,'+cc+'66,#0a0c16)';
+    const bg = art ? ("url('"+art+"'), "+grad) : grad;
+    let artHtml = '<div class="art" style="background-image:'+bg+';background-size:cover;background-position:center"></div>';
+    el.innerHTML = artHtml +
+      '<div class="veil"></div>'+
+      '<div class="tlabel">'+c.type+'</div>'+
+      '<div class="nm">'+c.name+'</div>'+
+      '<div class="el">'+c.element+'</div>';
+    el.title = c.hint;
+    el.addEventListener("click", ()=>{ setCardBackground(c, el); openCard(c, idx); });
+    box.appendChild(el);
+  });
+}
+function setCardBackground(c, el){
+  var bg=document.getElementById("cardBg");
+  if(!bg) return;
+  var art=cardArtUrl(c);
+  if(!art){ bg.classList.remove("show"); bg.style.backgroundImage=""; return; }
+  bg.style.backgroundImage="url('"+art+"')";
+  bg.classList.add("show");
+  try{
+    document.querySelectorAll("#cards .card.selected").forEach(function(x){ x.classList.remove("selected"); });
+    if(el) el.classList.add("selected");
+  }catch(e){}
+}
+function ensureCardModal(){
+  var ov=document.getElementById("cardZoom");
+  if(ov) return ov;
+  ov=document.createElement("div");
+  ov.id="cardZoom";
+  ov.style.cssText="position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(4,6,16,0.82);backdrop-filter:blur(6px);cursor:zoom-out";
+  ov.innerHTML='<div id="cardZoomInner" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;max-width:94vw;max-height:96vh;overflow:auto;cursor:auto">'+
+    '<div id="cardZoomArt" style="height:min(64vh,520px);aspect-ratio:3/4;border-radius:14px;background-size:contain;background-repeat:no-repeat;background-position:center;filter:drop-shadow(0 18px 60px rgba(0,0,0,0.7))"></div>'+
+    '<div style="text-align:center;color:#eef1fb;max-width:min(60vh,420px)">'+
+      '<div id="cardZoomType" style="font-size:12px;letter-spacing:2px;opacity:0.7;text-transform:uppercase"></div>'+
+      '<div id="cardZoomName" style="font-size:22px;font-weight:700;margin:4px 0"></div>'+
+      '<div id="cardZoomEl" style="font-size:13px;opacity:0.85;margin-bottom:6px"></div>'+
+      '<div id="cardZoomHint" style="font-size:14px;opacity:0.9;line-height:1.45"></div>'+
+    '</div>'+
+    '<div style="display:flex;gap:10px">'+
+      '<button id="cardZoomAct" style="padding:10px 18px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,#f6c948,#f3892b);color:#1a1206;font-weight:700">Активировать</button>'+
+      '<button id="cardZoomClose" style="padding:10px 18px;border-radius:10px;border:1px solid rgba(255,255,255,0.25);cursor:pointer;background:transparent;color:#eef1fb">Закрыть</button>'+
+    '</div>'+
+  '</div>';
+  document.body.appendChild(ov);
+  function closeZoom(){ ov.style.display="none"; }
+  ov.addEventListener("click", function(e){ if(e.target===ov) closeZoom(); });
+  ov.querySelector("#cardZoomClose").addEventListener("click", closeZoom);
+  window.addEventListener("keydown", function(e){ if(e.key==="Escape") closeZoom(); });
+  return ov;
+}
+function openCard(c, idx){
+  var ov=ensureCardModal();
+  var art=cardArtUrl(c);
+  var cc=({mythic:"#ff7a3c",legendary:"#f6c948",epic:"#9b4ff3",rare:"#3b6fe2",uncommon:"#46c46a",common:"#8b93a7"})[c.rarity]||"#8b93a7";
+  var grad='radial-gradient(120% 100% at 50% 20%,'+cc+'66,#0a0c16)';
+  ov.querySelector("#cardZoomArt").style.backgroundImage = art ? ("url('"+art+"'), "+grad) : grad;
+  ov.querySelector("#cardZoomType").textContent=c.type||"";
+  ov.querySelector("#cardZoomName").textContent=c.name||"";
+  ov.querySelector("#cardZoomEl").textContent=c.element||"";
+  ov.querySelector("#cardZoomHint").textContent=c.hint||"";
+  ov.querySelector("#cardZoomAct").onclick=function(){ activateCard(c, idx); };
+  ov.style.display="flex";
+}
+function activateCard(c, idx){
+  const r = RARITY_ORDER[c.rarity] ?? 0;
+  const effects = [
+    ()=>{ setLight(player.light + 0.02*(r+1)); return "+"+(2*(r+1))+"% Света"; },
+    ()=>{ bonusNext += (r+1); return "+"+(r+1)+" к следующему броску"; },
+    ()=>{ return "Открыт ключ линзы «"+LENSES[lensIdx].name+"»"; }
+  ];
+  const msg = effects[Math.floor(Math.random()*effects.length)]();
+  toast("⚡ "+c.name+": "+msg);
+}
+
+function buildLensSelect(){
+  const sel=document.getElementById("lensSel");
+  sel.innerHTML="";
+  LENSES.forEach((l,i)=>{ const o=document.createElement("option"); o.value=String(i); o.textContent=l.name; sel.appendChild(o); });
+  sel.value="0";
+  sel.addEventListener("change", ()=>{ lensIdx=parseInt(sel.value,10); updateLensInfo(); updateCellInfo(); toast("Линза: "+LENSES[lensIdx].name+" — поле переосмыслено"); });
+}
+function updateLensInfo(){ document.getElementById("lensInfo").innerHTML = "<b>"+LENSES[lensIdx].name+"</b> — "+LENSES[lensIdx].bonus; }
+
+document.getElementById("rollBtn").addEventListener("click", roll);
+document.getElementById("gateToggle").addEventListener("click", e=>{ const b=e.target.closest("button"); if(b) setGate(b.dataset.gate); });
+document.getElementById("timeBtn").addEventListener("click", enterByTime);
+document.getElementById("secToggle").addEventListener("click", e=>{ const b=e.target.closest("button"); if(b) setSectors(parseInt(b.dataset.sec,10)); });
+document.getElementById("dimToggle").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b)return; dimMode=parseInt(b.dataset.dim,10); document.querySelectorAll('#dimToggle button').forEach(x=>x.classList.toggle('on',x===b)); applyTilt(); });
+document.getElementById("lightRange").addEventListener("input", e=>{ player.light=parseInt(e.target.value,10)/100; applyTilt(); updateCellInfo(); });
+document.getElementById("summonBtn").addEventListener("click", ()=>{ npc.active=!npc.active; npc.t=gateSector("W"); toast(npc.active?"Игрок призван — общая игра":"Одиночная игра"); });
+document.getElementById("chatBtn").addEventListener("click", ()=>toast("Чат игроков — в разработке (прототип)"));
+document.getElementById("mDive").addEventListener("click", dive);
+document.getElementById("mClose").addEventListener("click", ()=>document.getElementById("modal").classList.remove("show"));
+cv.addEventListener("click", e=>{
+  const rect=cv.getBoundingClientRect();
+  const x=e.clientX-rect.left-CX, y=e.clientY-rect.top-CY;
+  const dist=Math.hypot(x,y); if(dist>MAXR) return;
+  const ring=Math.min(RING_N-1, Math.floor((1-dist/MAXR)*RING_N));
+  let a=Math.atan2(y,x)+Math.PI/2; if(a<0)a+=Math.PI*2;
+  const sector=Math.floor(a/(Math.PI*2)*SECTORS)%SECTORS;
+  if(!dragMoved){ player.t = ring*SECTORS + sector; updateCellInfo(); } dragMoved = false;
+});
+
+const boardWrapEl = document.getElementById("boardWrap");
+const sideEl = document.getElementById("side");
+const handEl = document.getElementById("hand");
+const sideToggleEl = document.getElementById("sideToggle");
+const stageEl = document.getElementById("stage");
+if(sideToggleEl){
+  sideToggleEl.addEventListener("click", function(){
+    const col = sideEl.classList.toggle("collapsed");
+    if(stageEl) stageEl.classList.toggle("side-collapsed", col);
+    sideToggleEl.textContent = col ? "<" : ">";
+    setTimeout(function(){ window.dispatchEvent(new Event("resize")); }, 430);
+  });
+}
+function setZoom(z){ zoom = Math.max(0.4, Math.min(8, z)); applyTilt(); }
+
+/* единый маршрутизатор колеса: панель / лента скроллятся, над полем — зум */
+document.addEventListener("wheel", function(e){
+  if(e.ctrlKey) return; /* Ctrl+колесо — зум браузера */
+  const t = e.target;
+  if(sideEl && (t === sideEl || sideEl.contains(t))){
+    if(sideEl.scrollHeight > sideEl.clientHeight + 1){
+      sideEl.scrollTop += e.deltaY;
+      e.preventDefault();
+    }
+    return;
+  }
+  if(handEl && (t === handEl || handEl.contains(t))){
+    if(handEl.scrollWidth > handEl.clientWidth + 1){
+      handEl.scrollLeft += e.deltaY;
+      e.preventDefault();
+    }
+    return;
+  }
+  e.preventDefault();
+  setZoom(zoom + (e.deltaY > 0 ? -0.2 : 0.2));
+}, { passive:false });
+
+/* вращение мандалы перетаскиванием мыши — во все стороны, как вселенную */
+const boardTiltEl = document.getElementById("boardTilt");
+let dragOn = false, dragMoved = false, lastMX = 0, lastMY = 0;
+boardWrapEl.style.cursor = "grab";
+boardWrapEl.addEventListener("mousedown", function(e){
+  dragOn = true; dragMoved = false;
+  lastMX = e.clientX; lastMY = e.clientY;
+  boardWrapEl.style.cursor = "grabbing";
+  boardTiltEl.style.transition = "none";
+});
+window.addEventListener("mousemove", function(e){
+  if(!dragOn) return;
+  const dx = e.clientX - lastMX, dy = e.clientY - lastMY;
+  if(Math.abs(dx) + Math.abs(dy) > 3) dragMoved = true;
+  lastMX = e.clientX; lastMY = e.clientY;
+  rotY -= dx * 0.3;
+  rotX -= dy * 0.3;
+  applyTilt();
+});
+window.addEventListener("mouseup", function(){
+  if(dragOn){ dragOn = false; boardWrapEl.style.cursor = "grab"; boardTiltEl.style.transition = ""; }
+});
+/* сброс вида: клавиша R или 0 */
+window.addEventListener("keydown", function(e){
+  if(e.key === "r" || e.key === "R" || e.key === "0"){ rotX = 0; rotY = 0; zoom = 1; boardTiltEl.style.transition = ""; applyTilt(); }
+});
+
+function init(){
+  try{
+    resize();
+    buildLensSelect();
+    updateLensInfo();
+    setGate("E");
+    applyTilt();
+    updateCellInfo();
+    loadCards();
+    tickClock(); setInterval(tickClock,1000);
+    requestAnimationFrame(draw);
+  }catch(err){
+    console.error("MANDALA INIT ERROR", err);
+    const t=document.getElementById("toast");
+    if(t){ t.textContent="Ошибка: "+(err&&err.message||err); t.classList.add("show"); }
+    const ci=document.getElementById("ciName"); if(ci) ci.textContent="⚠ Ошибка: "+(err&&err.message||err);
+  }
+}
+window.addEventListener("error", e=>{ const ci=document.getElementById("ciName"); if(ci) ci.textContent="⚠ JS: "+e.message; });
+init();
+window.__BOOT_OK=true;
+</script>
+
+<script>
+/* === 3D-ПОЛЕ МАНДАЛЫ (Three.js): вложенные чакровые кольца + ядро-галактика (стиль Истока) === */
+(function(){
+  if(!window.THREE){ console.warn("THREE not loaded"); return; }
+  var T=window.THREE;
+  var wrap=document.getElementById("boardWrap");
+  var tilt=document.getElementById("boardTilt");
+  var canvas=document.getElementById("board3d");
+  if(!canvas||!wrap) return;
+  var renderer=new T.WebGLRenderer({canvas:canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  var scene=new T.Scene();
+  var camera=new T.PerspectiveCamera(50,1,0.1,400);
+
+  function glowTex(stops){
+    var c=document.createElement("canvas"); c.width=c.height=128;
+    var g=c.getContext("2d");
+    var rg=g.createRadialGradient(64,64,0,64,64,64);
+    for(var s=0;s<stops.length;s++){ rg.addColorStop(stops[s][0], stops[s][1]); }
+    g.fillStyle=rg; g.fillRect(0,0,128,128);
+    return new T.CanvasTexture(c);
+  }
+  function mkGlow(tex,size){
+    var sp=new T.Sprite(new T.SpriteMaterial({map:tex,transparent:true,blending:T.AdditiveBlending,depthWrite:false}));
+    sp.scale.set(size,size,1); return sp;
+  }
+
+  // звёзды — глубокий космический фон
+  var sN=1100, sArr=new Float32Array(sN*3);
+  for(var i=0;i<sN*3;i+=3){ var rr=30+Math.random()*60, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1); sArr[i]=rr*Math.sin(ph)*Math.cos(th); sArr[i+1]=rr*Math.cos(ph); sArr[i+2]=rr*Math.sin(ph)*Math.sin(th); }
+  var sGeo=new T.BufferGeometry(); sGeo.setAttribute("position", new T.BufferAttribute(sArr,3));
+  scene.add(new T.Points(sGeo, new T.PointsMaterial({color:0xbfd0ff, size:0.14, transparent:true, opacity:0.6})));
+
+  var group=new T.Group(); scene.add(group);
+  var spin=new T.Group(); group.add(spin);
+
+  // === вложенные чакровые кольца: ring0 (Бурый предел) снаружи, ring13 (Центр Ра) в глубине центра ===
+  var RMAX=7.4, RMIN=0.7;
+  function rnd(){ return Math.random(); }
+
+  // ===== CRISP RING TRACKS: thin concentric circles in z=0 plane = our flat disc-map =====
+  var ringMesh=[];
+  for(var k=0;k<RING_N;k++){
+    var rr0 = RMIN + (RMAX-RMIN)*((k+0.5)/RING_N);
+    var ww = (k===0)?0.055:0.038;
+    var m=new T.Mesh(new T.RingGeometry(rr0-ww, rr0+ww, 168, 1),
+      new T.MeshBasicMaterial({color:0xffffff, transparent:true, opacity:0.92, side:T.DoubleSide, depthWrite:false}));
+    spin.add(m); ringMesh.push(m);
+  }
+
+  // ===== OUR FIELD: flat mandala disc in the center (dark base + warm radial glow + sector spokes) =====
+  function discTex(){
+    var c=document.createElement("canvas"); c.width=c.height=256;
+    var g=c.getContext("2d");
+    var rg=g.createRadialGradient(128,128,0,128,128,128);
+    rg.addColorStop(0,"rgba(255,238,170,0.50)");
+    rg.addColorStop(0.30,"rgba(150,110,50,0.20)");
+    rg.addColorStop(0.68,"rgba(50,38,72,0.14)");
+    rg.addColorStop(1,"rgba(8,5,20,0)");
+    g.fillStyle=rg; g.beginPath(); g.arc(128,128,128,0,7); g.fill();
+    return new T.CanvasTexture(c);
+  }
+  var discBase=new T.Mesh(new T.CircleGeometry(RMAX*1.04, 96),
+    new T.MeshBasicMaterial({color:0x0b0820, transparent:true, opacity:0.93, depthWrite:false}));
+  discBase.position.z=-0.05; discBase.renderOrder=-3; spin.add(discBase);
+  var discGlow=new T.Mesh(new T.CircleGeometry(RMAX*1.04, 96),
+    new T.MeshBasicMaterial({map:discTex(), transparent:true, opacity:0.6, blending:T.AdditiveBlending, depthWrite:false}));
+  discGlow.position.z=-0.02; discGlow.renderOrder=-2; spin.add(discGlow);
+  var fieldSpokes=new T.Group(); spin.add(fieldSpokes);
+  function buildSpokes(n){
+    while(fieldSpokes.children.length){ fieldSpokes.remove(fieldSpokes.children[0]); }
+    for(var si=0;si<n;si++){
+      var ang=si/n*Math.PI*2;
+      var pa=new Float32Array([RMIN*Math.cos(ang),RMIN*Math.sin(ang),0, RMAX*Math.cos(ang),RMAX*Math.sin(ang),0]);
+      var gg=new T.BufferGeometry(); gg.setAttribute("position", new T.BufferAttribute(pa,3));
+      fieldSpokes.add(new T.Line(gg, new T.LineBasicMaterial({color:0xc9a84c, transparent:true, opacity:0.3, depthWrite:false})));
+    }
+  }
+  buildSpokes(SECTORS); buildSpokes.last=SECTORS;
+
+  // ===== NESTED VOLUMETRIC SPHERES: wireframe globe (meridians+parallels) + faint glass fill =====
+  // The lat/long grid makes each sphere read as a real 3D ball when rotated; equator lies in the map plane.
+  var SPH_VERT="varying vec3 vN;varying vec3 vV;void main(){vec4 mv=modelViewMatrix*vec4(position,1.0);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}";
+  var SPH_FRAG="precision highp float;uniform vec3 uColor;uniform float uOpacity;uniform float uPower;varying vec3 vN;varying vec3 vV;void main(){float f=pow(1.0-abs(dot(normalize(vN),normalize(vV))),uPower);float a=uOpacity*(0.12+0.88*f);gl_FragColor=vec4(uColor*(0.45+0.75*f),a);}";
+  function circleGeo(fn){ var S=96, a=new Float32Array((S+1)*3); for(var i=0;i<=S;i++){ var pt=fn(i/S*Math.PI*2); a[i*3]=pt[0]; a[i*3+1]=pt[1]; a[i*3+2]=pt[2]; } var g=new T.BufferGeometry(); g.setAttribute("position", new T.BufferAttribute(a,3)); return g; }
+  var SPH_N=1, NPAR=6, NMER=8;
+  var sphMesh=[], sphGrid=[];
+  for(var s2=0;s2<SPH_N;s2++){
+    var sr=RMAX*((s2+1)/SPH_N);
+    var sMat=new T.ShaderMaterial({ uniforms:{ uColor:{value:new T.Vector3(1,1,1)}, uOpacity:{value:0.2}, uPower:{value:2.4} }, vertexShader:SPH_VERT, fragmentShader:SPH_FRAG, transparent:true, depthWrite:false, blending:T.AdditiveBlending, side:T.DoubleSide });
+    var sm=new T.Mesh(new T.SphereGeometry(sr, 48, 32), sMat);
+    spin.add(sm); sphMesh.push(sm);
+    var gmats=[];
+    for(var p=1;p<NPAR+1;p++){
+      var lat=p/(NPAR+1)*Math.PI, rrp=sr*Math.sin(lat), zz=sr*Math.cos(lat);
+      var lm=new T.LineBasicMaterial({color:0xffffff, transparent:true, opacity:0.5, blending:T.AdditiveBlending, depthWrite:false});
+      var lp=new T.LineLoop(circleGeo((function(R,Z){return function(t){return [R*Math.cos(t), R*Math.sin(t), Z];};})(rrp,zz)), lm);
+      spin.add(lp); gmats.push(lm);
+    }
+    for(var mi=0;mi<NMER;mi++){
+      var phi=mi/NMER*Math.PI;
+      var lm2=new T.LineBasicMaterial({color:0xffffff, transparent:true, opacity:0.5, blending:T.AdditiveBlending, depthWrite:false});
+      var lp2=new T.LineLoop(circleGeo((function(R,PH){return function(t){return [R*Math.sin(t)*Math.cos(PH), R*Math.sin(t)*Math.sin(PH), R*Math.cos(t)];};})(sr,phi)), lm2);
+      spin.add(lp2); gmats.push(lm2);
+    }
+    sphGrid.push(gmats);
+  }
+
+  // ===== bright compact core in the very center =====
+  var coreHalo=mkGlow(glowTex([[0,"rgba(255,255,255,0.9)"],[0.4,"rgba(190,170,255,0.4)"],[1,"rgba(0,0,0,0)"]]), 1.5); spin.add(coreHalo);
+  var coreGlow=mkGlow(glowTex([[0,"#ffffff"],[0.32,"#fff2c0"],[0.62,"#e8b84b"],[1,"rgba(0,0,0,0)"]]), 0.85); spin.add(coreGlow);
+  var coreCore=new T.Mesh(new T.SphereGeometry(0.22,28,20), new T.MeshBasicMaterial({color:0xfff7df, transparent:true, opacity:0.95})); spin.add(coreCore);
+
+  function cellPos(k, sector, dz){
+    var r=RMIN + (RMAX-RMIN)*((k+0.5)/RING_N);
+    var a=sector/SECTORS*Math.PI*2 - Math.PI/2;
+    return new T.Vector3(r*Math.cos(a), r*Math.sin(a), (dz||0.08));
+  }
+
+  var pGlowTex=glowTex([[0,"#ffffff"],[0.45,"#f6c948"],[1,"rgba(0,0,0,0)"]]);
+  var nGlowTex=glowTex([[0,"#eaffff"],[0.45,"#34c6d8"],[1,"rgba(0,0,0,0)"]]);
+  var gGlowTex=glowTex([[0,"#fff3c0"],[0.45,"#c9a84c"],[1,"rgba(0,0,0,0)"]]);
+  function mkOrb(bodyCol, tex){
+    var o=new T.Group();
+    o.add(mkGlow(tex, 0.95));
+    o.add(new T.Mesh(new T.SphereGeometry(0.15,20,16), new T.MeshBasicMaterial({color:bodyCol, transparent:true, opacity:0.9})));
+    o.visible=false; group.add(o); return o;
+  }
+  var pOrb=mkOrb(0xffffff, pGlowTex), nOrb=mkOrb(0xcfe9ff, nGlowTex);
+  var gateOrb={};
+  ["N","S","W","E"].forEach(function(gn){ gateOrb[gn]=mkOrb(0xffe9a8, gGlowTex); gateOrb[gn].visible=true; });
+
+  function ringOf(t){ return Math.min(Math.floor(t/SECTORS), RING_N-1); }
+  function sectorOf(t){ return ((t%SECTORS)+SECTORS)%SECTORS; }
+
+  var GRAYV=[150,154,168], lastL=-1, lastLens=-1;
+  function recolor(){
+    var L=player.light, tintC=hexToRgb(LENSES[lensIdx].tint);
+    for(var k=0;k<RING_N;k++){
+      var c=hexToRgb(RINGS[k].color);
+      c=mix(GRAYV,c,0.5+0.5*L);
+      c=mix(c,tintC,0.14);
+      ringMesh[k].material.color.setRGB(c[0]/255,c[1]/255,c[2]/255);
+      ringMesh[k].material.opacity=0.7+0.3*L;
+    }
+    for(var s3=0;s3<SPH_N;s3++){
+      var ck=(SPH_N>1)?Math.round(s3/(SPH_N-1)*(RING_N-1)):Math.round((RING_N-1)/2);
+      var sc=hexToRgb(RINGS[ck].color);
+      sc=mix(GRAYV,sc,0.55+0.45*L);
+      sc=mix(sc,tintC,0.14);
+      sphMesh[s3].material.uniforms.uColor.value.set(sc[0]/255,sc[1]/255,sc[2]/255);
+      sphMesh[s3].material.uniforms.uOpacity.value=0.04+0.06*L;
+      var gm=sphGrid[s3];
+      for(var gj=0;gj<gm.length;gj++){ gm[gj].color.setRGB(sc[0]/255,sc[1]/255,sc[2]/255); gm[gj].opacity=0.10+0.12*L; }
+    }
+    coreGlow.material.opacity=0.22+0.22*L;
+    coreHalo.material.opacity=0.10+0.14*L;
+    lastL=L; lastLens=lensIdx;
+  }
+
+  function resize3(){
+    var w=Math.max(280, wrap.clientWidth), h=Math.max(280, wrap.clientHeight);
+    renderer.setSize(w,h,false);
+    canvas.style.width=w+"px"; canvas.style.height=h+"px";
+    camera.aspect=w/h; camera.updateProjectionMatrix();
+  }
+  window.addEventListener("resize", resize3); resize3();
+
+  // === фокус / занырнуть в ячейку: клик по ячейке — подлёт, клик мимо поля или C/Esc — назад в центр ===
+  var focus=new T.Vector3(0,0,0), focusTarget=new T.Vector3(0,0,0);
+  var ray=new T.Raycaster(), ndc=new T.Vector2(), planeZ=new T.Plane(new T.Vector3(0,0,1),0), hit=new T.Vector3();
+  function toCenter(){ focusTarget.set(0,0,0); zoom=1; if(window.applyTilt) applyTilt(); }
+  function focusCell(cx, cy){
+    var rect=canvas.getBoundingClientRect();
+    ndc.x=((cx-rect.left)/rect.width)*2-1;
+    ndc.y=-((cy-rect.top)/rect.height)*2+1;
+    ray.setFromCamera(ndc, camera);
+    if(!ray.ray.intersectPlane(planeZ, hit)){ return; }
+    var rr=Math.hypot(hit.x, hit.y);
+    if(rr>RMAX*1.04){ toCenter(); if(window.toast) toast("Возврат в центр"); return; }
+    var k=Math.round(((rr-RMIN)/(RMAX-RMIN))*RING_N-0.5); k=Math.max(0, Math.min(RING_N-1, k));
+    var a=Math.atan2(hit.y, hit.x)+Math.PI/2; if(a<0) a+=Math.PI*2;
+    var sector=Math.floor(a/(Math.PI*2)*SECTORS)%SECTORS;
+    player.t=k*SECTORS+sector;
+    if(window.updateCellInfo) updateCellInfo();
+    focusTarget.copy(cellPos(k, sector, 0));
+    zoom=Math.max(zoom, 2.8); if(zoom>8) zoom=8; if(window.applyTilt) applyTilt();
+    if(window.toast) toast("Ячейка: кольцо "+k+" \u00b7 сектор "+sector+" — крути и приближайся, C \u2014 в центр");
+  }
+  canvas.addEventListener("click", function(e){
+    if(dimMode!==3) return;
+    if(typeof dragMoved!=="undefined" && dragMoved){ dragMoved=false; return; }
+    focusCell(e.clientX, e.clientY);
+  });
+  canvas.addEventListener("dblclick", function(){ if(dimMode===3) toCenter(); });
+  window.addEventListener("keydown", function(e){
+    if(dimMode!==3) return;
+    if(e.key==="c"||e.key==="C"||e.key==="0"||e.key==="Escape"){ toCenter(); }
+  });
+
+  var spin3=0, gTime=0;
+  function frame(){
+    var show3=(dimMode===3);
+    canvas.style.display=show3?"block":"none";
+    if(tilt) tilt.style.visibility=show3?"hidden":"";
+    if(show3){
+      spin3+=0.0009; gTime+=0.016;
+      if(player.light!==lastL || lensIdx!==lastLens) recolor();
+      if(buildSpokes.last!==SECTORS){ buildSpokes(SECTORS); buildSpokes.last=SECTORS; }
+      spin.rotation.z=0;
+      pOrb.visible=true; pOrb.position.copy(cellPos(ringOf(player.t), sectorOf(player.t)));
+      nOrb.visible=!!npc.active; if(npc.active) nOrb.position.copy(cellPos(ringOf(npc.t), sectorOf(npc.t)));
+      ["N","S","W","E"].forEach(function(gn){
+        var o=gateOrb[gn]; o.position.copy(cellPos(0, gateSector(gn)));
+        var on=(gn===gate); o.scale.setScalar(on?1.5:0.85);
+      });
+      var pulse=1+Math.sin(gTime*1.7)*0.10; coreGlow.scale.set(1.3*pulse,1.3*pulse,1);
+      // reset angles on entering 3D so it starts centered; then free orbit via mouse drag
+      if(dimMode===3 && frame.lastDim3!==3){ rotX=-22; rotY=18; } frame.lastDim3=dimMode;
+      var dist=22/Math.max(0.4,zoom);
+      focus.lerp(focusTarget, 0.09);
+      var eul=new T.Euler(rotX*Math.PI/180, rotY*Math.PI/180, 0, "YXZ");
+      var off=new T.Vector3(0,0,dist).applyEuler(eul);
+      var upv=new T.Vector3(0,1,0).applyEuler(eul);
+      camera.position.set(focus.x+off.x, focus.y+off.y, focus.z+off.z);
+      camera.up.copy(upv); camera.lookAt(focus);
+      renderer.render(scene,camera);
+    }
+    requestAnimationFrame(frame);
+  }
+  recolor();
+  requestAnimationFrame(frame);
+})();
+</script>
+<script>
+/* == Мост Тигля -> Мандала (Этап 1): читаем awara_v258_state и поднимаем фигурку по чакрам == */
+(function(){
+  var ELMAP={earth:"Земля",water:"Вода",fire:"Огонь",air:"Воздух",ether:"Эфир"};
+  function clamp01(x){ return x<0?0:(x>1?1:x); }
+  function readState(){
+    try{ var raw=localStorage.getItem("awara_v258_state"); if(!raw) return null; return JSON.parse(raw); }
+    catch(e){ return null; }
+  }
+  function hud(){
+    var el=document.getElementById("awaraHud");
+    if(el) return el;
+    el=document.createElement("div");
+    el.id="awaraHud";
+    el.style.cssText="position:fixed;left:12px;top:12px;z-index:50;padding:10px 14px;border-radius:14px;background:rgba(6,8,20,0.66);backdrop-filter:blur(8px);border:1px solid rgba(201,168,76,0.28);color:#eef1fb;font:12px/1.5 system-ui,sans-serif;min-width:158px;box-shadow:0 10px 40px rgba(0,0,0,0.5)";
+    document.body.appendChild(el);
+    return el;
+  }
+  function apply(){
+    var st=readState();
+    var el=hud();
+    if(!st){
+      el.innerHTML="<div style='color:#c9a84c;font-weight:700;letter-spacing:1px'>ТИГЕЛЬ</div><div style='opacity:0.7;margin-top:4px'>нет данных дня — переплавь день в Тигле</div>";
+      return;
+    }
+    var totalLight=(typeof st.totalLight==="number")?st.totalLight:0;
+    var lightObj=st.light||{};
+    var aw=(typeof lightObj.awareness==="number")?lightObj.awareness:clamp01(0.85*(1-Math.exp(-totalLight/600)));
+    aw=clamp01(aw);
+    var dom=lightObj.dominantElement||null;
+    var totals=lightObj.totals||{};
+    var entries=totals.entries||0;
+    if(typeof player!=="undefined" && typeof RING_N!=="undefined" && typeof SECTORS!=="undefined"){
+      var ringTarget=Math.round(aw*(RING_N-1));
+      var sector=((player.t%SECTORS)+SECTORS)%SECTORS;
+      player.t=ringTarget*SECTORS+sector;
+      player.light=aw;
+      if(dom && ELMAP[dom]) player.element=ELMAP[dom];
+      if(window.updateCellInfo){ try{ updateCellInfo(); }catch(e){} }
+    }
+    var rn=(typeof RING_N!=="undefined")?RING_N:14;
+    var elName=(dom&&ELMAP[dom])?ELMAP[dom]:((typeof player!=="undefined"&&player.element)?player.element:"—");
+    var pct=Math.round(aw*100);
+    el.innerHTML=
+      "<div style='color:#c9a84c;font-weight:700;letter-spacing:1px'>ТИГЕЛЬ · ДЕНЬ ПЕРЕПЛАВЛЕН</div>"+
+      "<div style='margin-top:6px;display:flex;justify-content:space-between'><span style='opacity:0.65'>Свет</span><span style='color:#ffe080'>"+Math.round(totalLight)+"</span></div>"+
+      "<div style='display:flex;justify-content:space-between'><span style='opacity:0.65'>Осознанность</span><span style='color:#9fe0ff'>"+pct+"%</span></div>"+
+      "<div style='display:flex;justify-content:space-between'><span style='opacity:0.65'>Стихия</span><span>"+elName+"</span></div>"+
+      "<div style='display:flex;justify-content:space-between'><span style='opacity:0.65'>Записей</span><span>"+entries+"</span></div>"+
+      "<div style='margin-top:6px;height:6px;border-radius:6px;background:rgba(255,255,255,0.08);overflow:hidden'><div style='height:100%;width:"+pct+"%;background:linear-gradient(90deg,#e23b3b,#f6d033,#9b4ff3,#fff7df)'></div></div>"+
+      "<div style='opacity:0.5;margin-top:4px;font-size:10px'>кольцо "+Math.round(aw*(rn-1))+" / "+(rn-1)+"</div>";
+  }
+  window.AwaraBridgeApply=apply;
+  window.addEventListener("storage",function(e){ if(e.key==="awara_v258_state") apply(); });
+  window.addEventListener("focus",apply);
+  setTimeout(apply,600);
+  setTimeout(apply,1800);
+})();
+</script>
+</body>
+</html>

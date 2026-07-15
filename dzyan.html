@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AWARA · Книга Дзиан</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#000;font-family:'Georgia',serif;cursor:pointer;overflow:hidden}
+#bg{position:fixed;inset:0;z-index:0;display:block}
+#ui{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;padding:40px;text-align:center;pointer-events:none}
+#sym{font-size:84px;line-height:1;color:#fff;transition:opacity .8s,transform .8s}
+#ttl{font-size:30px;color:#fff;letter-spacing:6px;font-weight:bold;transition:opacity .8s}
+#sub{font-size:13px;color:#c8a870;letter-spacing:3px;text-transform:uppercase;transition:opacity .8s}
+#dsc{font-size:15px;color:#d8c9a4;line-height:1.95;max-width:540px;white-space:pre-line;margin-top:10px;transition:opacity .8s}
+#qot{font-size:13px;color:#9a8450;font-style:italic;max-width:470px;white-space:pre-line;margin-top:18px;transition:opacity .8s}
+.fade{opacity:0!important}
+#cnt{position:fixed;top:18px;left:22px;z-index:200;font-size:11px;color:#c8a870;font-family:monospace;letter-spacing:3px}
+#lng{position:fixed;top:15px;right:20px;z-index:200;cursor:pointer;pointer-events:auto;border:1px solid #3a2e18;border-radius:20px;padding:5px 13px;font-size:11px;color:#c8a870;background:rgba(10,8,4,.7);font-family:monospace}
+#prev{position:fixed;left:24px;top:50%;transform:translateY(-50%);z-index:200;cursor:pointer;pointer-events:auto;font-size:30px;color:#3a2e18;transition:color .3s}
+#prev:hover{color:#c8a870}
+#hint{position:fixed;bottom:66px;left:0;right:0;text-align:center;z-index:200;font-size:10px;letter-spacing:3px;color:#5a4828;font-family:monospace;pointer-events:none}
+#dots{position:fixed;bottom:34px;left:0;right:0;z-index:200;display:flex;justify-content:center;gap:10px;pointer-events:none}
+.dot{width:7px;height:7px;border-radius:50%;background:#2a2016;transition:.4s}
+.dot.on{background:#c8a870;transform:scale(1.5);box-shadow:0 0 8px #c8a870}
+.dot.dn{background:#5a4828}
+#err{position:fixed;inset:0;z-index:999;background:#0a0005;color:#f88;padding:20px;font:12px/1.6 monospace;white-space:pre-wrap;display:none;overflow:auto}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div id="ui">
+  <div id="sym"></div>
+  <div id="ttl"></div>
+  <div id="sub"></div>
+  <div id="dsc"></div>
+  <div id="qot"></div>
+</div>
+<div id="cnt">01 / 08</div>
+<div id="lng">RU / EN</div>
+<div id="prev">‹</div>
+<div id="hint">нажми — далее</div>
+<div id="dots"></div>
+<div id="err"></div>
+
+<script>
+function showErr(m){var e=document.getElementById('err');e.textContent=m;e.style.display='block';}
+window.onerror=function(m,s,l,c,e){showErr('ERROR: '+m+' @line '+l+(e&&e.stack?'\n'+e.stack:''));return true;};
+
+var S=[
+ {s:'○',c:'#9a6ad8',
+  ru:{t:'ПРАЛАЯА',u:'Великий Сон · До начала всего',d:'Ничего не существует. Нет времени, пространства, материи.\nТолько Абсолют — бесконечная тьма, вечный покой.\nСемь Строителей спят внутри Абсолюта.',q:'«Не было ничего, кроме вечной тьмы в безпредельном пространстве»'},
+  en:{t:'PRALAYA',u:'The Great Sleep · Before all beginning',d:'Nothing exists. No time, space, or matter.\nOnly the Absolute — infinite darkness, eternal rest.\nSeven Builders sleep within the Absolute.',q:'"There was naught but eternal darkness in boundless space"'}},
+ {s:'⊙',c:'#e8c060',
+  ru:{t:'ПЕРВЫЙ ВЗДОХ',u:'Рождение Точки · Первый Логос',d:'Абсолют «вздыхает» — первый импульс воли.\nВ центре пустоты появляется Точка — зерно всего сущего.\nПереход от Небытия к Бытию.',q:'«Отец-Мать пробудился от сна»'},
+  en:{t:'FIRST BREATH',u:'Birth of the Point · First Logos',d:'The Absolute breathes — the first impulse of will.\nA Point appears — the seed of all that exists.\nTransition from Non-Being to Being.',q:'"Father-Mother awakened from sleep"'}},
+ {s:'△',c:'#9a78ff',
+  ru:{t:'ТРОИЦА',u:'Три Логоса · Из Одного — Три',d:'Из Точки рождаются три потока:\nНепроявленный Дух — молчание\nОтражение — Сознание\nАктивный Творец — действие',q:'«Из Одного — Три; из Трёх — Семь»'},
+  en:{t:'THE TRINITY',u:'Three Logos · From One — Three',d:'From the Point arise three streams:\nUnmanifest Spirit — silence\nReflection — Consciousness\nActive Creator — action',q:'"From One — Three; from Three — Seven"'}},
+ {s:'≋',c:'#40c8f0',
+  ru:{t:'ВИБРАЦИЯ',u:'Фохат · Космическая сила',d:'Третий Логос посылает вибрацию в пространство.\nРождается Фохат — космическая электрическая сила.\nПосредник между Духом и Материей.',q:'«Фохат скачет по семи мирам на огненном коне»'},
+  en:{t:'VIBRATION',u:'Fohat · The Cosmic Force',d:'The Third Logos sends vibration into space.\nFohat is born — the cosmic electric force.\nMediator between Spirit and Matter.',q:'"Fohat gallops across the seven worlds"'}},
+ {s:'🥚',c:'#ffd27a',
+  ru:{t:'МИРОВОЕ ЯЙЦО',u:'Хираньягарбха · Золотой Зародыш',d:'Фохат формирует Космическое Яйцо.\nВнутри сворачивается вся потенциальная Вселенная.\nЭто форма до всех форм.',q:'«Золотое яйцо воссияло, как Солнце»'},
+  en:{t:'WORLD EGG',u:'Hiranyagarbha · The Golden Embryo',d:'Fohat forms the Cosmic Egg.\nWithin it folds the entire potential Universe.\nThe form before all forms.',q:'"The golden egg shone forth like the Sun"'}},
+ {s:'✦',c:'#ffe090',
+  ru:{t:'СЕМЬ ИЗ ОДНОГО',u:'Дхиан-Коганы · Священная Семёрка',d:'Из Яйца рождаются семь Дхиан-Коганов — Строителей.\n7 планов бытия · 7 рас · 7 принципов человека\nСвет делится на семь потоков.',q:'«Из Одного Света — Семь Светов»'},
+  en:{t:'SEVEN FROM ONE',u:'The Sacred Seven · Dhyan Cohans',d:'From the Egg arise seven Dhyan-Cohans — Builders.\n7 planes · 7 races · 7 human principles\nThe Light divides into seven streams.',q:'"From One Light — Seven Lights"'}},
+ {s:'⧆',c:'#60e8a0',
+  ru:{t:'ГЕОМЕТРИЯ',u:'Фохат чертит · Священные формы',d:'Фохат строит геометрию пространства.\nТреугольник = дух · Квадрат = материя\nГексаграмма = единство духа и материи',q:'«Как вверху — так и внизу»'},
+  en:{t:'GEOMETRY',u:'Fohat draws · Sacred forms',d:'Fohat builds the geometry of space.\nTriangle = spirit · Square = matter\nHexagram = unity of both',q:'"As above — so below"'}},
+ {s:'↓',c:'#b090ff',
+  ru:{t:'НИСХОЖДЕНИЕ',u:'Жизнь входит в Материю',d:'Три потока жизни нисходят через семь планов:\nМонады — чистый дух, искры Абсолюта\nДхиан-Коганы — архитекторы форм\nАтомы — материя',q:'«Дух начинает спускаться в материю»'},
+  en:{t:'THE DESCENT',u:'Life enters Matter',d:'Three streams descend through seven planes:\nMonads — pure spirit, sparks of the Absolute\nDhyan-Cohans — builders of forms\nAtoms — matter, substance',q:'"Spirit begins its descent into matter"'}}
+];
+
+var N=S.length, cur=0;
+// ── пролог один раз + повтор (вшито в поток) ──
+var _q=new URLSearchParams(location.search);
+var _replay=_q.get('replay')==='1';
+try{ if(_replay) localStorage.removeItem('awara_dzyan_seen'); }catch(e){}
+try{ if(!_replay && localStorage.getItem('awara_dzyan_seen')==='1'){ location.replace('index.html'); } }catch(e){}
+var lang='ru';
+try{lang=localStorage.getItem('awara_lang')||'ru';}catch(e){}
+
+var symEl=document.getElementById('sym');
+var ttlEl=document.getElementById('ttl');
+var subEl=document.getElementById('sub');
+var dscEl=document.getElementById('dsc');
+var qotEl=document.getElementById('qot');
+var cntEl=document.getElementById('cnt');
+var uiEl=document.getElementById('ui');
+
+var dotsEl=document.getElementById('dots');
+for(var i=0;i<N;i++){var dd=document.createElement('div');dd.className='dot'+(i===0?' on':'');dotsEl.appendChild(dd);}
+
+function paint(idx){
+  var s=S[idx]; var d=s[lang]||s.ru;
+  symEl.textContent=s.s; symEl.style.color=s.c; symEl.style.textShadow='0 0 45px '+s.c+',0 0 90px '+s.c;
+  ttlEl.textContent=d.t; ttlEl.style.color=s.c;
+  subEl.textContent=d.u;
+  dscEl.textContent=d.d;
+  qotEl.textContent=d.q;
+  cntEl.textContent=(idx+1<10?'0'+(idx+1):(idx+1))+' / 0'+N;
+  var ds=dotsEl.children;
+  for(var i=0;i<N;i++) ds[i].className='dot'+(i<idx?' dn':(i===idx?' on':''));
+}
+
+var busy=false;
+function show(idx){ cur=idx; paint(idx); }
+function transit(idx){
+  if(busy)return; busy=true;
+  uiEl.classList.add('fade');
+  setTimeout(function(){ show(idx); uiEl.classList.remove('fade'); setTimeout(function(){busy=false;},400); },420);
+}
+function next(){ if(cur+1>=N){ exit(); } else transit(cur+1); }
+function prev(){ if(cur>0) transit(cur-1); }
+function exit(){
+  if(busy)return; busy=true;
+  var f=document.createElement('div');
+  f.style.cssText='position:fixed;inset:0;z-index:500;background:radial-gradient(circle at 50% 50%,#fff,#ffd277 45%,#6a86ff 80%,#000);opacity:0;transition:opacity 1s';
+  document.body.appendChild(f);
+  requestAnimationFrame(function(){f.style.opacity='1';});
+  setTimeout(function(){try{localStorage.setItem('awara_dzyan_seen','1');sessionStorage.setItem('awara_from_dzyan','1');}catch(e){}location.href='index.html';},1050);
+}
+
+document.body.addEventListener('click',function(e){ if(e.target.id==='lng'||e.target.id==='prev')return; next(); });
+document.addEventListener('keydown',function(e){ if(e.key==='ArrowRight'||e.key===' '||e.key==='Enter')next(); if(e.key==='ArrowLeft')prev(); });
+document.getElementById('prev').addEventListener('click',function(e){ e.stopPropagation(); prev(); });
+document.getElementById('lng').addEventListener('click',function(e){ e.stopPropagation(); lang=lang==='ru'?'en':'ru'; try{localStorage.setItem('awara_lang',lang);}catch(_){} paint(cur); });
+
+// ===== Canvas 2D animated background =====
+var cv=document.getElementById('bg'), cx=cv.getContext('2d');
+var W=0,H=0,stars=[];
+function resize(){ W=cv.width=innerWidth; H=cv.height=innerHeight; stars=[]; for(var i=0;i<260;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,p:Math.random()*6.28}); }
+resize(); addEventListener('resize',resize);
+
+function hex(c){ return [parseInt(c.substr(1,2),16),parseInt(c.substr(3,2),16),parseInt(c.substr(5,2),16)]; }
+
+var t=0;
+function loop(){
+  t+=0.016;
+  cx.fillStyle='#000'; cx.fillRect(0,0,W,H);
+  // stars
+  for(var i=0;i<stars.length;i++){var st=stars[i];var tw=.4+.6*Math.abs(Math.sin(t*1.5+st.p));cx.globalAlpha=tw*.7;cx.fillStyle='#cdd6ff';cx.beginPath();cx.arc(st.x,st.y,st.r,0,6.28);cx.fill();}
+  cx.globalAlpha=1;
+  var s=S[cur], rgb=hex(s.c), cxp=W/2, cyp=H/2;
+  var pulse=.5+.5*Math.sin(t*1.2);
+  // central glow
+  var R=Math.min(W,H)*(.30+pulse*.05);
+  var g=cx.createRadialGradient(cxp,cyp,0,cxp,cyp,R);
+  g.addColorStop(0,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0.28)');
+  g.addColorStop(.5,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0.07)');
+  g.addColorStop(1,'rgba(0,0,0,0)');
+  cx.fillStyle=g; cx.fillRect(0,0,W,H);
+  // stage-specific shapes
+  cx.save(); cx.translate(cxp,cyp);
+  cx.strokeStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0.5)'; cx.lineWidth=2;
+  cx.shadowColor=s.c; cx.shadowBlur=20;
+  var rad=Math.min(W,H)*.18;
+  if(cur===0){ cx.globalAlpha=.4+pulse*.3; cx.beginPath(); cx.arc(0,0,rad*1.4,0,6.28); cx.stroke(); }
+  else if(cur===1){ cx.fillStyle=s.c; cx.beginPath(); cx.arc(0,0,8+pulse*4,0,6.28); cx.fill(); cx.beginPath(); cx.arc(0,0,rad*(0.6+pulse*.5),0,6.28); cx.stroke(); }
+  else if(cur===2){ tri(rad,0); }
+  else if(cur===3){ cx.beginPath(); for(var a=0;a<6.28;a+=.04){var rr=rad*(1+.25*Math.sin(a*6+t*3)); var x=Math.cos(a)*rr,y=Math.sin(a)*rr; a===0?cx.moveTo(x,y):cx.lineTo(x,y);} cx.closePath(); cx.stroke(); }
+  else if(cur===4){ cx.save(); cx.scale(1,1.35); cx.beginPath(); cx.arc(0,0,rad,0,6.28); cx.stroke(); cx.restore(); cx.fillStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0.15)'; cx.save(); cx.scale(1,1.35); cx.beginPath(); cx.arc(0,0,rad,0,6.28); cx.fill(); cx.restore(); }
+  else if(cur===5){ for(var k=0;k<7;k++){var ang=k/7*6.28-1.57; var x=Math.cos(ang)*rad,y=Math.sin(ang)*rad; cx.fillStyle=s.c; cx.beginPath(); cx.arc(x,y,5+pulse*2,0,6.28); cx.fill(); var ang2=(k+2)%7/7*6.28-1.57; cx.beginPath(); cx.moveTo(x,y); cx.lineTo(Math.cos(ang2)*rad,Math.sin(ang2)*rad); cx.stroke();} }
+  else if(cur===6){ tri(rad,0); tri(rad,3.1416); cx.beginPath(); cx.arc(0,0,rad*1.15,0,6.28); cx.stroke(); }
+  else if(cur===7){ for(var j=-1;j<2;j++){ cx.beginPath(); for(var yy=-rad*1.5;yy<rad*1.5;yy+=4){var xx=j*40+Math.sin(yy*.05+t*2+j)*12; yy===-rad*1.5?cx.moveTo(xx,yy):cx.lineTo(xx,yy);} cx.stroke(); } }
+  cx.restore();
+  requestAnimationFrame(loop);
+}
+function tri(rad,rot){ cx.beginPath(); for(var k=0;k<3;k++){var ang=k/3*6.28-1.57+rot; var x=Math.cos(ang)*rad,y=Math.sin(ang)*rad; k===0?cx.moveTo(x,y):cx.lineTo(x,y);} cx.closePath(); cx.stroke(); }
+
+show(0);
+loop();
+</script>
+</body>
+</html>

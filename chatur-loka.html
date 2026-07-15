@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · Чатура-Лока · 4 Мира</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Cormorant Garamond',serif;color:#c9a84c;touch-action:pan-x pan-y}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,rgba(40,20,80,.3),transparent 50%),#02010a}
+canvas{position:fixed;inset:0;z-index:1;touch-action:none}
+.hud{position:relative;z-index:2;text-align:center;pointer-events:none;margin-top:-30px}
+.hud h1{font-family:'Cinzel Decorative',serif;font-size:15px;color:#ffd700;letter-spacing:.18em;text-shadow:0 0 30px rgba(255,215,0,.4)}
+.hud .sub{font-size:8px;color:rgba(201,168,76,.35);letter-spacing:.2em;font-family:'JetBrains Mono',monospace}
+.info-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:8px 16px;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.2);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,.5);pointer-events:none;z-index:3;text-align:center;max-width:90vw}
+.layer-nav{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;width:min(94vw,560px)}
+.layer-link{padding:8px 12px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;text-decoration:none;letter-spacing:.09em;white-space:nowrap;backdrop-filter:blur(8px)}
+.layer-link:hover{background:rgba(201,168,76,.15);color:#ffd700;border-color:#ffd700}
+.kosha-bar{position:fixed;bottom:102px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:0;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.18);border-radius:24px;padding:4px 6px;backdrop-filter:blur(12px)}
+.kosha-dot{display:flex;align-items:center;gap:4px;padding:5px 8px;text-decoration:none;color:rgba(201,168,76,.35);font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.06em;border-radius:16px;transition:all .3s;white-space:nowrap;min-height:28px}
+.kosha-dot:hover{color:rgba(201,168,76,.7);background:rgba(201,168,76,.06)}
+.kosha-dot.active{color:#ffd700;background:rgba(255,215,0,.1);text-shadow:0 0 12px rgba(255,215,0,.4)}
+.kosha-dot .kd-circle{width:6px;height:6px;border-radius:50%;background:rgba(201,168,76,.2);transition:all .3s;flex-shrink:0}
+.kosha-dot.active .kd-circle{background:#ffd700;box-shadow:0 0 8px rgba(255,215,0,.5)}
+.kosha-sep{width:12px;height:1px;background:rgba(201,168,76,.12);flex-shrink:0}
+@media(max-width:480px){.kosha-dot span{display:none}.kosha-dot{padding:6px}.kosha-bar{gap:0;padding:4px 8px}}
+.layer-panel{position:fixed;top:36px;left:4px;bottom:112px;width:110px;z-index:5;overflow-y:auto;padding:2px;display:flex;flex-direction:column;gap:3px;scrollbar-width:none}
+.layer-panel::-webkit-scrollbar{display:none}
+.layer-item{padding:5px 6px;background:rgba(2,1,10,.75);border:1px solid rgba(201,168,76,.12);border-radius:5px;cursor:pointer;font-size:7px;line-height:1.3;font-family:'JetBrains Mono',monospace;color:rgba(201,168,76,.5);transition:border-color .2s,color .2s}
+.layer-item:hover,.layer-item.active{border-color:rgba(255,215,0,.5);color:#ffd700;background:rgba(201,168,76,.08)}
+.layer-item .li-name{font-family:'Cinzel',serif;font-size:9px}
+.layer-item .li-sub{font-size:6px;opacity:.5;margin-top:1px}
+.reset-cam{position:fixed;top:40px;right:8px;z-index:10;padding:4px 10px;background:rgba(0,0,0,.6);border:1px solid rgba(201,168,76,.25);border-radius:6px;color:#c9a84c;font-family:'Cinzel',serif;font-size:8px;cursor:pointer;letter-spacing:.05em;min-height:28px}
+.reset-cam:hover{border-color:#ffd700;color:#ffd700}
+.lang-switch{position:fixed;top:8px;right:8px;z-index:10;display:flex;gap:4px}
+.lang-switch button{padding:3px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:8px;cursor:pointer;border-radius:4px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="hud"><h1>ЧАТУРА-ЛОКА</h1><div class="sub">4 МИРА · КОСМИЧЕСКОЕ ЯЙЦО</div></div>
+<div class="info-bar" id="info-bar">вращай · нажми на слой</div>
+<div class="kosha-bar">
+  <a href="earth-player.html" class="kosha-dot" title="Аннамайя-коша"><div class="kd-circle"></div><span>АННА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="aura-pole.html" class="kosha-dot" title="Пранамайя-коша"><div class="kd-circle"></div><span>ПРАНА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="mind-space.html" class="kosha-dot" title="Маномайя-коша"><div class="kd-circle"></div><span>МАНАС</span></a>
+  <div class="kosha-sep"></div>
+  <a href="vedic-cosmos.html" class="kosha-dot" title="Виджнянамайя-коша"><div class="kd-circle"></div><span>ВИДЖНЯНА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="cosmic-forces.html" class="kosha-dot" title="Анандамайя-коша"><div class="kd-circle"></div><span>АНАНДА</span></a>
+</div>
+<nav class="layer-nav" aria-label="Навигация слоёв">
+  <a href="festivals.html" class="layer-link">ВНУТРЬ · ДОДЕКАЭДР</a>
+  <a href="index.html" class="layer-link">ЛОББИ</a>
+  <a href="vedic-cosmos.html" class="layer-link">НАРУЖУ · БРАХМАНДА</a>
+</nav>
+<div class="layer-panel" id="layer-panel"></div>
+<button class="reset-cam" id="reset-cam">СБРОС</button>
+
+<div class="lang-switch">
+<button onclick="localStorage.setItem('awara_lang','ru');location.reload()">RU</button>
+<button onclick="localStorage.setItem('awara_lang','en');location.reload()">EN</button>
+</div>
+
+<div id="loading" style="position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:#02010a;font-family:'Cinzel',serif;color:#ffd700;font-size:14px;letter-spacing:.2em"><span>ЗАГРУЗКА...</span></div>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+document.getElementById('loading').style.display='none';
+
+const canvas=document.getElementById('c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.setSize(window.innerWidth,window.innerHeight);
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(40,window.innerWidth/window.innerHeight,0.1,50);
+camera.position.set(0,0,10);
+
+const root=new THREE.Group();
+scene.add(root);
+
+// Ambient + directional light
+scene.add(new THREE.AmbientLight(0x444466,.6));
+const dLight=new THREE.DirectionalLight(0xffd700,.4);
+dLight.position.set(2,4,3);
+scene.add(dLight);
+
+// Stars
+const sg=new THREE.BufferGeometry();
+const sa=new Float32Array(1200*3);
+for(let i=0;i<1200*3;i+=3){const r=18+Math.random()*12,th=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);sa[i]=r*Math.sin(ph)*Math.cos(th);sa[i+1]=r*Math.sin(ph)*Math.sin(th);sa[i+2]=r*Math.cos(ph);}
+sg.setAttribute('position',new THREE.BufferAttribute(sa,3));
+scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:.04,transparent:true,opacity:.35})));
+
+// ══ LANGUAGE ══
+const _lang=localStorage.getItem('awara_lang')||'ru';
+function _t(ru,en){return _lang==='en'?en:ru;}
+
+// ══ 4 СЛОЯ ЧАТУРА-ЛОКИ ══
+const LAYERS=[
+  {id:4, name:'Славь', name_en:'Slav (Glory)',
+   sub:'Лотос · Храм Софии', sub_en:'Lotus · Temple of Sophia',
+   y:3.2, color:'#ffd700', radius:1.1, height:.8,
+   desc:'Великий Лотос на вершине Яйца. Мир, насыщенный Светом. Храм Софии. Обитель Высоких Духов Реальности. Соприкосновение Яйца со Славью. Через этот слой идут наиболее сильные Нисходящие потоки.',
+   desc_en:'Great Lotus at the top of the Egg. World saturated with Light. Temple of Sophia. Abode of High Spirits of Reality. Connection of the Egg with Glory. The strongest Descending flows pass through this layer.'},
+  {id:3, name:'Третий Слой', name_en:'Third Layer',
+   sub:'Внутренняя Земля · Эфир', sub_en:'Inner Earth · Ether',
+   y:1.2, color:'#66ccff', radius:1.6, height:1.0,
+   desc:'Внутренняя Земля. Мир без войн и болезней. Эфирные технологии, направленные только на Эволюцию. Тела со светимостью, технологичный гормон. Эфирные дома, подвижные и гибкие. Даосы имеют доступ к этому слою. Цель Великого Перехода.',
+   desc_en:'Inner Earth. World without wars or diseases. Etheric technologies directed only toward Evolution. Bodies with luminosity, technological hormone. Etheric houses, flexible and adaptive. Daoists have access to this layer. Goal of the Great Transition.'},
+  {id:2, name:'Бху-лока', name_en:'Bhu-loka',
+   sub:'Наш Мир · Карма', sub_en:'Our World · Karma',
+   y:-1.0, color:'#44aa66', radius:1.9, height:1.2,
+   desc:'Наш физический мир. Второй слой от Дна. Черное Яйцо с имитацией звезд на скорлупе. Мир кармического действия. Единственное место, где Карма имеет силу. Сознания замкнуты на Ильда Баофа. Элита создает мир по образцу Творца.',
+   desc_en:'Our physical world. Second layer from Bottom. Black Egg with star imitation on the shell. World of karmic action. The only place where Karma has power. Consciousnesses locked on Ilda Baoth. Elite creates the world following the Creator\'s pattern.'},
+  {id:1, name:'Дно', name_en:'The Bottom',
+   sub:'Мир Дна · Тьма', sub_en:'World of the Bottom · Darkness',
+   y:-3.2, color:'#661111', radius:1.4, height:.9,
+   desc:'Мир Дна. Самый первый, тяжелый слой. Смесь самых низких энергий. Сюда проваливается более тяжелая часть среды. Война и разрушение. Энергии искаженной Второй Меры.',
+   desc_en:'World of the Bottom. The first, heaviest layer. Mix of lowest energies. The heavier part of the environment falls here. War and destruction. Energies of the distorted Second Measure.'}
+];
+
+// ══ EGG SHELL ══
+const eggH=9, eggW=3.2;
+const eggGeo=new THREE.SphereGeometry(1,64,48);
+const eggMat=new THREE.MeshBasicMaterial({color:0x443366,transparent:true,opacity:.06,side:THREE.BackSide,depthWrite:false});
+const egg=new THREE.Mesh(eggGeo,eggMat);
+egg.scale.set(eggW,eggH*.5,eggW);
+root.add(egg);
+
+// Egg wireframe
+const eggWire=new THREE.Mesh(
+  new THREE.SphereGeometry(1.005,32,24),
+  new THREE.MeshBasicMaterial({color:0x997744,wireframe:true,transparent:true,opacity:.06,depthWrite:false})
+);
+eggWire.scale.copy(egg.scale);
+root.add(eggWire);
+
+// ══ LAYER MESHES ══
+const layerMeshes=[];
+const raycaster=new THREE.Raycaster();
+
+LAYERS.forEach(l=>{
+  // Main disk (flat cylinder)
+  const g=new THREE.CylinderGeometry(l.radius,l.radius,0.08,64);
+  const m=new THREE.MeshStandardMaterial({color:l.color,roughness:.35,metalness:.4,transparent:true,opacity:.6,side:THREE.DoubleSide});
+  const mesh=new THREE.Mesh(g,m);
+  mesh.position.set(0,l.y,0);
+  mesh.userData=l;
+  root.add(mesh);
+  layerMeshes.push(mesh);
+
+  // Layer volume (semi-transparent zone)
+  const vg=new THREE.CylinderGeometry(l.radius*.95,l.radius*.95,l.height,64,1,true);
+  const vm=new THREE.MeshBasicMaterial({color:l.color,transparent:true,opacity:.04,side:THREE.DoubleSide,depthWrite:false});
+  const vol=new THREE.Mesh(vg,vm);
+  vol.position.set(0,l.y,0);
+  root.add(vol);
+
+  // Edge glow ring
+  const eg=new THREE.TorusGeometry(l.radius,.02,8,64);
+  const em=new THREE.MeshBasicMaterial({color:l.color,transparent:true,opacity:.35,depthWrite:false});
+  const edge=new THREE.Mesh(eg,em);
+  edge.rotation.x=Math.PI/2;
+  edge.position.set(0,l.y,0);
+  root.add(edge);
+
+  // Barrier glow between layers
+  if(l.id<4){
+    const midY=(l.y+LAYERS[LAYERS.indexOf(l)-1].y)/2;
+    const bGeo=new THREE.RingGeometry(.1,l.radius*.7,64);
+    const bMat=new THREE.MeshBasicMaterial({color:0xff4444,transparent:true,opacity:.08,side:THREE.DoubleSide,depthWrite:false});
+    const barrier=new THREE.Mesh(bGeo,bMat);
+    barrier.rotation.x=-Math.PI/2;
+    barrier.position.set(0,midY,0);
+    root.add(barrier);
+  }
+
+  // Label sprite
+  const c=document.createElement('canvas');c.width=240;c.height=60;
+  const cx=c.getContext('2d');
+  cx.fillStyle=l.color;cx.font='bold 14px Cinzel,serif';cx.textAlign='center';
+  cx.fillText(_t(l.name,l.name_en),120,24);
+  cx.fillStyle='rgba(255,255,255,.35)';cx.font='9px JetBrains Mono,monospace';
+  cx.fillText(_t(l.sub,l.sub_en),120,44);
+  const tex=new THREE.CanvasTexture(c);tex.minFilter=THREE.LinearFilter;
+  const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false,depthWrite:false}));
+  sprite.position.set(l.radius+.5,l.y,0);
+  sprite.scale.set(1.1,.28,1);
+  root.add(sprite);
+});
+
+// ══ РА -- ВЕРТИКАЛЬНЫЙ ЛУЧ ЧЕРЕЗ ВСЕ СЛОИ ══
+// RA core (center of egg)
+const raGeo=new THREE.SphereGeometry(.3,32,32);
+const raMat=new THREE.ShaderMaterial({
+  vertexShader:'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:'varying vec3 vN;void main(){float i=pow(.65-dot(vN,vec3(0,0,1)),2.);gl_FragColor=vec4(1.,.92,.4,1.)*i*1.8+vec4(1.,.84,0.,1.)*.4;}',
+  transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false
+});
+const raCore=new THREE.Mesh(raGeo,raMat);
+scene.add(raCore);
+
+// RA halo
+const raHalo=new THREE.Mesh(new THREE.SphereGeometry(.55,32,32),new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.12,depthWrite:false,depthTest:false}));
+scene.add(raHalo);
+
+// RA vertical beam (Ascending/Descending flow through all layers)
+const beamGeo=new THREE.CylinderGeometry(.03,.03,eggH*.9,8);
+const beamMat=new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.15,depthWrite:false,depthTest:false});
+const beam=new THREE.Mesh(beamGeo,beamMat);
+root.add(beam);
+
+// RA rings
+const raRingGeo=new THREE.TorusGeometry(.4,.01,16,64);
+const raRing1=new THREE.Mesh(raRingGeo,new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.5,depthTest:false}));
+raRing1.rotation.x=Math.PI/2;scene.add(raRing1);
+const raRing2=new THREE.Mesh(raRingGeo,new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.3,depthTest:false}));
+raRing2.rotation.x=Math.PI/3;raRing2.rotation.y=Math.PI/4;scene.add(raRing2);
+
+// ══ ЛОТОС СЛАВИ (вершина Яйца) ══
+const lotusGroup=new THREE.Group();
+lotusGroup.position.set(0,4.2,0);
+for(let i=0;i<8;i++){
+  const petalGeo=new THREE.ConeGeometry(.15,.5,4);
+  const petalMat=new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.25,depthWrite:false});
+  const petal=new THREE.Mesh(petalGeo,petalMat);
+  const a=i*Math.PI/4;
+  petal.position.set(Math.cos(a)*.2,0,Math.sin(a)*.2);
+  petal.rotation.z=-Math.PI/6;
+  petal.rotation.y=a;
+  lotusGroup.add(petal);
+}
+const lotusCore=new THREE.Mesh(new THREE.SphereGeometry(.08,16,16),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.6}));
+lotusGroup.add(lotusCore);
+root.add(lotusGroup);
+
+// ══ ВОСХОДЯЩИЕ МЕРИДИАНЫ (вертикальные энергетические каналы) ══
+for(let i=0;i<6;i++){
+  const a=i*Math.PI/3;
+  const pts=[];
+  for(let j=-4.2;j<=4.2;j+=.3){
+    const wobble=Math.sin(j*1.5+a)*.08;
+    pts.push(new THREE.Vector3(Math.cos(a)*.3+wobble,j,Math.sin(a)*.3+wobble));
+  }
+  const curve=new THREE.CatmullRomCurve3(pts);
+  const tubeGeo=new THREE.TubeGeometry(curve,40,.008,4,false);
+  const tubeMat=new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.1,depthWrite:false});
+  root.add(new THREE.Mesh(tubeGeo,tubeMat));
+}
+
+// ══ УПРАВЛЕНИЕ ══
+let rotY=0,rotX=0,auto=true,drag=false,px=0,py=0;
+canvas.addEventListener('pointerdown',e=>{drag=true;auto=false;px=e.clientX;py=e.clientY;});
+window.addEventListener('pointermove',e=>{if(!drag)return;rotY+=(e.clientX-px)*.004;rotX+=(e.clientY-py)*.004;rotX=Math.max(-.8,Math.min(.8,rotX));px=e.clientX;py=e.clientY;});
+window.addEventListener('pointerup',()=>{drag=false;setTimeout(()=>auto=true,3000);});
+
+// Zoom
+let camZ=10,camTgtY=0;
+const CAM_MIN=5,CAM_MAX=18;
+canvas.addEventListener('wheel',e=>{e.preventDefault();camZ+=e.deltaY*.01;camZ=Math.max(CAM_MIN,Math.min(CAM_MAX,camZ));},{passive:false});
+let pinchDist=0;
+canvas.addEventListener('touchstart',e=>{if(e.touches.length===2){pinchDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
+canvas.addEventListener('touchmove',e=>{if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);camZ+=(pinchDist-d)*.03;camZ=Math.max(CAM_MIN,Math.min(CAM_MAX,camZ));pinchDist=d;}},{passive:true});
+
+// Reset
+document.getElementById('reset-cam').addEventListener('click',()=>{camTgtY=0;camZ=10;auto=true;});
+
+// Hover
+const bar=document.getElementById('info-bar');
+window.addEventListener('pointermove',e=>{
+  const rect=renderer.domElement.getBoundingClientRect();
+  const mx=((e.clientX-rect.left)/rect.width)*2-1,my=-((e.clientY-rect.top)/rect.height)*2+1;
+  raycaster.setFromCamera(new THREE.Vector2(mx,my),camera);
+  const hits=raycaster.intersectObjects(layerMeshes);
+  if(hits.length>0){
+    const l=hits[0].object.userData;
+    bar.textContent=_t(l.name,l.name_en)+' · '+_t(l.sub,l.sub_en);
+    bar.style.color=l.color;
+  }else{
+    bar.textContent=_t('вращай · нажми на слой','rotate · click a layer');
+    bar.style.color='rgba(201,168,76,.5)';
+  }
+});
+
+// Click -> modal
+canvas.addEventListener('click',e=>{
+  if(drag)return;
+  const rect=renderer.domElement.getBoundingClientRect();
+  const mx=((e.clientX-rect.left)/rect.width)*2-1,my=-((e.clientY-rect.top)/rect.height)*2+1;
+  raycaster.setFromCamera(new THREE.Vector2(mx,my),camera);
+  const hits=raycaster.intersectObjects(layerMeshes);
+  if(hits.length>0) showLayerModal(hits[0].object.userData);
+});
+
+function showLayerModal(l){
+  auto=false;
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:60;background:rgba(2,1,10,.92);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)';
+  ov.onclick=function(e){if(e.target===ov||e.target.classList.contains('_mc')){ov.remove();setTimeout(()=>auto=true,2000);}};
+  ov.innerHTML='<div style="background:linear-gradient(135deg,rgba(18,14,30,.95),rgba(8,5,18,.95));border:1px solid rgba(255,215,0,.4);border-radius:16px;padding:24px;max-width:360px;width:100%;text-align:center;max-height:80vh;overflow-y:auto" onclick="event.stopPropagation()">'+
+    '<div style="width:50px;height:50px;border-radius:50%;background:'+l.color+';margin:0 auto 14px;opacity:.6;box-shadow:0 0 30px '+l.color+'"></div>'+
+    '<div style="font-family:Cinzel Decorative,serif;font-size:18px;color:#ffd700;letter-spacing:.12em;margin-bottom:4px">'+_t(l.name,l.name_en)+'</div>'+
+    '<div style="font-size:9px;color:rgba(201,168,76,.3);font-family:JetBrains Mono,monospace;margin-bottom:6px">'+_t('Слой','Layer')+' '+l.id+' / 4</div>'+
+    '<div style="font-size:11px;color:'+l.color+';margin-bottom:14px;font-family:Cinzel,serif">'+_t(l.sub,l.sub_en)+'</div>'+
+    '<div style="font-size:12px;color:rgba(201,168,76,.7);line-height:1.7;margin-bottom:18px;text-align:left;padding:0 4px">'+_t(l.desc,l.desc_en)+'</div>'+
+    '<button class="_mc" style="padding:8px 24px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.3);border-radius:8px;color:#c9a84c;font-family:Cinzel,serif;font-size:10px;cursor:pointer;letter-spacing:.1em">'+_t('ЗАКРЫТЬ','CLOSE')+'</button>'+
+    '</div>';
+  document.body.appendChild(ov);
+}
+
+// Info panel
+const layerPanel=document.getElementById('layer-panel');
+layerPanel.innerHTML=LAYERS.map(l=>
+  '<div class="layer-item" data-lid="'+l.id+'">'+
+  '<div class="li-name" style="color:'+l.color+'">'+_t(l.name,l.name_en)+'</div>'+
+  '<div class="li-sub">'+_t(l.sub,l.sub_en)+'</div>'+
+  '</div>'
+).join('');
+layerPanel.addEventListener('click',e=>{
+  const item=e.target.closest('.layer-item');
+  if(!item)return;
+  const loka=LAYERS.find(l=>l.id===parseInt(item.dataset.lid));
+  if(!loka)return;
+  camTgtY=loka.y;camZ=7;auto=false;
+  setTimeout(()=>auto=true,5000);
+  layerPanel.querySelectorAll('.layer-item').forEach(i=>i.classList.remove('active'));
+  item.classList.add('active');
+});
+
+// ══ ANIMATION ══
+let t=0;
+function animate(ts){requestAnimationFrame(animate);t=ts*.001;
+  if(auto)rotY+=.002;
+  root.rotation.y=rotY;root.rotation.x=rotX;
+  // Camera fly + zoom
+  camera.position.y+=(camTgtY-camera.position.y)*.04;
+  camera.position.z+=(camZ-camera.position.z)*.04;
+  // RA pulsation
+  const pulse=1.04+Math.sin(t*2)*.04;
+  raCore.scale.setScalar(pulse);
+  raHalo.scale.setScalar(pulse);
+  raRing1.rotation.z+=.005;raRing2.rotation.z-=.003;
+  // Lotus rotation
+  lotusGroup.rotation.y+=.008;
+  // Beam pulse
+  beam.material.opacity=.12+Math.sin(t*1.5)*.05;
+  renderer.render(scene,camera);
+}
+animate(0);
+
+window.addEventListener('resize',()=>{
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+
+/* ── Global Guna state ── */
+(function(){
+  var GUNA_VIS={sattva:{color:'#ffd700',label:'САТТВА'},rajas:{color:'#ff6633',label:'РАДЖАС'},tamas:{color:'#6644aa',label:'ТАМАС'}};
+  var g=localStorage.getItem('awara_guna')||'sattva';
+  var v=GUNA_VIS[g]||GUNA_VIS.sattva;
+  var el=document.createElement('div');
+  el.style.cssText='position:fixed;top:52px;left:50%;transform:translateX(-50%);z-index:10;padding:3px 10px;border-radius:10px;font-family:JetBrains Mono,monospace;font-size:7px;letter-spacing:.08em;border:1px solid '+v.color+'44;color:'+v.color+';background:rgba(0,0,0,.5);backdrop-filter:blur(8px);pointer-events:none;opacity:.6';
+  el.textContent=v.label;
+  document.body.appendChild(el);
+})();
+</script>
+</body>
+</html>

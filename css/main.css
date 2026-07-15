@@ -1,0 +1,58 @@
+/* =============================================
+   AWARA — Главный CSS-файл (точка входа)
+   ============================================= */
+
+/* Импорт модулей в правильном порядке */
+@import url('variables.css');
+@import url('typography.css');
+@import url('components.css');
+
+/* === Глобальные стили === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === Скроллбар === */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 168, 76, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--awara-gold-primary); }
+
+/* === Селекция текста === */
+::selection {
+  background: rgba(255, 215, 0, 0.3);
+  color: var(--awara-gold-light);
+}
+
+/* === Утилиты === */
+.text-center { text-align: center; }
+.text-gold { color: var(--awara-gold-bright); }
+.text-mono { font-family: var(--font-mono); }
+
+/* === Анимации общие === */
+@keyframes pulse-gold {
+  0%, 100% { 
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  }
+  50% { 
+    opacity: 0.9;
+    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8));
+  }
+}
+
+@keyframes breath {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}

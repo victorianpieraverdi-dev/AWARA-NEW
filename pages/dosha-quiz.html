@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Dosha Quiz · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/daimon-create.css">
+</head>
+<body>
+
+<div class="page-shell">
+  <header class="page-header">
+    <a href="../index.html" class="back-link" data-i18n="app.back">LOBBY</a>
+    <h1 class="page-title" data-i18n="dosha.quiz_title">DOSHA QUIZ</h1>
+    <div class="page-subtitle" data-i18n="dosha.quiz_subtitle">Discover your Ayurvedic constitution</div>
+  </header>
+
+  <div id="quiz-container"></div>
+  <div id="result-container" class="hidden"></div>
+</div>
+
+<script type="module">
+import { translatePage, getLang, createLangSwitcher } from '../js/i18n.js';
+import { DOSHA_QUIZ, calculateDoshaFromQuiz } from '../js/modules/dosha-calculator.js';
+
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  createLangSwitcher();
+
+  var lang = getLang();
+  var answers = [];
+  var currentQ = 0;
+  var container = document.getElementById('quiz-container');
+  var resultEl = document.getElementById('result-container');
+
+  function renderQuestion() {
+    var q = DOSHA_QUIZ[currentQ];
+    var html = '<div class="quiz-progress">' + (currentQ + 1) + ' / ' + DOSHA_QUIZ.length + '</div>';
+    html += '<div class="quiz-question">' + q.question[lang] + '</div>';
+    html += '<div class="quiz-options">';
+    q.options.forEach(function(opt) {
+      html += '<div class="quiz-option" data-dosha="' + opt.dosha + '">';
+      html += '<div class="quiz-option-title">' + opt.text[lang] + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    if (currentQ > 0) {
+      html += '<button class="flow-back" style="margin-top:16px" id="prev-btn">PREV</button>';
+    }
+    container.innerHTML = html;
+
+    container.querySelectorAll('.quiz-option').forEach(function(el) {
+      el.addEventListener('click', function() {
+        answers[currentQ] = el.dataset.dosha;
+        container.querySelectorAll('.quiz-option').forEach(function(o) { o.classList.remove('selected'); });
+        el.classList.add('selected');
+        setTimeout(function() {
+          if (currentQ < DOSHA_QUIZ.length - 1) {
+            currentQ++;
+            renderQuestion();
+          } else {
+            showResult();
+          }
+        }, 350);
+      });
+    });
+
+    var prev = document.getElementById('prev-btn');
+    if (prev) prev.addEventListener('click', function() { currentQ--; renderQuestion(); });
+  }
+
+  function showResult() {
+    var result = calculateDoshaFromQuiz(answers);
+    localStorage.setItem('awara_player_dosha', JSON.stringify(result));
+
+    container.classList.add('hidden');
+    resultEl.classList.remove('hidden');
+
+    var titleText = lang === 'ru' ? 'Ваша доша' : 'Your Dosha';
+    var primaryLabel = lang === 'ru' ? 'Основная' : 'Primary';
+    var secondaryLabel = lang === 'ru' ? 'Вторичная' : 'Secondary';
+    var retakeText = lang === 'ru' ? 'ПРОЙТИ ЗАНОВО' : 'RETAKE';
+    var nutritionText = lang === 'ru' ? 'РЕКОМЕНДАЦИИ ПО ПИТАНИЮ' : 'NUTRITION RECOMMENDATIONS';
+
+    var doshaNames = {
+      Vata: { en: 'Vata (Air + Ether)', ru: 'Вата (Воздух + Эфир)' },
+      Pitta: { en: 'Pitta (Fire + Water)', ru: 'Питта (Огонь + Вода)' },
+      Kapha: { en: 'Kapha (Earth + Water)', ru: 'Капха (Земля + Вода)' }
+    };
+
+    var html = '<div style="text-align:center;animation:fadeIn 0.5s ease;">';
+    html += '<h2 style="font-family:Cinzel,serif;font-size:clamp(18px,4vw,24px);color:#ffd700;letter-spacing:0.15em;margin-bottom:24px;">' + titleText + '</h2>';
+
+    // Primary dosha
+    html += '<div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:24px;max-width:360px;margin:0 auto 16px;">';
+    html += '<div style="font-size:10px;color:rgba(255,248,214,0.4);letter-spacing:0.15em;margin-bottom:4px;">' + primaryLabel + '</div>';
+    html += '<div style="font-family:Cinzel,serif;font-size:20px;color:#ffd700;letter-spacing:0.1em;margin-bottom:8px;">' + result.primary + '</div>';
+    html += '<div style="font-size:12px;color:rgba(255,248,214,0.6);">' + doshaNames[result.primary][lang] + '</div>';
+    html += '<div style="margin-top:12px;font-size:11px;color:rgba(255,248,214,0.5);">' + result.percentages[result.primary] + '%</div>';
+    html += '</div>';
+
+    // Secondary dosha
+    if (result.secondary && result.secondary !== result.primary) {
+      html += '<div style="background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.1);border-radius:10px;padding:16px;max-width:300px;margin:0 auto 16px;">';
+      html += '<div style="font-size:10px;color:rgba(255,248,214,0.3);letter-spacing:0.15em;margin-bottom:4px;">' + secondaryLabel + '</div>';
+      html += '<div style="font-family:Cinzel,serif;font-size:16px;color:#c9a84c;letter-spacing:0.1em;">' + result.secondary + '</div>';
+      html += '<div style="font-size:11px;color:rgba(255,248,214,0.4);">' + result.percentages[result.secondary] + '%</div>';
+      html += '</div>';
+    }
+
+    // Dual type
+    if (result.isDual) {
+      html += '<div style="font-size:11px;color:rgba(255,215,0,0.6);margin-bottom:16px;">' + result.doshaType + '</div>';
+    }
+
+    // All scores bar
+    html += '<div style="max-width:300px;margin:16px auto;">';
+    ['Vata', 'Pitta', 'Kapha'].forEach(function(d) {
+      var pct = result.percentages[d];
+      var barColor = d === 'Vata' ? 'rgba(100,180,255,0.6)' : d === 'Pitta' ? 'rgba(255,140,60,0.6)' : 'rgba(100,200,100,0.6)';
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
+      html += '<div style="width:50px;font-size:10px;color:rgba(255,248,214,0.5);letter-spacing:0.1em;">' + d + '</div>';
+      html += '<div style="flex:1;height:4px;background:rgba(201,168,76,0.08);border-radius:2px;overflow:hidden;"><div style="width:' + pct + '%;height:100%;background:' + barColor + ';border-radius:2px;"></div></div>';
+      html += '<div style="width:30px;font-size:10px;color:rgba(255,248,214,0.4);text-align:right;">' + pct + '%</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    // Buttons
+    html += '<div style="display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;">';
+    html += '<button class="card-btn" id="retake-btn">' + retakeText + '</button>';
+    html += '<a href="nutrition.html" class="submit-btn" style="display:inline-block;width:auto;margin:0;padding:12px 20px;text-decoration:none;text-align:center;">' + nutritionText + '</a>';
+    html += '</div>';
+    html += '</div>';
+
+    resultEl.innerHTML = html;
+
+    document.getElementById('retake-btn').addEventListener('click', function() {
+      answers = [];
+      currentQ = 0;
+      resultEl.classList.add('hidden');
+      container.classList.remove('hidden');
+      renderQuestion();
+    });
+  }
+
+  renderQuestion();
+});
+</script>
+
+</body>
+</html>

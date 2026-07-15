@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · Места Силы · Додекаэдр Земли</title>
+<link rel="stylesheet" href="css/main.css">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#c9a84c;font-family:'Cormorant Garamond',serif;touch-action:pan-x pan-y}
+body{display:flex;flex-direction:column}
+
+header{position:absolute;top:0;left:0;right:0;z-index:10;padding:10px 14px;background:linear-gradient(180deg,rgba(0,0,0,.85),transparent);display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}
+header>*{pointer-events:auto}
+header .back{color:#c9a84c;text-decoration:none;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;padding:6px 10px;border:1px solid rgba(201,168,76,.2);border-radius:8px;transition:all .3s;flex-shrink:0;backdrop-filter:blur(8px);background:rgba(0,0,0,.5)}
+header .back:hover{border-color:#ffd700;color:#ffd700}
+header h1{font-family:'Cinzel Decorative',serif;font-size:12px;color:#ffd700;letter-spacing:.1em;text-align:center}
+header .sub{font-size:7px;color:rgba(201,168,76,.35);font-family:'JetBrains Mono',monospace;text-align:center}
+
+.lang-switch{position:absolute;top:8px;right:8px;z-index:100;display:flex;gap:4px}
+.lang-switch button{padding:3px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:8px;cursor:pointer;border-radius:4px;backdrop-filter:blur(8px)}
+
+#globe-container{flex:1;position:relative;touch-action:pan-x pan-y}
+
+.info-bar{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);padding:8px 16px;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.2);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,.6);letter-spacing:.05em;pointer-events:none;text-align:center;max-width:90vw;backdrop-filter:blur(12px)}
+
+.list-toggle{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);padding:8px 16px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:20px;color:#c9a84c;font-family:'Cinzel',serif;font-size:9px;cursor:pointer;letter-spacing:.1em;z-index:5;backdrop-filter:blur(12px)}
+.list-toggle:active{background:rgba(201,168,76,.25)}
+.layer-nav{position:absolute;bottom:84px;left:50%;transform:translateX(-50%);z-index:6;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;width:min(94vw,560px)}
+.layer-link{padding:8px 12px;background:rgba(2,1,10,.82);border:1px solid rgba(201,168,76,.25);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:9px;cursor:pointer;text-decoration:none;letter-spacing:.09em;white-space:nowrap;backdrop-filter:blur(8px)}
+.layer-link:hover{background:rgba(201,168,76,.14);border-color:#ffd700;color:#ffd700}
+
+.legend{position:absolute;top:64px;left:10px;display:flex;flex-direction:column;gap:4px;z-index:5}
+.legend .dot{display:flex;align-items:center;gap:5px;font-size:7px;font-family:'JetBrains Mono',monospace;color:rgba(201,168,76,.35);background:rgba(0,0,0,.4);padding:3px 6px;border-radius:10px}
+
+.geo-btn{position:absolute;bottom:120px;right:14px;z-index:6;width:42px;height:42px;border-radius:50%;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.3);color:#c9a84c;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:all .3s}
+.geo-btn:hover{border-color:#ffd700;color:#ffd700;box-shadow:0 0 14px rgba(255,215,0,.15)}
+.geo-btn.active{border-color:#44ff44;color:#44ff44;box-shadow:0 0 14px rgba(68,255,68,.15)}
+.geo-zone-info{position:absolute;top:64px;right:10px;z-index:5;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,.5);backdrop-filter:blur(12px);max-width:180px;display:none}
+.geo-zone-info.show{display:block}
+.geo-zone-info .zone-name{color:#ffd700;font-size:10px;font-family:'Cinzel',serif;letter-spacing:.08em}
+.geo-zone-info .zone-dist{color:rgba(201,168,76,.4);margin-top:2px}
+
+/* LIST */
+#list-panel{display:none;position:fixed;inset:0;z-index:40;background:rgba(2,1,10,.96);flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#list-panel.show{display:flex}
+#list-panel .lp-header{padding:14px 16px;border-bottom:1px solid rgba(201,168,76,.15);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(2,1,10,.96);z-index:2}
+#list-panel .lp-close{padding:8px 16px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;cursor:pointer}
+#list-panel .lp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;padding:12px}
+.lp-node{padding:8px;border:1px solid rgba(201,168,76,.1);border-radius:8px;font-size:9px;cursor:pointer;transition:all .3s}
+.lp-node:active{background:rgba(201,168,76,.08)}
+.lp-node .lp-id{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(201,168,76,.25)}
+.lp-node .lp-name{color:#ffd700;font-size:10px;margin:1px 0}
+.lp-node .lp-coord{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(201,168,76,.3)}
+.lp-node .lp-gold{color:rgba(255,180,0,.5);font-size:7px}
+.lp-node.gold{border-color:rgba(255,180,0,.2);background:rgba(255,180,0,.03)}
+
+@media(max-width:375px){header{padding:8px 10px}header h1{font-size:11px}.legend{top:56px;left:6px}}
+</style>
+</head>
+<body>
+
+
+
+<header>
+  <a href="index.html" class="back" data-i18n="common.back.lobby">← ЛОББИ</a>
+  <div>
+    <h1 data-i18n="fest.title">ДОДЕКАЭДР ЗЕМЛИ</h1>
+    <div class="sub" data-i18n="fest.sub">62 УЗЛА · МЕСТА СИЛЫ</div>
+  </div>
+  <div style="width:50px"></div>
+</header>
+
+<div id="globe-container">
+  <div class="legend">
+    <div class="dot"><span style="width:6px;height:6px;border-radius:50%;background:#dd4466;box-shadow:0 0 6px #dd4466;flex-shrink:0"></span> <span data-i18n="fest.legend.gold">icosahedron (gold)</span></div>
+    <div class="dot"><span style="width:6px;height:6px;border-radius:50%;background:#4488dd;box-shadow:0 0 6px #4488dd;flex-shrink:0"></span> <span data-i18n="fest.legend.blue">dodecahedron</span></div>
+    <div class="dot"><span style="width:6px;height:6px;border-radius:50%;background:#44ff44;box-shadow:0 0 6px #44ff44;flex-shrink:0"></span> <span data-i18n="fest.legend.player">вы здесь</span></div>
+  </div>
+  <div class="info-bar" id="info-bar" data-i18n="fest.hint">вращай глобус -- наведи на точку</div>
+  <button class="geo-btn" id="geo-btn" title="Моя геолокация">&#9678;</button>
+  <div class="geo-zone-info" id="geo-zone-info">
+    <div class="zone-name" id="zone-name">--</div>
+    <div class="zone-dist" id="zone-dist">--</div>
+  </div>
+  <button class="list-toggle" onclick="toggleList()" data-i18n="fest.list.toggle">&#9776; 62 УЗЛА</button>
+  <nav class="layer-nav" aria-label="Навигация слоёв">
+    <a href="region-map.html" class="layer-link">ВНУТРЬ · РЕГИОН</a>
+    <a href="index.html" class="layer-link">ЛОББИ</a>
+    <a href="chatur-loka.html" class="layer-link">НАРУЖУ · ЧАТУРАЛОКА</a>
+  </nav>
+</div>
+
+<div id="list-panel">
+  <div class="lp-header">
+    <div style="font-family:'Cinzel',serif;font-size:13px;color:#ffd700" data-i18n="fest.list.title">62 УЗЛА ДОДЕКАЭДРА</div>
+    <button class="lp-close" onclick="toggleList()" data-i18n="fest.list.close">× ЗАКРЫТЬ</button>
+  </div>
+  <div class="lp-grid" id="lp-grid"></div>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.157.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+const _lang = localStorage.getItem('awara_lang') || 'ru';
+
+// ══ 62 УЗЛА ══
+const NODES = [
+  {id:1, lat:31.7, lng:31.15, name:'Пирамиды Гизы', country:'Египет', gold:true},
+  {id:2, lat:52.6, lng:31.15, name:'Киев · Днепр', country:'Украина', gold:true},
+  {id:3, lat:58.3, lng:67.15, name:'Тобольск · Сибирь', country:'Россия', gold:true},
+  {id:4, lat:52.6, lng:103.15, name:'Иркутск · Байкал', country:'Россия', gold:true},
+  {id:5, lat:58.3, lng:139.15, name:'Охотское море', country:'Россия', gold:true},
+  {id:6, lat:52.6, lng:175.15, name:'Берингово море', country:'Тихий океан', gold:false},
+  {id:7, lat:58.3, lng:-148.85, name:'Анкоридж · Аляска', country:'США', gold:true},
+  {id:8, lat:52.6, lng:-112.85, name:'Летбридж · Монтана', country:'Канада/США', gold:true},
+  {id:9, lat:58.3, lng:-76.85, name:'Гудзонов залив', country:'Канада', gold:true},
+  {id:10, lat:52.6, lng:-40.85, name:'Юг Гренландии', country:'Атлантика', gold:true},
+  {id:11, lat:58.3, lng:-4.85, name:'Шотландия', country:'Великобритания', gold:true},
+  {id:12, lat:26.5, lng:67.15, name:'Хуздар · Пакистан', country:'Пакистан', gold:false},
+  {id:13, lat:31.7, lng:103.15, name:'Сычуань · Чэнду', country:'Китай', gold:false},
+  {id:14, lat:26.5, lng:139.15, name:'Филиппинское море', country:'Тихий океан', gold:true},
+  {id:15, lat:31.7, lng:175.15, name:'Тихий океан', country:'Тихий океан', gold:false},
+  {id:16, lat:26.5, lng:-148.85, name:'К северу от Гавайев', country:'Тихий океан', gold:false},
+  {id:17, lat:31.7, lng:-112.85, name:'Калифорнийский залив', country:'Мексика', gold:false},
+  {id:18, lat:26.5, lng:-76.85, name:'Бермудский треугольник', country:'Атлантика', gold:true},
+  {id:19, lat:31.7, lng:-40.85, name:'Середина Атлантики', country:'Атлантика', gold:true},
+  {id:20, lat:26.5, lng:-4.85, name:'Запад Алжира', country:'Алжир', gold:false},
+  {id:21, lat:10.8, lng:31.15, name:'Юг Судана', country:'Судан', gold:true},
+  {id:22, lat:0, lng:49.15, name:'Индийский океан', country:'Сомали', gold:false},
+  {id:23, lat:-10.8, lng:67.15, name:'Аравийское море', country:'открытое море', gold:false},
+  {id:24, lat:0, lng:85.15, name:'Юг Цейлона', country:'Индийский океан', gold:true},
+  {id:25, lat:10.8, lng:103.15, name:'Сиамский залив', country:'Камбоджа', gold:true},
+  {id:26, lat:0, lng:121.15, name:'Залив Томини', country:'Индонезия', gold:false},
+  {id:27, lat:-10.8, lng:139.15, name:'Арафурское море', country:'Папуа', gold:false},
+  {id:28, lat:0, lng:157.15, name:'Тихий океан', country:'Папуа', gold:false},
+  {id:29, lat:10.8, lng:175.15, name:'Маршалловы острова', country:'Тихий океан', gold:true},
+  {id:30, lat:0, lng:-166.85, name:'Тихий океан', country:'Фиджи', gold:false},
+  {id:31, lat:-10.8, lng:-148.85, name:'Французская Полинезия', country:'Тихий океан', gold:false},
+  {id:32, lat:0, lng:-130.85, name:'Центральный Тихий', country:'Тихий океан', gold:false},
+  {id:33, lat:10.8, lng:-112.85, name:'Запад Гватемалы', country:'Тихий океан', gold:false},
+  {id:34, lat:0, lng:-94.85, name:'Запад Колумбии', country:'Тихий океан', gold:false},
+  {id:35, lat:-10.8, lng:-76.85, name:'Лима · Перу', country:'Перу', gold:true},
+  {id:36, lat:0, lng:-58.85, name:'Север Бразилии', country:'Бразилия', gold:false},
+  {id:37, lat:10.8, lng:-40.85, name:'Сальвадор · Бразилия', country:'Бразилия', gold:false},
+  {id:38, lat:0, lng:-22.85, name:'Середина Атлантики', country:'открытое море', gold:false},
+  {id:39, lat:-10.8, lng:-4.85, name:'Гвинейский залив', country:'Ангола', gold:false},
+  {id:40, lat:0, lng:13.15, name:'Габон', country:'Габон', gold:false},
+  {id:41, lat:-26.5, lng:31.15, name:'Свазиленд', country:'ЮАР', gold:true},
+  {id:42, lat:-31.7, lng:67.15, name:'ЮВ от Мадагаскара', country:'Индийский океан', gold:true},
+  {id:43, lat:-26.5, lng:103.15, name:'Запад Австралии', country:'Индийский океан', gold:true},
+  {id:44, lat:-31.7, lng:139.15, name:'Южная Австралия', country:'Австралия', gold:true},
+  {id:45, lat:-26.5, lng:175.15, name:'Фиджи — Новая Зеландия', country:'Тихий океан', gold:true},
+  {id:46, lat:-31.7, lng:-148.85, name:'Восточная Полинезия', country:'Тихий океан', gold:true},
+  {id:47, lat:-26.5, lng:-112.85, name:'Остров Пасхи', country:'Тихий океан', gold:true},
+  {id:48, lat:-31.7, lng:-76.85, name:'Сантьяго · Чили', country:'Чили', gold:true},
+  {id:49, lat:-26.5, lng:-40.85, name:'ЮВ от Рио', country:'Атлантика', gold:true},
+  {id:50, lat:-31.7, lng:-4.85, name:'Запад Намибии', country:'Атлантика', gold:true},
+  {id:51, lat:-58.3, lng:31.15, name:'Южный океан', country:'Антарктика', gold:false},
+  {id:52, lat:-52.6, lng:67.15, name:'Кергелен', country:'Южный океан', gold:false},
+  {id:53, lat:-58.3, lng:103.15, name:'Южный океан', country:'Антарктика', gold:false},
+  {id:54, lat:-52.6, lng:139.15, name:'Юг Тасмании', country:'Южный океан', gold:false},
+  {id:55, lat:-58.3, lng:175.15, name:'Юг Новой Зеландии', country:'Южный океан', gold:false},
+  {id:56, lat:-52.6, lng:-148.85, name:'Южный океан', country:'Тихий океан', gold:false},
+  {id:57, lat:-58.3, lng:-112.85, name:'Магелланов пролив', country:'Южный океан', gold:false},
+  {id:58, lat:-52.6, lng:-76.85, name:'Огненная Земля', country:'Чили/Аргентина', gold:false},
+  {id:59, lat:-58.3, lng:-40.85, name:'Южная Атлантика', country:'открытое море', gold:false},
+  {id:60, lat:-52.6, lng:-4.85, name:'Мыс Доброй Надежды', country:'Южная Атлантика', gold:false},
+  {id:61, lat:90, lng:0, name:'Северный полюс', country:'Арктика', gold:false},
+  {id:62, lat:-90, lng:0, name:'Южный полюс', country:'Антарктида', gold:false},
+];
+
+// EN-переводы для 62 узлов
+const EN_NODES = {
+  1:{n:'Giza Pyramids',c:'Egypt'},2:{n:'Kyiv · Dnieper',c:'Ukraine'},3:{n:'Tobolsk · Siberia',c:'Russia'},
+  4:{n:'Irkutsk · Baikal',c:'Russia'},5:{n:'Sea of Okhotsk',c:'Russia'},6:{n:'Bering Sea',c:'Pacific Ocean'},
+  7:{n:'Anchorage · Alaska',c:'USA'},8:{n:'Lethbridge · Montana',c:'Canada/USA'},9:{n:'Hudson Bay',c:'Canada'},
+  10:{n:'South Greenland',c:'Atlantic'},11:{n:'Scotland',c:'United Kingdom'},12:{n:'Khuzdar · Pakistan',c:'Pakistan'},
+  13:{n:'Sichuan · Chengdu',c:'China'},14:{n:'Philippine Sea',c:'Pacific Ocean'},15:{n:'Pacific Ocean',c:'Pacific Ocean'},
+  16:{n:'North of Hawaii',c:'Pacific Ocean'},17:{n:'Gulf of California',c:'Mexico'},18:{n:'Bermuda Triangle',c:'Atlantic'},
+  19:{n:'Mid-Atlantic',c:'Atlantic'},20:{n:'West Algeria',c:'Algeria'},21:{n:'South Sudan',c:'Sudan'},
+  22:{n:'Indian Ocean',c:'Somalia'},23:{n:'Arabian Sea',c:'open sea'},24:{n:'South of Ceylon',c:'Indian Ocean'},
+  25:{n:'Gulf of Siam',c:'Cambodia'},26:{n:'Tomini Bay',c:'Indonesia'},27:{n:'Arafura Sea',c:'Papua'},
+  28:{n:'Pacific Ocean',c:'Papua'},29:{n:'Marshall Islands',c:'Pacific Ocean'},30:{n:'Pacific Ocean',c:'Fiji'},
+  31:{n:'French Polynesia',c:'Pacific Ocean'},32:{n:'Central Pacific',c:'Pacific Ocean'},33:{n:'West of Guatemala',c:'Pacific Ocean'},
+  34:{n:'West of Colombia',c:'Pacific Ocean'},35:{n:'Lima · Peru',c:'Peru'},36:{n:'North Brazil',c:'Brazil'},
+  37:{n:'Salvador · Brazil',c:'Brazil'},38:{n:'Mid-Atlantic',c:'open sea'},39:{n:'Gulf of Guinea',c:'Angola'},
+  40:{n:'Gabon',c:'Gabon'},41:{n:'Eswatini',c:'South Africa'},42:{n:'SE of Madagascar',c:'Indian Ocean'},
+  43:{n:'Western Australia',c:'Indian Ocean'},44:{n:'South Australia',c:'Australia'},45:{n:'Fiji — New Zealand',c:'Pacific Ocean'},
+  46:{n:'Eastern Polynesia',c:'Pacific Ocean'},47:{n:'Easter Island',c:'Pacific Ocean'},48:{n:'Santiago · Chile',c:'Chile'},
+  49:{n:'SE of Rio',c:'Atlantic'},50:{n:'West of Namibia',c:'Atlantic'},51:{n:'Southern Ocean',c:'Antarctica'},
+  52:{n:'Kerguelen',c:'Southern Ocean'},53:{n:'Southern Ocean',c:'Antarctica'},54:{n:'South of Tasmania',c:'Southern Ocean'},
+  55:{n:'South of New Zealand',c:'Southern Ocean'},56:{n:'Southern Ocean',c:'Pacific Ocean'},57:{n:'Strait of Magellan',c:'Southern Ocean'},
+  58:{n:'Tierra del Fuego',c:'Chile/Argentina'},59:{n:'South Atlantic',c:'open sea'},60:{n:'Cape of Good Hope',c:'South Atlantic'},
+  61:{n:'North Pole',c:'Arctic'},62:{n:'South Pole',c:'Antarctica'}
+};
+function nName(nd) { return _lang==='en' && EN_NODES[nd.id] ? EN_NODES[nd.id].n : nd.name; }
+function nCountry(nd) { return _lang==='en' && EN_NODES[nd.id] ? EN_NODES[nd.id].c : nd.country; }
+const _goldLabel = _lang==='en' ? 'golden node' : 'золотой узел';
+
+// ══ THREE.JS ══
+const container = document.getElementById('globe-container');
+const scene = new THREE.Scene();
+
+const isMobile = window.innerWidth < 600;
+const camera = new THREE.PerspectiveCamera(isMobile ? 50 : 40, container.clientWidth / container.clientHeight, 0.1, 20);
+camera.position.set(0, 0.3, isMobile ? 3.2 : 4.2);
+
+const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(container.clientWidth, container.clientHeight);
+container.appendChild(renderer.domElement);
+
+// Звёзды
+const starsGeo = new THREE.BufferGeometry();
+const starsArr = new Float32Array(1000 * 3);
+for (let i = 0; i < 1000 * 3; i += 3) {
+  const r = 12 + Math.random() * 8;
+  const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+  starsArr[i] = r * Math.sin(ph) * Math.cos(th);
+  starsArr[i+1] = r * Math.sin(ph) * Math.sin(th);
+  starsArr[i+2] = r * Math.cos(ph);
+}
+starsGeo.setAttribute('position', new THREE.BufferAttribute(starsArr, 3));
+scene.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.025, transparent: true, opacity: 0.6})));
+
+// Земля с текстурой
+const texLoader = new THREE.TextureLoader();
+const earthGroup = new THREE.Group();
+
+// Основная сфера — реальная текстура Земли (NASA Blue Marble)
+const earthGeo = new THREE.SphereGeometry(1, 72, 48);
+
+// Загружаем реальную текстуру Земли, fallback на процедурную
+const EARTH_TEX_URL = 'https://unpkg.com/three-globe@2.31.1/example/img/earth-blue-marble.jpg';
+const earthMat = new THREE.MeshStandardMaterial({roughness: 0.85, metalness: 0.05, transparent: true, opacity: 0.92});
+const earthMesh = new THREE.Mesh(earthGeo, earthMat);
+earthGroup.add(earthMesh);
+
+texLoader.load(EARTH_TEX_URL, function(tex) {
+  tex.colorSpace = THREE.SRGBColorSpace;
+  earthMat.map = tex;
+  earthMat.needsUpdate = true;
+}, undefined, function() {
+  // Fallback: процедурная текстура
+  const texCanvas = document.createElement('canvas');
+  texCanvas.width = 1024; texCanvas.height = 512;
+  const tctx = texCanvas.getContext('2d');
+  const oceanGrd = tctx.createRadialGradient(512, 256, 100, 512, 256, 600);
+  oceanGrd.addColorStop(0, '#1a3050'); oceanGrd.addColorStop(0.5, '#0d1a2d'); oceanGrd.addColorStop(1, '#060d18');
+  tctx.fillStyle = oceanGrd; tctx.fillRect(0, 0, 1024, 512);
+  tctx.fillStyle = '#1a3a1a';
+  tctx.fillRect(200, 120, 160, 80); tctx.fillRect(240, 160, 140, 120);
+  tctx.fillRect(500, 100, 240, 60); tctx.fillRect(600, 160, 100, 80);
+  tctx.fillRect(40, 120, 60, 100); tctx.fillRect(60, 200, 40, 40);
+  tctx.fillRect(700, 240, 80, 60);
+  const fallTex = new THREE.CanvasTexture(texCanvas);
+  fallTex.colorSpace = THREE.SRGBColorSpace;
+  earthMat.map = fallTex;
+  earthMat.needsUpdate = true;
+});
+
+// Атмосфера
+const atmoGeo = new THREE.SphereGeometry(1.03, 64, 32);
+const atmoMat = new THREE.ShaderMaterial({
+  vertexShader: 'varying vec3 vN; varying vec3 vP; void main(){vN=normalize(normalMatrix*normal);vec4 p=modelViewMatrix*vec4(position,1.);vP=p.xyz;gl_Position=projectionMatrix*p;}',
+  fragmentShader: 'varying vec3 vN; varying vec3 vP; void main(){float i=pow(0.65-dot(vN,vec3(0,0,1)),3.);gl_FragColor=vec4(0.3,0.5,0.9,1.)*i*0.3;}',
+  transparent: true, blending: THREE.AdditiveBlending
+});
+const atmo = new THREE.Mesh(atmoGeo, atmoMat);
+earthGroup.add(atmo);
+
+// Тонкие меридианы/параллели (под сеткой додекаэдра)
+function createMeridians(r) {
+  const group = new THREE.Group();
+  const mat = new THREE.LineBasicMaterial({color: 0x88ccff, transparent: true, opacity: 0.12, depthWrite: false});
+  for (let lng = 0; lng < 360; lng += 30) {
+    const pts = [];
+    for (let lat = -90; lat <= 90; lat += 4) {
+      const phi = (90 - lat) * Math.PI / 180, theta = lng * Math.PI / 180;
+      pts.push(new THREE.Vector3(-r * Math.sin(phi) * Math.cos(theta), r * Math.cos(phi), r * Math.sin(phi) * Math.sin(theta)));
+    }
+    group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat));
+  }
+  for (let lat = -60; lat <= 60; lat += 30) {
+    const pts = [], phi = (90 - lat) * Math.PI / 180;
+    for (let lng2 = 0; lng2 <= 360; lng2 += 4) {
+      const theta = lng2 * Math.PI / 180;
+      pts.push(new THREE.Vector3(-r * Math.sin(phi) * Math.cos(theta), r * Math.cos(phi), r * Math.sin(phi) * Math.sin(theta)));
+    }
+    group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat));
+  }
+  return group;
+}
+earthGroup.add(createMeridians(1.012));
+
+// Центр РА (светящееся ядро)
+const raGroup = new THREE.Group();
+
+// Внутреннее свечение РА
+const innerGeo = new THREE.SphereGeometry(0.4, 32, 32);
+const innerMat = new THREE.ShaderMaterial({
+  vertexShader: 'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader: 'varying vec3 vN;void main(){float i=pow(0.65-dot(vN,vec3(0,0,1)),2.);gl_FragColor=vec4(1.,0.92,0.4,1.)*i*1.8+vec4(1.,0.84,0.,1.)*0.4;}',
+  transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false
+});
+window._raGlow = new THREE.Mesh(innerGeo, innerMat);
+raGroup.add(window._raGlow);
+
+// Внешнее свечение РА
+const outerGlowGeo = new THREE.SphereGeometry(0.7, 32, 32);
+window._outerGlowRA = new THREE.Mesh(outerGlowGeo, new THREE.MeshBasicMaterial({color: 0xffd700, transparent: true, opacity: 0.15, depthWrite: false, depthTest: false}));
+raGroup.add(window._outerGlowRA);
+
+// Среднее кольцо
+const midGeo = new THREE.TorusGeometry(0.5, 0.012, 16, 64);
+window._midRing = new THREE.Mesh(midGeo, new THREE.MeshBasicMaterial({color: 0xffd700, transparent: true, opacity: 0.6, depthTest: false}));
+window._midRing.rotation.x = Math.PI / 2;
+raGroup.add(window._midRing);
+window._midRing2 = new THREE.Mesh(midGeo, new THREE.MeshBasicMaterial({color: 0xffd700, transparent: true, opacity: 0.4, depthTest: false}));
+window._midRing2.rotation.x = Math.PI / 3;
+window._midRing2.rotation.y = Math.PI / 4;
+raGroup.add(window._midRing2);
+
+// Внешнее кольцо
+const outerGeo = new THREE.TorusGeometry(0.6, 0.008, 8, 80);
+window._outerRing = new THREE.Mesh(outerGeo, new THREE.MeshBasicMaterial({color: 0xffd700, transparent: true, opacity: 0.35, depthTest: false}));
+window._outerRing.rotation.x = Math.PI / 2.2;
+window._outerRing.rotation.y = Math.PI / 3;
+raGroup.add(window._outerRing);
+
+scene.add(earthGroup);
+
+// РА в центре (видно сквозь полупрозрачную Землю)
+scene.add(raGroup);
+
+// Узлы
+const nodeMeshes = [];
+function latLngToVec3(lat, lng, r) {
+  const phi = (90 - lat) * Math.PI / 180;
+  const theta = (lng + 180) * Math.PI / 180;
+  return new THREE.Vector3(-r * Math.sin(phi) * Math.cos(theta), r * Math.cos(phi), r * Math.sin(phi) * Math.sin(theta));
+}
+
+// Создаём нумерованные спрайты для узлов (как на референсе)
+function createNodeSprite(id, isGold) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 64; canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  // Фон: красный для gold, синий для обычных
+  ctx.beginPath();
+  ctx.arc(32, 32, 28, 0, Math.PI * 2);
+  ctx.fillStyle = isGold ? 'rgba(220,60,80,0.9)' : 'rgba(60,100,200,0.9)';
+  ctx.fill();
+  ctx.strokeStyle = isGold ? '#ff8899' : '#88bbff';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  // Номер
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 24px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(String(id), 32, 33);
+  const tex = new THREE.CanvasTexture(canvas);
+  const spriteMat = new THREE.SpriteMaterial({map: tex, transparent: true, depthTest: false, sizeAttenuation: true});
+  const sprite = new THREE.Sprite(spriteMat);
+  sprite.scale.set(0.06, 0.06, 1);
+  return sprite;
+}
+
+NODES.forEach(n => {
+  const pos = latLngToVec3(n.lat, n.lng, 1.02);
+  const size = n.gold ? 0.03 : 0.022;
+
+  // Clickable mesh (invisible but raycaster-friendly)
+  const dotGeo = new THREE.SphereGeometry(size, 8, 8);
+  const dotColor = n.gold ? 0xdd4466 : 0x4488dd;
+  const dotMat = new THREE.MeshBasicMaterial({color: dotColor, transparent: true, opacity: 0.6});
+  const dot = new THREE.Mesh(dotGeo, dotMat);
+  dot.position.copy(pos);
+  dot.userData = n;
+  earthGroup.add(dot);
+  nodeMeshes.push(dot);
+
+  // Numbered sprite label
+  const sprite = createNodeSprite(n.id, n.gold);
+  sprite.position.copy(latLngToVec3(n.lat, n.lng, 1.04));
+  sprite.userData = n;
+  earthGroup.add(sprite);
+});
+
+// Свет
+scene.add(new THREE.AmbientLight(0x334466, 3));
+const sun = new THREE.DirectionalLight(0xffeedd, 4);
+sun.position.set(5, 2, 3);
+scene.add(sun);
+
+// ══ ДОДЕКАЭДР: рёбра между узлами (красные + синие как на референсе) ══
+function dist(a, b) {
+  const dlat = (a.lat - b.lat) * Math.PI / 180;
+  const dlng = (a.lng - b.lng) * Math.PI / 180;
+  const alat = a.lat * Math.PI / 180;
+  const blat = b.lat * Math.PI / 180;
+  return Math.acos(Math.min(1, Math.sin(alat)*Math.sin(blat) + Math.cos(alat)*Math.cos(blat)*Math.cos(dlng)));
+}
+
+// Great-circle arc between two points (smooth curve on sphere)
+function greatCircleArc(latA, lngA, latB, lngB, r, segments) {
+  const pts = [];
+  const vA = latLngToVec3(latA, lngA, r);
+  const vB = latLngToVec3(latB, lngB, r);
+  for (let t = 0; t <= segments; t++) {
+    const f = t / segments;
+    const v = vA.clone().lerp(vB, f).normalize().multiplyScalar(r);
+    pts.push(v);
+  }
+  return pts;
+}
+
+const EDGE_THRESHOLD = 0.65;
+const edgeGroup = new THREE.Group();
+// Красные линии = рёбра между золотыми узлами (icosahedron network)
+const edgeMatRed = new THREE.LineBasicMaterial({color: 0xdd4466, transparent: true, opacity: 0.85, depthWrite: false, linewidth: 2});
+// Синие линии = рёбра между обычными узлами (dodecahedron network)
+const edgeMatBlue = new THREE.LineBasicMaterial({color: 0x4488dd, transparent: true, opacity: 0.75, depthWrite: false, linewidth: 2});
+
+const edgeSet = new Set();
+for (let i = 0; i < NODES.length; i++) {
+  const neighbors = [];
+  for (let j = 0; j < NODES.length; j++) {
+    if (i === j) continue;
+    const d = dist(NODES[i], NODES[j]);
+    if (d < EDGE_THRESHOLD) neighbors.push({idx: j, dist: d});
+  }
+  neighbors.sort((a,b) => a.dist - b.dist);
+  const maxConn = NODES[i].id <= 20 ? 5 : 4;
+  neighbors.slice(0, maxConn).forEach(nb => {
+    const key = Math.min(i, nb.idx) + '-' + Math.max(i, nb.idx);
+    if (!edgeSet.has(key)) {
+      edgeSet.add(key);
+      const arcPts = greatCircleArc(NODES[i].lat, NODES[i].lng, NODES[nb.idx].lat, NODES[nb.idx].lng, 1.016, 24);
+      const geo = new THREE.BufferGeometry().setFromPoints(arcPts);
+      const bothGold = NODES[i].gold && NODES[nb.idx].gold;
+      edgeGroup.add(new THREE.Line(geo, bothGold ? edgeMatRed : edgeMatBlue));
+    }
+  });
+}
+earthGroup.add(edgeGroup);
+
+// ══ УПРАВЛЕНИЕ ══
+let isDragging = false, prevX = 0, prevY = 0;
+let autoRotate = true;
+let rotY = 0, rotX = 0.2;
+let camDist = isMobile ? 3.2 : 4.2;
+let lastPinchDist = 0;
+let wasPinching = false;
+
+function onDown(e) {
+  if (e.touches && e.touches.length === 2) { lastPinchDist = 0; wasPinching = true; return; }
+  wasPinching = false;
+  isDragging = true; autoRotate = false;
+  const p = e.touches ? e.touches[0] : e;
+  prevX = p.clientX; prevY = p.clientY;
+}
+function onMove(e) {
+  // Pinch to zoom
+  if (e.touches && e.touches.length === 2) {
+    wasPinching = true; isDragging = false;
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (lastPinchDist > 0) {
+      camDist -= (dist - lastPinchDist) * 0.01;
+      camDist = Math.max(1.5, Math.min(8, camDist));
+      camera.position.z = camDist;
+    }
+    lastPinchDist = dist;
+    return;
+  }
+  if (wasPinching || !isDragging) return;
+  const p = e.touches ? e.touches[0] : e;
+  rotY += (p.clientX - prevX) * 0.005;
+  rotX += (p.clientY - prevY) * 0.005;
+  rotX = Math.max(-Math.PI/2.5, Math.min(Math.PI/2.5, rotX));
+  prevX = p.clientX; prevY = p.clientY;
+}
+function onUp() { isDragging = false; setTimeout(() => { autoRotate = true; }, 3000); }
+
+// Tap to click node
+let tapTime = 0, tapX = 0, tapY = 0;
+renderer.domElement.addEventListener('pointerdown', e => { tapTime = Date.now(); tapX = e.clientX; tapY = e.clientY; onDown(e); });
+renderer.domElement.addEventListener('touchstart', e => { tapTime = Date.now(); if (e.touches.length===1) { tapX = e.touches[0].clientX; tapY = e.touches[0].clientY; } onDown(e); }, {passive: false});
+window.addEventListener('pointermove', onMove);
+window.addEventListener('touchmove', onMove, {passive: false});
+
+renderer.domElement.addEventListener('pointerup', e => {
+  const dt = Date.now() - tapTime;
+  const dx = e.clientX - tapX, dy = e.clientY - tapY;
+  if (dt < 300 && Math.abs(dx) < 10 && Math.abs(dy) < 10 && !wasPinching) {
+    // Это тап — проверить попадание в узел
+    const rect = renderer.domElement.getBoundingClientRect();
+    const mx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const my = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(new THREE.Vector2(mx, my), camera);
+    const hits = raycaster.intersectObjects(nodeMeshes);
+    if (hits.length > 0) {
+      const n = hits[0].object.userData;
+      showNodeModal(n);
+      return;
+    }
+  }
+  onUp();
+});
+renderer.domElement.addEventListener('touchend', e => {
+  const dt = Date.now() - tapTime;
+  const dx = (e.changedTouches[0]?.clientX || 0) - tapX;
+  const dy = (e.changedTouches[0]?.clientY || 0) - tapY;
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15 && !wasPinching) {
+    const rect = renderer.domElement.getBoundingClientRect();
+    const mx = ((tapX - rect.left) / rect.width) * 2 - 1;
+    const my = -((tapY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(new THREE.Vector2(mx, my), camera);
+    const hits = raycaster.intersectObjects(nodeMeshes);
+    if (hits.length > 0) { showNodeModal(hits[0].object.userData); return; }
+  }
+  onUp();
+});
+
+// Ховер
+const raycaster = new THREE.Raycaster();
+renderer.domElement.addEventListener('pointermove', function(e) {
+  if (isDragging) return;
+  const rect = renderer.domElement.getBoundingClientRect();
+  const mx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  const my = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(new THREE.Vector2(mx, my), camera);
+  const hits = raycaster.intersectObjects(nodeMeshes);
+  const bar = document.getElementById('info-bar');
+  if (hits.length > 0) {
+    const n = hits[0].object.userData;
+    bar.textContent = '#' + n.id + ' ' + nName(n) + (n.gold ? ' ✦' : '') + ' · ' + nCountry(n);
+    bar.style.color = n.gold ? '#ffd700' : 'rgba(201,168,76,.8)';
+    renderer.domElement.style.cursor = 'pointer';
+  } else {
+    bar.textContent = window.t?window.t('fest.hint'):'🌍 вращай глобус · наведи на точку';
+    bar.style.color = 'rgba(201,168,76,.6)';
+    renderer.domElement.style.cursor = 'grab';
+  }
+});
+
+let animTime = 0;
+function animate(ts) {
+  requestAnimationFrame(animate);
+  animTime = ts * 0.001;
+  if (autoRotate) rotY += 0.002;
+  earthGroup.rotation.y = rotY;
+  earthGroup.rotation.x = rotX;
+  // Пульсация РА (1.0 -> 1.08)
+  const pulse = 1.04 + Math.sin(animTime * 2) * 0.04;
+  if (window._raGlow) window._raGlow.scale.setScalar(pulse);
+  if (window._outerGlowRA) window._outerGlowRA.scale.setScalar(pulse);
+  if (window._midRing) { window._midRing.scale.setScalar(1 + Math.sin(animTime*1.5)*0.05); window._midRing.rotation.z += 0.003; }
+  if (window._midRing2) window._midRing2.rotation.z -= 0.002;
+  if (window._outerRing) window._outerRing.rotation.z += 0.001;
+  // Player marker pulsation
+  if (window._festPlayerGlow) {
+    const s = 1 + Math.sin(animTime * 3) * 0.3;
+    window._festPlayerGlow.scale.setScalar(s);
+  }
+  if (window._festPlayerMesh) {
+    window._festPlayerMesh.material.color.setHex(
+      Math.sin(animTime * 2) > 0 ? 0x44ff44 : 0x88ffaa
+    );
+  }
+  if (window._festZoneHighlight) {
+    window._festZoneHighlight.material.opacity = 0.08 + Math.sin(animTime * 1.5) * 0.06;
+  }
+  renderer.render(scene, camera);
+}
+animate(0);
+
+window.addEventListener('resize', () => {
+  const w = container.clientWidth, h = container.clientHeight;
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+});
+
+// ══ ГЕОЛОКАЦИЯ + ЗОНА ИГРОКА ══
+let playerMesh = null;
+let playerGlow = null;
+let playerBeam = null;
+let zoneHighlight = null;
+let zoneEdgeGroup = null;
+let playerNodeId = null;
+
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function findNearestNode(lat, lng) {
+  let best = null, bestDist = Infinity;
+  NODES.forEach(n => {
+    const d = haversineKm(lat, lng, n.lat, n.lng);
+    if (d < bestDist) { bestDist = d; best = n; }
+  });
+  return { node: best, dist: bestDist };
+}
+
+function findNeighborNodes(nodeId) {
+  const node = NODES.find(n => n.id === nodeId);
+  if (!node) return [];
+  const neighbors = [];
+  NODES.forEach(n => {
+    if (n.id === nodeId) return;
+    const d = dist(node, n);
+    if (d < EDGE_THRESHOLD) neighbors.push(n);
+  });
+  neighbors.sort((a,b) => dist(node,a) - dist(node,b));
+  return neighbors.slice(0, node.id <= 20 ? 5 : 4);
+}
+
+function showPlayerOnGlobe(lat, lng) {
+  // Remove old player markers
+  if (playerMesh) earthGroup.remove(playerMesh);
+  if (playerGlow) earthGroup.remove(playerGlow);
+  if (playerBeam) earthGroup.remove(playerBeam);
+  if (zoneHighlight) earthGroup.remove(zoneHighlight);
+  if (zoneEdgeGroup) earthGroup.remove(zoneEdgeGroup);
+
+  const pos = latLngToVec3(lat, lng, 1.025);
+
+  // Player marker (bright green-gold sphere)
+  const pGeo = new THREE.SphereGeometry(0.04, 12, 12);
+  const pMat = new THREE.MeshBasicMaterial({color: 0x44ff44});
+  playerMesh = new THREE.Mesh(pGeo, pMat);
+  playerMesh.position.copy(pos);
+  earthGroup.add(playerMesh);
+  window._festPlayerMesh = playerMesh;
+
+  // Player glow ring
+  const glowGeo = new THREE.TorusGeometry(0.07, 0.008, 8, 24);
+  const glowMat = new THREE.MeshBasicMaterial({color: 0x44ff44, transparent: true, opacity: 0.6});
+  playerGlow = new THREE.Mesh(glowGeo, glowMat);
+  playerGlow.position.copy(pos);
+  playerGlow.lookAt(new THREE.Vector3(0, 0, 0));
+  earthGroup.add(playerGlow);
+  window._festPlayerGlow = playerGlow;
+
+  // Light beam from player to center
+  const beamGeo = new THREE.CylinderGeometry(0.003, 0.003, 1.025, 4);
+  const beamMat = new THREE.MeshBasicMaterial({color: 0x44ff44, transparent: true, opacity: 0.15});
+  playerBeam = new THREE.Mesh(beamGeo, beamMat);
+  playerBeam.position.copy(pos.clone().multiplyScalar(0.5));
+  playerBeam.lookAt(new THREE.Vector3(0, 0, 0));
+  playerBeam.rotateX(Math.PI / 2);
+  earthGroup.add(playerBeam);
+
+  // Find nearest node and highlight zone
+  const { node: nearest, dist: nearDist } = findNearestNode(lat, lng);
+  playerNodeId = nearest.id;
+  const neighbors = findNeighborNodes(nearest.id);
+
+  // Zone polygon (filled triangle fan from nearest node through neighbors)
+  if (neighbors.length >= 2) {
+    const centerPos = latLngToVec3(nearest.lat, nearest.lng, 1.018);
+    const zoneFaces = [];
+    const zoneVerts = [centerPos.x, centerPos.y, centerPos.z];
+
+    for (let i = 0; i < neighbors.length; i++) {
+      const np = latLngToVec3(neighbors[i].lat, neighbors[i].lng, 1.018);
+      zoneVerts.push(np.x, np.y, np.z);
+    }
+    for (let i = 1; i <= neighbors.length; i++) {
+      const next = (i % neighbors.length) + 1;
+      zoneFaces.push(0, i, next);
+    }
+
+    const zoneGeo = new THREE.BufferGeometry();
+    zoneGeo.setAttribute('position', new THREE.Float32BufferAttribute(zoneVerts, 3));
+    zoneGeo.setIndex(zoneFaces);
+    zoneGeo.computeVertexNormals();
+    const zoneMat = new THREE.MeshBasicMaterial({
+      color: 0x44ff44, transparent: true, opacity: 0.12,
+      side: THREE.DoubleSide, depthWrite: false
+    });
+    zoneHighlight = new THREE.Mesh(zoneGeo, zoneMat);
+    earthGroup.add(zoneHighlight);
+    window._festZoneHighlight = zoneHighlight;
+  }
+
+  // Highlight zone edges
+  zoneEdgeGroup = new THREE.Group();
+  const zEdgeMat = new THREE.LineBasicMaterial({color: 0x44ff44, transparent: true, opacity: 0.7, depthWrite: false});
+  const nearestPos = latLngToVec3(nearest.lat, nearest.lng, 1.022);
+  neighbors.forEach(nb => {
+    const nbPos = latLngToVec3(nb.lat, nb.lng, 1.022);
+    const geo = new THREE.BufferGeometry().setFromPoints([nearestPos, nbPos]);
+    zoneEdgeGroup.add(new THREE.Line(geo, zEdgeMat));
+  });
+  // Close the polygon
+  for (let i = 0; i < neighbors.length; i++) {
+    const a = latLngToVec3(neighbors[i].lat, neighbors[i].lng, 1.022);
+    const b = latLngToVec3(neighbors[(i+1)%neighbors.length].lat, neighbors[(i+1)%neighbors.length].lng, 1.022);
+    const geo = new THREE.BufferGeometry().setFromPoints([a, b]);
+    zoneEdgeGroup.add(new THREE.Line(geo, zEdgeMat));
+  }
+  earthGroup.add(zoneEdgeGroup);
+
+  // Highlight nearest node mesh
+  nodeMeshes.forEach(m => {
+    if (m.userData.id === nearest.id) {
+      m.material.color.setHex(0x44ff44);
+      m.scale.setScalar(1.5);
+    }
+  });
+
+  // Update UI
+  const zoneInfo = document.getElementById('geo-zone-info');
+  zoneInfo.classList.add('show');
+  document.getElementById('zone-name').textContent = nName(nearest);
+  document.getElementById('zone-dist').textContent = Math.round(nearDist) + ' km ' + (_lang==='en'?'away':'от вас');
+
+  // Update info bar
+  const bar = document.getElementById('info-bar');
+  bar.textContent = (_lang==='en'?'YOUR ZONE: ':'ВАША ЗОНА: ') + nName(nearest) + ' · ' + Math.round(nearDist) + ' km';
+  bar.style.color = '#44ff44';
+
+  // Rotate globe to show player
+  autoRotate = false;
+  const targetY = -(lng + 180) * Math.PI / 180;
+  const targetX = -(90 - lat) * Math.PI / 180 * 0.3;
+  const startY = rotY, startX = rotX, start = Date.now();
+  function lerpToPlayer() {
+    const t = Math.min(1, (Date.now() - start) / 1500);
+    const ease = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+    rotY = startY + (targetY - startY) * ease;
+    rotX = startX + (targetX - startX) * ease;
+    if (t < 1) requestAnimationFrame(lerpToPlayer);
+    else setTimeout(() => { autoRotate = true; }, 5000);
+  }
+  lerpToPlayer();
+}
+
+// Geo button handler
+document.getElementById('geo-btn').addEventListener('click', function() {
+  if (!navigator.geolocation) {
+    document.getElementById('info-bar').textContent = _lang==='en' ? 'Geolocation not supported' : 'Геолокация недоступна';
+    return;
+  }
+  const btn = this;
+  btn.textContent = '...';
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      btn.classList.add('active');
+      btn.innerHTML = '&#9678;';
+      showPlayerOnGlobe(pos.coords.latitude, pos.coords.longitude);
+      // Save for region-map interop
+      localStorage.setItem('awara_player_geo', JSON.stringify({
+        lat: pos.coords.latitude, lng: pos.coords.longitude, ts: Date.now()
+      }));
+    },
+    function() {
+      btn.innerHTML = '&#9678;';
+      document.getElementById('info-bar').textContent = _lang==='en' ? 'Geolocation denied' : 'Геолокация не получена';
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+  );
+});
+
+// Auto-load saved geolocation
+(function() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('awara_player_geo'));
+    if (saved && saved.lat && saved.lng && (Date.now() - saved.ts < 3600000)) {
+      setTimeout(function() {
+        showPlayerOnGlobe(saved.lat, saved.lng);
+        document.getElementById('geo-btn').classList.add('active');
+      }, 1500);
+    }
+  } catch(e) {}
+})();
+
+// ══ МОДАЛКА УЗЛА ══
+function showNodeModal(n) {
+  autoRotate = false;
+  const m = document.createElement('div');
+  m.style.cssText = 'position:fixed;inset:0;z-index:60;background:rgba(2,1,10,.9);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)';
+  m.onclick = function(e) { if(e.target===m) { m.remove(); setTimeout(()=>autoRotate=true,2000); } };
+  m.innerHTML = '<div style="background:linear-gradient(135deg,rgba(18,14,30,.95),rgba(8,5,18,.95));border:1px solid rgba(201,168,76,.3);border-radius:16px;padding:24px;max-width:360px;width:100%;text-align:center;max-height:80vh;overflow-y:auto" onclick="event.stopPropagation()">' +
+    '<div style="font-size:40px;margin-bottom:8px;filter:drop-shadow(0 0 16px rgba(201,168,76,.5))">' + (n.gold ? '✦' : '◈') + '</div>' +
+    '<div style="font-family:Cinzel Decorative,serif;font-size:16px;color:#ffd700;letter-spacing:.1em;margin-bottom:4px">' + nName(n) + '</div>' +
+    '<div style="font-size:9px;color:rgba(201,168,76,.35);font-family:JetBrains Mono,monospace;margin-bottom:12px">#' + n.id + ' / 62 · ' + nCountry(n) + '</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;margin-bottom:14px;font-size:10px">' +
+    '<div><span style="color:rgba(201,168,76,.4)">'+(_lang==='en'?'Latitude':'Широта')+'</span><br><span style="color:#c9a84c">' + Math.abs(n.lat).toFixed(1) + '° ' + (n.lat>0?'N':'S') + '</span></div>' +
+    '<div><span style="color:rgba(201,168,76,.4)">'+(_lang==='en'?'Longitude':'Долгота')+'</span><br><span style="color:#c9a84c">' + Math.abs(n.lng).toFixed(1) + '° ' + (n.lng>0?'E':'W') + '</span></div>' +
+    (n.gold ? '<div style="grid-column:1/-1;padding:6px 10px;background:rgba(255,180,0,.08);border:1px solid rgba(255,180,0,.2);border-radius:6px;text-align:center;color:#ffd700;font-size:10px">'+(_lang==='en'?'✦ GOLDEN NODE · DEPOSITS · POWER':'✦ ЗОЛОТОЙ УЗЕЛ · МЕСТОРОЖДЕНИЯ · СИЛА')+'</div>' : '') +
+    '</div>' +
+    '<div style="font-size:12px;color:rgba(220,210,190,.6);line-height:1.6;margin-bottom:14px">'+(_lang==='en'?'Node of Earth\'s icosahedro-dodecahedral structure. Point of planetary energy release.':'Узел икосаэдро-додекаэдрической структуры Земли. Точка выхода планетарной энергии.')+'</div>' +
+    '<button onclick="this.closest(\'div\').parentElement.remove();setTimeout(()=>autoRotate=true,2000)" style="padding:10px 28px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:8px;color:#ffd700;font-family:Cinzel,serif;font-size:10px;cursor:pointer;letter-spacing:.1em">'+(_lang==='en'?'CLOSE':'ЗАКРЫТЬ')+'</button>' +
+    '</div>';
+  document.body.appendChild(m);
+  // Поворот глобуса к узлу
+  const targetY = -n.lng * Math.PI / 180, targetX = -(90 - n.lat) * Math.PI / 180;
+  const startY = rotY, startX = rotX, start = Date.now();
+  function lerp2() {
+    const t = Math.min(1, (Date.now() - start) / 800);
+    rotY = startY + (targetY - startY) * t;
+    rotX = startX + (targetX - startX) * t;
+    if (t < 1) requestAnimationFrame(lerp2);
+  }
+  lerp2();
+}
+
+// ══ СПИСОК ══
+window.toggleList = function() {
+  document.getElementById('list-panel').classList.toggle('show');
+};
+
+function renderList() {
+  const grid = document.getElementById('lp-grid');
+  grid.innerHTML = NODES.map(n =>
+    '<div class="lp-node' + (n.gold ? ' gold' : '') + '" onclick="focusNode(' + n.id + ')">' +
+    '<div class="lp-id">#' + n.id + (n.gold ? ' ✦' : '') + '</div>' +
+    '<div class="lp-name">' + nName(n) + '</div>' +
+    '<div class="lp-coord">' + Math.abs(n.lat).toFixed(1) + '°' + (n.lat>0?'N':'S') + ' ' + Math.abs(n.lng).toFixed(1) + '°' + (n.lng>0?'E':'W') + '</div>' +
+    '<div class="lp-coord">' + nCountry(n) + '</div>' +
+    (n.gold ? '<div class="lp-gold">✦ ' + _goldLabel + '</div>' : '') +
+    '</div>'
+  ).join('');
+}
+renderList();
+
+window.focusNode = function(id) {
+  const n = NODES.find(x => x.id === id);
+  if (!n) return;
+  const targetY = -n.lng * Math.PI / 180;
+  const targetX = -(90 - n.lat) * Math.PI / 180;
+  autoRotate = false;
+  const startY = rotY, startX = rotX, start = Date.now();
+  function lerp() {
+    const t = Math.min(1, (Date.now() - start) / 1200);
+    const ease = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+    rotY = startY + (targetY - startY) * ease;
+    rotX = startX + (targetX - startX) * ease;
+    if (t < 1) requestAnimationFrame(lerp);
+    else setTimeout(() => { autoRotate = true; }, 3000);
+  }
+  lerp();
+  document.getElementById('list-panel').classList.remove('show');
+};
+</script>
+<script type="module">
+  import { applyTranslations } from './js/i18n.js';
+    applyTranslations();
+</script>
+<!-- M-033: RU/EN переключатель -->
+<div style="position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px">
+  <button id="lang-ru" onclick="localStorage.setItem('awara_lang','ru');if(window.switchLang)window.switchLang('ru');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">RU</button>
+  <button id="lang-en" onclick="localStorage.setItem('awara_lang','en');if(window.switchLang)window.switchLang('en');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">EN</button>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang } from './js/i18n.js';
+window.switchLang = function(lang) {
+  setLang(lang);
+  translatePage();
+  document.querySelectorAll('#lang-ru,#lang-en').forEach(function(b){
+    b.style.borderColor = b.textContent === lang.toUpperCase() ? '#ffd700' : 'rgba(201,168,76,.2)';
+    b.style.color = b.textContent === lang.toUpperCase() ? '#ffd700' : '#c9a84c';
+  });
+};
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  var cur = getLang();
+  if (window.switchLang) window.switchLang(cur);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · Cosmic Map · Карта Космоса</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#02010a;font-family:'Cormorant Garamond',serif;color:#c9a84c}
+canvas{position:fixed;inset:0;z-index:0}
+.overlay{position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 8px 60px;overflow-y:auto;scrollbar-width:none}
+.overlay::-webkit-scrollbar{display:none}
+.title{font-family:'Cinzel Decorative',serif;font-size:16px;color:#ffd700;letter-spacing:.2em;text-shadow:0 0 30px rgba(255,215,0,.4);margin-top:10px;text-align:center}
+.subtitle{font-size:9px;color:rgba(201,168,76,.4);letter-spacing:.22em;font-family:'JetBrains Mono',monospace;margin-top:4px;text-align:center}
+.flow{display:flex;flex-direction:column;align-items:center;gap:0;margin-top:20px;width:100%;max-width:340px}
+.card{width:100%;padding:14px 16px;background:rgba(2,1,10,.8);border:1px solid rgba(201,168,76,.15);border-radius:10px;cursor:pointer;text-decoration:none;color:#c9a84c;transition:all .3s ease;position:relative;display:flex;align-items:center;gap:12px}
+.card:hover,.card:active{border-color:rgba(255,215,0,.5);background:rgba(201,168,76,.06);transform:scale(1.02)}
+.card-icon{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;border:1px solid rgba(201,168,76,.2)}
+.card-text{flex:1}
+.card-name{font-family:'Cinzel',serif;font-size:12px;color:#ffd700;letter-spacing:.08em}
+.card-desc{font-size:9px;color:rgba(201,168,76,.5);margin-top:3px;line-height:1.4;font-family:'JetBrains Mono',monospace}
+.card-arrow{font-family:'Cinzel',serif;font-size:14px;color:rgba(201,168,76,.3);margin-left:auto;flex-shrink:0}
+.connector{width:1px;height:20px;background:linear-gradient(to bottom,rgba(255,215,0,.3),rgba(255,215,0,.08));flex-shrink:0}
+.card-num{position:absolute;top:6px;right:8px;font-size:7px;color:rgba(201,168,76,.25);font-family:'JetBrains Mono',monospace}
+.back-btn{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:5;padding:8px 20px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;text-decoration:none;letter-spacing:.1em}
+.back-btn:hover{background:rgba(201,168,76,.15);color:#ffd700}
+.lang-switch{position:fixed;top:8px;right:8px;z-index:10;display:flex;gap:4px}
+.lang-switch button{padding:3px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:8px;cursor:pointer;border-radius:4px}
+.flow-label{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(201,168,76,.25);letter-spacing:.15em;text-transform:uppercase;margin-top:6px;margin-bottom:2px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="overlay">
+<div class="title" id="t-title">COSMIC MAP</div>
+<div class="subtitle" id="t-sub">МИКРОКОСМ → МАКРОКОСМ</div>
+
+<div class="flow">
+<div class="flow-label" id="t-micro">МИКРОКОСМ</div>
+
+<a href="mind-space.html" class="card" id="card0">
+  <div class="card-icon" style="background:radial-gradient(circle,rgba(201,168,76,.3),rgba(136,204,255,.2),transparent);border-color:rgba(201,168,76,.3)">
+    <span style="font-size:16px;color:#ffd700">&#10023;</span>
+  </div>
+  <div class="card-text">
+    <div class="card-name" id="t-c0-name">ПРОСТРАНСТВО УМА</div>
+    <div class="card-desc" id="t-c0-desc">Ахамкара, 4 сферы, 5 индрий, 3 гуны</div>
+  </div>
+  <div class="card-arrow">→</div>
+  <div class="card-num">0</div>
+</a>
+
+<div class="connector"></div>
+
+<a href="aura-pole.html" class="card" id="card1">
+  <div class="card-icon" style="background:radial-gradient(circle,rgba(204,0,255,.3),rgba(0,204,68,.2),transparent);border-color:rgba(204,0,255,.3)">
+    <span style="font-size:16px;color:#cc00ff">&#9651;</span>
+  </div>
+  <div class="card-text">
+    <div class="card-name" id="t-c1-name">АУРА-ПОЛЕ</div>
+    <div class="card-desc" id="t-c1-desc">7 чакр, 7 оболочек · аура как система</div>
+  </div>
+  <div class="card-arrow">→</div>
+  <div class="card-num">I</div>
+</a>
+
+<div class="connector"></div>
+
+<a href="nine-measures.html" class="card" id="card1b">
+  <div class="card-icon" style="background:radial-gradient(circle,rgba(51,204,255,.3),rgba(153,51,255,.2),transparent);border-color:rgba(51,204,255,.3)">
+    <span style="font-size:16px;color:#33ccff">&#9674;</span>
+  </div>
+  <div class="card-text">
+    <div class="card-name" id="t-c1b-name">9-МЕРНАЯ СИСТЕМА</div>
+    <div class="card-desc" id="t-c1b-desc">9 мер, 3 группы, 4-е тело, белый лотос</div>
+  </div>
+  <div class="card-arrow">→</div>
+  <div class="card-num">Iб</div>
+</a>
+
+<div class="connector"></div>
+
+<a href="region-map.html" class="card" id="card1v">
+  <div class="card-icon" style="background:radial-gradient(circle,rgba(76,175,80,.3),rgba(201,168,76,.2),transparent);border-color:rgba(76,175,80,.3)">
+    <span style="font-size:16px;color:#4caf50">&#9673;</span>
+  </div>
+  <div class="card-text">
+    <div class="card-name" id="t-c1v-name">РЕГИОН · ЛОКАЦИЯ</div>
+    <div class="card-desc" id="t-c1v-desc">Геолокация, маршруты, места силы</div>
+  </div>
+  <div class="card-arrow">→</div>
+  <div class="card-num">Iв</div>
+</a>
+
+<div class="connector"></div>
+
+<a href="festivals.html" class="card" id="card1g">
+  <div class="card-icon" style="background:radial-gradient(circle,rgba(255,87,34,.3),rgba(201,168,76,.15),transparent);border-color:rgba(255,87,34,.3)">
+    <span style="font-size:16px;color:#ff5722">&#11042;</span>
+  </div>
+  <div class="card-text">
+    <div class="card-name" id="t-c1g-name">ДОДЕКАЭДР ЗЕМЛИ</div>
+    <div class="card-desc" id="t-c1g-desc">62 узла · места силы · кристалл планеты</div>
+  </div>
+  <div class="card-arrow">→</div>
+  <div class="card-num">Iг</div>
+</a>
+
+<div class="connector"></div>
+
+<a href="chatur-loka.html" class="card" id="card2">
+  <div class="card-icon" style="background:radial-gradient(circle,rgba(68,170,102,.3),rgba(102,17,17,.2),transparent);border-color:rgba(68,170,102,.3)">
+    <span style="font-size:16px;color:#44aa66">&#9673;</span>
+  </div>
+  <div class="card-text">
+    <div class="card-name" id="t-c2-name">ЧАТУРА-ЛОКА</div>
+    <div class="card-desc" id="t-c2-desc">4 мира Космического Яйца (Бху-лока)</div>
+  </div>
+  <div class="card-arrow">→</div>
+  <div class="card-num">II</div>
+</a>
+
+<div class="connector"></div>
+
+<div class="flow-label" id="t-macro">МАКРОКОСМ</div>
+
+<a href="vedic-cosmos.html" class="card" id="card3">
+  <div class="card-icon" style="background:radial-gradient(circle,rgba(102,187,255,.3),rgba(170,51,0,.2),transparent);border-color:rgba(102,187,255,.3)">
+    <span style="font-size:16px;color:#66bbff">&#10022;</span>
+  </div>
+  <div class="card-text">
+    <div class="card-name" id="t-c3-name">БРАХМАНДА</div>
+    <div class="card-desc" id="t-c3-desc">14 лок, Гора Меру, Океаны</div>
+  </div>
+  <div class="card-arrow">→</div>
+  <div class="card-num">III</div>
+</a>
+
+<div class="connector"></div>
+
+<a href="cosmic-forces.html" class="card" id="card4">
+  <div class="card-icon" style="background:radial-gradient(circle,rgba(255,215,0,.3),rgba(255,68,68,.15),transparent);border-color:rgba(255,215,0,.3)">
+    <span style="font-size:16px;color:#ffd700">&#9788;</span>
+  </div>
+  <div class="card-text">
+    <div class="card-name" id="t-c4-name">КОСМИЧЕСКИЕ СИЛЫ</div>
+    <div class="card-desc" id="t-c4-desc">Тримурти, Божества, РА</div>
+  </div>
+  <div class="card-arrow">→</div>
+  <div class="card-num">IV</div>
+</a>
+
+<div class="connector"></div>
+
+<a href="epilogue.html" class="card" id="card5">
+  <div class="card-icon" style="background:radial-gradient(circle,rgba(255,255,255,.2),rgba(201,168,76,.15),transparent);border-color:rgba(255,255,255,.2)">
+    <span style="font-size:16px;color:#ffffff">&#10040;</span>
+  </div>
+  <div class="card-text">
+    <div class="card-name" id="t-c5-name">ЭПИЛОГ · ВОЗВРАТ</div>
+    <div class="card-desc" id="t-c5-desc">Все слои пройдены. Путь замыкается.</div>
+  </div>
+  <div class="card-arrow">→</div>
+  <div class="card-num">V</div>
+</a>
+
+</div>
+</div>
+
+<a href="index.html" class="back-btn" id="t-back">← ЛОББИ</a>
+
+<div class="lang-switch">
+<button onclick="localStorage.setItem('awara_lang','ru');location.reload()">RU</button>
+<button onclick="localStorage.setItem('awara_lang','en');location.reload()">EN</button>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+const canvas=document.getElementById('c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.setSize(window.innerWidth,window.innerHeight);
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,0.1,80);
+camera.position.set(0,0,6);
+
+// Stars
+const sg=new THREE.BufferGeometry();
+const sa=new Float32Array(600*3);
+for(let i=0;i<600*3;i+=3){const r=12+Math.random()*15,th=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);sa[i]=r*Math.sin(ph)*Math.cos(th);sa[i+1]=r*Math.sin(ph)*Math.sin(th);sa[i+2]=r*Math.cos(ph);}
+sg.setAttribute('position',new THREE.BufferAttribute(sa,3));
+scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:.04,transparent:true,opacity:.25})));
+
+// Subtle golden RA glow at center
+const raGeo=new THREE.SphereGeometry(.4,32,32);
+const raMat=new THREE.ShaderMaterial({
+  vertexShader:'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:'varying vec3 vN;void main(){float i=pow(.7-dot(vN,vec3(0,0,1)),2.);gl_FragColor=vec4(1.,.92,.4,1.)*i*.6;}',
+  transparent:true,blending:THREE.AdditiveBlending,depthWrite:false
+});
+scene.add(new THREE.Mesh(raGeo,raMat));
+
+// Golden rings
+const ringGeo=new THREE.TorusGeometry(1.2,.008,16,64);
+const ring1=new THREE.Mesh(ringGeo,new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.12,depthWrite:false}));
+ring1.rotation.x=Math.PI/2;scene.add(ring1);
+const ring2=new THREE.Mesh(new THREE.TorusGeometry(2,.006,16,64),new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.06,depthWrite:false}));
+ring2.rotation.x=Math.PI/3;ring2.rotation.y=Math.PI/5;scene.add(ring2);
+
+let t=0;
+function animate(){
+  requestAnimationFrame(animate);
+  t+=.003;
+  ring1.rotation.z=t*.3;
+  ring2.rotation.z=-t*.2;
+  renderer.render(scene,camera);
+}
+animate();
+
+window.addEventListener('resize',()=>{
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+
+// ══ i18n ══
+const _lang=localStorage.getItem('awara_lang')||'ru';
+if(_lang==='en'){
+  document.getElementById('t-title').textContent='COSMIC MAP';
+  document.getElementById('t-sub').textContent='MICROCOSM → MACROCOSM';
+  document.getElementById('t-micro').textContent='MICROCOSM';
+  document.getElementById('t-macro').textContent='MACROCOSM';
+  document.getElementById('t-c0-name').textContent='MIND SPACE';
+  document.getElementById('t-c0-desc').textContent='Ahamkara, 4 spheres, 5 indriyas, 3 gunas';
+  document.getElementById('t-c1-name').textContent='AURA-FIELD';
+  document.getElementById('t-c1-desc').textContent='7 chakras, 7 shells · aura as system';
+  document.getElementById('t-c1b-name').textContent='9-MEASURE SYSTEM';
+  document.getElementById('t-c1b-desc').textContent='9 measures, 3 groups, 4th body, white lotus';
+  document.getElementById('t-c2-name').textContent='CHATUR LOKA';
+  document.getElementById('t-c2-desc').textContent='4 worlds of the Cosmic Egg (Bhu-loka)';
+  document.getElementById('t-c3-name').textContent='BRAHMANDA';
+  document.getElementById('t-c3-desc').textContent='14 lokas, Mount Meru, Oceans';
+  document.getElementById('t-c4-name').textContent='COSMIC FORCES';
+  document.getElementById('t-c4-desc').textContent='Trimurti, Deities, RA';
+  document.getElementById('t-c1v-name').textContent='REGION · LOCATION';
+  document.getElementById('t-c1v-desc').textContent='Geolocation, routes, power places';
+  document.getElementById('t-c1g-name').textContent='EARTH DODECAHEDRON';
+  document.getElementById('t-c1g-desc').textContent='62 nodes · power places · planet crystal';
+  document.getElementById('t-c5-name').textContent='EPILOGUE · RETURN';
+  document.getElementById('t-c5-desc').textContent='All layers traversed. The path closes.';
+  document.getElementById('t-back').textContent='← LOBBY';
+}
+</script>
+</body>
+</html>

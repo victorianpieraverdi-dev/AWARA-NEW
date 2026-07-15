@@ -1,0 +1,609 @@
+[
+  {
+    "card_id": "vedic_loka_satya_loka",
+    "card_type": "vedic_loka",
+    "rarity": "mythic",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Сатья-лока",
+    "sanskrit": "Satya-loka / Brahma-loka",
+    "axis": "upper",
+    "cosmic_order": 14,
+    "element": "Эфир",
+    "inhabitants": [
+      "Брахма",
+      "великие риши",
+      "освобождённые мудрецы",
+      "существа чистой истины"
+    ],
+    "mythology": "Высшая обитель Брахмы и мир истины, находящийся выше обычных циклов рождения и смерти. В пуранической космологии это вершина проявленного космоса, где знание почти не отделено от бытия.",
+    "description": "Сознание, которое перестало спорить с истиной. Финальная прозрачность ума перед непроявленным.",
+    "shadow_aspect": "Опасность духовной гордыни: принять близость к истине за окончательное освобождение.",
+    "game_significance": {
+      "significance_tier": "cosmic_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "upper",
+      "cosmic_order": 14
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Сатья-лока (Satya-loka / Brahma-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Высшая обитель Брахмы и мир истины, находящийся выше обычных циклов рождения и смерти. В пуранической космологии это вершина проявленного космоса, где знание почти не отделено от бытия. Primary inhabitants: Брахма, великие риши, освобождённые мудрецы, существа чистой истины. Philosophical meaning: Сознание, которое перестало спорить с истиной. Финальная прозрачность ума перед непроявленным. Shadow teaching: Опасность духовной гордыни: принять близость к истине за окончательное освобождение. Visual scene: an infinite golden-white lotus cosmos, Brahma's radiant realm, four-faced creator light, vast truth palaces, transparent ether, sages made of luminosity. Rarity treatment: transcendent cosmic scale, prismatic mythic aura, impossible sacred geometry. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_satya_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_tapas_loka",
+    "card_type": "vedic_loka",
+    "rarity": "legendary",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Тапас-лока",
+    "sanskrit": "Tapas-loka",
+    "axis": "upper",
+    "cosmic_order": 13,
+    "element": "Огонь",
+    "inhabitants": [
+      "тапасвины",
+      "аскеты огня",
+      "великие йоги",
+      "сияющие отшельники"
+    ],
+    "mythology": "Мир великих аскетов и существ, накопивших силу через тапас — внутренний жар дисциплины, молитвы, практики и самоограничения.",
+    "description": "Огонь усилия, который сжигает лишнее и превращает желание в силу сознания.",
+    "shadow_aspect": "Аскеза без любви превращается в сухую жестокость к себе и миру.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "upper",
+      "cosmic_order": 13
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Тапас-лока (Tapas-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Мир великих аскетов и существ, накопивших силу через тапас — внутренний жар дисциплины, молитвы, практики и самоограничения. Primary inhabitants: тапасвины, аскеты огня, великие йоги, сияющие отшельники. Philosophical meaning: Огонь усилия, который сжигает лишнее и превращает желание в силу сознания. Shadow teaching: Аскеза без любви превращается в сухую жестокость к себе и миру. Visual scene: a blazing ascetic heaven of saffron fire, meditating rishis, pillars of tapas flame, austere crystal mountains, solar austerity and sacred heat. Rarity treatment: legendary divine aura, immense sacred presence, ornate gold and jewel detail. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_tapas_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_jana_loka",
+    "card_type": "vedic_loka",
+    "rarity": "legendary",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Джана-лока",
+    "sanskrit": "Jana-loka",
+    "axis": "upper",
+    "cosmic_order": 12,
+    "element": "Эфир",
+    "inhabitants": [
+      "манасапутры",
+      "сыновья ума Брахмы",
+      "санакари",
+      "древние мудрецы"
+    ],
+    "mythology": "Мир духовно-рождённых мудрецов, связанных с умственным творением Брахмы и высшим созерцательным знанием.",
+    "description": "Уровень, где мысль становится не шумом, а чистым органом творения.",
+    "shadow_aspect": "Оторванность от воплощения: мудрость, которая не умеет спуститься в жизнь.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "upper",
+      "cosmic_order": 12
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Джана-лока (Jana-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Мир духовно-рождённых мудрецов, связанных с умственным творением Брахмы и высшим созерцательным знанием. Primary inhabitants: манасапутры, сыновья ума Брахмы, санакари, древние мудрецы. Philosophical meaning: Уровень, где мысль становится не шумом, а чистым органом творения. Shadow teaching: Оторванность от воплощения: мудрость, которая не умеет спуститься в жизнь. Visual scene: a serene realm of mind-born sages, floating thought-lotuses, luminous childlike rishis, blue-white ether libraries, silent creative intelligence. Rarity treatment: legendary divine aura, immense sacred presence, ornate gold and jewel detail. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_jana_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_mahar_loka",
+    "card_type": "vedic_loka",
+    "rarity": "legendary",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Махар-лока",
+    "sanskrit": "Mahar-loka",
+    "axis": "upper",
+    "cosmic_order": 11,
+    "element": "Воздух",
+    "inhabitants": [
+      "махариши",
+      "Бхригу",
+      "видящие космических циклов",
+      "хранители мантр"
+    ],
+    "mythology": "Великий мир махариши, расположенный выше небесных сфер. Его обитатели переживают длинные космические циклы и хранят знание мантр и ритмов времени.",
+    "description": "Широта видения, где личная история становится частью огромного космического дыхания.",
+    "shadow_aspect": "Потеря человеческой конкретности в слишком больших масштабах.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "upper",
+      "cosmic_order": 11
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Махар-лока (Mahar-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Великий мир махариши, расположенный выше небесных сфер. Его обитатели переживают длинные космические циклы и хранят знание мантр и ритмов времени. Primary inhabitants: махариши, Бхригу, видящие космических циклов, хранители мантр. Philosophical meaning: Широта видения, где личная история становится частью огромного космического дыхания. Shadow teaching: Потеря человеческой конкретности в слишком больших масштабах. Visual scene: a vast airy realm of great seers, cosmic winds, mantra constellations, ancient observatories, Bhrigu-like sages watching cycles of creation. Rarity treatment: legendary divine aura, immense sacred presence, ornate gold and jewel detail. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_mahar_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_svar_loka",
+    "card_type": "vedic_loka",
+    "rarity": "epic",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Свар-лока",
+    "sanskrit": "Svar-loka / Svarga",
+    "axis": "upper",
+    "cosmic_order": 10,
+    "element": "Огонь",
+    "inhabitants": [
+      "Индра",
+      "дэвы",
+      "апсары",
+      "гандхарвы",
+      "васу"
+    ],
+    "mythology": "Небесная сфера Индры, мир богов, заслуг, красоты, музыки, победы и тонкого наслаждения. Это не окончательное освобождение, а светлый плод благих действий.",
+    "description": "Радость заслуженного света, которую всё равно нельзя спутать с вечностью.",
+    "shadow_aspect": "Привязанность к наградам, красоте и небесному статусу.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "upper",
+      "cosmic_order": 10
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Свар-лока (Svar-loka / Svarga), one of the fourteen lokas of Vedic cosmology. Realm mythology: Небесная сфера Индры, мир богов, заслуг, красоты, музыки, победы и тонкого наслаждения. Это не окончательное освобождение, а светлый плод благих действий. Primary inhabitants: Индра, дэвы, апсары, гандхарвы, васу. Philosophical meaning: Радость заслуженного света, которую всё равно нельзя спутать с вечностью. Shadow teaching: Привязанность к наградам, красоте и небесному статусу. Visual scene: Indra's radiant heaven with jeweled palaces, apsaras dancing, gandharva music, white elephant Airavata, storm-gold clouds, divine celebration. Rarity treatment: epic mythological aura, dramatic sacred lighting, powerful symbolic landscape. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_svar_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_bhuvar_loka",
+    "card_type": "vedic_loka",
+    "rarity": "epic",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Бхувар-лока",
+    "sanskrit": "Bhuvar-loka / Antariksha",
+    "axis": "middle",
+    "cosmic_order": 9,
+    "element": "Воздух",
+    "inhabitants": [
+      "праны",
+      "якши",
+      "питри",
+      "духи пространства",
+      "полубожественные существа"
+    ],
+    "mythology": "Промежуточная область атмосферы и тонких сил между землёй и небом. Здесь движутся праны, предки, духи пространства и невидимые влияния.",
+    "description": "Переходная зона: всё, что не стало телом и ещё не стало чистым светом.",
+    "shadow_aspect": "Застревание в промежуточности, знаках, призраках и тревожных влияниях.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "middle",
+      "cosmic_order": 9
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Бхувар-лока (Bhuvar-loka / Antariksha), one of the fourteen lokas of Vedic cosmology. Realm mythology: Промежуточная область атмосферы и тонких сил между землёй и небом. Здесь движутся праны, предки, духи пространства и невидимые влияния. Primary inhabitants: праны, якши, питри, духи пространства, полубожественные существа. Philosophical meaning: Переходная зона: всё, что не стало телом и ещё не стало чистым светом. Shadow teaching: Застревание в промежуточности, знаках, призраках и тревожных влияниях. Visual scene: a vast atmospheric middle world, floating yaksha shrines, ancestral lights, pranic winds, translucent spirits, dusk sky between earth and heaven. Rarity treatment: epic mythological aura, dramatic sacred lighting, powerful symbolic landscape. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_bhuvar_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_bhu_loka",
+    "card_type": "vedic_loka",
+    "rarity": "epic",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Бху-лока",
+    "sanskrit": "Bhu-loka / Prithvi-loka",
+    "axis": "middle",
+    "cosmic_order": 8,
+    "element": "Земля",
+    "inhabitants": [
+      "люди",
+      "животные",
+      "растения",
+      "земные духи",
+      "воплощённые дживы"
+    ],
+    "mythology": "Земной мир воплощения, действия, кармы и выбора. Именно здесь духовное знание проверяется материей, телом, отношениями и временем.",
+    "description": "Священность воплощения: земля как школа, храм и поле ответственности.",
+    "shadow_aspect": "Забыть, что материя не тюрьма, а место пробуждения.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "middle",
+      "cosmic_order": 8
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Бху-лока (Bhu-loka / Prithvi-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Земной мир воплощения, действия, кармы и выбора. Именно здесь духовное знание проверяется материей, телом, отношениями и временем. Primary inhabitants: люди, животные, растения, земные духи, воплощённые дживы. Philosophical meaning: Священность воплощения: земля как школа, храм и поле ответственности. Shadow teaching: Забыть, что материя не тюрьма, а место пробуждения. Visual scene: sacred Earth realm in Vedic cosmology, Mount Meru in distance, rivers, forests, villages, animals, humans, temples, fertile soil and karma pathways. Rarity treatment: epic mythological aura, dramatic sacred lighting, powerful symbolic landscape. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_bhu_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_atala_loka",
+    "card_type": "vedic_loka",
+    "rarity": "epic",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Атала-лока",
+    "sanskrit": "Atala-loka",
+    "axis": "lower",
+    "cosmic_order": 7,
+    "element": "Земля",
+    "inhabitants": [
+      "Бала",
+      "асуры наслаждения",
+      "чародеи",
+      "существа иллюзорных удовольствий"
+    ],
+    "mythology": "Один из нижних миров, связанный с властью желания, чарами и наслаждениями. В пуранических описаниях нижние локи не всегда являются адом, а скорее мощными подземными царствами опыта.",
+    "description": "Мир, где желание учится отличать жизненность от зависимости.",
+    "shadow_aspect": "Очарование силой, сексуальностью и удовольствием без сознания.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "lower",
+      "cosmic_order": 7
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Атала-лока (Atala-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Один из нижних миров, связанный с властью желания, чарами и наслаждениями. В пуранических описаниях нижние локи не всегда являются адом, а скорее мощными подземными царствами опыта. Primary inhabitants: Бала, асуры наслаждения, чародеи, существа иллюзорных удовольствий. Philosophical meaning: Мир, где желание учится отличать жизненность от зависимости. Shadow teaching: Очарование силой, сексуальностью и удовольствием без сознания. Visual scene: a subterranean pleasure realm of Atala, jeweled caverns, seductive illusion palaces, asura sorcerers, emerald darkness, sensual magical atmosphere. Rarity treatment: epic mythological aura, dramatic sacred lighting, powerful symbolic landscape. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_atala_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_vitala_loka",
+    "card_type": "vedic_loka",
+    "rarity": "epic",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Витала-лока",
+    "sanskrit": "Vitala-loka",
+    "axis": "lower",
+    "cosmic_order": 6,
+    "element": "Огонь",
+    "inhabitants": [
+      "формы Бхайравы",
+      "подземные ганы",
+      "алхимические духи",
+      "огненные асуры"
+    ],
+    "mythology": "Подземный мир, связанный с мистическим огнём, скрытой алхимией и страшными формами трансформации. В некоторых традициях ассоциируется с присутствием Хары-Бхавы.",
+    "description": "Скрытый огонь, который работает в глубине психики, пока верхний ум думает, что ничего не происходит.",
+    "shadow_aspect": "Подавленная сила становится разрушительным подземным жаром.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "lower",
+      "cosmic_order": 6
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Витала-лока (Vitala-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Подземный мир, связанный с мистическим огнём, скрытой алхимией и страшными формами трансформации. В некоторых традициях ассоциируется с присутствием Хары-Бхавы. Primary inhabitants: формы Бхайравы, подземные ганы, алхимические духи, огненные асуры. Philosophical meaning: Скрытый огонь, который работает в глубине психики, пока верхний ум думает, что ничего не происходит. Shadow teaching: Подавленная сила становится разрушительным подземным жаром. Visual scene: a dark alchemical fire underworld, black-gold flames, Bhairava-like presence, subterranean ganas, molten rivers, occult Vedic transformation. Rarity treatment: epic mythological aura, dramatic sacred lighting, powerful symbolic landscape. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_vitala_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_sutala_loka",
+    "card_type": "vedic_loka",
+    "rarity": "legendary",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Сутала-лока",
+    "sanskrit": "Sutala-loka",
+    "axis": "lower",
+    "cosmic_order": 5,
+    "element": "Земля",
+    "inhabitants": [
+      "Махабали",
+      "Вамана как хранитель",
+      "благородные асуры",
+      "подземные цари"
+    ],
+    "mythology": "Царство великого асура Махабали, которому Вишну в форме Ваманы даровал особое подземное царство. Сутала — пример того, что смирение может превратить падение в благословение.",
+    "description": "Урок суверенности: настоящий царь не теряет достоинства даже после утраты внешней власти.",
+    "shadow_aspect": "Испытание гордости, власти и готовности уступить место высшему порядку.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "lower",
+      "cosmic_order": 5
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Сутала-лока (Sutala-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Царство великого асура Махабали, которому Вишну в форме Ваманы даровал особое подземное царство. Сутала — пример того, что смирение может превратить падение в благословение. Primary inhabitants: Махабали, Вамана как хранитель, благородные асуры, подземные цари. Philosophical meaning: Урок суверенности: настоящий царь не теряет достоинства даже после утраты внешней власти. Shadow teaching: Испытание гордости, власти и готовности уступить место высшему порядку. Visual scene: the noble underworld kingdom of Mahabali, jeweled halls, Vamana's protective light, golden subterranean throne, humble kingly dignity, sacred depth. Rarity treatment: legendary divine aura, immense sacred presence, ornate gold and jewel detail. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_sutala_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_talatala_loka",
+    "card_type": "vedic_loka",
+    "rarity": "epic",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Талатала-лока",
+    "sanskrit": "Talatala-loka",
+    "axis": "lower",
+    "cosmic_order": 4,
+    "element": "Металл",
+    "inhabitants": [
+      "Майя-данава",
+      "асурические архитекторы",
+      "мастера иллюзии",
+      "техномагические строители"
+    ],
+    "mythology": "Царство Майи-данавы, великого архитектора асуров, мастера иллюзии, форм и чудесных сооружений. Это мир искусной материи и магической инженерии.",
+    "description": "Форма может быть храмом, а может быть ловушкой. Технология требует этики сознания.",
+    "shadow_aspect": "Гениальность без мудрости создаёт лабиринт, в котором теряется сам создатель.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "lower",
+      "cosmic_order": 4
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Талатала-лока (Talatala-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Царство Майи-данавы, великого архитектора асуров, мастера иллюзии, форм и чудесных сооружений. Это мир искусной материи и магической инженерии. Primary inhabitants: Майя-данава, асурические архитекторы, мастера иллюзии, техномагические строители. Philosophical meaning: Форма может быть храмом, а может быть ловушкой. Технология требует этики сознания. Shadow teaching: Гениальность без мудрости создаёт лабиринт, в котором теряется сам создатель. Visual scene: a subterranean technomagical realm of Maya Danava, impossible metal palaces, illusion engines, yantra machines, asura architects, glowing labyrinths. Rarity treatment: epic mythological aura, dramatic sacred lighting, powerful symbolic landscape. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_talatala_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_mahatala_loka",
+    "card_type": "vedic_loka",
+    "rarity": "epic",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Махатала-лока",
+    "sanskrit": "Mahatala-loka",
+    "axis": "lower",
+    "cosmic_order": 3,
+    "element": "Вода",
+    "inhabitants": [
+      "наги",
+      "змеиные кланы",
+      "Кухака",
+      "Такшака",
+      "подземные хранители"
+    ],
+    "mythology": "Один из змеиных нижних миров, населённый могущественными нагами и подземными кланами. Наги хранят память, сокровища, яд и мудрость глубины.",
+    "description": "Инстинкт как древняя мудрость тела: опасная, но необходимая.",
+    "shadow_aspect": "Яд памяти, ревности и скрытой защиты может отравить сердце.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "lower",
+      "cosmic_order": 3
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Махатала-лока (Mahatala-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Один из змеиных нижних миров, населённый могущественными нагами и подземными кланами. Наги хранят память, сокровища, яд и мудрость глубины. Primary inhabitants: наги, змеиные кланы, Кухака, Такшака, подземные хранители. Philosophical meaning: Инстинкт как древняя мудрость тела: опасная, но необходимая. Shadow teaching: Яд памяти, ревности и скрытой защиты может отравить сердце. Visual scene: a vast naga underworld, serpent palaces, blue-green waters, jewel hoods, ancient subterranean lakes, coiled guardians and hidden treasures. Rarity treatment: epic mythological aura, dramatic sacred lighting, powerful symbolic landscape. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_mahatala_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_rasatala_loka",
+    "card_type": "vedic_loka",
+    "rarity": "epic",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Расатала-лока",
+    "sanskrit": "Rasatala-loka",
+    "axis": "lower",
+    "cosmic_order": 2,
+    "element": "Вода",
+    "inhabitants": [
+      "дайтьи",
+      "данавы",
+      "асурические роды",
+      "владыки подземных вод"
+    ],
+    "mythology": "Глубокий нижний мир могущественных дайтьев и данавов. Его название связано с rasa — соком, сущностью, вкусом опыта, но в тени это может стать погружением в плотные силы желания.",
+    "description": "Плотность жизни, вкус опыта и сила рода, которые требуют очищения мотивов.",
+    "shadow_aspect": "Быть поглощённым вкусом власти, родовой обидой или глубинной жаждой.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "lower",
+      "cosmic_order": 2
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Расатала-лока (Rasatala-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Глубокий нижний мир могущественных дайтьев и данавов. Его название связано с rasa — соком, сущностью, вкусом опыта, но в тени это может стать погружением в плотные силы желания. Primary inhabitants: дайтьи, данавы, асурические роды, владыки подземных вод. Philosophical meaning: Плотность жизни, вкус опыта и сила рода, которые требуют очищения мотивов. Shadow teaching: Быть поглощённым вкусом власти, родовой обидой или глубинной жаждой. Visual scene: a deep watery asura realm, dark rivers of rasa, colossal daitya fortresses, danava clans, subterranean oceans, crimson-blue sacred density. Rarity treatment: epic mythological aura, dramatic sacred lighting, powerful symbolic landscape. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_rasatala_loka.webp",
+    "type_label": "ЛОКА"
+  },
+  {
+    "card_id": "vedic_loka_pātala_loka",
+    "card_type": "vedic_loka",
+    "rarity": "legendary",
+    "matrix_slug": "vedic",
+    "matrix_name": "Ведическая",
+    "display_name": "Патала-лока",
+    "sanskrit": "Pātāla-loka / Naga-loka",
+    "axis": "lower",
+    "cosmic_order": 1,
+    "element": "Тьма",
+    "inhabitants": [
+      "Васуки",
+      "Шеша-Ананта",
+      "наги",
+      "подземные цари",
+      "змеиные мудрецы"
+    ],
+    "mythology": "Самая глубокая из нижних лок, часто связанная с нагами, подземными сокровищами и Анантой-Шешей, на котором покоится Вишну. Патала — не просто мрак, а глубина основания мира.",
+    "description": "Корневая глубина бытия: тьма как основание, а не только отсутствие света.",
+    "shadow_aspect": "Соблазн уйти в глубину так далеко, что забывается возвращение к свету.",
+    "game_significance": {
+      "significance_tier": "major_realm",
+      "gameplay_hint": "карта локи открывает ведические космологические квесты, обитателей мира, испытания восхождения и нисхождения",
+      "cosmic_axis": "lower",
+      "cosmic_order": 1
+    },
+    "unlock_context": [
+      "vedic_cosmology",
+      "realm_quest",
+      "agent_domain_synergy",
+      "high_rarity_reward"
+    ],
+    "future_effect_hooks": [
+      "loka_affinity",
+      "vedic_quest_chapter",
+      "inhabitant_unlock",
+      "cosmic_axis_progression"
+    ],
+    "prompt": "A supreme mystical tarot-style realm card depicting Патала-лока (Pātāla-loka / Naga-loka), one of the fourteen lokas of Vedic cosmology. Realm mythology: Самая глубокая из нижних лок, часто связанная с нагами, подземными сокровищами и Анантой-Шешей, на котором покоится Вишну. Патала — не просто мрак, а глубина основания мира. Primary inhabitants: Васуки, Шеша-Ананта, наги, подземные цари, змеиные мудрецы. Philosophical meaning: Корневая глубина бытия: тьма как основание, а не только отсутствие света. Shadow teaching: Соблазн уйти в глубину так далеко, что забывается возвращение к свету. Visual scene: the deepest Naga-loka, infinite jeweled serpent realm, Ananta Shesha coils, Vasuki, black-blue cosmic darkness, underground stars, primordial foundation of worlds. Rarity treatment: legendary divine aura, immense sacred presence, ornate gold and jewel detail. No modern objects, no text on card, no western fantasy clichés, keep the atmosphere rooted in Vedic-Puranic cosmology. premium mystical tarot card art, Vedic cosmology, ornate golden border frame, portrait orientation, highly detailed, 8k, cinematic sacred atmosphere, intricate mandalas, divine worldbuilding",
+    "negative_prompt": "text, watermark, signature, blurry, low quality, modern clothing, photography, realistic face, deformed, ugly, nsfw",
+    "image_path": "cards_lokas/vedic_loka_pātala_loka.webp",
+    "type_label": "ЛОКА"
+  }
+]

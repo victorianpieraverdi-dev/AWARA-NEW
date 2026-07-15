@@ -1,0 +1,264 @@
+/* =========================================
+   AWARA · LINEAR (Dark Mode) + ACETERNITY UI
+   Чистый CSS, без Tailwind. Математика компонентов
+   переведена в обычные классы под существующий HTML.
+   Карточки = дашборд Linear · Кнопки = Aceternity "Moving Border".
+   ========================================= */
+
+@property --aw-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* =========================================
+   1. ФОН — абсолютно чёрный (Linear Dark)
+   ========================================= */
+body, .phone {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+/* Убираем шумные слои прежнего космоса ради минимализма Linear */
+.neb, .scanline { display: none !important; }
+
+/* =========================================
+   2. КАРТОЧКИ — стиль дашборда Linear
+   ========================================= */
+.awara-glass-card {
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 12px !important;
+  /* Микро-тень + тончайший верхний внутренний блик */
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.50),
+    0 0 0 1px rgba(255, 255, 255, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.awara-glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.09) !important;
+}
+/* Активная / выбранная карточка — деликатный белый акцент в духе Linear */
+.awara-glass-card.glow, .df-chip.on {
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.50),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.04) !important;
+}
+
+/* =========================================
+   3. КНОПКИ — Aceternity "Moving Border"
+   (конический градиент вращается по периметру)
+   ========================================= */
+.awara-gold-button {
+  position: relative !important;
+  z-index: 0;
+  background: #0a0a0a !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 11px 18px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  /* inset-ринг служит фолбэком, если ::before недоступен */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.07);
+  transition: transform .15s ease, box-shadow .25s ease;
+}
+/* Вращающийся световой бордер: math Aceternity = conic-gradient по краю,
+   вырезанный mask-composite, чтобы заливка не перекрывала текст */
+.awara-gold-button::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: inherit !important;
+  padding: 1.5px !important;
+  background: conic-gradient(
+    from var(--aw-angle),
+    transparent 0%,
+    transparent 55%,
+    rgba(212,175,55,0.25) 70%,
+    #FBE18D 80%,
+    #D4AF37 86%,
+    transparent 100%
+  ) !important;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0) !important;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0) !important;
+  -webkit-mask-composite: xor !important;
+          mask-composite: exclude !important;
+  animation: aw-border-spin 2.6s linear infinite;
+  pointer-events: none !important;
+}
+@keyframes aw-border-spin { to { --aw-angle: 360deg; } }
+/* Мягкое внешнее свечение при наведении (Aceternity glow) */
+.awara-gold-button:hover {
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.5),
+    inset 0 0 0 1px rgba(255,255,255,0.10),
+    0 0 22px rgba(212,175,55,0.18);
+}
+.awara-gold-button:active { transform: scale(.98); }
+
+/* =========================================
+   4. АВАТАР ДАЙМОНА — строгая линза Linear
+   ========================================= */
+#dmGlyph, .avatar-lens {
+  background: #000000 !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 1px 2px rgba(0,0,0,0.5) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f4f4f5 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  text-shadow: none !important;
+}
+
+/* =========================================
+   5. УБИЙСТВО ПУСТЫХ СЛОТОВ
+   ========================================= */
+.df-g, .icon-placeholder { display: none !important; }
+
+/* =========================================
+   СЛУЖЕБНАЯ ТИПОГРАФИКА (сохранено)
+   ========================================= */
+.adv.ds-lore,
+.ds-lore{
+  font-family:'Cinzel',serif !important;
+  font-weight:400 !important;
+  font-style:normal !important;
+  letter-spacing:0.04em !important;
+  line-height:1.55 !important;
+}
+.ds-stat{
+  font-family:'JetBrains Mono',monospace !important;
+  font-size:0.85rem !important;
+  letter-spacing:0.1em !important;
+  color:#D4AF37 !important;
+}
+.ds-deglyph .gl,
+.ds-deglyph .ic{
+  filter:grayscale(1) sepia(1) saturate(2.4) hue-rotate(5deg) brightness(0.98);
+}
+
+/* =========================================
+   6. МОДАЛКИ (Миф · Линза · генерации · чат)
+      Полировка под Linear Dark — читабельный
+      ритм текста и аккуратная стопка кнопок
+   ========================================= */
+/* Фон-затемнение под модалкой */
+.libmodal {
+  background: rgba(0, 0, 0, 0.72) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+          backdrop-filter: blur(10px) !important;
+}
+/* Сама карточка модалки */
+.libmodal .libcard.awara-glass-card {
+  border-radius: 16px !important;
+  padding: 22px !important;
+  background: #050505 !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.72),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+/* Верхний глиф — строгая золотая засечка */
+.libmodal .libglyph {
+  filter: none !important;
+  text-shadow: 0 0 18px rgba(212, 175, 55, 0.35) !important;
+  margin-bottom: 2px;
+}
+/* Заголовок и под-строка по центру */
+.libmodal h2 {
+  font-family: 'Cinzel', serif;
+  color: #ffffff !important;
+  text-align: center;
+  margin-top: 8px;
+}
+.libmodal .libel {
+  text-align: center;
+  color: #D4AF37 !important;
+}
+/* Основной текст внутри модалок — спокойный ритм */
+.libmodal .adv {
+  color: #cfcad8 !important;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+/* Списки голосов линз / ступеней — без маркеров, с разделителями */
+.libmodal .genbody ul,
+.libmodal .libcard ul {
+  margin: 8px 0 0;
+  padding-left: 2px;
+  list-style: none;
+}
+.libmodal .genbody li,
+.libmodal .libcard li {
+  padding: 8px 0;
+  margin: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #d7d2e8;
+  line-height: 1.5;
+  font-size: 14px;
+}
+.libmodal .genbody li:last-child,
+.libmodal .libcard li:last-child {
+  border-bottom: none;
+}
+.libmodal .genbody li b,
+.libmodal .libcard li b {
+  color: #ffffff;
+}
+/* Стопка кнопок — ровные отступы */
+.libmodal .btn {
+  margin-top: 12px;
+}
+.libmodal .btn + .btn {
+  margin-top: 8px;
+}
+
+/* =========================================
+   7. КОДЕКС (33 вселенные) — крупнее и читабельнее
+   ========================================= */
+#genModal .genbody .card .adv {
+  font-size: 16px !important;
+  line-height: 1.62 !important;
+}
+#genModal .genbody .card .sub {
+  font-size: 13.5px !important;
+  line-height: 1.5 !important;
+}
+#genModal .genbody .card .label {
+  letter-spacing: 0.08em;
+}
+#genModal .genbody .trait span,
+#genModal .genbody .trait b {
+  font-size: 13px !important;
+}
+/* Тонкий золотой скролл вместо системной полосы */
+.libmodal .libcard,
+.libmodal .genbody {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212, 175, 55, 0.4) transparent;
+}
+.libmodal .libcard::-webkit-scrollbar,
+.libmodal .genbody::-webkit-scrollbar {
+  width: 6px;
+}
+.libmodal .libcard::-webkit-scrollbar-track,
+.libmodal .genbody::-webkit-scrollbar-track {
+  background: transparent;
+}
+.libmodal .libcard::-webkit-scrollbar-thumb,
+.libmodal .genbody::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.38);
+  border-radius: 8px;
+}
+.libmodal .libcard::-webkit-scrollbar-thumb:hover,
+.libmodal .genbody::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.6);
+}

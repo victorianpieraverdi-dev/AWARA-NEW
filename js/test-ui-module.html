@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARA UI Module Test</title>
+  <style>
+    body { 
+      font-family: 'Cormorant Garamond', serif; 
+      background: #000; color: #c9a84c; 
+      padding: 20px; margin: 0;
+    }
+    h1 { color: #ffd700; font-family: 'Cinzel', serif; }
+    button { 
+      padding: 12px 20px; margin: 6px;
+      background: transparent; 
+      border: 1px solid #c9a84c;
+      color: #ffd700; cursor: pointer; 
+      font-family: 'Cinzel', serif;
+      text-transform: uppercase;
+    }
+    button:hover { 
+      background: rgba(201, 168, 76, 0.1); 
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    }
+    .output { 
+      background: #0a0a14; padding: 16px; 
+      border-radius: 8px; margin-top: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <h1>AWARA UI Module Test</h1>
+  
+  <div>
+    <button id="btn-modal">Show Modal</button>
+    <button id="btn-toast">Show Toast</button>
+    <button id="btn-vibrate">Vibrate</button>
+    <button id="btn-fade-in">Fade In Box</button>
+    <button id="btn-fade-out">Fade Out Box</button>
+  </div>
+  
+  <div id="test-box" style="
+    margin-top: 20px; padding: 20px; 
+    background: rgba(201, 168, 76, 0.1);
+    border: 1px solid #c9a84c; border-radius: 8px;
+    text-align: center;
+  ">
+    Тестовый блок для fade анимаций
+  </div>
+  
+  <div class="output" id="output">Результаты появятся тут...</div>
+  
+  <script type="module">
+    import { 
+      formatLight, formatPercent, formatBigNumber,
+      showModal, showToast, fadeIn, fadeOut, vibrate,
+      getCurrentBreakpoint, isMobile
+    } from './ui-module.js';
+    
+    const output = document.getElementById('output');
+    const box = document.getElementById('test-box');
+    
+    // Показать инфо о breakpoint
+    const updateBreakpoint = () => {
+      output.innerHTML = `
+        <b>Breakpoint:</b> ${getCurrentBreakpoint()}<br>
+        <b>isMobile:</b> ${isMobile()}<br>
+        <b>Width:</b> ${window.innerWidth}px<br>
+        <b>formatLight(1500):</b> ${formatLight(1500)}<br>
+        <b>formatLight(1e10):</b> ${formatLight(1e10)}<br>
+        <b>formatPercent(75, 100):</b> ${formatPercent(75, 100)}<br>
+        <b>formatBigNumber(1234567):</b> ${formatBigNumber(1234567)}<br>
+      `;
+    };
+    
+    updateBreakpoint();
+    window.addEventListener('resize', updateBreakpoint);
+    
+    document.getElementById('btn-modal').onclick = () => {
+      showModal({
+        title: 'Тестовое окно',
+        content: '<p>Это тестовое модальное окно AWARA.</p><p>AWARA.</p>'
+      });
+    };
+    
+    document.getElementById('btn-toast').onclick = () => {
+      showToast('Светкоин начислен: +100');
+    };
+    
+    document.getElementById('btn-vibrate').onclick = () => {
+      const result = vibrate([100, 50, 100]);
+      showToast(result ? 'Вибрация работает' : 'Вибрация не поддерживается');
+    };
+    
+    document.getElementById('btn-fade-in').onclick = async () => {
+      box.style.display = 'none';
+      await fadeIn(box);
+      showToast('Fade in завершён');
+    };
+    
+    document.getElementById('btn-fade-out').onclick = async () => {
+      await fadeOut(box);
+      showToast('Fade out завершён');
+    };
+  </script>
+</body>
+</html>

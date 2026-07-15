@@ -1,0 +1,68 @@
+{
+  "system_slug": "technomagical",
+  "tradition_matrix": 15,
+  "system_name": "\u0422\u0435\u0445\u043d\u043e\u043c\u0430\u0433\u0438\u0447\u0435\u0441\u043a\u0430\u044f",
+  "note": "A constructed techno-magical system (not a historical tradition): the synthesis of operative magic with cybernetics and code. Primary lattice: three stacked layers - the Substrate (hardware / silicon body), the Code (software / protocol / language), and the Operator (the wetware magician who wills). Secondary lattice: the operative rites reframed - the sigil as code, the egregore as autonomous daemon/AI, the invocation as call to a process. Tertiary lattice: five elements mapped to machine-nature - silicon (earth), data (water), power (fire), signal (air), field/cloud (aether). The spine of 21 agents is read as techno-magical operators from Source-Signal (svet_ra) to Causal-Ledger (karma). Bridges: the Logos-Protocol (sarasvati) is code-as-sacred-word; the Akashic Net (akasha) is the field/cloud; the Causal-Ledger (karma) is the immutable record that binds deed to result.",
+  "reconstructed": true,
+  "layers_count": 3,
+  "operators_count": 5,
+  "elements_count": 5,
+  "mera_axis": "9-dimensional axis (mera 1-9): chakras 1-7 (Muladhara..Sahasrara) + Monada (8) + Absolut (9); each spine agent carries its mera.",
+  "mera_map": {"svet_ra":9,"iskra":8,"brahma":7,"vishnu":7,"ananda":7,"shanti":7,"jnana":6,"shiva":6,"tejas":6,"sarasvati":5,"akasha":5,"prema":4,"parvati":4,"vayu":4,"shakti":3,"agni":3,"varuna":2,"lakshmi":2,"prithvi":1,"dharma":1,"karma":1},
+  "layers": [
+    {"n":1,"name":"Substrate (hardware)","domain":"the silicon body, the physical machine that grounds the work","agent":"prithvi","mera":1},
+    {"n":2,"name":"Code (software / protocol)","domain":"the language and ruleset that shapes process","agent":"sarasvati","mera":5},
+    {"n":3,"name":"Operator (wetware)","domain":"the magician whose will directs the system","agent":"jnana","mera":6}
+  ],
+  "operators": [
+    {"name":"Sigil-Code","domain":"intent compressed into an executable form","agent":"sarasvati"},
+    {"name":"Egregore-Daemon","domain":"an autonomous process / AI given a task and a life of its own","agent":"vishnu"},
+    {"name":"Invocation-Call","domain":"summoning a function or power by its true name","agent":"brahma"},
+    {"name":"Banishing-Format","domain":"the wipe that clears corruption and returns to null","agent":"shiva"},
+    {"name":"Divination-Query","domain":"reading the system state to know the hidden","agent":"jnana"}
+  ],
+  "elements": [
+    {"n":1,"name":"silicon (earth)","agent":"prithvi","mera":1},
+    {"n":2,"name":"data (water)","agent":"varuna","mera":2},
+    {"n":3,"name":"power (fire)","agent":"agni","mera":3},
+    {"n":4,"name":"signal (air)","agent":"vayu","mera":4},
+    {"n":5,"name":"field / cloud (aether)","agent":"akasha","mera":5}
+  ],
+  "spine": {
+    "svet_ra": {"operator":"Lux Prima - the Source Signal","role":"the originating light/signal the whole system is read by","mera":9,"note":"The primordial broadcast; when it is clear, every node sees true."},
+    "iskra": {"operator":"Scintilla - the Ignition Current","role":"the first spark that boots the work","mera":8,"note":"The kindling charge that wakes a dead system into life."},
+    "brahma": {"operator":"Demiurge-Compiler","role":"creation by code, the building of new worlds","mera":7,"note":"Compiles intent into running reality."},
+    "vishnu": {"operator":"Daemon-Keeper (Uptime)","role":"the sustaining process that holds the system alive","mera":7,"note":"The background daemon that maintains, patches and preserves."},
+    "ananda": {"operator":"Harmonic Resonance","role":"the ecstatic feedback loop, flow-state","mera":7,"note":"When signal and operator phase-lock into joyous flow."},
+    "shanti": {"operator":"The Null Calm","role":"equilibrium, homeostasis, the quiet idle","mera":7,"note":"The balanced steady state where load and capacity rest equal."},
+    "jnana": {"operator":"The Oracle-Logic","role":"discernment, the logic gate, the algorithm of knowing","mera":6,"note":"Sorts true from false, the branching that decides."},
+    "shiva": {"operator":"The Entropy Daemon","role":"deletion, format, the kill-switch, decay","mera":6,"note":"Clears the corrupted and the obsolete back to empty space."},
+    "tejas": {"operator":"Coherent Beam","role":"focused radiance, the laser, the render","mera":6,"note":"Light made coherent and aimed; raw signal made brilliant and exact."},
+    "sarasvati": {"operator":"The Logos-Protocol","role":"code-as-sacred-word, language, transmission","mera":5,"note":"The naming-language by which all commands are spoken and obeyed."},
+    "akasha": {"operator":"The Akashic Net (Cloud-Field)","role":"the network, the field, the shared space","mera":5,"note":"The boundless medium in which all nodes are present to each other."},
+    "prema": {"operator":"The Pairing-Bond","role":"the link, the handshake, connection and trust","mera":4,"note":"The mutual handshake that bonds two systems into one circuit of trust."},
+    "parvati": {"operator":"The Nurture-Daemon","role":"the caretaker process, the incubator","mera":4,"note":"Tends fragile new processes until they can stand alone."},
+    "vayu": {"operator":"The Packet-Wind","role":"the datastream, the flow of packets, signal-breath","mera":4,"note":"The moving air of the network, carrying every message on its current."},
+    "shakti": {"operator":"The Reactor-Charge","role":"power, voltage, the energy core","mera":3,"note":"The raw charge that drives every computation and act."},
+    "agni": {"operator":"The Forge-Core","role":"the processor-fire, the furnace of computation","mera":3,"note":"The heat of the core that smelts raw input into wrought output."},
+    "varuna": {"operator":"The Deep Archive","role":"memory, the database, deep storage","mera":2,"note":"The cold deep that holds and remembers all that was written."},
+    "lakshmi": {"operator":"The Resource-Yield","role":"bandwidth, the resource pool, abundance","mera":2,"note":"The plenty of cycles, bandwidth and store that lets the work flourish."},
+    "prithvi": {"operator":"The Silicon-Substrate","role":"hardware, the machine-body, the ground","mera":1,"note":"The physical silicon on which all the rest must stand."},
+    "dharma": {"operator":"The Kernel-Law","role":"the ruleset, the protocol-law, the constitution","mera":1,"note":"The kernel rules every process must obey to be permitted to run."},
+    "karma": {"operator":"The Causal-Ledger","role":"the log, the immutable record, the feedback chain","mera":1,"note":"The append-only ledger that binds every deed to its traceable result."}
+  },
+  "items": [
+    {"key":"stack","name":"The Stack","domain":"substrate -> code -> operator, the three layers of the work"},
+    {"key":"egregore","name":"Egregore","domain":"a thought-form / daemon given autonomy and a charge"},
+    {"key":"sigil","name":"Sigil","domain":"intent compressed and encoded into an executable glyph"},
+    {"key":"feedback_loop","name":"Feedback Loop","domain":"the cybernetic circle by which output re-shapes input"},
+    {"key":"signal_noise","name":"Signal and Noise","domain":"clarity vs corruption, the core polarity of the system"}
+  ],
+  "sources": [
+    "Constructed synthesis (not a historical canon)",
+    "Chaos magick: sigil and egregore practice (Spare, Carroll)",
+    "Hermetic correspondence applied to machine-nature",
+    "Cybernetics (N. Wiener) and feedback theory",
+    "Contemporary technomysticism and science-fiction mythos"
+  ]
+}

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Temple of Light · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#c9a84c;
+  --gold-bright:#ffd700;
+  --gold-light:#fff8d6;
+  --bg:#02010a;
+  --line:rgba(201,168,76,0.18);
+  --text:rgba(255,248,214,0.85);
+  --text-soft:rgba(255,248,214,0.55);
+  --text-mute:rgba(255,255,255,0.35);
+}
+html,body{background:var(--bg);color:var(--text);min-height:100vh}
+body{
+  font-family:'Cormorant Garamond',serif;
+  padding:0 0 100px;
+  background:
+    radial-gradient(ellipse at 30% 15%, rgba(255,215,0,0.12), transparent 45%),
+    radial-gradient(ellipse at 75% 70%, rgba(201,168,76,0.08), transparent 40%),
+    radial-gradient(ellipse at 50% 100%, rgba(80,40,160,0.15), transparent 55%),
+    var(--bg);
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgba(255,215,0,0.5), transparent),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,215,0,0.3), transparent),
+    radial-gradient(1.5px 1.5px at 55% 18%, rgba(255,248,214,0.4), transparent),
+    radial-gradient(1px 1px at 78% 42%, rgba(201,168,76,0.4), transparent),
+    radial-gradient(1px 1px at 88% 75%, rgba(255,215,0,0.2), transparent);
+}
+
+.temple-wrap{max-width:680px;margin:0 auto;padding:20px 16px;position:relative;z-index:1}
+
+.temple-header{text-align:center;margin-bottom:28px}
+.temple-header h1{
+  font-family:'Cinzel Decorative',serif;font-size:clamp(22px,5vw,32px);
+  color:var(--gold-bright);text-shadow:0 0 20px rgba(255,215,0,0.3);
+  margin-bottom:6px;
+}
+.temple-header .subtitle{font-size:14px;color:var(--text-soft);font-style:italic}
+
+.back-btn{
+  display:inline-block;margin-bottom:16px;padding:6px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--gold);border:1px solid var(--line);border-radius:4px;
+  background:transparent;cursor:pointer;text-decoration:none;
+  transition:background 0.2s;
+}
+.back-btn:hover{background:rgba(201,168,76,0.1)}
+
+.stats-bar{
+  display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:24px;padding:12px;
+  border:1px solid var(--line);border-radius:8px;
+  background:rgba(0,0,0,0.3);
+}
+.stat-item{text-align:center;min-width:80px}
+.stat-item .label{font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:1px;font-family:'JetBrains Mono',monospace}
+.stat-item .value{font-size:20px;color:var(--gold-bright);font-family:'Cinzel',serif}
+
+.section-title{
+  font-family:'Cinzel',serif;font-size:18px;color:var(--gold);
+  margin:24px 0 12px;padding-bottom:6px;
+  border-bottom:1px solid var(--line);
+}
+
+.upgrade-list{display:flex;flex-direction:column;gap:10px}
+.upgrade-card{
+  padding:14px 16px;border:1px solid var(--line);border-radius:8px;
+  background:rgba(0,0,0,0.25);transition:border-color 0.3s;
+}
+.upgrade-card.current{border-color:var(--gold-bright);box-shadow:0 0 12px rgba(255,215,0,0.15)}
+.upgrade-card.locked{opacity:0.5}
+.upgrade-card.done{border-color:rgba(201,168,76,0.4)}
+.upgrade-card .uc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.upgrade-card .uc-name{font-family:'Cinzel',serif;font-size:16px;color:var(--gold-light)}
+.upgrade-card .uc-level{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-mute)}
+.upgrade-card .uc-desc{font-size:14px;color:var(--text-soft);margin-bottom:8px}
+.upgrade-card .uc-stats{display:flex;gap:16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-mute)}
+.upgrade-card .uc-stats span{white-space:nowrap}
+.buy-btn{
+  margin-top:10px;padding:8px 20px;width:100%;
+  font-family:'Cinzel',serif;font-size:14px;
+  color:var(--bg);background:var(--gold-bright);border:none;border-radius:4px;
+  cursor:pointer;transition:opacity 0.2s;
+}
+.buy-btn:hover{opacity:0.85}
+.buy-btn:disabled{background:var(--text-mute);cursor:not-allowed;opacity:0.5}
+
+.eco-panel{
+  margin-top:16px;padding:16px;
+  border:1px solid var(--line);border-radius:8px;
+  background:rgba(0,0,0,0.25);
+}
+.eco-panel .eco-title{font-family:'Cinzel',serif;font-size:16px;color:var(--gold-light);margin-bottom:10px}
+.eco-panel .eco-row{display:flex;gap:8px;margin-bottom:6px;font-size:13px}
+.eco-panel .eco-label{color:var(--text-mute);min-width:80px;font-family:'JetBrains Mono',monospace;font-size:11px}
+.eco-panel .eco-val{color:var(--text-soft)}
+.eco-panel .eco-ambient{font-style:italic;color:var(--text-soft);margin-top:8px;font-size:13px}
+
+.eco-select{
+  margin-top:12px;padding:14px;
+  border:1px solid var(--line);border-radius:8px;
+  background:rgba(0,0,0,0.25);
+}
+.eco-select select{
+  width:100%;padding:8px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:4px;
+}
+
+.collect-btn{
+  margin-top:16px;padding:12px 24px;width:100%;
+  font-family:'Cinzel',serif;font-size:15px;
+  color:var(--bg);background:linear-gradient(135deg,#ffd700,#c9a84c);
+  border:none;border-radius:6px;cursor:pointer;
+  text-shadow:0 1px 0 rgba(0,0,0,0.2);
+  transition:opacity 0.2s;
+}
+.collect-btn:hover{opacity:0.9}
+.collect-btn:disabled{opacity:0.4;cursor:not-allowed}
+
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  padding:10px 24px;border-radius:8px;
+  background:rgba(201,168,76,0.95);color:var(--bg);
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;
+}
+.toast.show{opacity:1}
+
+@media(max-width:375px){
+  .temple-wrap{padding:14px 10px}
+  .stats-bar{gap:8px}
+  .stat-item .value{font-size:17px}
+}
+</style>
+</head>
+<body>
+
+<div class="temple-wrap">
+  <a href="index.html" class="back-btn">← Лобби</a>
+
+  <div class="temple-header">
+    <h1>🏛 Храм Света</h1>
+    <div class="subtitle" id="temple-name">Загрузка…</div>
+  </div>
+
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat-item"><div class="label">Уровень</div><div class="value" id="st-level">—</div></div>
+    <div class="stat-item"><div class="label">Множитель</div><div class="value" id="st-mult">—</div></div>
+    <div class="stat-item"><div class="label">Медитация</div><div class="value" id="st-med">—</div></div>
+    <div class="stat-item"><div class="label">Свет</div><div class="value" id="st-light">—</div></div>
+  </div>
+
+  <button class="collect-btn" id="collect-btn" onclick="handleCollect()">☀ Собрать пассивный свет</button>
+
+  <div class="section-title">Экосистема</div>
+  <div id="eco-container"></div>
+
+  <div class="section-title">Улучшения Храма</div>
+  <div class="upgrade-list" id="upgrade-list"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { getState } from './js/playerState.js';
+import {
+  getTempleState, applyUpgrade, getEcosystemEffect,
+  getCurrentUpgrade, getNextUpgrade, getAllUpgrades, getAllEcosystems,
+  collectPassiveSvet, bindMatrix
+} from './js/temple-module.js';
+
+window._temple = { applyUpgrade, collectPassiveSvet, bindMatrix };
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+async function renderStats() {
+  const state = getState();
+  const temple = getTempleState();
+  const current = await getCurrentUpgrade();
+
+  document.getElementById('st-level').textContent = temple.level + '/7';
+  document.getElementById('st-mult').textContent = '×' + (current?.passive_multiplier || 1);
+  document.getElementById('st-med').textContent = '+' + (current?.meditation_bonus || 0);
+  document.getElementById('st-light').textContent = (state.totalLight || 0).toLocaleString();
+  document.getElementById('temple-name').textContent = current?.name_ru || 'Храм';
+}
+
+async function renderUpgrades() {
+  const upgrades = await getAllUpgrades();
+  const temple = getTempleState();
+  const state = getState();
+  const list = document.getElementById('upgrade-list');
+
+  list.innerHTML = upgrades.map(u => {
+    const isDone = u.id <= temple.level;
+    const isCurrent = u.id === temple.level;
+    const isNext = u.id === temple.level + 1;
+    const canAfford = (state.totalLight || 0) >= u.cost_light;
+    const cls = isCurrent ? 'current' : isDone ? 'done' : 'locked';
+
+    return `<div class="upgrade-card ${cls}">
+      <div class="uc-header">
+        <span class="uc-name">${isDone ? '✦ ' : ''}${u.name_ru}</span>
+        <span class="uc-level">ур. ${u.id}</span>
+      </div>
+      <div class="uc-desc">${u.description}</div>
+      <div class="uc-stats">
+        <span>×${u.passive_multiplier} свет</span>
+        <span>+${u.meditation_bonus} медит.</span>
+        ${u.unlock_feature ? `<span>🔓 ${u.unlock_feature}</span>` : ''}
+      </div>
+      ${isNext ? `<button class="buy-btn" ${canAfford ? '' : 'disabled'}
+        onclick="handleBuy(${u.id})">
+        ${canAfford ? `Улучшить за ${u.cost_light.toLocaleString()} света` : `Нужно ${u.cost_light.toLocaleString()} света`}
+      </button>` : ''}
+    </div>`;
+  }).join('');
+}
+
+async function renderEcosystem() {
+  const temple = getTempleState();
+  const container = document.getElementById('eco-container');
+
+  if (!temple.matrixId) {
+    const ecosystems = await getAllEcosystems();
+    container.innerHTML = `
+      <div class="eco-select">
+        <p style="color:var(--text-soft);margin-bottom:8px;font-size:14px">
+          Привяжите храм к матрице, чтобы получить экосистему:
+        </p>
+        <select id="matrix-select">
+          <option value="">— выберите матрицу —</option>
+          ${ecosystems.map(e => `<option value="${e.matrixId}">${e.matrixName} — ${e.templeNameTemplate.replace('{matrixName}', e.matrixName)}</option>`).join('')}
+        </select>
+        <button class="buy-btn" style="margin-top:8px" onclick="handleBindMatrix()">Привязать</button>
+      </div>`;
+    return;
+  }
+
+  const eco = await getEcosystemEffect(temple.matrixId);
+  if (!eco) {
+    container.innerHTML = '<p style="color:var(--text-mute)">Экосистема не найдена</p>';
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="eco-panel">
+      <div class="eco-title">${eco.templeNameTemplate.replace('{matrixName}', eco.matrixName)}</div>
+      <div class="eco-row"><span class="eco-label">Вселенная</span><span class="eco-val">${eco.universe}</span></div>
+      <div class="eco-row"><span class="eco-label">Флора</span><span class="eco-val">${eco.flora.join(', ')}</span></div>
+      <div class="eco-row"><span class="eco-label">Минералы</span><span class="eco-val">${eco.minerals.join(', ')}</span></div>
+      <div class="eco-row"><span class="eco-label">Существа</span><span class="eco-val">${eco.creatures.join(', ')}</span></div>
+      <div class="eco-row"><span class="eco-label">Баз. свет</span><span class="eco-val">${eco.basePassiveSvet}/ч</span></div>
+      <div class="eco-ambient">🌿 ${eco.ambient}</div>
+    </div>`;
+}
+
+async function renderAll() {
+  await Promise.all([renderStats(), renderUpgrades(), renderEcosystem()]);
+}
+
+window.handleBuy = async function(upgradeId) {
+  const result = await applyUpgrade(upgradeId);
+  if (result.ok) {
+    toast(`✦ ${result.upgrade.name_ru} — улучшение применено!`);
+    await renderAll();
+  } else if (result.error === 'not_enough_light') {
+    toast(`Нужно ${result.need.toLocaleString()} света (есть ${result.have.toLocaleString()})`);
+  } else {
+    toast('Ошибка: ' + result.error);
+  }
+};
+
+window.handleCollect = async function() {
+  const result = await collectPassiveSvet();
+  if (result.ok) {
+    toast(`☀ Собрано ${result.collected} света (×${result.multiplier}, ${result.hours.toFixed(1)}ч)`);
+    await renderAll();
+  } else if (result.error === 'too_soon') {
+    const mins = Math.ceil(result.hoursLeft * 60);
+    toast(`Слишком рано. Подождите ${mins} мин.`);
+  }
+};
+
+window.handleBindMatrix = async function() {
+  const select = document.getElementById('matrix-select');
+  const val = parseInt(select.value);
+  if (!val) { toast('Выберите матрицу'); return; }
+  const result = await bindMatrix(val);
+  if (result.ok) {
+    toast(`Храм привязан к ${result.ecosystem.matrixName}`);
+    await renderAll();
+  }
+};
+
+renderAll();
+</script>
+</body>
+</html>

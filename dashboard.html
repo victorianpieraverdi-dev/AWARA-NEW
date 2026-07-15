@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Dashboard · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#c9a84c;
+  --gold-bright:#ffd700;
+  --gold-light:#fff8d6;
+  --gold-warm:#ffe080;
+  --bg:#02010a;
+  --bg-2:#0a0a14;
+  --line:rgba(201,168,76,0.18);
+  --line-soft:rgba(255,255,255,0.06);
+  --text:rgba(255,248,214,0.85);
+  --text-soft:rgba(255,248,214,0.55);
+  --text-mute:rgba(255,255,255,0.35);
+}
+html,body{background:var(--bg);color:var(--text);min-height:100vh}
+body{
+  font-family:'JetBrains Mono',monospace;
+  padding:10px 8px 34px;
+  background:
+    radial-gradient(ellipse at 20% 18%, rgba(124,58,237,0.40), transparent 38%),
+    radial-gradient(ellipse at 82% 72%, rgba(245,158,11,0.22), transparent 40%),
+    radial-gradient(ellipse at 50% 110%, rgba(80,40,160,0.30), transparent 55%),
+    linear-gradient(180deg,#070318 0%,#0d0626 45%,#05021a 100%),
+    var(--bg);
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url('assets/starfield.svg');
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:0.95;
+}
+body::after{
+  content:'ॐ';position:fixed;left:50%;top:48%;transform:translate(-50%,-50%);
+  font-family:'Cormorant Garamond',serif;
+  font-size:min(540px,64vh);line-height:1;color:transparent;
+  -webkit-text-stroke:1px rgba(201,168,76,0.10);
+  pointer-events:none;z-index:0;
+}
+.wrap{
+  width:min(430px,100%);margin:0 auto;position:relative;z-index:1;
+  padding:14px;
+  border:1px solid rgba(201,168,76,0.26);
+  border-radius:30px;
+  background:transparent;
+  box-shadow:
+    0 0 0 1px rgba(255,215,80,0.06),
+    0 30px 120px rgba(0,0,0,0.55),
+    inset 0 0 48px rgba(201,168,76,0.03);
+}
+
+/* ── HEADER ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:18px;gap:8px;
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:11px 14px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  font-family:Cinzel,serif;font-size:12px;
+  letter-spacing:0.2em;color:var(--text-soft);
+  text-decoration:none;
+  background:rgba(2,1,10,0.55);
+  transition:all .2s;
+  min-height:44px;
+}
+.back-link:hover{color:var(--gold-light);border-color:rgba(201,168,76,0.45)}
+.back-link .arrow{font-size:12px;color:var(--gold)}
+.brand{
+  font-family:'Cinzel Decorative',serif;
+  font-size:10px;letter-spacing:0.22em;
+  color:var(--gold);text-align:right;
+}
+
+/* ── HERO ── */
+.hero{
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255,215,80,0.20), transparent 24%),
+    radial-gradient(ellipse at 50% 0%, rgba(255,215,80,0.14), transparent 70%),
+    linear-gradient(180deg, rgba(20,16,8,0.62), rgba(2,1,10,0.72));
+  border:1px solid rgba(201,168,76,0.34);
+  border-radius:24px;
+  padding:28px 16px 24px;
+  text-align:center;
+  position:relative;overflow:hidden;
+  margin-bottom:22px;
+  box-shadow:0 0 44px rgba(201,168,76,0.12), inset 0 0 36px rgba(255,215,80,0.04);
+}
+.hero::before{
+  content:'';position:absolute;left:0;right:0;top:0;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(255,215,80,0.55) 50%, transparent);
+}
+.hero::after{
+  content:'';position:absolute;left:50%;top:34px;width:132px;height:132px;
+  transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(circle,#fff8d6 0 8%,#ffd700 18%,rgba(255,174,61,0.30) 42%,transparent 70%);
+  filter:blur(10px);opacity:0.20;pointer-events:none;
+}
+.hero-eyebrow{
+  font-family:'Cinzel Decorative',serif;
+  font-size:12px;color:var(--gold);
+  letter-spacing:0.26em;margin-bottom:16px;
+}
+.hero-amount{
+  font-family:'JetBrains Mono',monospace;
+  font-variant-numeric:tabular-nums;
+  font-size:clamp(34px,10vw,42px);
+  font-weight:700;
+  color:var(--gold-light);
+  letter-spacing:0.04em;
+  text-shadow:0 0 24px rgba(255,215,80,0.5);
+  line-height:1;
+  margin-bottom:8px;
+  word-break:break-all;
+}
+.hero-unit{
+  font-family:'Cinzel',serif;
+  font-size:12px;letter-spacing:0.18em;
+  color:var(--text-soft);
+  margin-bottom:18px;
+}
+.hero-stage{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 18px;border-radius:12px;
+  background:rgba(201,168,76,0.10);
+  border:1px solid rgba(201,168,76,0.25);
+}
+.hero-stage .icon{font-size:16px}
+.hero-stage .name{
+  font-family:Cinzel,serif;font-size:12px;
+  color:var(--gold-warm);letter-spacing:0.20em;
+}
+.hero-raw{
+  margin-top:14px;font-size:11px;
+  color:var(--text-mute);letter-spacing:0.14em;
+}
+.hero-agent{
+  margin-top:14px;
+  padding:10px 18px;
+  border-radius:10px;
+  background:rgba(201,168,76,0.06);
+  border:1px solid rgba(201,168,76,0.18);
+  display:inline-block;
+}
+.hero-agent-name{
+  font-family:Cinzel,serif;
+  font-size:13px;
+  color:var(--gold-light);
+  letter-spacing:0.18em;
+  margin-bottom:4px;
+}
+.hero-agent-cultural{
+  font-family:'Cormorant Garamond',serif;
+  font-size:12px;
+  font-style:italic;
+  color:var(--text-soft);
+  letter-spacing:0.08em;
+}
+
+/* ── SECTIONS ── */
+.section{
+  margin-bottom:26px;
+}
+.section-h{
+  font-family:Cinzel,serif;
+  font-size:13px;letter-spacing:0.22em;
+  color:var(--gold);
+  margin-bottom:12px;
+  padding:0 4px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-h::before,.section-h::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg, transparent, var(--line), transparent);
+}
+.section-h::before{margin-right:6px}
+.section-h::after{margin-left:6px}
+
+/* ── CARD GRID ── */
+.grid{display:grid;gap:10px}
+.grid-2{grid-template-columns:1fr}
+@media(max-width:560px){
+  body{padding:8px 6px 28px}
+  .wrap{padding:12px;border-radius:28px}
+  .topbar{margin-bottom:16px}
+}
+
+.card{
+  background:linear-gradient(135deg,rgba(18,14,30,0.72),rgba(8,5,18,0.62));
+  border:1px solid rgba(201,168,76,0.20);
+  border-radius:16px;
+  padding:16px 16px;
+  position:relative;
+  box-shadow:inset 0 0 22px rgba(201,168,76,0.03);
+  overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;left:0;right:0;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,215,80,0.35),transparent);
+}
+.card-eyebrow{
+  font-family:Cinzel,serif;
+  font-size:11px;letter-spacing:0.18em;
+  color:var(--text-mute);
+  margin-bottom:6px;
+}
+.card-value{
+  font-family:'JetBrains Mono',monospace;
+  font-variant-numeric:tabular-nums;
+  font-size:22px;font-weight:600;
+  color:var(--gold-light);
+  letter-spacing:0.03em;
+  word-break:break-all;
+}
+.card-sub{
+  margin-top:6px;
+  font-size:12px;color:var(--text-soft);
+  line-height:1.5;
+}
+
+/* ── SPHERES BREAKDOWN ── */
+.sphere-row{
+  display:grid;grid-template-columns:42px 1fr auto;gap:12px;
+  align-items:center;
+  padding:13px 12px;
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(15,12,24,0.58),rgba(8,5,18,0.44));
+  border:1px solid rgba(201,168,76,0.13);
+  margin-bottom:8px;
+  min-height:62px;
+}
+.sphere-row .glyph{
+  width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  background:radial-gradient(circle at 35% 30%, var(--c1, #4488ff)40, var(--c2, #1a1428)80);
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:inset 0 0 12px rgba(0,0,0,0.45);
+}
+.sphere-row .body{min-width:0}
+.sphere-row .name{
+  font-family:Cinzel,serif;font-size:12px;
+  color:var(--gold-light);letter-spacing:0.18em;
+  margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.sphere-row .meta{
+  font-size:11px;color:var(--text-mute);
+  letter-spacing:0.05em;
+}
+.sphere-row .lvl{
+  font-family:Cinzel,serif;
+  font-size:11px;
+  color:var(--gold-warm);
+  letter-spacing:0.2em;
+  text-align:right;
+}
+.sphere-row .lvl span{
+  display:block;font-family:'JetBrains Mono',monospace;
+  font-size:9px;color:var(--text-mute);margin-top:2px;
+  letter-spacing:0.18em;
+}
+
+/* ── LEADERBOARD ── */
+.lead-row{
+  display:grid;grid-template-columns:30px 30px 1fr auto;gap:10px;
+  align-items:center;
+  padding:13px 12px;
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(15,12,24,0.58),rgba(8,5,18,0.44));
+  border:1px solid rgba(201,168,76,0.13);
+  margin-bottom:8px;
+  min-height:60px;
+}
+@media(max-width:520px){
+  .lead-row{
+    grid-template-columns:28px 26px 1fr auto;
+    grid-template-areas:'pos icon meta light' '. . rank rank';
+    row-gap:4px;
+  }
+  .lead-row .pos{grid-area:pos}
+  .lead-row .icon{grid-area:icon}
+  .lead-row .meta{grid-area:meta}
+  .lead-row .light{grid-area:light}
+  .lead-row .rank{grid-area:rank;text-align:right;padding-top:2px}
+}
+.lead-row.you{
+  background:linear-gradient(135deg, rgba(201,168,76,0.16), rgba(255,215,80,0.04));
+  border-color:rgba(255,215,80,0.42);
+  box-shadow:0 0 16px rgba(255,215,80,0.12);
+}
+.lead-row .pos{
+  font-family:Cinzel,serif;font-size:11px;
+  color:var(--text-mute);text-align:center;
+  letter-spacing:0.1em;
+}
+.lead-row.you .pos{color:var(--gold-bright)}
+.lead-row .icon{font-size:18px;text-align:center}
+.lead-row .meta{min-width:0}
+.lead-row .name{
+  font-family:Cinzel,serif;font-size:12px;
+  color:var(--gold-light);letter-spacing:0.16em;
+  margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.lead-row .desc{
+  font-size:10px;color:var(--text-mute);
+  letter-spacing:0.05em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.lead-row .light{
+  font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;
+  font-size:12px;color:var(--gold-warm);
+  letter-spacing:0.04em;text-align:right;
+}
+.lead-row .rank{
+  font-family:Cinzel,serif;font-size:9px;
+  letter-spacing:0.18em;
+  color:var(--rank-col, var(--text-mute));
+  white-space:nowrap;
+  align-self:center;
+}
+
+/* ── EVOLUTION SCALE ── */
+.evo-row{
+  display:grid;grid-template-columns:42px 1fr auto;gap:12px;
+  align-items:center;
+  padding:13px 12px;
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(15,12,24,0.58),rgba(8,5,18,0.44));
+  border:1px solid rgba(201,168,76,0.13);
+  margin-bottom:8px;
+  min-height:62px;
+}
+.evo-row.current{
+  background:rgba(201,168,76,0.10);
+  border-color:rgba(201,168,76,0.45);
+}
+.evo-row.locked{opacity:0.4}
+.evo-row .num{
+  font-family:'Cinzel Decorative',serif;
+  font-size:18px;color:var(--gold);
+  text-align:center;
+}
+.evo-row.locked .num{color:var(--text-mute)}
+.evo-row .lab{
+  font-family:Cinzel,serif;font-size:12px;
+  color:var(--gold-light);letter-spacing:0.18em;
+  margin-bottom:3px;
+}
+.evo-row .desc{
+  font-size:11px;color:var(--text-mute);
+  letter-spacing:0.05em;line-height:1.5;
+}
+.evo-row .mult{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--gold-warm);
+  text-align:right;letter-spacing:0.04em;
+}
+
+/* ── PROGRESS BAR ── */
+.bar{
+  height:6px;border-radius:3px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(201,168,76,0.15);
+  overflow:hidden;
+  margin-top:10px;
+}
+.bar-fill{
+  height:100%;
+  background:linear-gradient(90deg, rgba(201,168,76,0.5), var(--gold-warm), var(--gold-bright));
+  transition:width .8s ease-out;
+  box-shadow:0 0 8px rgba(255,215,80,0.4);
+}
+
+/* ── EMPTY STATE ── */
+.empty{
+  text-align:center;padding:24px 16px;
+  color:var(--text-mute);font-size:11px;
+  letter-spacing:0.18em;
+}
+
+/* ── NOTE ── */
+.note{
+  font-size:11px;color:var(--text-mute);
+  letter-spacing:0.1em;line-height:1.6;
+  text-align:center;
+  padding:12px;
+  border-radius:10px;
+  background:rgba(2,1,10,0.55);
+  border:1px dashed var(--line);
+  margin-top:10px;
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="topbar">
+    <a class="back-link" href="index.html" data-i18n="nav.lobby"><span class="arrow">←</span>ЛОББИ</a>
+    <div class="brand" data-i18n="dash.brand">✦ AWARA · ДАШБОРД</div>
+  </div>
+
+  <!-- HERO: личный баланс Светкоина -->
+  <section class="hero">
+    <div class="hero-eyebrow" data-i18n="dashboard.title">ВАШ СВЕТКОИН</div>
+    <div class="hero-amount" id="hero-amount">0.0000000000</div>
+    <div class="hero-unit" data-i18n="dash.hero.unit">✦ светкоин · 1 ед. = 10⁻¹⁰ ✦</div>
+
+    <div class="hero-stage">
+      <span class="icon" id="stage-icon">🌱</span>
+      <span class="name" id="stage-name" data-i18n="dash.stage.name">ИНИЦИАТ</span>
+    </div>
+    <div class="hero-agent" id="hero-agent" style="display:none">
+      <div class="hero-agent-name" id="agent-name"></div>
+      <div class="hero-agent-cultural" id="agent-cultural"></div>
+    </div>
+    <div class="bar"><div class="bar-fill" id="rank-bar" style="width:0%"></div></div>
+    <div class="hero-raw" id="hero-progress" data-i18n="dash.hero.progress">— до следующего ранга</div>
+  </section>
+
+  <!-- ЛИЧНЫЙ ВКЛАД -->
+  <section class="section">
+    <div class="section-h" data-i18n="dash.personal.contrib">ЛИЧНЫЙ ВКЛАД</div>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-eyebrow" data-i18n="dashboard.accumulated">НАКОПЛЕНО</div>
+        <div class="card-value" id="stat-light">0</div>
+        <div class="card-sub" data-i18n="dash.light.raw">единиц света (raw)</div>
+      </div>
+      <div class="card">
+        <div class="card-eyebrow" data-i18n="dash.passings">ПРОХОЖДЕНИЙ</div>
+        <div class="card-value" id="stat-journey">0</div>
+        <div class="card-sub" data-i18n="dash.portal.entries">входов через Портал</div>
+      </div>
+      <div class="card">
+        <div class="card-eyebrow" data-i18n="dash.max.sphere">МАКС. УРОВЕНЬ СФЕРЫ</div>
+        <div class="card-value" id="stat-maxlvl">1</div>
+        <div class="card-sub" data-i18n="dash.highest.upgrade">высшая прокачка</div>
+      </div>
+      <div class="card">
+        <div class="card-eyebrow" data-i18n="dashboard.matrix">АКТИВНАЯ МАТРИЦА</div>
+        <div class="card-value" id="stat-matrix" style="font-size:14px">—</div>
+        <div class="card-sub" data-i18n="dash.of33.interfaces">из 33 интерфейсов</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="last-cauldron-section" style="display:none">
+    <div class="section-h" data-i18n="dash.last.tigel">ПОСЛЕДНИЙ ТИГЕЛЬ</div>
+    <div class="card">
+      <div class="grid grid-2">
+        <div>
+          <div class="card-eyebrow" data-i18n="dash.synthesized">СИНТЕЗИРОВАНО</div>
+          <div class="card-value" id="last-cauldron-light">0</div>
+          <div class="card-sub" data-i18n="dash.light.last.entry">света за последнюю запись</div>
+        </div>
+        <div>
+          <div class="card-eyebrow" data-i18n="dash.element.day">СТИХИЯ ДНЯ</div>
+          <div class="card-value" id="last-cauldron-element" style="font-size:16px">—</div>
+          <div class="card-sub" id="last-cauldron-date">—</div>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft);">
+        <div class="card-eyebrow" data-i18n="dash.sphere">СФЕРА</div>
+        <div class="card-value" id="last-cauldron-sphere" style="font-size:16px">—</div>
+      </div>
+      <div style="margin-top:12px;">
+        <div class="card-eyebrow" data-i18n="dash.practice.tomorrow">ПРАКТИКА НА ЗАВТРА</div>
+        <div class="card-sub" id="last-cauldron-practice" style="font-size:12px;color:var(--text);line-height:1.6">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ВКЛАД ПО СФЕРАМ -->
+  <section class="section">
+    <div class="section-h" data-i18n="dash.contrib.spheres">ВКЛАД ПО СФЕРАМ</div>
+    <div id="spheres-list"></div>
+  </section>
+
+  <!-- ТОП ДЕРЖАВЫ РА -->
+  <section class="section">
+    <div class="section-h" data-i18n="dash.top.realm">ТОП ДЕРЖАВЫ РА</div>
+    <div id="leaderboard"></div>
+    <div class="note" data-i18n="dash.leaderboard.note">Текущая сборка — single-player. Светообмен и реальные таблицы лидеров появятся на Phase 5+, когда откроется Космос.</div>
+  </section>
+
+  <!-- ШКАЛА ЭВОЛЮЦИИ -->
+  <section class="section">
+    <div class="section-h" data-i18n="dash.evolution.scale">ШКАЛА ЭВОЛЮЦИИ</div>
+    <div id="evolution-list"></div>
+    <div class="note" data-i18n="dash.evolution.note">Уровень → множитель Светкоина. Чем ближе к Источнику — тем плотнее свет (vision §2).</div>
+  </section>
+
+</div>
+
+<script type="module">
+import { t, initLang, applyTranslations } from './js/i18n.js';
+import { getState } from './js/playerState.js';
+initLang();
+
+(function(){
+  'use strict';
+
+  // ── 1. Чтение state через playerState.js ──
+  function loadState(){
+    return getState();
+  }
+
+  // Активная матрица (Тигель/Матрицы)
+  function loadActiveMatrix(){
+    var slug = localStorage.getItem('awara_active_matrix') || 'vedic';
+    return slug;
+  }
+
+  // Активный агент игрока (default: svet_ra)
+  function loadActiveAgent(){
+    return localStorage.getItem('awara_active_agent') || 'svet_ra';
+  }
+
+  // ── 2. Канон рангов Державы РА (синхронизирован с js/core.js) ──
+  var RANKS = [
+    {id:'initiate', name:t('dash.level.initiate'),           min:0,     icon:'🌱', col:'#88cc88', desc:t('dash.level.initiate.desc')},
+    {id:'warrior',  name:t('dash.level.warrior'),        min:3000,  icon:'⚔',  col:'#4488ff', desc:t('dash.level.warrior.desc')},
+    {id:'sage',     name:t('dash.level.sage'),            min:7000,  icon:'📿', col:'#cc88ff', desc:t('dash.level.sage.desc')},
+    {id:'king',     name:t('dash.level.king'),              min:10000, icon:'👑', col:'#ffd700', desc:t('dash.level.king.desc')},
+    {id:'buddha',   name:t('dash.level.buddha'),             min:25000, icon:'☸',  col:'#ffffff', desc:t('dash.level.buddha.desc')},
+    {id:'logos',    name:t('dash.level.logos'), min:50000, icon:'🌍', col:'#00faff', desc:t('dash.level.logos.desc')},
+  ];
+  function rankOf(light){
+    var r = RANKS[0];
+    for(var i=0;i<RANKS.length;i++){ if(light>=RANKS[i].min) r = RANKS[i]; }
+    return r;
+  }
+  function nextRank(light){
+    for(var i=0;i<RANKS.length;i++){ if(RANKS[i].min>light) return RANKS[i]; }
+    return null;
+  }
+
+  // Демо-правители Державы РА (синхронизированы с js/core.js DERZHAVA_RULERS)
+  var RULERS = [
+    {name:t('dash.ruler.krishna.name'),  icon:'🪷', light:88888, desc:t('dash.ruler.krishna.desc')},
+    {name:t('dash.ruler.ashoka.name'),   icon:'☸',  light:31000, desc:t('dash.ruler.ashoka.desc')},
+    {name:t('dash.ruler.solomon.name'), icon:'✡',  light:15000, desc:t('dash.ruler.solomon.desc')},
+    {name:t('dash.ruler.arjuna.name'), icon:'⚔️', light:12400, desc:t('dash.ruler.arjuna.desc')},
+    {name:t('dash.ruler.akbar.name'),   icon:'☀️', light:9200,  desc:t('dash.ruler.akbar.desc')},
+  ];
+
+  // ── 3. Шкала эволюции (vision.md §2) ──
+  // 6 уровней: множитель Светкоина растёт с эволюцией
+  var EVO = [
+    {n:1, name:t('dash.evo.1.name'),    desc:t('dash.evo.1.desc'),                mult:'×10⁻¹⁰', threshold:0},
+    {n:2, name:t('dash.evo.2.name'),   desc:t('dash.evo.2.desc'),               mult:'×10⁻⁶',  threshold:1500},
+    {n:3, name:t('dash.evo.3.name'),        desc:t('dash.evo.3.desc'),      mult:'×10⁻⁴',  threshold:3000},
+    {n:4, name:t('dash.evo.4.name'),       desc:t('dash.evo.4.desc'),         mult:'×1',     threshold:10000},
+    {n:5, name:t('dash.evo.5.name'),desc:t('dash.evo.5.desc'),           mult:'×10²',   threshold:25000},
+    {n:6, name:t('dash.evo.6.name'),   desc:t('dash.evo.6.desc'),            mult:'×10⁴+',  threshold:50000},
+  ];
+
+  // ── 4. Личные сферы (4 — синхронизированы с PERSONAL_SPHERES в index.html) ──
+  var PSPHERES = [
+    {id:'psph-space', n:t('dash.psph.1.n'),   icon:'◈', col:'#4488ff', label:t('dash.psph.1.label')},
+    {id:'psph-time',  n:t('dash.psph.2.n'),  icon:'◈', col:'#ffaa44', label:t('dash.psph.2.label')},
+    {id:'psph-soul',  n:t('dash.psph.3.n'), icon:'◈', col:'#cc66ff', label:t('dash.psph.3.label')},
+    {id:'psph-karma', n:t('dash.psph.4.n'),  icon:'◈', col:'#44cc88', label:t('dash.psph.4.label')},
+  ];
+
+  // Кастомные имена сфер из awara_sphere_names
+  function loadSphereNames(){
+    try{ return JSON.parse(localStorage.getItem('awara_sphere_names')||'{}'); }catch(e){ return {}; }
+  }
+
+  // ── 5. Форматирование Светкоина (10⁻¹⁰) ──
+  function fmtLux(raw){
+    var n = (raw||0)/1e10;
+    return n.toFixed(10);
+  }
+  function fmtRaw(raw){
+    return (raw||0).toLocaleString('ru-RU');
+  }
+
+  // ── 6. Рендер ──
+  function renderHero(state){
+    var light = (state && state.totalLight) || 0;
+    document.getElementById('hero-amount').textContent = fmtLux(light);
+
+    var r = rankOf(light);
+    var nr = nextRank(light);
+    document.getElementById('stage-icon').textContent = r.icon;
+    document.getElementById('stage-name').textContent = r.name;
+    document.querySelector('.hero-stage').style.borderColor = r.col + '55';
+    document.querySelector('.hero-stage').style.background  = 'rgba(' + hexToRgb(r.col) + ',0.10)';
+    document.getElementById('stage-name').style.color = r.col;
+
+    if(nr){
+      var span = nr.min - r.min;
+      var pos  = light - r.min;
+      var pct  = Math.max(0, Math.min(100, (pos/span)*100));
+      document.getElementById('rank-bar').style.width = pct.toFixed(1) + '%';
+      document.getElementById('hero-progress').textContent =
+        t('dash.evo.progress') + ' ' + nr.name + ': ' + fmtRaw(nr.min - light) + ' ' + t('dash.evo.light.suffix') + ' (' + Math.round(100-pct) + t('dash.evo.remaining');
+    } else {
+      document.getElementById('rank-bar').style.width = '100%';
+      document.getElementById('hero-progress').textContent = t('dash.highest.rank');
+    }
+  }
+
+  function renderStats(state){
+    var light = (state && state.totalLight) || 0;
+    var journey = (state && state.journey) || [];
+    var sphereData = (state && state.sphereData) || {};
+    var maxLvl = 1;
+    Object.keys(sphereData).forEach(function(k){
+      var lvl = sphereData[k] && sphereData[k].lvl;
+      if(lvl && lvl > maxLvl) maxLvl = lvl;
+    });
+    document.getElementById('stat-light').textContent   = fmtRaw(light);
+    document.getElementById('stat-journey').textContent = journey.length;
+    document.getElementById('stat-maxlvl').textContent  = maxLvl;
+
+    var slug = loadActiveMatrix();
+    // Подгрузим название из data/matrices.json
+    fetch('data/matrices.json').then(function(r){ return r.json(); }).then(function(arr){
+      var m = arr.find(function(x){ return x.slug === slug; });
+      var label = m ? (t('mdata.' + m.slug + '.name') !== 'mdata.' + m.slug + '.name' ? t('mdata.' + m.slug + '.name') : m.name) : slug;
+      document.getElementById('stat-matrix').textContent = label;
+    }).catch(function(){
+      document.getElementById('stat-matrix').textContent = slug;
+    });
+  }
+
+  function renderSpheres(state){
+    var sphereData = (state && state.sphereData) || {};
+    var names = loadSphereNames();
+    var host = document.getElementById('spheres-list');
+    host.innerHTML = '';
+    var any = false;
+    PSPHERES.forEach(function(ps){
+      var d = sphereData[ps.id];
+      if(!d) return;
+      any = true;
+      var lvl = d.lvl || 1;
+      var circle = d.circle || 1;
+      var entries = (d.entries || []).length;
+      var customName = names[ps.id] || ps.n;
+      // Per-sphere contribution: 100 свет * lvl + 10 свет за каждую запись (грубо)
+      var contrib = 100 * lvl + 10 * entries;
+
+      var row = document.createElement('div');
+      row.className = 'sphere-row';
+      row.style.setProperty('--c1', ps.col + '88');
+      row.style.setProperty('--c2', '#1a1428');
+      row.innerHTML =
+        '<div class="glyph">' + ps.icon + '</div>' +
+        '<div class="body">' +
+          '<div class="name">' + escapeHtml(customName) + '</div>' +
+          '<div class="meta">' + ps.label + ' · ' + entries + ' ' + t('dash.entries.suffix') + ' · ' + t('dash.circle.prefix') + ' ' + circle + ' · ~' + fmtRaw(contrib) + ' ' + t('dash.light.suffix') + '</div>' +
+        '</div>' +
+        '<div class="lvl">' + t('dash.lvl.prefix') + ' ' + lvl + '<span>LVL</span></div>';
+      host.appendChild(row);
+    });
+    if(!any){
+      host.innerHTML = '<div class="empty">' + t('dash.spheres.not.init') + '</div>';
+    }
+  }
+
+  function renderLastCauldron(state){
+    var section = document.getElementById('last-cauldron-section');
+    var result = state && state.cauldron && state.cauldron.lastResult;
+    if(!section || !result){
+      if(section) section.style.display = 'none';
+      return;
+    }
+    var sphereLabels = {
+      feet: t('dash.body.feet'),
+      heart: t('dash.body.heart'),
+      head: t('dash.body.head'),
+      cooperation: t('dash.body.cooperation')
+    };
+    document.getElementById('last-cauldron-light').textContent = fmtRaw(result.lightAwarded || 0);
+    document.getElementById('last-cauldron-element').textContent = result.dayEnergy || '—';
+    document.getElementById('last-cauldron-sphere').textContent = sphereLabels[result.dominantSphere] || result.dominantSphere || '—';
+    document.getElementById('last-cauldron-practice').textContent = result.practiceTomorrow || t('dash.practice.undefined');
+    var date = result.createdAt ? new Date(result.createdAt) : null;
+    document.getElementById('last-cauldron-date').textContent = date && !isNaN(date.getTime()) ? date.toLocaleString('ru-RU') : t('dash.date.not.saved');
+    section.style.display = '';
+  }
+
+  function renderLeaderboard(state){
+    var light = (state && state.totalLight) || 0;
+    // Соберём всех + игрока, отсортируем по убыванию
+    var entries = RULERS.slice();
+    entries.push({name:t('dash.player.label'), icon:'✦', light:light, desc:t('dash.player.desc'), isYou:true});
+    entries.sort(function(a,b){ return b.light - a.light; });
+
+    var host = document.getElementById('leaderboard');
+    host.innerHTML = '';
+    entries.forEach(function(e, i){
+      var r = rankOf(e.light);
+      var row = document.createElement('div');
+      row.className = 'lead-row' + (e.isYou ? ' you' : '');
+      row.style.setProperty('--rank-col', r.col);
+      row.innerHTML =
+        '<div class="pos">' + (i+1) + '</div>' +
+        '<div class="icon">' + e.icon + '</div>' +
+        '<div class="meta">' +
+          '<div class="name">' + escapeHtml(e.name) + '</div>' +
+          '<div class="desc">' + escapeHtml(e.desc) + '</div>' +
+        '</div>' +
+        '<div class="light">' + fmtRaw(e.light) + ' ' + t('dash.light.suffix') + '</div>' +
+        '<div class="rank">' + r.name + '</div>';
+      host.appendChild(row);
+    });
+  }
+
+  function renderEvolution(state){
+    var light = (state && state.totalLight) || 0;
+    // Текущий уровень — последний, у которого threshold <= light
+    var currentIdx = 0;
+    for(var i=0;i<EVO.length;i++){
+      if(light >= EVO[i].threshold) currentIdx = i;
+    }
+    var host = document.getElementById('evolution-list');
+    host.innerHTML = '';
+    EVO.forEach(function(e, idx){
+      var st = idx === currentIdx ? 'current' : (idx > currentIdx ? 'locked' : '');
+      var row = document.createElement('div');
+      row.className = 'evo-row ' + st;
+      row.innerHTML =
+        '<div class="num">' + (idx === currentIdx ? '◉' : (idx < currentIdx ? '✓' : '○')) + '</div>' +
+        '<div class="body">' +
+          '<div class="lab">' + e.n + '. ' + e.name + '</div>' +
+          '<div class="desc">' + escapeHtml(e.desc) + '</div>' +
+        '</div>' +
+        '<div class="mult">' + e.mult + '</div>';
+      host.appendChild(row);
+    });
+  }
+
+  // ── 7. Утилиты ──
+  function hexToRgb(hex){
+    hex = (hex||'').replace('#','');
+    if(hex.length === 3) hex = hex.split('').map(function(c){return c+c;}).join('');
+    var r = parseInt(hex.substr(0,2), 16) || 200;
+    var g = parseInt(hex.substr(2,2), 16) || 168;
+    var b = parseInt(hex.substr(4,2), 16) || 76;
+    return r + ',' + g + ',' + b;
+  }
+  function escapeHtml(s){
+    return String(s||'').replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+
+  // ── 8. Агент в hero-блоке ──
+  function renderAgent(){
+    var agentSlug = loadActiveAgent();
+    var matrixSlug = loadActiveMatrix();
+
+    Promise.all([
+      fetch('data/agents.json').then(function(r){ return r.json(); }),
+      fetch('data/agent_matrix_map.json').then(function(r){ return r.json(); })
+    ]).then(function(results){
+      var agents = results[0];
+      var map = results[1];
+
+      var agent = agents.find(function(a){ return a.slug === agentSlug; });
+      if(!agent) return;
+
+      var mapping = map.find(function(m){
+        return m.agent_slug === agentSlug && m.matrix_slug === matrixSlug;
+      });
+
+      var container = document.getElementById('hero-agent');
+      document.getElementById('agent-name').textContent = agent.name;
+
+      if(mapping){
+        document.getElementById('agent-cultural').textContent =
+          mapping.cultural_name + ' · ' + mapping.matrix_name;
+      }
+      container.style.display = '';
+    }).catch(function(e){
+      console.warn('Ошибка отрисовки агента:', e);
+    });
+  }
+
+  // ── 9. Старт ──
+  function init(){
+    var state = loadState();
+    renderHero(state);
+    renderStats(state);
+    renderAgent();
+    renderLastCauldron(state);
+    renderSpheres(state);
+    renderLeaderboard(state);
+    renderEvolution(state);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+applyTranslations();
+</script>
+
+<!-- Подсказки (M-006) -->
+<button class="hint-btn" title="Подсказки" data-i18n-title="app.help">?</button>
+<script type="module">
+import { initHints } from './js/hints-module.js';
+initHints('dashboard');
+</script>
+
+<!-- M-033: RU/EN переключатель -->
+<div style="position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px">
+  <button id="lang-ru" onclick="localStorage.setItem('awara_lang','ru');if(window.switchLang)window.switchLang('ru');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">RU</button>
+  <button id="lang-en" onclick="localStorage.setItem('awara_lang','en');if(window.switchLang)window.switchLang('en');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">EN</button>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang, createLangSwitcher } from './js/i18n.js';
+window.switchLang = function(lang) {
+  setLang(lang);
+  translatePage();
+  createLangSwitcher();
+  document.querySelectorAll('#lang-ru,#lang-en').forEach(function(b){
+    b.style.borderColor = b.textContent === lang.toUpperCase() ? '#ffd700' : 'rgba(201,168,76,.2)';
+    b.style.color = b.textContent === lang.toUpperCase() ? '#ffd700' : '#c9a84c';
+  });
+};
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  createLangSwitcher();
+  var cur = getLang();
+  if (window.switchLang) window.switchLang(cur);
+});
+</script>
+</body>
+</html>

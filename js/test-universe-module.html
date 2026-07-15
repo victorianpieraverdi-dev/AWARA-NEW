@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARA Universe Module Test</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    body { 
+      font-family: 'Cormorant Garamond', serif; 
+      background: #000; color: #c9a84c; 
+      padding: 20px; margin: 0; min-height: 100vh;
+    }
+    h1 { color: #ffd700; font-family: 'Cinzel', serif; text-align: center; }
+    #universe-canvas-wrapper {
+      display: flex; justify-content: center;
+      margin: 20px auto;
+      max-width: 600px; aspect-ratio: 1;
+    }
+    canvas {
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 8px;
+      cursor: pointer;
+      max-width: 100%;
+      display: block;
+    }
+    .controls { 
+      display: flex; flex-wrap: wrap; gap: 6px;
+      justify-content: center; margin-top: 20px;
+    }
+    button { 
+      padding: 10px 16px; 
+      background: transparent; border: 1px solid #c9a84c;
+      color: #ffd700; cursor: pointer;
+      font-family: 'Cinzel', serif;
+    }
+    button:hover { background: rgba(201,168,76,0.1); }
+    .log {
+      background: #0a0a14; padding: 12px;
+      border-radius: 8px; margin: 20px auto;
+      max-width: 600px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em; max-height: 150px;
+      overflow-y: auto; white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>AWARA Universe Module Test</h1>
+  <p style="text-align: center;">21 агент на орбитах вокруг Солнца РА</p>
+  
+  <div id="universe-canvas-wrapper">
+    <canvas id="universe-canvas" width="500" height="500"></canvas>
+  </div>
+  
+  <div class="controls">
+    <button id="btn-init">Init Universe</button>
+    <button id="btn-stop">Stop Animation</button>
+    <button id="btn-start">Start Animation</button>
+    <button id="btn-random">Select Random Agent</button>
+    <button id="btn-reset">Reset</button>
+  </div>
+  
+  <div class="log" id="log">Лог событий...</div>
+  
+  <script type="module">
+    import { 
+      initUniverse, stopUniverseAnimation,
+      selectAgent, getUniverseState, resetUniverse
+    } from './universe-module.js';
+    
+    const canvas = document.getElementById('universe-canvas');
+    const log = document.getElementById('log');
+    const addLog = (msg) => {
+      const time = new Date().toLocaleTimeString();
+      log.innerHTML = `[${time}] ${msg}\n` + log.innerHTML;
+    };
+    
+    let state = null;
+    
+    document.getElementById('btn-init').onclick = async () => {
+      addLog('Инициализация universe...');
+      state = await initUniverse(canvas);
+      addLog(`Готово. Агентов: ${state?.agents?.length || 0}/21`);
+    };
+    
+    document.getElementById('btn-stop').onclick = () => {
+      stopUniverseAnimation();
+      addLog('Анимация остановлена');
+    };
+    
+    document.getElementById('btn-start').onclick = async () => {
+      state = await initUniverse(canvas);
+      addLog('Анимация перезапущена');
+    };
+    
+    document.getElementById('btn-random').onclick = async () => {
+      if (!state?.agents) return;
+      const idx = Math.floor(Math.random() * state.agents.length);
+      await selectAgent(idx);
+      addLog(`Выбран агент #${idx}`);
+    };
+    
+    document.getElementById('btn-reset').onclick = () => {
+      resetUniverse();
+      addLog('Universe сброшен');
+    };
+    
+    // Авто-старт
+    (async () => {
+      state = await initUniverse(canvas);
+      addLog('Авто-инициализация при загрузке');
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>21 Agents · 33 Matrices · AWARA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Cinzel&family=Cormorant+Garamond&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{color:#d4d4d4;font-family:'JetBrains Mono',monospace;min-height:100vh;padding:20px 10px 100px;position:relative;overflow-x:hidden;background:radial-gradient(ellipse at 20% 18%,rgba(124,58,237,.40),transparent 38%),radial-gradient(ellipse at 82% 72%,rgba(245,158,11,.22),transparent 40%),radial-gradient(ellipse at 50% 110%,rgba(80,40,160,.30),transparent 55%),linear-gradient(180deg,#070318 0%,#0d0626 45%,#05021a 100%),#02010a}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url('assets/starfield.svg');background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.95}
+.container{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.title{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,4vw,36px);color:#ffe080;text-align:center;letter-spacing:.3em;margin-bottom:30px}
+.matrices-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.matrix-card{background:rgba(14,8,32,.28);border:1px solid rgba(201,168,76,.22);border-radius:10px;padding:14px 10px;cursor:pointer;transition:.3s;text-align:center;position:relative;backdrop-filter:blur(8px) saturate(130%);-webkit-backdrop-filter:blur(8px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 22px rgba(0,0,0,.32)}
+.matrix-card:hover{border-color:rgba(201,168,76,.6);transform:translateY(-3px)}
+.matrix-card.active{border-color:#ffe080;box-shadow:0 0 20px rgba(255,224,128,.3);background:rgba(201,168,76,.1)}
+.matrix-name{font-family:Cinzel,serif;font-size:14px;color:#ffe080;margin-bottom:6px}
+.matrix-conflict{font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(212,212,212,.85);margin-bottom:8px}
+.matrix-visual{font-size:9px;color:rgba(201,168,76,.55);line-height:1.6;letter-spacing:.04em}
+.matrix-badge{position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:10px;font-size:9px;letter-spacing:.1em;font-weight:600;background:rgba(255,224,128,.2);color:#ffe080;border:1px solid rgba(255,224,128,.4)}
+@media(min-width:768px){.matrices-grid{grid-template-columns:repeat(4,1fr);gap:14px}}
+@media(min-width:1024px){.matrices-grid{grid-template-columns:repeat(6,1fr);gap:15px}}
+@media(max-width:375px){.matrix-name{font-size:12px}.matrix-conflict{font-size:10px}.matrix-visual{font-size:9px}.matrix-card{padding:10px 6px}}
+.back{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:12px 30px;min-height:44px;background:rgba(201,168,76,.15);border:2px solid #c9a84c;border-radius:6px;color:#c9a84c;font-family:Cinzel,serif;font-size:11px;letter-spacing:.2em;cursor:pointer;z-index:1000}
+.back:hover{background:rgba(201,168,76,.25);border-color:#ffe080}
+.agents-section{margin-bottom:50px}
+.agents-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.agent-card{background:rgba(14,8,32,.28);border:1px solid rgba(201,168,76,.22);border-radius:10px;padding:14px 10px;transition:.3s;text-align:center;backdrop-filter:blur(8px) saturate(130%);-webkit-backdrop-filter:blur(8px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 22px rgba(0,0,0,.32)}
+.agent-card:hover{border-color:rgba(201,168,76,.6);transform:translateY(-3px)}
+.agent-name{font-family:Cinzel,serif;font-size:14px;color:#ffe080;margin-bottom:6px}
+.agent-domain{font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(212,212,212,.85);margin-bottom:8px}
+.agent-meta{font-size:9px;color:rgba(201,168,76,.55);line-height:1.6;letter-spacing:.04em}
+@media(min-width:768px){.agents-grid{grid-template-columns:repeat(4,1fr);gap:14px}.agent-name{font-size:14px}}
+@media(max-width:375px){.agent-name{font-size:12px}.agent-domain{font-size:10px}.agent-meta{font-size:9px}.agent-card{padding:10px 6px}}
+
+.matrix-detail{margin:26px auto 0;max-width:1000px;position:relative;z-index:1}
+.ll-head{font-family:Cinzel,serif;font-size:18px;color:#ffe080;letter-spacing:.06em;margin-bottom:8px;text-align:center}
+.ll-recon{font-size:9px;color:#caa;border:1px solid rgba(201,168,76,.4);border-radius:8px;padding:1px 6px;letter-spacing:.1em;vertical-align:middle}
+.ll-note{font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(212,212,212,.8);line-height:1.5;margin-bottom:6px;text-align:center}
+.ll-sub{font-family:Cinzel,serif;font-size:11px;color:#c9a84c;letter-spacing:.2em;text-transform:uppercase;margin:18px 0 8px;border-bottom:1px solid rgba(201,168,76,.2);padding-bottom:4px}
+.ll-spine{display:grid;grid-template-columns:1fr;gap:2px}
+.ll-row{font-size:12px;color:rgba(212,212,212,.9);line-height:1.45;padding:4px 2px;border-bottom:1px dotted rgba(201,168,76,.12)}
+.ll-agent{color:#ffe080;font-weight:600}
+.ll-mera{font-size:9px;color:rgba(201,168,76,.75);border:1px solid rgba(201,168,76,.3);border-radius:6px;padding:0 4px;margin-left:2px;white-space:nowrap}
+.ll-lat{display:flex;flex-wrap:wrap;gap:6px}
+.ll-chip{font-size:11px;color:rgba(212,212,212,.85);background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:4px 9px;line-height:1.3}
+.ll-src{font-size:10px;color:rgba(201,168,76,.55);margin-top:16px;font-style:italic;line-height:1.5}
+.ll-empty,.ll-load{font-size:12px;color:rgba(212,212,212,.6);text-align:center;padding:20px}
+@media(min-width:768px){.ll-spine{grid-template-columns:1fr 1fr;gap:2px 22px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="agents-section">
+<div class="title" data-i18n="matrices.agents.title">21 АГЕНТОВ</div>
+<div class="agents-grid" id="agents-grid"></div>
+</div>
+<div class="title" data-i18n="matrices.title">33 МАТРИЦЫ ИНИЦИАЦИЙ</div>
+<div class="matrices-grid" id="matrices-grid"></div>
+<div id="matrix-detail" class="matrix-detail"></div>
+</div>
+<button class="back" onclick="location.href='index.html'" data-i18n="nav.lobby">← ЛОББИ</button>
+<script type="module">
+import { t, initLang, createLangSwitcher, applyTranslations } from './js/i18n.js';
+initLang(); createLangSwitcher(); applyTranslations();
+
+const GMAP={'саттва':'guna.sattva','раджас':'guna.rajas','тамас':'guna.tamas'};
+const DMAP={'Восток':'dir.east','Запад':'dir.west','Север':'dir.north','Юг':'dir.south','Северо-Восток':'dir.northeast','Северо-Запад':'dir.northwest','Юго-Восток':'dir.southeast','Юго-Запад':'dir.southwest','Центр':'dir.center'};
+const PMAP={'Солнце':'planet.sun','Луна':'planet.moon','Марс':'planet.mars','Меркурий':'planet.mercury','Юпитер':'planet.jupiter','Венера':'planet.venus','Сатурн':'planet.saturn','Раху':'planet.rahu','Брахмастан':'planet.brahmastan'};
+const EMAP={'Огонь':'el.fire','Вода':'el.water','Земля':'el.earth','Воздух':'el.air','Эфир':'el.ether'};
+function tL(map,v){const k=map[v];return k?t(k):v;}
+
+fetch('data/agents.json').then(r=>r.json()).then(agents=>{
+  const grid=document.getElementById('agents-grid');
+  agents.forEach(ag=>{
+    const c=document.createElement('div');
+    c.className='agent-card';
+    const aName=t('agent.'+ag.slug+'.name')!=='agent.'+ag.slug+'.name'?t('agent.'+ag.slug+'.name'):ag.name;
+    const aDom=t('agent.'+ag.slug+'.domain')!=='agent.'+ag.slug+'.domain'?t('agent.'+ag.slug+'.domain'):ag.domain;
+    c.innerHTML='<div class="agent-name">'+aName+'</div><div class="agent-domain">'+aDom+'</div><div class="agent-meta">'+tL(GMAP,ag.guna)+' &middot; '+tL(DMAP,ag.vastu_zone)+' &middot; '+tL(PMAP,ag.planet)+'<br>'+tL(EMAP,ag.element)+' &middot; '+t('matrix.element')+' '+ag.ray+'</div>';
+    grid.appendChild(c);
+  });
+}).catch(err=>console.warn('agents.json:',err));
+
+let activeMatrix=localStorage.getItem('awara_active_matrix')||'vedic';
+const LLBASE='data/matrices/';
+let LLIDX=null;const LLCACHE={};
+fetch(LLBASE+'_living_library_index.json').then(r=>r.json()).then(j=>{LLIDX={};(j.entries||[]).forEach(e=>{if(e&&e.tradition_matrix!=null&&e.file)LLIDX[e.tradition_matrix]=e.file;});}).catch(()=>{LLIDX={};});
+const LL_SKIP={spine:1,items:1,sources:1,mera_map:1,mera_axis:1,system_name:1,system_slug:1,tradition_matrix:1,reconstructed:1,note:1};
+function llEsc(s){return(''+s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function llDesc(v){if(v==null)return'';if(typeof v!=='object')return''+v;const nm=v.deity||v.name||v.title||'';const d=v.principle?(v.principle+(v.role?(' \u2014 '+v.role):'')):(v.role||v.note||'');return nm&&d?(nm+' \u2014 '+d):(nm||d);}
+function llItemDeity(it){return it.deity_en||it.deity||it.name_en||it.name||it.title||it.key||'';}
+function llItem(it){if(it==null)return'';if(typeof it!=='object')return''+it;const nm=it.name_en||it.name||it.title||it.key||'';const det=[];['deity_en','deity','domain','principle','role','graha_en','yoni_en','gana_en','element','sign','rune','star'].forEach(f=>{const x=it[f];if(x!=null&&x!==''&&(''+x)!==(''+nm))det.push(''+x);});return nm+(det.length?(' ('+det.slice(0,4).join(', ')+')'):'');}
+function llAgentMap(d){const m={};(d.items||[]).forEach(it=>{if(it&&it.agent){(m[it.agent]=m[it.agent]||[]).push(it);}});return m;}
+function llPretty(k){return(''+k).replace(/_/g,' ');}
+function renderDetail(name,d){let h='<div class="ll-head">'+llEsc(name)+(d.system_name?(' \u00b7 '+llEsc(d.system_name)):'')+(d.reconstructed?' <span class="ll-recon">\u0440\u0435\u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u044f</span>':'')+'</div>';if(d.note)h+='<div class="ll-note">'+llEsc(d.note)+'</div>';const amap=llAgentMap(d);const sp=d.spine||{};const sk=Object.keys(sp);if(sk.length){h+='<div class="ll-sub">\u041f\u043e\u0437\u0432\u043e\u043d\u043e\u0447\u043d\u0438\u043a \u00b7 '+sk.length+' \u0430\u0433\u0435\u043d\u0442\u043e\u0432</div><div class="ll-spine">';sk.forEach(k=>{const v=sp[k]||{};let base=llDesc(v);const ds=(amap[k]||[]).map(llItemDeity).filter(Boolean);if(ds.length)base=base?(base+' \u2014 '+ds.join(', ')):ds.join(', ');const mera=(v&&v.mera!=null)?(' <span class="ll-mera">m'+v.mera+'</span>'):'';h+='<div class="ll-row"><span class="ll-agent">'+llEsc(k)+'</span> '+llEsc(base)+mera+'</div>';});h+='</div>';}Object.keys(d).forEach(key=>{if(LL_SKIP[key])return;const v=d[key];if(!Array.isArray(v)||!v.length)return;h+='<div class="ll-sub">'+llEsc(llPretty(key))+'</div><div class="ll-lat">'+v.map(it=>'<span class="ll-chip">'+llEsc(llItem(it))+'</span>').join('')+'</div>';});if(Array.isArray(d.items)&&d.items.length){h+='<div class="ll-sub">\u041a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 \u043c\u043e\u0442\u0438\u0432\u044b</div><div class="ll-lat">'+d.items.map(it=>'<span class="ll-chip">'+llEsc(llItem(it))+'</span>').join('')+'</div>';}if(Array.isArray(d.sources)&&d.sources.length){h+='<div class="ll-src">\u0418\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438: '+llEsc(d.sources.join('; '))+'</div>';}return h;}
+function showDetail(m){const box=document.getElementById('matrix-detail');if(!box)return;if(LLIDX===null){box.innerHTML='<div class="ll-load">\u2026</div>';setTimeout(()=>showDetail(m),200);return;}const file=LLIDX[m.id];if(!file){box.innerHTML='<div class="ll-empty">\u0416\u0438\u0432\u0430\u044f \u0411\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430 \u0434\u043b\u044f \u044d\u0442\u043e\u0439 \u043c\u0430\u0442\u0440\u0438\u0446\u044b \u043f\u043e\u043a\u0430 \u043d\u0435 \u043f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0430.</div>';return;}const done=dd=>{box.innerHTML=renderDetail(m.name,dd);};if(LLCACHE[m.id])return done(LLCACHE[m.id]);box.innerHTML='<div class="ll-load">\u2026</div>';fetch(LLBASE+file).then(r=>r.json()).then(dd=>{LLCACHE[m.id]=dd;done(dd);}).catch(()=>{box.innerHTML='<div class="ll-empty">\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c.</div>';});}
+function renderMatrices(matrices){
+  const grid=document.getElementById('matrices-grid');
+  grid.innerHTML='';
+  matrices.forEach(m=>{
+    const isActive=m.slug===activeMatrix;
+    const c=document.createElement('div');
+    c.className='matrix-card'+(isActive?' active':'');
+    const mName=t('mdata.'+m.slug+'.name')!=='mdata.'+m.slug+'.name'?t('mdata.'+m.slug+'.name'):m.name;
+    const mConf=t('mdata.'+m.slug+'.conflict')!=='mdata.'+m.slug+'.conflict'?t('mdata.'+m.slug+'.conflict'):m.conflict;
+    const mVis=t('mdata.'+m.slug+'.visual')!=='mdata.'+m.slug+'.visual'?t('mdata.'+m.slug+'.visual'):m.visual_code;
+    c.innerHTML=(isActive?'<div class="matrix-badge">'+t('matrix.active')+'</div>':'')+
+    '<div class="matrix-name">'+mName+'</div>'+
+    '<div class="matrix-conflict">'+mConf+'</div>'+
+    '<div class="matrix-visual">'+mVis+'</div>';
+    c.onclick=()=>{activeMatrix=m.slug;localStorage.setItem('awara_active_matrix',m.slug);renderMatrices(matrices);showDetail(m);};
+    grid.appendChild(c);
+  });
+}
+fetch('data/matrices.json').then(r=>r.json()).then(ms=>{renderMatrices(ms);const a=ms.find(x=>x.slug===activeMatrix)||ms[0];if(a)showDetail(a);}).catch(err=>console.warn('matrices.json:',err));
+</script>
+</body>
+</html>

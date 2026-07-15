@@ -1,0 +1,300 @@
+/* ════════════════════════════════════════════
+   AWARA UI CANON — тёмный храм будущего
+   Минимальный патч поверх существующих стилей
+   Все маршруты и механика не затронуты
+   Вынесено из index.html (<style id="awara-ui-canon">) — 2026-06-01
+   ════════════════════════════════════════════ */
+
+/* ── Шрифт для Canon ── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400&display=swap');
+
+/* ════════════════
+   1. ЛОББИ #s0
+   ════════════════ */
+
+/* Подзаголовок RA */
+#s0 .title {
+  font-family: 'Cinzel Decorative', serif !important;
+  background: linear-gradient(180deg, #fffbe0 0%, #e8cc7a 55%, #c9a84c 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  letter-spacing: 0.22em !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 0 30px rgba(201,168,76,0.35)) !important;
+}
+
+/* Badge */
+#s0 .badge {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 8px !important;
+  letter-spacing: 0.45em !important;
+  color: rgba(201,168,76,0.35) !important;
+}
+
+/* Ruler / подзаголовок путь */
+#s0 .ruler .glyph {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: italic !important;
+  font-size: clamp(10px,1.8vw,14px) !important;
+  color: rgba(255,220,150,0.3) !important;
+  letter-spacing: 0.2em !important;
+}
+
+/* ── RA Canvas wrapper ── */
+#s0 .fin.d2 {
+  filter: drop-shadow(0 0 40px rgba(201,168,76,0.18)) !important;
+}
+#hiranya-canvas {
+  border-radius: 50% !important;
+  box-shadow:
+    0 0 60px rgba(201,168,76,0.12),
+    0 0 120px rgba(201,168,76,0.06) !important;
+}
+
+/* ════════════════════
+   2. КНОПКИ ЛОББИ
+   ════════════════════ */
+
+/* ── ИГРА — главная кнопка ── */
+#s0 [onclick="window.openGameSpaces()"] {
+  background: linear-gradient(135deg,
+    rgba(20,40,80,0.45),
+    rgba(30,20,70,0.35),
+    rgba(10,30,60,0.4)
+  ) !important;
+  border: 1px solid rgba(120,160,255,0.35) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 0 0 0 rgba(100,180,255,0) !important;
+  transition: all 0.4s cubic-bezier(.22,1,.36,1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+#s0 [onclick="window.openGameSpaces()"]::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(100,180,255,0.08), transparent 70%);
+  pointer-events: none;
+}
+#s0 [onclick="window.openGameSpaces()"]:hover {
+  background: linear-gradient(135deg,
+    rgba(30,60,120,0.55),
+    rgba(50,30,100,0.45)
+  ) !important;
+  border-color: rgba(140,200,255,0.6) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 0 40px rgba(100,180,255,0.2),
+    0 8px 32px rgba(0,0,0,0.4) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* ── СМЫСЛ ДНЯ ── */
+#daily-meaning-btn {
+  background: linear-gradient(135deg,
+    rgba(0,180,220,0.07),
+    rgba(0,140,200,0.04)
+  ) !important;
+  border: 1px solid rgba(100,200,240,0.2) !important;
+  transition: all 0.3s ease !important;
+}
+#daily-meaning-btn:hover {
+  background: linear-gradient(135deg,
+    rgba(0,180,220,0.14),
+    rgba(0,140,200,0.09)
+  ) !important;
+  border-color: rgba(100,220,255,0.45) !important;
+  box-shadow: 0 0 30px rgba(0,200,240,0.1) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* ════════════════════════
+   3. GAME SPACES MODAL
+   ════════════════════════ */
+
+#game-spaces-modal {
+  background: radial-gradient(
+    ellipse at 50% 30%,
+    rgba(8,4,28,0.97) 0%,
+    rgba(3,1,12,0.99) 100%
+  ) !important;
+}
+
+/* Modal inner wrapper */
+#game-spaces-modal > div {
+  padding: 60px 20px 80px !important;
+}
+
+/* Заголовок modal */
+#game-spaces-modal > div > div:first-child > div:first-child {
+  background: linear-gradient(180deg, #e0d0a0, #c9a84c) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 20px rgba(201,168,76,0.35)) !important;
+}
+
+/* ── Общий стиль карточек врат ── */
+#game-spaces-modal .gs-gate {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(.22,1,.36,1) !important;
+  border-radius: 16px !important;
+}
+#game-spaces-modal .gs-gate::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 0% 50%, rgba(255,255,255,0.04), transparent 60%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+#game-spaces-modal .gs-gate:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
+}
+
+/* ── ВРАТА 1: ПРОСТРАНСТВО ИНИЦИАЦИИ (золото/Душа) ── */
+#game-spaces-modal .gs-gate-initiation {
+  background: linear-gradient(135deg,
+    rgba(201,168,76,0.12),
+    rgba(180,140,50,0.07),
+    rgba(255,200,80,0.05)
+  ) !important;
+  border: 1px solid rgba(201,168,76,0.35) !important;
+}
+#game-spaces-modal .gs-gate-initiation:hover {
+  background: linear-gradient(135deg,
+    rgba(201,168,76,0.22),
+    rgba(255,215,80,0.14)
+  ) !important;
+  border-color: rgba(255,215,0,0.6) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 30px rgba(201,168,76,0.15) !important;
+}
+
+/* ── ВРАТА 2: ЗЕМЛЯ ИГРОКА (зелень/Держава) ── */
+#game-spaces-modal .gs-gate-earth {
+  background: linear-gradient(135deg,
+    rgba(60,100,50,0.14),
+    rgba(40,80,30,0.08)
+  ) !important;
+  border: 1px solid rgba(80,160,70,0.3) !important;
+}
+#game-spaces-modal .gs-gate-earth:hover {
+  background: linear-gradient(135deg,
+    rgba(70,120,55,0.24),
+    rgba(50,100,40,0.14)
+  ) !important;
+  border-color: rgba(100,200,80,0.55) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 30px rgba(80,180,60,0.12) !important;
+}
+
+/* ── ВРАТА 3: ВСЕЛЕННАЯ (глубокий синий/Космос) ── */
+#game-spaces-modal .gs-gate-universe {
+  background: linear-gradient(135deg,
+    rgba(40,50,160,0.12),
+    rgba(20,30,120,0.07)
+  ) !important;
+  border: 1px solid rgba(100,120,220,0.22) !important;
+}
+#game-spaces-modal .gs-gate-universe:hover {
+  background: linear-gradient(135deg,
+    rgba(50,70,180,0.22),
+    rgba(30,50,150,0.14)
+  ) !important;
+  border-color: rgba(120,160,255,0.45) !important;
+}
+
+/* ── ВРАТА 4: ИГРА МИРОЗДАНИЯ (мистический пурпур/Тонкий) ── */
+#game-spaces-modal .gs-gate-cosmos {
+  background: linear-gradient(135deg,
+    rgba(100,60,180,0.12),
+    rgba(70,30,140,0.07)
+  ) !important;
+  border: 1px solid rgba(160,100,255,0.22) !important;
+}
+#game-spaces-modal .gs-gate-cosmos:hover {
+  background: linear-gradient(135deg,
+    rgba(120,70,200,0.22),
+    rgba(80,40,160,0.14)
+  ) !important;
+  border-color: rgba(180,120,255,0.45) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 30px rgba(160,100,255,0.12) !important;
+}
+
+/* ── Стрелка → в карточках врат ── */
+.gs-gate-arrow {
+  font-size: 18px !important;
+  opacity: 0.5 !important;
+  transition: transform 0.3s, opacity 0.3s !important;
+}
+.gs-gate:hover .gs-gate-arrow {
+  transform: translateX(4px) !important;
+  opacity: 0.9 !important;
+}
+
+/* ── Иконка врат ── */
+.gs-gate-ico {
+  font-size: 28px !important;
+  transition: transform 0.4s, filter 0.4s !important;
+}
+.gs-gate:hover .gs-gate-ico {
+  transform: scale(1.1) !important;
+}
+
+/* ── Кнопка НАЗАД В ЛОББИ ── */
+#game-spaces-modal [onclick="window.closeGameSpaces()"] {
+  font-family: 'Cinzel', serif !important;
+  font-size: 9px !important;
+  letter-spacing: 0.25em !important;
+  color: rgba(201,168,76,0.3) !important;
+  padding: 8px 20px !important;
+  border: 1px solid rgba(201,168,76,0.12) !important;
+  border-radius: 20px !important;
+  transition: all 0.3s !important;
+}
+#game-spaces-modal [onclick="window.closeGameSpaces()"]:hover {
+  color: rgba(201,168,76,0.75) !important;
+  border-color: rgba(201,168,76,0.3) !important;
+  background: rgba(201,168,76,0.05) !important;
+}
+
+/* ════════════════════════
+   4. GLOBAL ENHANCEMENTS
+   ════════════════════════ */
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 2px; }
+* { scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.2) transparent; }
+
+/* Alpha gate — улучшение инпута */
+#alpha-input {
+  letter-spacing: 0.5em !important;
+  font-size: clamp(16px,3.5vw,22px) !important;
+}
+
+/* Creator mode badge */
+#creator-mode-badge {
+  font-size: 7px !important;
+  letter-spacing: 0.22em !important;
+  background: rgba(2,1,8,0.92) !important;
+  box-shadow: 0 0 20px rgba(201,168,76,0.12) !important;
+}
+
+/* ── @keyframes для Canon ── */
+@keyframes canonPulse {
+  0%,100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+@keyframes canonGlow {
+  0%,100% { filter: drop-shadow(0 0 8px rgba(201,168,76,0.3)); }
+  50%      { filter: drop-shadow(0 0 18px rgba(201,168,76,0.6)); }
+}
+
+/* RA pulse на hover (respects prefers-reduced-motion) */
+@media (prefers-reduced-motion: no-preference) {
+  #s0 .fin.d2:hover {
+    animation: canonGlow 2s ease-in-out infinite !important;
+  }
+}

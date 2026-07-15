@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "purpose": "Defines the AWARA breath path: a gentle meditative progression from breathing the body and perception channels to breathing with the planetary logos, galaxy, universe and Brahma.",
+  "safety_principle": "Practices should be gentle, short and attention-based. The game should not prescribe intense breath retention, hyperventilation or medical treatment.",
+  "core_formula": "Breath purifies perception, gathers attention into the central channel, expands through place and elements, then synchronizes with planetary and cosmic life.",
+  "progression": [
+    {
+      "id": "body_breath",
+      "order": 1,
+      "title": "Продышать тело",
+      "layer": "soul",
+      "unlock_level": "start",
+      "focus": "physical body, posture, skin, bones, belly, chest, head, feet and hands",
+      "practice_prompt": "Сделай 7 мягких дыханий и почувствуй тело как первый храм души.",
+      "awards": {
+        "sphere": "feet",
+        "element": "earth",
+        "principles": ["sthula_sharira", "prana"],
+        "card_tags": ["body", "breath", "earth", "grounding"]
+      }
+    },
+    {
+      "id": "sense_organs_breath",
+      "order": 2,
+      "title": "Продышать органы чувств",
+      "layer": "soul",
+      "unlock_level": "soul_light_50",
+      "focus": "eyes, ears, nose, tongue, skin and the way reality enters the player",
+      "practice_prompt": "Мягко вдохни через внимание к глазам, ушам, носу, языку и коже. На выдохе отпусти лишний шум восприятия.",
+      "awards": {
+        "sphere": "head",
+        "element": "air",
+        "principles": ["manas", "prana"],
+        "card_tags": ["perception", "senses", "mind", "signal"]
+      }
+    },
+    {
+      "id": "perception_channels_breath",
+      "order": 3,
+      "title": "Продышать каналы восприятия",
+      "layer": "soul",
+      "unlock_level": "soul_light_100",
+      "focus": "incoming signal, outgoing signal, mental field, attention pathways",
+      "practice_prompt": "Почувствуй входящий и исходящий сигнал. Вдох собирает внимание, выдох очищает искажение.",
+      "awards": {
+        "sphere": "head",
+        "element": "air",
+        "principles": ["manas"],
+        "card_tags": ["perception_channel", "clarity", "distortion_cleaning"]
+      }
+    },
+    {
+      "id": "nadis_meridians_breath",
+      "order": 4,
+      "title": "Продышать нади и меридианы",
+      "layer": "soul",
+      "unlock_level": "soul_light_200",
+      "focus": "subtle channels, meridians, energy circulation, pranic flow",
+      "practice_prompt": "Представь тело как сеть световых каналов. На вдохе свет входит, на выдохе каналы становятся мягче и чище.",
+      "awards": {
+        "sphere": "feet",
+        "element": "ether",
+        "principles": ["prana", "linga_sharira"],
+        "card_tags": ["nadi", "meridian", "prana", "subtle_body"]
+      }
+    },
+    {
+      "id": "chakra_breath",
+      "order": 5,
+      "title": "Продышать чакры",
+      "layer": "soul",
+      "unlock_level": "soul_light_300",
+      "focus": "root, sacral, solar, heart, throat, brow and crown centers",
+      "practice_prompt": "Пройди вниманием снизу вверх по центрам тела. На каждом центре сделай одно мягкое дыхание света.",
+      "awards": {
+        "sphere": "heart",
+        "element": "fire",
+        "principles": ["prana", "manas", "buddhi"],
+        "card_tags": ["chakra", "kundalini", "alignment", "inner_axis"]
+      }
+    },
+    {
+      "id": "central_channel_breath",
+      "order": 6,
+      "title": "Войти в центральный канал",
+      "layer": "soul",
+      "unlock_level": "soul_light_500",
+      "focus": "central channel, spine, vertical axis, soul alignment",
+      "practice_prompt": "Почувствуй вертикальную ось от земли через сердце к небу. Дыши так, будто свет движется по центральному каналу.",
+      "awards": {
+        "sphere": "head",
+        "element": "ether",
+        "principles": ["atma", "buddhi", "manas"],
+        "card_tags": ["central_channel", "axis", "sushumna", "soul_alignment"]
+      }
+    },
+    {
+      "id": "room_home_breath",
+      "order": 7,
+      "title": "Продышать место жизни",
+      "layer": "earth",
+      "unlock_level": "earth_unlocked",
+      "focus": "room, desk, bed, altar, home, apartment, daily environment",
+      "practice_prompt": "Сделай дыхание в пространство комнаты. На вдохе почувствуй дом, на выдохе наполни его ясностью и теплом.",
+      "awards": {
+        "sphere": "feet",
+        "element": "earth",
+        "principles": ["sthula_sharira", "prana"],
+        "card_tags": ["home", "vastu", "room", "star_temple"]
+      }
+    },
+    {
+      "id": "elemental_breath",
+      "order": 8,
+      "title": "Продышать пять стихий",
+      "layer": "earth",
+      "unlock_level": "earth_light_500",
+      "focus": "Earth, Water, Fire, Air and Ether within body, home and field",
+      "practice_prompt": "Пять дыханий: земля — устойчивость, вода — мягкость, огонь — воля, воздух — ясность, эфир — пространство.",
+      "awards": {
+        "sphere": "cooperation",
+        "element": "balanced",
+        "principles": ["prana", "manas", "buddhi"],
+        "card_tags": ["five_elements", "balance", "elemental_purification"]
+      }
+    },
+    {
+      "id": "territory_samsara_breath",
+      "order": 9,
+      "title": "Продышать территорию и сансару",
+      "layer": "earth",
+      "unlock_level": "earth_light_1000",
+      "focus": "territory, streets, work, family field, karmic patterns and samsara around the player",
+      "practice_prompt": "На вдохе почувствуй поле своей жизни. На выдохе не убегай из сансары, а освещай её вниманием.",
+      "awards": {
+        "sphere": "cooperation",
+        "element": "ether",
+        "principles": ["buddhi", "manas"],
+        "card_tags": ["samsara", "territory", "karma", "real_life_bridge"]
+      }
+    },
+    {
+      "id": "planetary_logos_breath",
+      "order": 10,
+      "title": "Дышать с планетарным Логосом",
+      "layer": "cosmos",
+      "unlock_level": "cosmos_unlocked",
+      "focus": "Earth as living being, planetary grid, collective breath, places of power",
+      "practice_prompt": "Почувствуй Землю как живое существо. Дыхание тела становится маленькой волной дыхания планеты.",
+      "awards": {
+        "sphere": "cooperation",
+        "element": "ether",
+        "principles": ["buddhi", "atma"],
+        "card_tags": ["planetary_logos", "earth_grid", "collective_breath"]
+      }
+    },
+    {
+      "id": "galactic_breath",
+      "order": 11,
+      "title": "Дышать с галактикой",
+      "layer": "cosmos",
+      "unlock_level": "cosmos_light_2500",
+      "focus": "galaxy, star paths, cosmic currents, stellar memory",
+      "practice_prompt": "Представь, что вдох приходит из звёздного океана, а выдох возвращает свет в галактическое поле.",
+      "awards": {
+        "sphere": "head",
+        "element": "ether",
+        "principles": ["atma", "buddhi"],
+        "card_tags": ["galaxy", "stellar_breath", "cosmic_navigation"]
+      }
+    },
+    {
+      "id": "universal_breath",
+      "order": 12,
+      "title": "Дышать со Вселенной",
+      "layer": "divine_game",
+      "unlock_level": "divine_game_unlocked",
+      "focus": "universe, cosmic field, worlds, cycles, silence between creation and dissolution",
+      "practice_prompt": "Почувствуй дыхание не как своё, а как движение Вселенной через тебя.",
+      "awards": {
+        "sphere": "head",
+        "element": "ether",
+        "principles": ["atma"],
+        "card_tags": ["universe", "cosmic_breath", "divine_game"]
+      }
+    },
+    {
+      "id": "brahma_breath",
+      "order": 13,
+      "title": "Дыхание Брахмы",
+      "layer": "divine_game",
+      "unlock_level": "creator_stage",
+      "focus": "Brahma's breath, creation and dissolution, luminous breath, creator consciousness",
+      "practice_prompt": "Созерцай дыхание Брахмы: вдох — миры возвращаются в источник, выдох — миры рождаются из света.",
+      "awards": {
+        "sphere": "cooperation",
+        "element": "ether",
+        "principles": ["atma", "buddhi"],
+        "card_tags": ["brahma", "creation", "luminous_breath", "creator"]
+      }
+    }
+  ],
+  "oracle_output_fields": {
+    "breath_path_stage": "The most relevant breath layer for the player today.",
+    "breath_practice": "A short safe attention-based breath prompt.",
+    "breath_duration_minutes": "Suggested duration, usually 1-7 minutes at early levels.",
+    "breath_focus": "Body part, element, sphere, place or cosmic scale to breathe through.",
+    "breath_rewards": "Elements, principles, card tags and light bias connected to the practice."
+  }
+}

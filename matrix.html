@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>33 Matrices · AWARA</title>
+
+  <!-- Основной CSS -->
+  <link rel="stylesheet" href="css/main.css">
+
+  <!-- Шрифты -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      color: #d4d4d4;
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100vh;
+      padding: 20px 10px 100px;
+      position: relative;
+      overflow-x: hidden;
+      background:
+        radial-gradient(ellipse at 20% 18%, rgba(124,58,237,0.40), transparent 38%),
+        radial-gradient(ellipse at 82% 72%, rgba(245,158,11,0.22), transparent 40%),
+        radial-gradient(ellipse at 50% 110%, rgba(80,40,160,0.30), transparent 55%),
+        linear-gradient(180deg, #070318 0%, #0d0626 45%, #05021a 100%),
+        #02010a;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: url('assets/starfield.svg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.95;
+    }
+
+    /* === КОНТЕЙНЕР === */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* === ЗАГОЛОВОК === */
+    .page-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(20px, 4vw, 36px);
+      color: #ffe080;
+      text-align: center;
+      letter-spacing: 0.3em;
+      margin-bottom: 6px;
+    }
+    .page-subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: rgba(201,168,76,0.4);
+      text-align: center;
+      letter-spacing: 0.15em;
+      margin-bottom: 14px;
+    }
+
+    /* === ПЕРЕКЛЮЧАТЕЛЬ МАТРИЦ (3 восприятия) === */
+    .switcher-section {
+      margin-bottom: 30px;
+      padding: 12px;
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 14px;
+      background: rgba(14,8,32,0.28);
+      backdrop-filter: blur(8px);
+    }
+    .switcher-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: rgba(201,168,76,0.4);
+      text-align: center;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    #matrix-switcher-container {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* === СЕКЦИИ === */
+    .agents-section {
+      margin-bottom: 50px;
+    }
+    .section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(14px, 3vw, 20px);
+      color: #c9a84c;
+      text-align: center;
+      letter-spacing: 0.2em;
+      margin-bottom: 20px;
+    }
+
+    /* === СЕТКА АГЕНТОВ === */
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .agent-card {
+      background: rgba(14,8,32,0.28);
+      border: 1px solid rgba(201,168,76,0.22);
+      border-radius: 10px;
+      padding: 14px 10px;
+      transition: 0.3s;
+      text-align: center;
+      backdrop-filter: blur(8px) saturate(130%);
+      -webkit-backdrop-filter: blur(8px) saturate(130%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 22px rgba(0,0,0,0.32);
+    }
+    .agent-card:hover {
+      border-color: rgba(201,168,76,0.6);
+      transform: translateY(-3px);
+    }
+    .agent-name {
+      font-family: Cinzel, serif;
+      font-size: 14px;
+      color: #ffe080;
+      margin-bottom: 6px;
+    }
+    .agent-domain {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      color: rgba(212,212,212,0.85);
+      margin-bottom: 8px;
+    }
+    .agent-meta {
+      font-size: 9px;
+      color: rgba(201,168,76,0.55);
+      line-height: 1.6;
+      letter-spacing: 0.04em;
+    }
+
+    /* === СЕТКА МАТРИЦ === */
+    .matrices-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .matrix-card {
+      background: rgba(14,8,32,0.28);
+      border: 1px solid rgba(201,168,76,0.22);
+      border-radius: 10px;
+      padding: 14px 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      position: relative;
+      backdrop-filter: blur(8px) saturate(130%);
+      -webkit-backdrop-filter: blur(8px) saturate(130%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 22px rgba(0,0,0,0.32);
+      animation: matrixFadeIn 0.5s ease both;
+    }
+    .matrix-card:hover {
+      border-color: rgba(201,168,76,0.6);
+      transform: translateY(-3px);
+    }
+    .matrix-card.active {
+      border-color: #ffe080;
+      box-shadow: 0 0 20px rgba(255,224,128,0.3);
+      background: rgba(201,168,76,0.1);
+    }
+    .matrix-card.switching {
+      animation: matrixPulse 0.4s ease;
+    }
+    .matrix-name {
+      font-family: Cinzel, serif;
+      font-size: 14px;
+      color: #ffe080;
+      margin-bottom: 6px;
+    }
+    .matrix-conflict {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      color: rgba(212,212,212,0.85);
+      margin-bottom: 8px;
+    }
+    .matrix-visual {
+      font-size: 9px;
+      color: rgba(201,168,76,0.55);
+      line-height: 1.6;
+      letter-spacing: 0.04em;
+    }
+    .matrix-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      background: rgba(255,224,128,0.2);
+      color: #ffe080;
+      border: 1px solid rgba(255,224,128,0.4);
+    }
+    .matrix-id {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-size: 8px;
+      color: rgba(201,168,76,0.3);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* === КНОПКА НАЗАД === */
+    .back-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 30px;
+      min-height: 44px;
+      background: rgba(201,168,76,0.15);
+      border: 2px solid #c9a84c;
+      border-radius: 6px;
+      color: #c9a84c;
+      font-family: Cinzel, serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      z-index: 1000;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .back-btn:hover {
+      background: rgba(201,168,76,0.25);
+      border-color: #ffe080;
+    }
+
+    /* === АНИМАЦИИ === */
+    @keyframes matrixPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); border-color: #ffe080; }
+      100% { transform: scale(1); }
+    }
+    @keyframes matrixFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === АДАПТИВ === */
+    @media (min-width: 768px) {
+      .matrices-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+      .agents-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+      .agent-name { font-size: 14px; }
+    }
+    @media (min-width: 1024px) {
+      .matrices-grid { grid-template-columns: repeat(6, 1fr); gap: 15px; }
+    }
+    @media (max-width: 375px) {
+      .matrix-name { font-size: 12px; }
+      .matrix-conflict { font-size: 10px; }
+      .matrix-visual { font-size: 9px; }
+      .matrix-card { padding: 10px 6px; }
+      .agent-name { font-size: 12px; }
+      .agent-domain { font-size: 10px; }
+      .agent-meta { font-size: 9px; }
+      .agent-card { padding: 10px 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- ЗАГОЛОВОК -->
+  <div class="page-title" data-i18n="matrix.page.title">МАТРИЦЫ ВОСПРИЯТИЯ</div>
+  <div class="page-subtitle" id="matrix-count-label" data-i18n="matrix.loading">загрузка...</div>
+
+  <!-- ПЕРЕКЛЮЧАТЕЛЬ 3 ОСНОВНЫХ МАТРИЦ -->
+  <div class="switcher-section">
+    <div class="switcher-label" data-i18n="matrix.switcher.label">АКТИВНОЕ ВОСПРИЯТИЕ</div>
+    <div id="matrix-switcher-container"></div>
+  </div>
+
+  <!-- 21 АГЕНТ -->
+  <div class="agents-section">
+    <div class="section-title" data-i18n="matrix.agents.section">21 АГЕНТ</div>
+    <div class="agents-grid" id="agents-grid"></div>
+  </div>
+
+  <!-- 33 МАТРИЦЫ -->
+  <div class="section-title" data-i18n="matrix.matrices.section">33 МАТРИЦЫ</div>
+  <div class="matrices-grid" id="matrices-grid"></div>
+</div>
+
+<a href="index.html" class="back-btn" data-i18n="nav.lobby">← ЛОББИ</a>
+
+<!-- МОДУЛИ -->
+<script type="module">
+  import { t, initLang, applyTranslations } from './js/i18n.js';
+  import { loadAgents, loadMatrices, getAgentById, getMatrixById, getAgentMatrixEntry } from './js/canon-module.js';
+  import { renderSwitcher, getActivePerception, setActivePerception, PERCEPTIONS } from './js/matrixSwitcher.js';
+  import { loadState, updateState } from './js/state-module.js';
+  import { showToast } from './js/ui-module.js';
+  initLang();
+
+  // === LOOKUP MAPS FOR TRANSLATION ===
+  const GUNA_MAP = {'саттва':'guna.sattva','раджас':'guna.rajas','тамас':'guna.tamas'};
+  const DIR_MAP = {'Восток':'dir.east','Запад':'dir.west','Север':'dir.north','Юг':'dir.south','Северо-Восток':'dir.northeast','Северо-Запад':'dir.northwest','Юго-Восток':'dir.southeast','Юго-Запад':'dir.southwest','Центр':'dir.center'};
+  const PLANET_MAP = {'Солнце':'planet.sun','Луна':'planet.moon','Марс':'planet.mars','Меркурий':'planet.mercury','Юпитер':'planet.jupiter','Венера':'planet.venus','Сатурн':'planet.saturn','Раху':'planet.rahu','Брахмастан':'planet.brahmastan'};
+  const EL_MAP = {'Огонь':'el.fire','Вода':'el.water','Земля':'el.earth','Воздух':'el.air','Эфир':'el.ether'};
+  function tLookup(map, val) { const k = map[val]; return k ? t(k) : val; }
+
+  // === СОСТОЯНИЕ ===
+  let activeMatrixSlug = getActivePerception();
+  let allMatrices = [];
+  let allAgents = [];
+
+  // === ИНИЦИАЛИЗАЦИЯ ===
+  async function init() {
+    try {
+      [allAgents, allMatrices] = await Promise.all([
+        loadAgents(),
+        loadMatrices()
+      ]);
+
+      if (allAgents && allAgents.length === 21) {
+        renderAgents(allAgents);
+      } else {
+        console.warn('[Matrix Screen] Агентов загружено:', allAgents?.length);
+      }
+
+      if (allMatrices && allMatrices.length === 33) {
+        renderMatrices(allMatrices);
+        document.getElementById('matrix-count-label').textContent =
+          t('matrix.count') + ' · ' + allMatrices.length + ' ' + t('matrix.loaded');
+      } else {
+        console.warn('[Matrix Screen] Матриц загружено:', allMatrices?.length);
+      }
+
+      // Переключатель 3 восприятий
+      const switcherContainer = document.getElementById('matrix-switcher-container');
+      renderSwitcher(switcherContainer, onPerceptionChange);
+
+      console.log('[Matrix Screen] Готов. Агентов:', allAgents?.length, 'Матриц:', allMatrices?.length);
+    } catch (e) {
+      console.error('[Matrix Screen] Ошибка инициализации:', e);
+    }
+  }
+
+  // === ОТРИСОВКА 21 АГЕНТА ===
+  function renderAgents(agents) {
+    const grid = document.getElementById('agents-grid');
+    if (!grid) return;
+
+    grid.innerHTML = agents.map(ag => {
+      const name = t('agent.' + ag.slug + '.name') !== 'agent.' + ag.slug + '.name' ? t('agent.' + ag.slug + '.name') : (ag.name || ag.id);
+      const domain = t('agent.' + ag.slug + '.domain') !== 'agent.' + ag.slug + '.domain' ? t('agent.' + ag.slug + '.domain') : (ag.domain || '');
+      const guna = tLookup(GUNA_MAP, ag.guna || '');
+      const dir = tLookup(DIR_MAP, ag.vastu_zone || '');
+      const planet = tLookup(PLANET_MAP, ag.planet || '');
+      const element = tLookup(EL_MAP, ag.element || '');
+      return '<div class="agent-card">' +
+      '<div class="agent-name">' + name + '</div>' +
+      '<div class="agent-domain">' + domain + '</div>' +
+      '<div class="agent-meta">' +
+        guna + ' · ' + dir + ' · ' + planet + '<br>' +
+        element + ' · ' + t('matrix.element') + ' ' + (ag.ray || '') +
+      '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // === ОТРИСОВКА 33 МАТРИЦ ===
+  function renderMatrices(matrices) {
+    const grid = document.getElementById('matrices-grid');
+    if (!grid) return;
+
+    grid.innerHTML = matrices.map((m, i) => {
+      const isActive = m.slug === activeMatrixSlug;
+      return (
+        '<div class="matrix-card' + (isActive ? ' active' : '') + '" data-slug="' + m.slug + '" style="animation-delay:' + (i * 0.02) + 's;">' +
+        (isActive ? '<div class="matrix-badge">' + t('matrix.active') + '</div>' : '') +
+        '<div class="matrix-id">#' + (m.id || (i + 1)) + '</div>' +
+        '<div class="matrix-name">' + (t('mdata.' + m.slug + '.name') !== 'mdata.' + m.slug + '.name' ? t('mdata.' + m.slug + '.name') : (m.name || t('matrix.default.name') + ' ' + (i + 1))) + '</div>' +
+        '<div class="matrix-conflict">' + (t('mdata.' + m.slug + '.conflict') !== 'mdata.' + m.slug + '.conflict' ? t('mdata.' + m.slug + '.conflict') : (m.conflict || '')) + '</div>' +
+        '<div class="matrix-visual">' + (t('mdata.' + m.slug + '.visual') !== 'mdata.' + m.slug + '.visual' ? t('mdata.' + m.slug + '.visual') : (m.visual_code || '')) + '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    // Привязываем клики
+    grid.querySelectorAll('.matrix-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const slug = card.dataset.slug;
+        if (slug) activateMatrix(slug);
+      });
+    });
+  }
+
+  // === АКТИВАЦИЯ МАТРИЦЫ ===
+  function activateMatrix(slug) {
+    if (slug === activeMatrixSlug) return;
+
+    const prevSlug = activeMatrixSlug;
+    activeMatrixSlug = slug;
+
+    // Сохраняем
+    setActivePerception(slug);
+
+    // Анимируем карточку
+    const card = document.querySelector('.matrix-card[data-slug="' + slug + '"]');
+    if (card) {
+      card.classList.add('switching');
+      setTimeout(() => card.classList.remove('switching'), 400);
+    }
+
+    // Перерисовываем
+    renderMatrices(allMatrices);
+
+    // Обновляем state
+    const state = loadState();
+    state.activeMatrix = slug;
+    updateState({ matrix: slug });
+
+    // Уведомление
+    const matrix = allMatrices.find(m => m.slug === slug);
+    if (matrix) {
+      showToast(t('matrix.toast.selected') + ' ' + matrix.name, 2000);
+    }
+
+    console.log('[Matrix Screen] Переключение:', prevSlug, '→', slug);
+  }
+
+  // === КОЛЛБЭК ПРИ СМЕНЕ ВОСПРИЯТИЯ ===
+  function onPerceptionChange(perceptionId) {
+    // Находим соответствующую полную матрицу
+    const fullMatrix = allMatrices.find(m => m.slug === perceptionId);
+    if (fullMatrix && fullMatrix.slug !== activeMatrixSlug) {
+      activateMatrix(fullMatrix.slug);
+    }
+    console.log('[Matrix Screen] Восприятие изменено:', perceptionId);
+  }
+
+  // === СТАРТ ===
+  init();
+    applyTranslations();
+</script>
+
+
+<!-- Подсказки (M-006) -->
+<button class="hint-btn" title="Подсказки" data-i18n-title="app.help">?</button>
+<script type="module">
+import { initHints } from './js/hints-module.js';
+initHints('matrix');
+</script>
+
+<!-- M-033: RU/EN переключатель -->
+<div style="position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px">
+  <button id="lang-ru" onclick="localStorage.setItem('awara_lang','ru');if(window.switchLang)window.switchLang('ru');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">RU</button>
+  <button id="lang-en" onclick="localStorage.setItem('awara_lang','en');if(window.switchLang)window.switchLang('en');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">EN</button>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang, createLangSwitcher } from './js/i18n.js';
+window.switchLang = function(lang) {
+  setLang(lang);
+  translatePage();
+  createLangSwitcher();
+  document.querySelectorAll('#lang-ru,#lang-en').forEach(function(b){
+    b.style.borderColor = b.textContent === lang.toUpperCase() ? '#ffd700' : 'rgba(201,168,76,.2)';
+    b.style.color = b.textContent === lang.toUpperCase() ? '#ffd700' : '#c9a84c';
+  });
+};
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  createLangSwitcher();
+  var cur = getLang();
+  if (window.switchLang) window.switchLang(cur);
+});
+</script>
+</body>
+</html>

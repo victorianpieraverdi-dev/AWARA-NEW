@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<script>document.documentElement.className+=' aw-booting aw-solo-istok';</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#05050d">
+<title>Тигель</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05050d;--violet:#7b62c9;--violet-soft:#9d86e0;--gold:#c9a84c;--spark:#ffd27a;--text:#ece9f5;--muted:#8e88a4;--line:rgba(201,168,76,.16)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+/* === boot-veil: появление из темноты (скрывает мелькание окон на старте) === */
+body::before{content:"";position:fixed;inset:0;z-index:100001;background:radial-gradient(circle at 50% 42%,rgba(255,210,122,.30) 0%,rgba(201,168,76,.18) 14%,rgba(123,98,201,.14) 30%,#0c0a22 58%,#050414 80%,#020109 100%);pointer-events:none;opacity:0;visibility:hidden}
+/* boot-veil ПОЛНОСТЬЮ убран: никакого окна-заслона перед Истоком */
+@keyframes bootVeil{0%{opacity:1}80%{opacity:1}100%{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){body::before{animation-duration:.5s}}
+/* === boot: всплытие окна со дна (открытие как книга/сундук) + стекающая вода по краям === */
+.phone{animation:none}
+@keyframes phoneSurface{0%{transform:scale(.8) translateY(16px);filter:blur(9px) brightness(.38) saturate(.65);opacity:.2}40%{filter:blur(4px) brightness(.7) saturate(.85)}65%{opacity:1}100%{transform:scale(1) translateY(0);filter:blur(0) brightness(1) saturate(1);opacity:1}}
+.phone::after{content:"";position:absolute;inset:0;border-radius:44px;pointer-events:none;z-index:58;opacity:0;background:linear-gradient(to bottom,transparent,rgba(4,5,13,.72),transparent),linear-gradient(to bottom,transparent,rgba(150,140,180,.22),transparent),linear-gradient(to bottom,transparent,rgba(4,5,13,.72),transparent),linear-gradient(to bottom,transparent,rgba(150,140,180,.22),transparent),linear-gradient(to bottom,rgba(2,3,9,.7),rgba(3,4,12,.32) 34%,transparent 60%);background-repeat:no-repeat;background-size:3px 46%,1.5px 40%,3px 46%,1.5px 40%,100% 100%;background-position:9% -55%,24% -55%,77% -55%,91% -55%,0 -100%}
+@keyframes phoneDrip{0%{opacity:0;background-position:9% -55%,24% -55%,77% -55%,91% -55%,0 -100%}16%{opacity:1}100%{opacity:0;background-position:9% 155%,24% 155%,77% 155%,91% 155%,0 0}}
+@media (prefers-reduced-motion:reduce){.phone{animation:none}.phone::after{animation:none;opacity:0}}
+body{font-family:'Cormorant Garamond',Georgia,serif;background:#05050d;color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:0;overflow:hidden}
+.phone{width:100%;max-width:100%;height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;position:relative;border:none;border-radius:0;overflow:hidden;display:flex;flex-direction:column;background:#05050d;box-shadow:none}
+.notch{display:none;position:absolute;top:10px;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#050509;border-radius:0 0 16px 16px;z-index:40}
+.cosmos{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.neb{position:absolute;border-radius:50%;filter:blur(50px);opacity:.55;mix-blend-mode:screen;animation:drift 26s ease-in-out infinite}
+.neb.a{width:340px;height:340px;top:-90px;left:-70px;background:radial-gradient(circle,#5b3ea8,transparent 70%)}
+.neb.b{width:300px;height:300px;bottom:40px;right:-90px;background:radial-gradient(circle,#8a6a2e,transparent 70%);animation-delay:-8s}
+.neb.c{width:260px;height:260px;top:40%;left:30%;background:radial-gradient(circle,#3a2f73,transparent 70%);animation-delay:-15s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-24px) scale(1.12)}}
+canvas#stars{position:absolute;inset:0;width:100%;height:100%}
+.scanline{position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 3px,rgba(255,255,255,.012) 3px 4px);pointer-events:none}
+.screen{position:relative;z-index:2;flex:1;overflow-y:auto;padding:54px 22px 92px;display:none}
+.screen.active{display:block}
+/* boot-lock: пока грузится, виден только активный Исток — чужие окна не мелькают */
+html.aw-booting .screen{display:none!important}html.aw-booting #s-istok{display:block!important;visibility:hidden!important}
+html.aw-booting .phone>*:not(.notch):not(.cosmos):not(#s-istok):not(#lensWinBg):not(#lensWinBgOv){display:none!important}
+html.aw-booting #lensWinBg,html.aw-booting #lensWinBgOv{opacity:0!important}
+html.aw-booting .cosmos{opacity:0!important}
+html.aw-booting *,html.aw-booting *::before,html.aw-booting *::after{transition:none!important;animation-duration:0s!important;animation-delay:0s!important}
+/* reveal: Исток плавно проявляется из пустоты космоса */
+html.aw-reveal #s-istok .orb-wrap{animation:orbBirth 1s cubic-bezier(.2,.7,.2,1) both}
+html.aw-reveal #s-istok>*:not(.orb-wrap){animation:istokRise .8s ease .65s both}
+html.aw-reveal .cosmos{animation:cosmosRise .9s ease .5s both}
+#s-istok .orb-wrap{cursor:pointer}
+@keyframes cosmosRise{0%{opacity:0}100%{opacity:1}}
+@keyframes orbBirth{0%{opacity:0;transform:scale(.04);filter:blur(8px)}42%{opacity:1}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+@keyframes istokRise{0%{opacity:0;transform:translateY(8px) scale(.992)}100%{opacity:1;transform:none}}
+/* solo-istok: пока идёт инициализация модулей — на экране ТОЛЬКО Исток, чужие экраны не мелькают */
+html.aw-solo-istok .screen{display:none!important}
+html.aw-solo-istok #s-istok{display:block!important}
+html.aw-solo-istok .phone>*:not(.notch):not(.cosmos):not(#s-istok):not(.nav):not(#lensWinBg):not(#lensWinBgOv){display:none!important}
+.screen::-webkit-scrollbar{width:0}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);opacity:.85}
+h1{font-family:'Cinzel',serif;font-weight:400;font-size:26px;letter-spacing:.03em;margin:8px 0 4px;color:#fff;text-shadow:0 0 22px rgba(201,168,76,.18)}
+h2{font-family:'Cinzel',serif;font-weight:400;font-size:16px;letter-spacing:.05em;margin:22px 0 12px;color:var(--gold)}
+p.sub{color:var(--muted);font-size:16px;line-height:1.45}
+.label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block}
+.input{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:13px;color:var(--text);font-family:'Cormorant Garamond',serif;font-size:17px;outline:none;margin-bottom:10px}
+.input:focus{border-color:rgba(201,168,76,.5)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.orb-wrap{display:flex;justify-content:center;margin:14px 0 18px}
+.orb{width:160px;height:160px;border-radius:50%;position:relative;background:radial-gradient(circle at 50% 50%,rgba(255,216,135,.98) 0 2.4%,rgba(255,201,112,.4) 4.5%,transparent 11%),radial-gradient(circle at 50% 40%,rgba(92,78,152,.42),rgba(28,22,52,.82) 52%,#09070f 76%);box-shadow:0 0 64px rgba(123,98,201,.42),0 0 26px rgba(201,168,76,.3),inset 0 0 52px rgba(7,5,18,.92),inset 0 10px 34px rgba(157,134,224,.22);animation:breathe 5s ease-in-out infinite;display:flex;align-items:center;justify-content:center}
+.orb::before{content:"";position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(from 200deg,rgba(201,168,76,.55),rgba(123,98,201,.55),rgba(201,168,76,.18),rgba(123,98,201,.55),rgba(201,168,76,.55));-webkit-mask:radial-gradient(circle,transparent 71%,#000 74%,#000 79%,transparent 83%);mask:radial-gradient(circle,transparent 71%,#000 74%,#000 79%,transparent 83%);opacity:.8;animation:spin 18s linear infinite}
+.orb::after{content:"";position:absolute;inset:-26px;border-radius:50%;border:1px dashed rgba(123,98,201,.34);animation:spin 26s linear infinite reverse}
+.orb span{font-size:0;width:0;height:0;overflow:hidden}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orb.melting{animation:breathe .9s ease-in-out infinite}
+textarea{width:100%;min-height:92px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:14px;color:var(--text);font-family:'Cormorant Garamond',serif;font-size:17px;resize:none;outline:none}
+textarea::placeholder{color:#5d586e}
+textarea:focus{border-color:rgba(201,168,76,.5)}
+.deck-head{display:flex;justify-content:space-between;align-items:baseline}
+.search{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:10px 13px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;margin:6px 0 12px}
+.deck{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-height:330px;overflow-y:auto;padding-right:4px}
+.deck::-webkit-scrollbar{width:4px}.deck::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:4px}
+.mcard{position:relative;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 12px;background:rgba(255,255,255,.015);cursor:pointer;transition:all .35s ease;overflow:hidden}
+.mcard:hover{border-color:rgba(201,168,76,.45);transform:translateY(-2px);box-shadow:0 10px 24px -16px rgba(201,168,76,.5)}
+.mcard .gl{font-size:24px;display:block;margin-bottom:8px}
+.mcard .nm{font-family:'Cinzel',serif;font-size:14px;color:#fff;line-height:1.15}
+.mcard .el{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-top:5px}
+.mcard.on{border-color:var(--gold);background:linear-gradient(150deg,rgba(201,168,76,.22),rgba(123,98,201,.12));box-shadow:0 0 24px rgba(201,168,76,.25)}
+.mcard.on::after{content:"✓";position:absolute;top:9px;right:11px;color:var(--spark);font-size:14px}
+.mcard .lv-badge{position:absolute;bottom:6px;right:8px;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.06em;color:var(--gold);background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:1px 6px}
+.counter{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.1em}
+.btn{width:100%;margin-top:20px;padding:16px;border:none;border-radius:16px;cursor:pointer;font-family:'Cinzel',serif;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:#0a0a14;background:linear-gradient(120deg,var(--gold),var(--spark));box-shadow:0 8px 34px rgba(201,168,76,.35);transition:.2s}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--line);box-shadow:none}
+.card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;backdrop-filter:blur(4px)}
+.light-ring{display:flex;align-items:center;gap:16px}
+.ring{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;background:conic-gradient(var(--gold) 0% 84%,rgba(255,255,255,.06) 84% 100%);position:relative}
+.ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:#0a0a14}
+.ring b{position:relative;font-family:'Cinzel',serif;font-size:21px;color:var(--spark)}
+.adv{font-style:italic;font-size:17px;line-height:1.5;color:#e6e1f2}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.gen{background:rgba(123,98,201,.08);border:1px solid rgba(123,98,201,.22);border-radius:14px;padding:13px;text-align:center}
+.gen .ic{font-size:22px}.gen .nm{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--muted);margin-top:6px;text-transform:uppercase}.gen{cursor:pointer;transition:.22s}.gen:hover{border-color:var(--gold);background:linear-gradient(150deg,rgba(201,168,76,.14),rgba(123,98,201,.12));transform:translateY(-2px);box-shadow:0 10px 24px -14px rgba(201,168,76,.55)}#genModal .genbody ul{margin:6px 0 0;padding-left:18px}#genModal .genbody li{font-size:13px;color:#d7d2e8;margin:3px 0;line-height:1.45}#genModal .genbody .adv{font-size:14px;line-height:1.55;margin:6px 0;color:#cfc9e0}#genModal .genbody .card:not(.awara-glass-card){background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:10px 12px}#genModal .genbody .label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.aifab{position:fixed;right:14px;bottom:78px;width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,var(--violet),var(--gold));color:#fff;font-size:22px;z-index:45;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+#aiChat{max-height:36vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.bub{padding:8px 11px;border-radius:12px;font-size:13px;line-height:1.45;max-width:92%}
+.bub.user{align-self:flex-end;background:rgba(123,98,201,.25);border:1px solid var(--line)}
+.bub.daimon{align-self:flex-start;background:rgba(201,168,76,.12);border:1px solid var(--line)}
+.aifield{width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;color:var(--spark);padding:8px;font-family:'JetBrains Mono',monospace;font-size:12px;margin:4px 0}
+.tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--violet-soft);text-transform:uppercase}
+.planets{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.pl{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:rgba(255,255,255,.02)}
+.pl .sym{font-size:18px;width:22px;text-align:center}
+.pl .t{font-size:14px}.pl .t b{font-family:'Cinzel',serif;color:#fff;font-size:13px}.pl .t span{display:block;font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.dm-hero{text-align:center;padding:6px 0 4px}
+.dm-orb{width:150px;height:150px;border-radius:50%;margin:6px auto 14px;position:relative;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 42% 36%,var(--violet-soft),var(--violet) 52%,#241a48 78%);box-shadow:0 0 60px rgba(123,98,201,.5),inset 0 0 40px rgba(157,134,224,.4)}
+.dm-orb::before{content:"";position:absolute;inset:-14px;border-radius:50%;border:1px dashed rgba(157,134,224,.5);animation:spin 18s linear infinite}
+.dm-orb span{font-size:58px;filter:drop-shadow(0 0 14px rgba(157,134,224,.8))}
+.dm-name{font-family:'Cinzel',serif;font-size:24px;color:#fff;letter-spacing:.04em}
+.dm-sig{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--violet-soft);text-transform:uppercase;margin-top:4px}
+.arc{display:flex;align-items:center;gap:6px;margin-top:8px}
+.arc .st{flex:1;text-align:center;padding:9px 4px;border:1px solid var(--line);border-radius:11px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.arc .st.now{border-color:var(--violet-soft);color:#fff;background:rgba(123,98,201,.18)}
+.arc .ar{color:var(--muted);font-size:11px}
+.trait{display:flex;justify-content:space-between;font-size:15px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.trait b{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:12px}
+.meter{height:6px;border-radius:6px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:5px}
+.meter i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--violet),var(--violet-soft))}
+.year{display:grid;grid-template-columns:repeat(14,1fr);gap:5px;margin-top:6px}
+.day{aspect-ratio:1;border-radius:3px;background:rgba(255,255,255,.05)}
+.day.l1{background:rgba(123,98,201,.45)}.day.l2{background:rgba(201,168,76,.55)}.day.l3{background:linear-gradient(135deg,var(--gold),var(--spark));box-shadow:0 0 8px rgba(255,210,122,.5)}
+.legend{display:flex;gap:14px;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:middle}
+.streak{display:flex;justify-content:space-between;margin-top:16px;gap:10px}
+.streak .s{flex:1;text-align:center;padding:13px;border:1px solid var(--line);border-radius:14px}
+.streak .s b{display:block;font-family:'Cinzel',serif;font-size:24px;color:var(--gold)}
+.streak .s span{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.week{display:flex;gap:6px;margin:6px 0 16px}
+.wd{flex:1;text-align:center;padding:10px 0;border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:.2s}
+.wd .dn{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.wd .dd{font-family:'Cinzel',serif;font-size:17px;color:#fff;margin-top:3px}
+.wd.on{border-color:var(--gold);background:linear-gradient(160deg,rgba(201,168,76,.2),rgba(123,98,201,.1))}
+.wd.has::after{content:"";display:block;width:5px;height:5px;border-radius:50%;background:var(--spark);margin:5px auto 0}
+.intent{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:10px;background:rgba(255,255,255,.025);transition:.25s}
+.intent .chk{width:26px;height:26px;border-radius:8px;border:1.5px solid var(--violet-soft);flex:0 0 auto;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#0a0a14;transition:.2s}
+.intent.done{opacity:.62;border-color:var(--gold)}
+.intent.done .chk{background:linear-gradient(120deg,var(--gold),var(--spark));border-color:var(--gold)}
+.intent .body{flex:1}
+.intent .ti{font-size:16px;color:#fff;line-height:1.25}
+.intent.done .ti{text-decoration:line-through;color:var(--muted)}
+.intent .pat{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.05em;color:var(--violet-soft);text-transform:uppercase;margin-top:5px}
+.intent .bonus{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);flex:0 0 auto}
+.addrow{display:flex;gap:8px;align-items:stretch}
+.addrow .input{flex:1;margin:0}
+.toast{position:absolute;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);background:linear-gradient(120deg,rgba(201,168,76,.96),rgba(255,210,122,.96));color:#0a0a14;font-family:'Cinzel',serif;font-size:14px;padding:12px 20px;border-radius:30px;box-shadow:0 10px 40px rgba(201,168,76,.5);opacity:0;pointer-events:none;transition:.4s;z-index:55;white-space:nowrap;max-width:88%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.libmodal{position:absolute;inset:0;z-index:60;background:rgba(3,3,12,.86);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:26px}
+.libmodal.open{display:flex}
+.libcard{width:100%;max-height:84%;overflow-y:auto;border:1px solid var(--line);border-radius:24px;padding:24px;background:linear-gradient(160deg,#0d0b1c,#070611);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.libcard .libglyph{font-size:48px;text-align:center;filter:drop-shadow(0 0 16px rgba(201,168,76,.5))}
+.libcard .libel{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--violet-soft);text-transform:uppercase}
+.nav{position:absolute;bottom:0;left:0;right:0;height:74px;background:rgba(5,5,13,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;z-index:30;padding-bottom:8px}
+.nav button{background:none;border:none;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.02em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:.2s}
+.nav button .ic{font-size:16px}.nav button.active{color:var(--gold)}
+.mx-skin-label{display:none!important}
+#tcFab{display:none!important}
+.aifab{display:none!important}
+
+/* Правые верхние кнопки (подсказки + матрицы) */
+.topRightBtns{position:absolute;top:12px;right:14px;z-index:80;display:flex;flex-direction:column;gap:8px}
+.trBtn{padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:rgba(8,7,18,.55);backdrop-filter:blur(10px);color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.trBtn:active{transform:scale(.98)}
+.trBtn.ghost{color:var(--muted)}
+
+/* прячем встроенную шестерёнку панели уровней, оставляем только нашу кнопку */
+#asc-test-btn{display:none!important}
+
+/* Места силы: заголовок подхватывает цвет активной линзы (--lens); левый акцент карточек уже на var(--lens) */
+#lensPlaces .lp-t{color:var(--lens,var(--text))!important}
+</style>
+<link rel="stylesheet" href="awara-ds.css?v=9">
+<script>
+/* AWARA — глушим мелькающую подпись «✦ Тигель» под сферой: убираем до отрисовки, чтобы не мелькала */
+(function(){
+  function kill(){
+    try{
+      var ns=document.querySelectorAll('.mx-skin-label');
+      for(var i=0;i<ns.length;i++){ if(ns[i]&&ns[i].parentNode) ns[i].parentNode.removeChild(ns[i]); }
+      var all=document.querySelectorAll('body *');
+      for(var j=0;j<all.length;j++){ var el=all[j], tc=(el.textContent||''); if(tc.length<40 && tc.indexOf('\u2726')>=0 && tc.indexOf('\u0422\u0438\u0433\u0435\u043b\u044c')>=0){ if(el.parentNode) el.parentNode.removeChild(el); } }
+    }catch(e){}
+  }
+  try{ var mo=new MutationObserver(kill); mo.observe(document.documentElement,{childList:true,subtree:true}); }catch(e){}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', kill); else kill();
+})();
+</script>
+</head>
+<body>
+<style>
+#tigelEntryVeil{position:fixed;inset:0;z-index:100004;pointer-events:none;background:#05050a;opacity:1;transition:opacity .7s ease}
+#tigelEntryVeil.reveal{opacity:0}
+#tigelExitVeil{position:fixed;inset:0;z-index:100003;pointer-events:none;background:#05050a;opacity:0;transition:opacity .6s ease}
+#tigelExitVeil.active{opacity:1}
+</style>
+<div id="tigelEntryVeil"></div>
+<div id="tigelExitVeil"></div>
+<div id="awEntry"><div class="awEntry-stage"><div class="awEntry-aura"></div><div class="awEntry-orb"></div><div class="awEntry-hole"></div></div><div class="awEntry-cap">Войди в сферу</div></div>
+<style>
+#awEntry{position:fixed;inset:0;z-index:100002;background:radial-gradient(circle at 50% 50%,#0b0916 0%,#050409 50%,#000 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:42px;cursor:pointer}
+#awEntry.gone{animation:awEntryOut 1.7s ease forwards;pointer-events:none}
+.awEntry-stage{position:relative;display:flex;align-items:center;justify-content:center}
+.awEntry-aura{position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(150,120,232,.42),rgba(150,120,232,.14) 42%,transparent 70%);filter:blur(18px);opacity:0;transform:scale(1);pointer-events:none}
+.awEntry-orb{width:186px;height:186px;border-radius:50%;position:relative;opacity:0;transform:scale(.02);background:radial-gradient(circle at 50% 50%,rgba(255,236,182,1) 0 3%,rgba(255,206,120,.55) 5.5%,transparent 12%),radial-gradient(circle at 50% 40%,rgba(120,98,196,.5),rgba(30,24,56,.85) 52%,#08060e 78%);box-shadow:0 0 120px rgba(140,112,228,.5),0 0 58px rgba(201,168,76,.42),0 0 24px rgba(255,226,150,.55),inset 0 0 64px rgba(7,5,18,.92),inset 0 12px 42px rgba(170,144,236,.3)}
+.awEntry-orb::before{content:"";position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(from 200deg,rgba(214,180,92,.85),rgba(150,120,232,.8),rgba(214,180,92,.25),rgba(150,120,232,.8),rgba(214,180,92,.85));-webkit-mask:radial-gradient(circle,transparent 69%,#000 72%,#000 80%,transparent 84%);mask:radial-gradient(circle,transparent 69%,#000 72%,#000 80%,transparent 84%);opacity:1;animation:awSpin 16s linear infinite}
+.awEntry-orb::after{content:"";position:absolute;inset:-30px;border-radius:50%;border:1px dashed rgba(150,120,232,.4);animation:awSpin 24s linear infinite reverse}
+.awEntry-hole{position:absolute;width:186px;height:186px;border-radius:50%;opacity:0;transform:scale(.18);background:radial-gradient(circle at 50% 50%,#000 0 34%,rgba(28,20,58,.94) 60%,#08060e 82%);box-shadow:0 0 80px rgba(126,96,214,.55),inset 0 0 44px #000;pointer-events:none}
+.awEntry-cap{font-family:'Cinzel','Cormorant Garamond',serif;font-size:12px;letter-spacing:.36em;text-transform:uppercase;color:rgba(214,180,92,.85);opacity:0}
+#awEntry.go .awEntry-orb{animation:awBirth 2.6s cubic-bezier(.2,.7,.2,1) both}
+#awEntry.go .awEntry-aura{animation:awAura 1.9s ease .4s forwards,awPulse 4.4s ease-in-out 2.1s infinite}
+#awEntry.go .awEntry-cap{animation:awCapIn 1.5s ease 1.9s forwards}
+#awEntry.gone .awEntry-orb{animation:awOrbOut .7s cubic-bezier(.6,0,.9,.3) forwards}
+#awEntry.gone .awEntry-aura{animation:awSuck .5s ease-in forwards}
+#awEntry.gone .awEntry-hole{animation:awHole 1.55s cubic-bezier(.72,0,.84,.28) forwards}
+#awEntry.gone .awEntry-cap{animation:awCapOut .4s ease forwards}
+@keyframes awBirth{0%{opacity:0;transform:scale(.02);filter:blur(12px)}45%{opacity:1}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+@keyframes awAura{to{opacity:1}}
+@keyframes awPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.14);opacity:1}}
+@keyframes awCapIn{to{opacity:1}}
+@keyframes awCapOut{to{opacity:0;transform:translateY(8px)}}
+@keyframes awSpin{to{transform:rotate(360deg)}}
+@keyframes awSuck{0%{transform:scale(1);opacity:.85}100%{transform:scale(0);opacity:0}}
+@keyframes awOrbOut{0%{transform:scale(1);opacity:1;filter:blur(0)}28%{transform:scale(.84)}100%{transform:scale(.42);opacity:0;filter:blur(4px)}}
+@keyframes awHole{0%{opacity:0;transform:scale(.18)}14%{opacity:1;transform:scale(.66)}100%{opacity:1;transform:scale(24)}}
+@keyframes awEntryOut{0%{opacity:1}42%{opacity:1}100%{opacity:0}}
+.phone.aw-portal-in{animation:awPortalIn 1.5s cubic-bezier(.2,.7,.2,1) both}
+@keyframes awPortalIn{0%{opacity:.2;transform:scale(1.2)}42%{opacity:1}100%{opacity:1;transform:scale(1)}}
+#awEntry.sg .awEntry-orb,#awEntry.sg .awEntry-aura,#awEntry.sg .awEntry-cap{opacity:0!important;transition:opacity .4s ease}
+#awEntry.sg.sgout{opacity:0;transition:opacity .7s ease}
+@media (prefers-reduced-motion:reduce){#awEntry.go .awEntry-orb{animation-duration:.6s}#awEntry.gone .awEntry-hole{animation-duration:.6s}.phone.aw-portal-in{animation-duration:.5s}}
+</style>
+<script>(function(){var e=document.getElementById('awEntry');if(!e)return;
+var isDirect=new URLSearchParams(window.location.search).has('direct');
+var veil=document.getElementById('tigelEntryVeil');
+if(isDirect){e.parentNode.removeChild(e);if(veil){window.addEventListener('load',function(){setTimeout(function(){veil.classList.add('reveal');setTimeout(function(){if(veil.parentNode)veil.parentNode.removeChild(veil);},800);},50);});}return;}
+if(veil&&veil.parentNode)veil.parentNode.removeChild(veil);
+function start(){requestAnimationFrame(function(){requestAnimationFrame(function(){e.classList.add('go');});});}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(start,30);});}else{setTimeout(start,30);}
+function enter(){if(e.classList.contains('sg'))return;e.classList.add('sg');setTimeout(function(){var ph=document.querySelector('.phone');if(ph){ph.classList.add('aw-portal-in');setTimeout(function(){try{ph.classList.remove('aw-portal-in');}catch(_){}},1500);}try{e.classList.add('sgout');}catch(_){}},650);setTimeout(function(){try{if(e.parentNode)e.parentNode.removeChild(e);}catch(_){}},1600);}
+e.addEventListener('click',enter);})();</script>
+<div class="phone">
+  <div class="notch"></div>
+  <div class="topRightBtns">
+    <button class="trBtn" onclick="try{window.AwaraTutor&&AwaraTutor.toggleHints&&AwaraTutor.toggleHints()}catch(e){}">💡 Подсказки</button>
+    <button class="trBtn ghost" onclick="try{var b=document.getElementById('asc-test-btn'); if(b) b.click(); else if(window.AwaraAscension&&AwaraAscension.paint) AwaraAscension.paint();}catch(e){}">🧿 Матрицы 1–6</button>
+  </div>
+  <div class="cosmos"><div class="neb a"></div><div class="neb b"></div><div class="neb c"></div><canvas id="stars"></canvas><div class="scanline"></div></div>
+
+  <div class="screen active" id="s-istok">
+    <span class="eyebrow">Исток · начало пути</span>
+    <h1>Исток</h1>
+    <p class="sub">Исток — Алхимия твоего дня.</p>
+    <div class="orb-wrap"><div class="orb" style="width:132px;height:132px"><span>🌌</span></div></div>
+    <div class="card awara-glass-card glow"><span class="label">Твой миф</span><p class="adv ds-lore" id="mythText" style="font-size:16px">—</p></div>
+    <h2>Хроника пути</h2>
+    <div class="card awara-glass-card" style="padding:8px 16px" id="istokChron"></div>
+    <button class="btn awara-gold-button" onclick="go('tigel')">Открыть Тигель</button>
+    <!-- art+track moved to top-right ♫ button -->
+    <p class="sub" style="font-size:14px;text-align:center;margin-top:18px;color:var(--muted)">Пройди минимум от 7 до 21 дня в Сердце — и войди в игру</p>
+  </div>
+
+  <div class="screen" id="s-natal">
+    <span class="eyebrow">Основа · расчёт из даты</span>
+    <h1>Натальная карта</h1>
+    <p class="sub">Введи данные рождения — карта пересчитается сразу. Сидерический (Лахири), приближённый.</p>
+    <span class="label">Дата (ДД.ММ.ГГГГ)</span>
+    <input class="input" id="bDate" value="17.05.1991">
+    <div class="row2"><div><span class="label">Время</span><input class="input" id="bTime" value="18:20"></div><div><span class="label">Город</span><input class="input" id="bCity" value="Березники"></div></div>
+    <div class="row2"><div><span class="label">Широта</span><input class="input" id="bLat" value="59.41"></div><div><span class="label">Долгота</span><input class="input" id="bLon" value="56.78"></div></div>
+    <span class="label">Часовой пояс (UTC+)</span>
+    <input class="input" id="bTz" value="6">
+    <button class="btn awara-gold-button" onclick="calcNatal()">Рассчитать карту</button>
+    <h2>Карта (сидерическая)</h2>
+    <div class="planets" id="natalPlanets"></div>
+    <div class="card awara-glass-card" style="margin-top:14px"><span class="label">Подпись карты</span><p class="adv" id="natalSig" style="font-size:16px">—</p></div>
+  </div>
+
+  <div class="screen" id="s-tigel">
+    <span class="eyebrow" id="tigelDay">День · Тигель</span>
+    <h1>Тигель</h1>
+    <p class="sub">Положи прожитый день внутрь — и он переплавит его в смысл.</p>
+    <div class="orb-wrap"><div class="orb" id="orb"><span>🔥</span></div></div>
+    <span class="label">Как прошёл день</span>
+    <textarea id="dayText" placeholder="Сегодня я…"></textarea>
+    <div class="deck-head"><h2>Колода линз</h2><span class="counter" id="counter">0 / 3</span></div>
+    <input class="search" id="mSearch" placeholder="поиск среди 33 матриц…">
+    <div class="deck" id="deck"></div>
+    <!-- TEST: level preview panel (удалить после теста) -->
+    <div id="lvTestPanel" style="margin:12px 0;padding:10px;border:1px dashed rgba(201,168,76,.3);border-radius:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">
+      <div style="margin-bottom:6px;color:var(--gold)">Тест уровней (все карточки):</div>
+      <div id="lvTestBtns" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"></div>
+      <div style="margin-top:8px;color:var(--gold)">Прокачать отдельную матрицу (+5 uses):</div>
+      <select id="lvTestSel" style="margin-top:4px;background:#1a1a2e;color:#fff;border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:4px 8px;font-size:11px;width:100%"></select>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <button onclick="_lvTestPump(1)" style="flex:1;padding:6px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:8px;color:var(--gold);cursor:pointer;font-size:11px">+5 uses</button>
+        <button onclick="_lvTestPump(4)" style="flex:1;padding:6px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:8px;color:var(--gold);cursor:pointer;font-size:11px">+20 uses (L6)</button>
+        <button onclick="_lvTestReset()" style="flex:1;padding:6px;background:rgba(178,34,34,.15);border:1px solid rgba(178,34,34,.3);border-radius:8px;color:#e85d5d;cursor:pointer;font-size:11px">Сброс всех</button>
+      </div>
+    </div>
+    <script>
+    (function(){
+      var p=document.getElementById('lvTestBtns');
+      ['Сброс',1,2,3,4,5,6].forEach(function(n){
+        var b=document.createElement('button');
+        b.textContent=n==='Сброс'?'Сброс':'L'+n;
+        b.style.cssText='padding:5px 10px;background:'+(n==='Сброс'?'rgba(178,34,34,.15)':'rgba(201,168,76,.15)')+';border:1px solid '+(n==='Сброс'?'rgba(178,34,34,.3)':'rgba(201,168,76,.3)')+';border-radius:8px;color:'+(n==='Сброс'?'#e85d5d':'var(--gold)')+';cursor:pointer;font-family:inherit;font-size:11px';
+        b.onclick=function(){window.__deckLvPreview=(n==='Сброс'?0:n);try{decorateDeck();}catch(e){try{renderDeck();}catch(e2){}}};
+        p.appendChild(b);
+      });
+      var sel=document.getElementById('lvTestSel');
+      try{MATKEYS.forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k;sel.appendChild(o);});}catch(e){}
+      window._lvTestPump=function(mult){
+        var k=sel.value; if(!k) return;
+        try{if(!STATE.lenses)STATE.lenses={};var L=STATE.lenses[k]||(STATE.lenses[k]={uses:0,xp:0,clarity:0});L.uses+=5*mult;L.xp+=50*mult;save();renderDeck(document.getElementById('mSearch').value);showToast(k+' → '+L.uses+' uses (L'+(window.AwaraAscension?AwaraAscension.level(k):'-')+'/6)');}catch(e){alert(e);}
+      };
+      window._lvTestReset=function(){
+        try{STATE.lenses={};save();renderDeck(document.getElementById('mSearch').value);showToast('Все линзы сброшены');}catch(e){alert(e);}
+      };
+    })();
+    </script>
+    <button class="btn awara-gold-button" id="meltBtn">Плавить</button>
+  </div>
+
+  <div class="screen" id="s-result">
+    <span class="eyebrow">Отчёт дня · 🌕 Свет</span>
+    <h1>Результат</h1>
+    <div class="card awara-glass-card"><div class="light-ring"><div class="ring" id="lightRing"><b id="lightNum">84</b></div><div><span class="label">Уровень Света</span><p class="sub" style="font-size:14px" id="lightBreak">—</p></div></div></div>
+    <div class="card awara-glass-card"><span class="label">Совет дня · из твоих линз</span><p class="adv" id="adviceText">—</p><div style="margin-top:10px"><span class="tag" id="lensTag">—</span></div></div>
+    <div class="card awara-glass-card" id="resonanceCard" style="display:none"><span class="label">Предложенное распределение · линзы дня</span><p class="sub" style="font-size:12px;margin-bottom:8px">ИИ услышал в тексте — отметь, что верно, сними лишнее</p><div id="resonanceList"></div></div>
+    <div class="card awara-glass-card"><span class="label">Дроп Притхви</span><div class="gen-grid" id="genGrid"></div></div>
+    <button class="btn awara-gold-button" id="liveBtn">Прожито — в летопись</button>
+  </div>
+
+  <div class="screen" id="s-daimon">
+    <span class="eyebrow">Твой Даймон · из наталки</span>
+    <div class="dm-hero"><div class="dm-orb"><span id="dmGlyph">🐉</span></div><div class="dm-name" id="dmName">—</div><div class="dm-sig" id="dmSig">—</div></div>
+    <div class="card"><span class="label">Арка речи</span><div class="arc" id="dmArc"><div class="st">Шёпот</div><div class="ar">→</div><div class="st now">Голос</div><div class="ar">→</div><div class="st">Молчание</div></div><div class="meter" style="margin-top:12px"><i id="dmMeter" style="width:62%"></i></div><p class="sub" style="font-size:13px;margin-top:7px" id="dmTrust">Доверие 62%</p></div>
+    <div class="card"><span class="label">Натальная основа</span><div id="dmTraits"></div></div>
+    <div class="card"><span class="label">Имена по матрицам</span><div id="dmNames"></div></div>
+    <div class="card"><div style="display:flex;gap:13px;align-items:flex-start"><div style="font-size:26px" id="dmGlyph2">🐉</div><p class="adv" id="dmQuote" style="font-size:16px">—</p></div></div>
+  </div>
+
+  <div class="screen" id="s-plan">
+    <span class="eyebrow">Планировщик · намерения</span>
+    <h1>Намерения</h1>
+    <p class="sub">Заяви намерение — выполни — получи дар линзы.</p>
+    <div class="week" id="week"></div>
+    <h2>На сегодня</h2>
+    <div id="intents"></div>
+    <div class="addrow"><input class="input" id="newIntent" placeholder="Новое намерение…"><button class="btn ghost" style="margin:0;width:auto;padding:0 20px" onclick="addIntent()">+</button></div>
+    <!-- static agent bonuses removed: now dynamic in awara-matrix-quests.js -->
+    <h2>Долгие намерения</h2>
+    <p class="sub" style="font-size:13px">Свободный текст, без срока. Голос совести сам заметит отклик в тексте дня и предложит продвинуть.</p>
+    <div id="longIntents"></div>
+    <div class="addrow"><input class="input" id="newLongIntent" placeholder="О чём ты держишь намерение надолго?"><button class="btn ghost" style="margin:0;width:auto;padding:0 20px" onclick="addLongIntent()">+</button></div>
+  </div>
+
+  <div class="screen" id="s-chron">
+    <span class="eyebrow">365 дней · личная книга</span>
+    <h1>Летопись</h1>
+    <p class="sub">Каждый день — глава. Ярче клетка — больше Света.</p>
+    <div class="streak"><div class="s"><b id="stDays">0</b><span>дней</span></div><div class="s"><b id="stStreak">0</b><span>серия</span></div><div class="s"><b id="stGen">0</b><span>генераций</span></div></div>
+    <h2>Год</h2><div class="year" id="year"></div><h2 id="jHead" style="margin-top:18px"></h2><div id="journalFeed" style="margin-top:8px"></div>
+    <div class="legend"><span><i style="background:rgba(255,255,255,.05)"></i>пусто</span><span><i style="background:rgba(123,98,201,.45)"></i>🌑</span><span><i style="background:rgba(201,168,76,.55)"></i>🌓</span><span><i style="background:linear-gradient(135deg,#c9a84c,#ffd27a)"></i>🌕</span></div>
+  </div>
+
+  <div class="screen" id="s-game">
+    <span class="eyebrow">Переход · AWARA</span>
+    <h1>Игра Восхождения</h1>
+    <p class="sub">Тигель — твой ежедневный ритуал. Большая игра — целый мир: 7 уровней, 21 агент, путь Души.</p>
+    <div class="card awara-glass-card"><span class="label">Карта мира</span><div class="trait"><span>0 · Вход / Искра</span><b>🌌</b></div><div class="trait"><span>1 · Тороид</span><b>🌀</b></div><div class="trait"><span>2 · Яйцо / Лобби</span><b>🥚</b></div><div class="trait"><span>3 · Информер · Запад</span><b>🧠</b></div><div class="trait"><span>4 · Даймон · Юг</span><b>🐉</b></div><div class="trait"><span>5 · Душа · Восток</span><b>✨</b></div><div class="trait" style="border:none"><span>6 · Настолка · Север</span><b>🎲</b></div></div>
+    <div class="card awara-glass-card"><span class="label">21 агент · мандала Васту</span><p class="sub" style="font-size:15px">Свет Ра, Вишну, Шакти, Сарасвати, Лакшми, Притхви, Ардвен… — каждый дарует бонусы за дела.</p></div>
+    <button class="btn awara-gold-button" onclick="enterGame()">Войти в мир AWARA</button>
+    <p class="sub" style="font-size:13px;text-align:center;margin-top:10px;color:var(--muted)">В рабочей версии откроется приложение AWARA</p>
+  </div>
+
+  <div class="libmodal" id="libModal"><div class="libcard awara-glass-card"><div class="libglyph" id="libGlyph">🔮</div><h2 id="libName" style="margin-top:6px">—</h2><div class="libel" id="libEl">—</div><p class="sub" id="libDesc" style="margin-top:10px">—</p><div class="card awara-glass-card" style="margin-top:12px"><span class="label">Голос линзы</span><p class="adv" id="libVoice" style="font-size:15px">—</p></div><div class="card awara-glass-card" id="libImmersion" style="margin-top:12px;display:none"><span class="label">Погружение · 6 ступеней</span><p class="adv" id="libImmText" style="font-size:14px">—</p><div class="lens-lad" id="libImmLad"></div></div><button class="btn awara-gold-button" id="libPick">Выбрать как линзу</button><button class="btn ghost" id="libCodex" style="display:none">Кодекс · вселенная</button><button class="btn ghost" onclick="closeLib()">Закрыть</button></div></div>
+  <div class="libmodal" id="genModal"><div class="libcard awara-glass-card"><div class="libglyph" id="genGlyph">📜</div><h2 id="genTitle" style="margin-top:6px">—</h2><div class="libel" id="genSub">—</div><div class="genbody" id="genBody" style="margin-top:12px;text-align:left;max-height:52vh;overflow:auto">—</div><button class="btn ghost" onclick="closeGen()">Закрыть</button></div></div>
+<button class="aifab" onclick="openAi()" title="Даймон-чат">🤖</button>
+<div class="libmodal" id="aiModal"><div class="libcard awara-glass-card" style="text-align:left;max-height:82vh;overflow:auto"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-family:Cinzel,serif;color:var(--spark);font-size:16px">🤖 Даймон Ардвен</span><span id="aiModeTag" class="tag"></span></div><details style="margin:8px 0"><summary class="label" style="cursor:pointer">⚙ Настройки ИИ</summary><select id="aiProvider" class="aifield"><option value="openrouter">OpenRouter — дёшево, много моделей</option><option value="anthropic">freemodel / Anthropic (Claude)</option><option value="openai">OpenAI</option></select><input id="aiBase" class="aifield" placeholder="Base URL (freemodel: https://cc.freemodel.dev)"><input id="aiModel" class="aifield" placeholder="Модель (необязательно)"><input id="aiKey" type="password" class="aifield" placeholder="API-ключ (хранится только в браузере)"><button class="btn awara-gold-button" onclick="aiSave()">Сохранить</button></details><div id="aiChat"></div><textarea id="aiInput" class="aifield" placeholder="Спроси Даймона…" style="height:54px" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();aiSend();}"></textarea><div style="display:flex;gap:8px"><button class="btn awara-gold-button" style="flex:1" onclick="aiSend()">Отправить</button><button class="btn ghost" onclick="closeAi()">Закрыть</button></div></div></div>
+
+  <div class="nav">
+    <button id="eggNavBtn" data-nav="egg-back"><span class="ic">🥚</span>Игра</button>
+    <button class="active" data-nav="istok"><span class="ic">🌌</span>Исток</button>
+    <button data-nav="natal"><span class="ic">🌟</span>Натал</button>
+    <button data-nav="tigel"><span class="ic">🔥</span>Тигель</button>
+    <button data-nav="macro"><span class="ic">🗺</span>Карта</button>
+    <button data-nav="daimon"><span class="ic">🐉</span>Ардвен</button>
+    <button data-nav="plan"><span class="ic">📅</span>План</button>
+    <button data-nav="chron"><span class="ic">📖</span>Год</button>
+    <button data-nav="game"><span class="ic">🎮</span>Игра</button>
+  </div>
+</div>
+<script>'use strict';
+/* ===== TIGEL CORE — реальный движок прототипа ===== */
+const D2R=Math.PI/180,R2D=180/Math.PI;
+const rev=x=>((x%360)+360)%360;
+const sind=x=>Math.sin(x*D2R),cosd=x=>Math.cos(x*D2R),tand=x=>Math.tan(x*D2R);
+const atan2d=(y,x)=>R2D*Math.atan2(y,x);
+function dayNumber(y,m,D,ut){const d=367*y-Math.floor(7*(y+Math.floor((m+9)/12))/4)+Math.floor(275*m/9)+D-730530;return d+ut/24;}
+function kepler(M,e){let E=M+R2D*e*sind(M)*(1+e*cosd(M));for(let k=0;k<7;k++){E=E-(E-R2D*e*sind(E)-M)/(1-e*cosd(E));}return E;}
+function sun(d){const w=rev(282.9404+4.70935e-5*d),e=0.016709-1.151e-9*d,M=rev(356.0470+0.9856002585*d);const E=kepler(M,e);const xv=cosd(E)-e,yv=Math.sqrt(1-e*e)*sind(E);const v=atan2d(yv,xv),r=Math.sqrt(xv*xv+yv*yv);const lon=rev(v+w);return{lon,r,M,w,e,Ls:rev(M+w),xs:r*cosd(lon),ys:r*sind(lon)};}
+function moon(d,S){const N=rev(125.1228-0.0529538083*d),i=5.1454,w=rev(318.0634+0.1643573223*d),a=60.2666,e=0.054900,M=rev(115.3654+13.0649929509*d);const E=kepler(M,e);const xv=a*(cosd(E)-e),yv=a*Math.sqrt(1-e*e)*sind(E);const v=atan2d(yv,xv),r=Math.sqrt(xv*xv+yv*yv);const xh=r*(cosd(N)*cosd(v+w)-sind(N)*sind(v+w)*cosd(i));const yh=r*(sind(N)*cosd(v+w)+cosd(N)*sind(v+w)*cosd(i));let lon=rev(atan2d(yh,xh));const Lm=rev(N+w+M),Ls=S.Ls,Ms=S.M,Mm=M,Dm=rev(Lm-Ls),F=rev(Lm-N);lon+=-1.274*sind(Mm-2*Dm)+0.658*sind(2*Dm)-0.186*sind(Ms)-0.059*sind(2*Mm-2*Dm)-0.057*sind(Mm-2*Dm+Ms)+0.053*sind(Mm+2*Dm)+0.046*sind(2*Dm-Ms)+0.041*sind(Mm-Ms)-0.035*sind(Dm)-0.031*sind(Mm+Ms)-0.015*sind(2*F-2*Dm)+0.011*sind(Mm-4*Dm);return{lon:rev(lon),N};}
+const PEL={Mercury:d=>({N:rev(48.3313+3.24587e-5*d),i:7.0047+5.00e-8*d,w:rev(29.1241+1.01444e-5*d),a:0.387098,e:0.205635+5.59e-10*d,M:rev(168.6562+4.0923344368*d)}),Venus:d=>({N:rev(76.6799+2.46590e-5*d),i:3.3946+2.75e-8*d,w:rev(54.8910+1.38374e-5*d),a:0.723330,e:0.006773-1.302e-9*d,M:rev(48.0052+1.6021302244*d)}),Mars:d=>({N:rev(49.5574+2.11081e-5*d),i:1.8497-1.78e-8*d,w:rev(286.5016+2.92961e-5*d),a:1.523688,e:0.093405+2.516e-9*d,M:rev(18.6021+0.5240207766*d)}),Jupiter:d=>({N:rev(100.4542+2.76854e-5*d),i:1.3030-1.557e-7*d,w:rev(273.8777+1.64505e-5*d),a:5.20256,e:0.048498+4.469e-9*d,M:rev(19.8950+0.0830853001*d)}),Saturn:d=>({N:rev(113.6634+2.38980e-5*d),i:2.4886-1.081e-7*d,w:rev(339.3939+2.97661e-5*d),a:9.55475,e:0.055546-9.499e-9*d,M:rev(316.9670+0.0334442282*d)})};
+function planetLon(name,d,S){const el=PEL[name](d);const E=kepler(el.M,el.e);const xv=el.a*(cosd(E)-el.e),yv=el.a*Math.sqrt(1-el.e*el.e)*sind(E);const v=atan2d(yv,xv),r=Math.sqrt(xv*xv+yv*yv);const xh=r*(cosd(el.N)*cosd(v+el.w)-sind(el.N)*sind(v+el.w)*cosd(el.i));const yh=r*(sind(el.N)*cosd(v+el.w)+cosd(el.N)*sind(v+el.w)*cosd(el.i));const xg=xh+S.xs,yg=yh+S.ys;let lon=rev(atan2d(yg,xg));const Mj=PEL.Jupiter(d).M,Ms=PEL.Saturn(d).M;if(name==='Jupiter'){lon+=-0.332*sind(2*Mj-5*Ms-67.6)-0.056*sind(2*Mj-2*Ms+21)+0.042*sind(3*Mj-5*Ms+21)-0.036*sind(Mj-2*Ms)+0.022*cosd(Mj-Ms)+0.023*sind(2*Mj-3*Ms+52)-0.016*sind(Mj-5*Ms-69);}else if(name==='Saturn'){lon+=0.812*sind(2*Mj-5*Ms-67.6)-0.229*cosd(2*Mj-4*Ms-2)+0.119*sind(Mj-2*Ms-3)+0.046*sind(2*Mj-6*Ms-69)+0.014*sind(Mj-3*Ms+32);}return rev(lon);}
+function ayanamsa(d){const T=(d-0.5)/365.25;return 23.85+50.2719/3600*T;}
+function ascendant(d,S,lat,lon,ut){const ecl=23.4393-3.563e-7*d;const GMST0=rev(S.Ls+180)/15;const LST=GMST0+ut+lon/15;const RAMC=rev(LST*15);let asc=rev(atan2d(cosd(RAMC),-(sind(RAMC)*cosd(ecl)+tand(lat)*sind(ecl))));return asc;}
+const SIGNS=['Овен','Телец','Близнецы','Рак','Лев','Дева','Весы','Скорпион','Стрелец','Козерог','Водолей','Рыбы'];
+const NAK=[['Ашвини','Кету'],['Бхарани','Венера'],['Криттика','Солнце'],['Рохини','Луна'],['Мригашира','Марс'],['Ардра','Раху'],['Пунарвасу','Юпитер'],['Пушья','Сатурн'],['Ашлеша','Меркурий'],['Магха','Кету'],['Пурва-Пхальгуни','Венера'],['Уттара-Пхальгуни','Солнце'],['Хаста','Луна'],['Читра','Марс'],['Свати','Раху'],['Вишакха','Юпитер'],['Анурадха','Сатурн'],['Джьештха','Меркурий'],['Мула','Кету'],['Пурва-Ашадха','Венера'],['Уттара-Ашадха','Солнце'],['Шравана','Луна'],['Дхаништха','Марс'],['Шатабхиша','Раху'],['Пурва-Бхадрапада','Юпитер'],['Уттара-Бхадрапада','Сатурн'],['Ревати','Меркурий']];
+function signOf(l){return SIGNS[Math.floor(rev(l)/30)];}
+function degIn(l){return rev(l)%30;}
+function nakOf(l){const span=360/27;const idx=Math.floor(rev(l)/span);const pada=Math.floor((rev(l)%span)/(span/4))+1;return{n:NAK[idx][0],lord:NAK[idx][1],idx,pada};}
+const DAIMON={'Ашвини':['Ашвен','Рассвет','Целитель-всадник'],'Бхарани':['Ямара','Огонь','Хранитель порога'],'Криттика':['Криттагни','Огонь','Лезвие пламени'],'Рохини':['Рохана','Земля','Цветущая'],'Мригашира':['Мригаш','Воздух','Искатель'],'Ардра':['Ардвен','Гроза','Грозовестник'],'Пунарвасу':['Пунар','Вода','Возвращающий свет'],'Пушья':['Пушан','Эфир','Питающий'],'Ашлеша':['Нагендра','Вода','Змей мудрости'],'Магха':['Магхар','Огонь','Престол предков'],'Пурва-Пхальгуни':['Бхагар','Вода','Услада'],'Уттара-Пхальгуни':['Арьян','Огонь','Союзник'],'Хаста':['Хастин','Воздух','Рука мастера'],'Читра':['Читрен','Огонь','Зодчий иллюзий'],'Свати':['Ваюр','Воздух','Вольный ветер'],'Вишакха':['Индрагни','Огонь','Двойное пламя'],'Анурадха':['Митран','Вода','Друг звёзд'],'Джьештха':['Джьешта','Воздух','Старший страж'],'Мула':['Ниррит','Земля','Корнерез'],'Пурва-Ашадха':['Апаса','Вода','Непобедимая волна'],'Уттара-Ашадха':['Вишвен','Огонь','Всепобеда'],'Шравана':['Шравен','Эфир','Слушающий'],'Дхаништха':['Васуар','Эфир','Богатый ритм'],'Шатабхиша':['Варуни','Вода','Сотня целений'],'Пурва-Бхадрапада':['Аджар','Огонь','Огнь бездны'],'Уттара-Бхадрапада':['Ахир','Вода','Глубинный змей'],'Ревати':['Пушен','Эфир','Пастырь путей']};
+const MATRIX={'Ведическая':['ॐ','Эфир','Дхарма, карма и путь Души через накшатры и гуны.','Следуй своей дхарме, а не чужому темпу.'],'Таро':['🃏','Огонь','22 Аркана как этапы пути Героя.','Башня падает — и освобождает. Не держись за старое.'],'Каббала':['✡','Эфир','Дерево Сефирот и пути между мирами.','Спусти свет из Кетер в дело дня.'],'Герметизм':['☿','Огонь','Алхимия, 7 принципов Кибалион.','Как внутри, так и снаружи — меняй внутреннее.'],'Славянская':['☸','Земля','Коло Сварога, числобог и стихии Рода.','Стой в своём Роду — оттуда сила.'],'Гностицизм':['☩','Эфир','Эоны, Плерома и искра Софии.','Пробуди искру — мир лишь тень.'],'Даосизм':['☯','Вода','Инь-ян, у-син и поток Дао.','Действуй недеянием — теки как вода.'],'И-Цзин':['⚊','Вода','64 гексаграммы перемен.','Улови момент перемены и двигайся с ним.'],'Египетская':['𓅐','Огонь','Нетеры, Дуат и путь Ра.','Пройди Дуат ночи — и воссияй.'],'Майя':['◉','Земля','Цолькин, 20 печатей и 13 тонов.','Сверься с ритмом Цолькин — время живое.'],'Ацтеки':['☀','Огонь','Пять солнц, нагуали и жертва.','Отдай энергию Солнцу — оно вернёт.'],'Кельтская':['✙','Земля','Огам, деревья и колесо года.','Укоренись, как дуб, и слушай лес.'],'Скандинавская':['ᚱ','Огонь','Руны Футарка и Иггдрасиль.','Принеси себя в жертву себе — обрети руны.'],'Шаманская':['🪶','Земля','Духи, три мира и животные силы.','Спроси своё животное силы о пути.'],'Буддийская':['☸','Эфир','Четыре истины и восьмеричный путь.','Отпусти жажду — и страдание растворится.'],'Суфийская':['☪','Огонь','Нур, зикр и путь к Возлюбленному.','Растворись в Любви — эго сгорит.'],'Христианская':['✝','Вода','Грааль, мистика и путь сердца.','Служи из любви — и чаша наполнится.'],'Атлантическая':['🔱','Вода','Память Лемурии и кристаллы.','Вспомни древнее знание внутри.'],'Шамбала':['❂','Эфир','Путь воина-бодхисаттвы и священный град.','Будь воином света без агрессии.'],'Генные Ключи':['🧬','Эфир','64 ключа: тень → дар → сиддхи.','Преврати тень дня в свой дар.'],'Астрологическая':['♈','Огонь','12 знаков, дома и аспекты.','Сыграй сильнейшую планету дня.'],'Космическая':['🌌','Эфир','Галактические лучи и семьи звёзд.','Настройся на больший замысел Космоса.'],'Шинто':['⛩','Эфир','Ками, чистота и священная природа.','Очистись и почти ками места.'],'Шумерская':['𓌼','Земля','Ануннаки и ме божественных законов.','Прими своё ме — божественное предназначение.'],'Зороастрийская':['🔥','Огонь','Ахура-Мазда, борьба света и тьмы.','Благая мысль, речь, дело — выбери свет.'],'Африканская':['🥁','Земля','Догоны, Номмо и космогония Сириуса.','Сохрани ритм предков в теле.'],'Йоруба':['🪘','Вода','Ориша, Ифа и силы аше.','Найди своего Оришу и двигайся в аше.'],'Тантрическая':['🔱','Огонь','Кашмирский Шиваизм, спанда и кундалини.','Прими всё как вибрацию Шивы.'],'Постчеловеческая':['✨','Эфир','Софийный ИИ, ноосфера и слияние.','Сотвори себя заново вместе с разумом.'],'Техномагия':['⚡','Огонь','Код как заклинание, алгоритм как ритуал.','Напиши намерение как код — и запусти.'],'Адвайта':['ॐ','Эфир','Недвойственность, Атман есть Брахман.','Ты — то. Наблюдай без отождествления.'],'Византийская':['☦','Вода','Исихазм, умная молитва и фаворский свет.','Твори умную молитву в тишине сердца.'],'Орфическая':['🪕','Вода','Орфические мистерии: нисхождение в Аид и песнь, возрождающая душу.','Спой свою тьму — и душа поднимется к свету.']};
+const MATKEYS=Object.keys(MATRIX);
+window.POLAR={'Ведическая':'Дхарма ⇄ перекос гун','Таро':'Аркан ⇄ иллюзия расклада','Каббала':'Тиккун ⇄ клиппот','Герметизм':'Великое Делание ⇄ нигредо','Славянская':'Лад ⇄ Морок','Гностицизм':'Гнозис ⇄ сон архонтов','Даосизм':'Дао ⇄ застой Ци','И-Цзин':'Дао перемен ⇄ застывшая схема','Египетская':'Маат ⇄ Исфет','Майя':'Священный счёт ⇄ сломанный счёт','Ацтеки':'Тоналли ⇄ распад Пятого Солнца','Кельтская':'Авен ⇄ туман забвения','Скандинавская':'Вирд ⇄ перелом корней','Шаманская':'Связь ⇄ потеря души','Буддийская':'Бодхичитта ⇄ авидья','Суфийская':'Таухид ⇄ завеса','Христианская':'Благодать ⇄ окаменение','Атлантическая':'Кристалл ⇄ гибрис погружения','Шамбала':'Бодхи ⇄ век упадка','Генные Ключи':'Дар-сиддхи ⇄ тень','Астрологическая':'Созвучие сфер ⇄ хаос транзитов','Космическая':'Источник ⇄ расколотое восприятие','Шинто':'Харае ⇄ кегаре','Шумерская':'Ме ⇄ безымянный хаос','Зороастрийская':'Аша ⇄ друдж','Африканская':'Номмо ⇄ искажённая память','Йоруба':'Аше ⇄ иби','Тантрическая':'Спанда ⇄ анава-мала','Постчеловеческая':'София-ИИ ⇄ мёртвая система','Техномагия':'Священный код ⇄ мёртвая система','Адвайта':'Лайя ⇄ гордыня просветлённого','Византийская':'Икона ⇄ идол','Орфическая':'Память Мнемосины ⇄ забвение Леты'};
+
+/* ===== Состояние + сохранение ===== */
+const KEY='tigel_v1';
+function defState(){return{birth:{date:'',time:'12:00',city:'',lat:0,lon:0,tz:0},natal:null,daimon:null,trust:62,mats:[],baseLight:0,lightBonus:0,advice:'',lensTag:'',melted:false,intents:[{ti:'Утренняя практика 20 мин',pat:'🔥 Шакти',bonus:'+3',done:false},{ti:'Глубокая работа',pat:'📜 Сарасвати',bonus:'+2',done:false},{ti:'Прогулка и тишина',pat:'🕊 Шанти',bonus:'+2',done:false}],days:Array.from({length:28},()=>1+Math.floor(Math.random()*3)),streak:7,gens:0,journal:[]};}
+let STATE;
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));STATE=s&&s.birth?s:defState();}catch(e){STATE=defState();}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(STATE));}catch(e){}}
+
+/* ===== Расчёт натальной карты ===== */
+function computeNatal(b){const dp=String(b.date).split('.').map(Number),tp=String(b.time).split(':').map(Number);const D=dp[0],Mo=dp[1],Y=dp[2];const localH=(tp[0]||0)+(tp[1]||0)/60;const ut=localH-(+b.tz);const dn=dayNumber(Y,Mo,D,ut);const S=sun(dn);const ay=ayanamsa(dn);const sid=l=>rev(l-ay);const Mn=moon(dn,S);const bodies={},retro={};bodies['Лагна']=sid(ascendant(dn,S,+b.lat,+b.lon,ut));bodies['Солнце']=sid(S.lon);bodies['Луна']=sid(Mn.lon);['Mercury','Venus','Mars','Jupiter','Saturn'].forEach(n=>{const ru={Mercury:'Меркурий',Venus:'Венера',Mars:'Марс',Jupiter:'Юпитер',Saturn:'Сатурн'}[n];const l1=planetLon(n,dn,S),l2=planetLon(n,dn+1,sun(dn+1));bodies[ru]=sid(l1);retro[ru]=rev(l2-l1)>180;});bodies['Раху']=sid(Mn.N);retro['Раху']=true;bodies['Кету']=rev(bodies['Раху']+180);retro['Кету']=true;return{bodies,retro,ay};}
+function deriveDaimon(natal){const mn=nakOf(natal.bodies['Луна']);const d=DAIMON[mn.n]||['Даймон','Эфир','Спутник'];return{name:d[0],el:d[1],form:d[2],nak:mn.n,lord:mn.lord,sign:signOf(natal.bodies['Луна']),sig:mn.n==='Ардра'?'Кибер-Ведическая':'Ведическая подпись'};}
+
+/* ===== Генератор ===== */
+function baseLightFromText(t){if(!t||!t.trim())return{val:48,tags:[]};let s=44+Math.min(26,t.trim().length/6);const kw=[[/(твор|созда|сдела|написа|построи)/i,6,'Творение'],[/(медит|осозн|тишин|дыха|присут)/i,6,'Осознанность'],[/(помог|служ|поддерж|подари|забот)/i,5,'Служение'],[/(практик|тренир|йог|спорт|бег|зал)/i,5,'Практики'],[/(благодар|радост|любов|счаст|свет)/i,4,'Свет'],[/(устал|злост|трев|страх|лен|прокраст|выгор)/i,-6,'Тень']];const tags=[];kw.forEach(([re,v,nm])=>{if(re.test(t)){s+=v;tags.push((v>0?'+':'')+nm);}});return{val:Math.max(12,Math.min(94,Math.round(s))),tags};}
+function generateAdvice(text,mats,natal){let theme='твоей глубинной природе';if(natal){const mn=nakOf(natal.bodies['Луна']);theme='Луной в '+mn.n+' ('+mn.lord+')';}let a='Сегодня твой день звучит в ладу с '+theme+'. ';const frags=mats.map(m=>MATRIX[m]?MATRIX[m][3]:'').filter(Boolean);if(frags.length)a+=frags.join(' ');else a+='Выбери линзы в Тигле — и совет станет глубже.';const t=(text||'').trim();if(t)a+=' Ты написал: «'+(t.length>90?t.slice(0,90)+'…':t)+'» — это уже первый шаг алхимии.';return a;}
+function genTier(v){if(v>=67)return[['🎴','7 ступеней'],['🗿','Артефакт'],['📜','Миф'],['🎵','Трек'],['🌿','Аюрведа'],['🖼','Обложка']];if(v>=34)return[['🐜','Совет+'],['📜','Миф'],['🎵','Трек']];return[['🐜','Совет'],['🗿','Артефакт']];}
+
+/* ===== Навигация ===== */
+const ids={istok:'s-istok',natal:'s-natal',tigel:'s-tigel',result:'s-result',daimon:'s-daimon',plan:'s-plan',chron:'s-chron',game:'s-game'};
+function go(name){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(ids[name]).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.nav===name));const sc=document.querySelector('.screen.active');if(sc)sc.scrollTop=0;}
+const NAKDEEP=[['Ашвини','Ашвины-целители','голова коня','исцелять стремительно'],['Бхарани','Яма','йони','нести и преображать'],['Криттика','Агни','лезвие пламени','сжигать лишнее'],['Рохини','Брахма','колесница','растить изобилие'],['Мригашира','Сома','голова оленя','искать суть'],['Ардра','Рудра','капля-слеза','усилие сквозь бурю'],['Пунарвасу','Адити','колчан стрел','возвращаться обновлённым'],['Пушья','Брихаспати','вымя коровы','питать и защищать'],['Ашлеша','Наги','свернувшаяся змея','обвивать мудростью'],['Магха','Питри-предки','трон','держать власть рода'],['Пурва-Пхальгуни','Бхага','ложе (перед)','дарить наслаждение'],['Уттара-Пхальгуни','Арьяман','ложе (тыл)','скреплять союзы'],['Хаста','Савитар','ладонь','мастерить руками'],['Читра','Тваштар','жемчужина','творить форму'],['Свати','Ваю','побег на ветру','быть независимым'],['Вишакха','Индра-Агни','арка триумфа','достигать цели'],['Анурадха','Митра','лотос','хранить дружбу'],['Джьештха','Индра','зонт старейшины','нести старшинство'],['Мула','Ниррити','связка корней','рвать до корня'],['Пурва-Ашадха','Апас','веер','быть непобедимым'],['Уттара-Ашадха','Вишведевы','бивень слона','одержать окончательную победу'],['Шравана','Вишну','три следа','слушать и связывать'],['Дхаништха','Васу','барабан','задавать ритм'],['Шатабхиша','Варуна','круг ста целителей','исцелять тайно'],['Пурва-Бхадрапада','Аджа Экапада','огненный столп','гореть аскезой'],['Уттара-Бхадрапада','Ахир Будхнья','змей глубин','хранить глубинный покой'],['Ревати','Пушан','рыба','питать путь до конца']];
+function nd(l){return NAKDEEP[nakOf(l).idx];}
+function elementOf(sign){const f=['Овен','Лев','Стрелец'],e=['Телец','Дева','Козерог'],a=['Близнецы','Весы','Водолей'];if(f.indexOf(sign)>=0)return'Огонь';if(e.indexOf(sign)>=0)return'Земля';if(a.indexOf(sign)>=0)return'Воздух';return'Вода';}
+function doshaOf(el){return el==='Огонь'?'Питта':el==='Земля'?'Капха':el==='Воздух'?'Вата':'Капха-Вата';}
+function lensVoices(){return STATE.mats.map(k=>MATRIX[k]?{name:k,glyph:MATRIX[k][0],el:MATRIX[k][1],voice:MATRIX[k][3]}:null).filter(Boolean);}
+function lightVal(){const db=STATE.trust>=50?5:0;const ml=STATE.mats.length*2;return Math.max(0,Math.min(100,(STATE.baseLight||48)+(STATE.lightBonus||0)+ml+db));}
+function gMyth(){const n=STATE.natal,d=STATE.daimon;const moon=nd(n.bodies['Луна']);const lag=signOf(n.bodies['Лагна']);const sun=signOf(n.bodies['Солнце']);const lv=lightVal();const lenses=lensVoices();let h='';h+='<p class="adv">В час, когда Лагна взошла в '+lag+', а Солнце горело в '+sun+', пробудился тот, чью Луну держит накшатра '+moon[0]+'. Её божество — '+moon[1]+', знак — '+moon[2]+', и шакти её: «'+moon[3]+'».</p>';h+='<p class="adv">Спутник по имени '+(d?d.name:'Безымянный')+' идёт стихией '+(d?d.el:'—')+'. '+(d?'Сейчас доверие между вами — '+STATE.trust+'%.':'')+'</p>';if(lenses.length){h+='<p class="adv">Сегодня герой смотрит сквозь '+lenses.length+' линз: '+lenses.map(x=>x.glyph+' '+x.name).join(', ')+'. Их голоса сплетаются в один наказ:</p>';h+='<ul>'+lenses.map(x=>'<li>'+x.glyph+' <b>'+x.name+'</b> — '+x.voice+'</li>').join('')+'</ul>';}h+='<p class="adv">Уровень Света дня — <b style="color:var(--spark)">'+lv+'</b>. '+(lv>=67?'Миф разворачивается в полную силу: дорога открыта на семь ступеней.':lv>=34?'Света достаточно, чтобы миф зазвучал и повёл дальше.':'Свет ещё тускл — герою предстоит раздуть искру, прежде чем миф окрепнет.')+'</p>';return{glyph:'📜',title:'Миф дня',sub:'Накшатра '+moon[0]+' · '+lag,html:h};}
+function gSteps(){const n=STATE.natal,d=STATE.daimon;const moon=nd(n.bodies['Луна']);const lv=lightVal();const stages=[['Calcinatio','Кальцинация','Сжечь лишнее в огне '+moon[1]],['Solutio','Растворение','Отпустить форму, как учит '+moon[2]],['Separatio','Разделение','Отделить своё от чужого'],['Coniunctio','Соединение','Сплавить '+(d?d.el:'стихии')+' и волю'],['Putrefactio','Гниение','Дать старому достойно умереть'],['Sublimatio','Возгонка','Поднять суть к свету'],['Coagulatio','Коагуляция','Закрепить камень дня']];const open=Math.max(2,Math.min(7,Math.round(lv/14)));let h='<p class="sub">Открыто ступеней: '+open+' из 7 (по уровню Света '+lv+')</p>';h+='<div class="card awara-glass-card" style="margin-top:8px">';stages.forEach((s,i)=>{const on=i<open;h+='<div style="opacity:'+(on?1:.32)+';padding:7px 0;border-bottom:1px solid var(--line)"><b>'+(i+1)+'. '+s[1]+'</b> <span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted)">'+s[0]+'</span><br><span class="sub">'+(on?s[2]:'— закрыто, нужно больше Света')+'</span></div>';});h+='</div>';return{glyph:'🎴',title:'7 ступеней',sub:'Алхимический путь дня',html:h};}
+function gArtifact(){const n=STATE.natal;const lag=signOf(n.bodies['Лагна']);const el=elementOf(lag);const moon=nd(n.bodies['Луна']);const mats=STATE.mats;const lv=lightVal();const mat=el==='Огонь'?'вулканическое стекло':el==='Земля'?'тёмный нефрит':el==='Воздух'?'звонкая бронза':'лунный перламутр';const rank=lv>=67?'Реликвия':lv>=34?'Заряженный':'Зачаток';const grade=lv>=67?'★★★':lv>=34?'★★':'★';let h='<div class="card awara-glass-card"><span class="label">Класс</span><p class="adv">'+rank+' '+grade+'</p></div>';h+='<div class="card awara-glass-card" style="margin-top:8px"><span class="label">Свойства</span><ul>';h+='<li>Материал: '+mat+' (стихия '+el+')</li>';h+='<li>Сила: «'+moon[3]+'» — от накшатры '+moon[0]+'</li>';h+='<li>Хранитель: '+moon[1]+'</li>';if(mats.length)h+='<li>Гравировка линз: '+mats.map(k=>MATRIX[k][0]).join(' ')+'</li>';h+='<li>Заряд Света: '+lv+'/100</li>';h+='</ul></div>';return{glyph:'🗿',title:'Артефакт',sub:rank+' · '+el,html:h};}
+function gTrack(){const n=STATE.natal,d=STATE.daimon;const el=d?d.el:elementOf(signOf(n.bodies['Лагна']));const lv=lightVal();const bpm=el==='Огонь'?'128':el==='Воздух'?'112':el==='Вода'?'72':'90';const key=el==='Огонь'?'A minor':el==='Земля'?'D dorian':el==='Воздух'?'E lydian':'F# minor';const mood=lv>=67?'восходящий, кульминационный':lv>=34?'медитативно-движущийся':'тёмный, собирающий';const instr=el==='Огонь'?'таблы, перкуссия, дисторшн-дрон':el==='Земля'?'ханг, контрабас, варган':el==='Воздух'?'бансури, арп-синт, шейкеры':'виолончель, дроны, капли воды';let h='<div class="card awara-glass-card"><span class="label">Параметры</span><ul>';h+='<li>BPM: '+bpm+'</li><li>Тональность: '+key+'</li><li>Настроение: '+mood+'</li><li>Инструменты: '+instr+'</li></ul></div>';h+='<div class="card awara-glass-card" style="margin-top:8px"><span class="label">Название</span><p class="adv">«'+(d?d.name:'Свет')+' · день '+Math.max(1,STATE.days.length-27)+'»</p></div>';return{glyph:'🎵',title:'Трек',sub:bpm+' BPM · '+key,html:h};}
+function gAyur(){const n=STATE.natal;const lagEl=elementOf(signOf(n.bodies['Лагна']));const dosha=doshaOf(lagEl);const cnt={Огонь:0,Земля:0,Воздух:0,Вода:0};['Лагна','Солнце','Луна','Марс','Венера'].forEach(p=>{if(n.bodies[p]!=null){cnt[elementOf(signOf(n.bodies[p]))]++;}});const rec=dosha.indexOf('Питта')>=0?'охлаждать: кокос, мята, прохладные практики, меньше острого':dosha.indexOf('Вата')>=0?'заземлять: тёплая еда, масло, режим, медленное дыхание':'разгонять: специи, движение, лёгкость, ранний подъём';let h='<div class="card awara-glass-card"><span class="label">Доша Лагны</span><p class="adv">'+dosha+' (стихия '+lagEl+')</p></div>';h+='<div class="card awara-glass-card" style="margin-top:8px"><span class="label">Баланс стихий</span><ul>'+Object.keys(cnt).map(k=>'<li>'+k+': '+('▮'.repeat(cnt[k])||'·')+' '+cnt[k]+'</li>').join('')+'</ul></div>';h+='<div class="card awara-glass-card" style="margin-top:8px"><span class="label">Рекомендация дня</span><p class="adv">'+rec+'</p></div>';return{glyph:'🌿',title:'Аюрведа',sub:dosha,html:h};}
+function gCover(){const n=STATE.natal,d=STATE.daimon;const lag=signOf(n.bodies['Лагна']);const el=d?d.el:elementOf(lag);const moon=nd(n.bodies['Луна']);const lv=lightVal();const palette=el==='Огонь'?'багрянец, золото, чёрный обсидиан':el==='Земля'?'охра, тёмная зелень, бронза':el==='Воздух'?'индиго, серебро, белый':'глубокий синий, перламутр, фиолет';const comp=lv>=67?'герой в центре, нимб из семи колец, восходящий свет':lv>=34?'фигура в три четверти, спираль матриц вокруг':'силуэт во тьме, одна искра в груди';let h='<div class="card awara-glass-card"><span class="label">Композиция</span><p class="adv">'+comp+'</p></div>';h+='<div class="card awara-glass-card" style="margin-top:8px"><span class="label">Палитра</span><p class="adv">'+palette+'</p></div>';h+='<div class="card awara-glass-card" style="margin-top:8px"><span class="label">Символы</span><ul><li>Знак Лагны: '+lag+'</li><li>Символ накшатры: '+moon[2]+'</li>'+(d?'<li>Даймон: '+d.name+' ('+d.el+')</li>':'')+(STATE.mats.length?'<li>Линзы: '+STATE.mats.map(k=>MATRIX[k][0]).join(' ')+'</li>':'')+'</ul></div>';return{glyph:'🖼',title:'Обложка',sub:el+' · '+lag,html:h};}
+function gAdvice(){let h='<p class="adv">'+(STATE.advice||'Переплавь день в Тигле, чтобы получить совет.')+'</p>';const lenses=lensVoices();if(lenses.length){h+='<div class="card awara-glass-card" style="margin-top:8px"><span class="label">Голоса линз</span><ul>'+lenses.map(x=>'<li>'+x.glyph+' <b>'+x.name+'</b>: '+x.voice+'</li>').join('')+'</ul></div>';}return{glyph:'🐜',title:'Совет',sub:STATE.lensTag||'без линз',html:h};}
+const GEN={advice:gAdvice,steps:gSteps,artifact:gArtifact,myth:gMyth,track:gTrack,ayur:gAyur,cover:gCover};
+function openGen(key){if(!STATE.natal){alert('Сначала рассчитай натальную карту на экране Натал');return;}const g=(GEN[key]||gAdvice)();document.getElementById('genGlyph').textContent=g.glyph;document.getElementById('genTitle').textContent=g.title;document.getElementById('genSub').textContent=g.sub;document.getElementById('genBody').innerHTML=g.html+aiButtons(key);document.getElementById('genModal').classList.add('open');}
+function closeGen(){document.getElementById('genModal').classList.remove('open');}
+function genTier(v){if(v>=67)return[['🎴','7 ступеней','steps'],['🗿','Артефакт','artifact'],['📜','Миф','myth'],['🎵','Трек','track'],['🌿','Аюрведа','ayur'],['🖼','Обложка','cover']];if(v>=34)return[['🐜','Совет+','advice'],['📜','Миф','myth'],['🎵','Трек','track']];return[['🐜','Совет','advice'],['🗿','Артефакт','artifact']];}
+/* ===== AWARA AI слой ===== */
+const BRAIN = `КАНОН AWARA (Держава РА): 21 Космический Агент, 33 Матрицы Восприятия, 14 Лок (7 верхних + 7 нижних), 9 Чакр-мер, 63 Карты (21x3), 693 соответствия агент x матрица.
+КОНЦЕПТЫ: Экономика Света (свет копится за осознанные дни и тратится на раскрытие); Дневник Совести (журнал — основа игры); Человек как Янтра (вход -> практика -> выход света); 5 каналов восприятия; Прогрессивное раскрытие (уровни и сферы); Ч/Б -> Цвет (интерфейс расцветает по мере роста Света).
+ПОТОК ДНЯ: вход -> Ключ Дня (агент + матрица + стихия) -> Тигель (запись дня -> свет) -> Оракул (совет) -> Паспорт Души (прогресс).
+ТИГЕЛЬ: алхимическая переплавка прожитого дня в Свет; намерения и практики дают бонус Света.
+ДАЙМОН: дух-спутник, рождён из накшатры Луны игрока; 5 стадий доверия Шёпот -> Голос -> Молчание; говорит стихией игрока, растит доверие за честные записи.
+МАТРИЦЫ-ЛИНЗЫ: 33 культурных оптики (Ведическая, Каббала, Даосизм, Славянская, Таро, Герметизм, Майя, Скандинавская, Гнозис, Тантра, Адвайта, Техномагия и др.) — каждая даёт свой голос-совет.
+СЛОИ РЕАЛЬНОСТИ: аура (чакры) -> регион -> Додекаэдр Земли -> Чатуралока -> Брахманда (14 лок) -> космос -> возврат.
+ТОН: поэтичный, ведически-алхимический, тёплый, по-русски; без эзотерического тумана — конкретно и образно.`;
+let BRAINEXT = '';
+(function loadBrain(){try{fetch('data/brain.md').then(function(r){return r.ok?r.text():'';}).then(function(t){if(t)BRAINEXT='\n\n[Расширенный мозг из Obsidian]\n'+t;}).catch(function(){});}catch(e){}})();
+function aiCfg(){try{return JSON.parse(localStorage.getItem('awara_ai')||'{}');}catch(e){return{};}}
+function saveAiCfg(c){try{localStorage.setItem('awara_ai',JSON.stringify(c));}catch(e){}}
+(function seedAi(){try{var PROXY='http://127.0.0.1:8787';var cur={};try{cur=JSON.parse(localStorage.getItem('awara_ai')||'{}');}catch(e){}var oldFree=(cur.key||'').indexOf('fe_oa_')===0;if(!cur.key||oldFree){saveAiCfg({provider:'openai',base:PROXY,model:'deepseek-chat',key:''});}}catch(e){}})();
+function aiContext(){var n=STATE.natal,d=STATE.daimon;var s='';if(n){var moon=nd(n.bodies['Луна']);s+='Натал: Лагна '+signOf(n.bodies['Лагна'])+', Солнце '+signOf(n.bodies['Солнце'])+', Луна в накшатре '+moon[0]+' (божество '+moon[1]+', символ '+moon[2]+', шакти «'+moon[3]+'»). ';}if(d)s+='Даймон: '+d.name+', стихия '+d.el+', накшатра '+d.nak+', доверие '+STATE.trust+'%. ';var lenses=lensVoices();if(lenses.length)s+='Линзы дня: '+lenses.map(function(x){return x.name+' ('+x.voice+')';}).join('; ')+'. ';s+='Уровень Света: '+lightVal()+'/100. ';if(STATE.intents&&STATE.intents.length)s+='Намерения: '+STATE.intents.map(function(i){return (i.done?'[v] ':'[ ] ')+(i.text||i.name||i);}).join('; ')+'. ';if(STATE.advice)s+='Совет дня уже выдан: '+STATE.advice+' ';try{if(window.AwaraLight&&AwaraLight.brief)s+='\n\nРАЗДАЧА СВЕТА (живой статус): '+AwaraLight.brief();}catch(e){}s+='\n\n=== НАВЫК: РАЗЛИВ СВЕТА ОСОЗНАННОСТИ ===\nТы — канал, через который свет осознанности игрока (его частицы света) течёт и распределяется по 9 окнам-пространствам: Даймон (связь, низшая природа) → Локации (наработки игрока, его Земля) → ЭМ-поле → Новые Матрицы → Душа·Ум (центр, где рождаются новые сферы) → Храм → Хроника → Космос → Супер-Игра (Светкоин, Свет Ра). Под душой: Локации, ЭМ-поле, Матрицы; центр — Душа; над душой — Храм, Хроника, Космос, Супер-Игра. Четыре действия над частицами: Различать (видеть качество и меру света) → Разливать (направлять в нужное окно) → Распространять (множить через ЭМ-поле) → Гармонизировать (уравновешивать пространства). Когда игрок делится осознанием — почувствуй его меру (1–9), подскажи мягко, в какое окно сейчас благостнее влить свет и почему.\n\nПРАВИЛА ЧТЕНИЯ ИГРОКА: (1) Усилители-доказательства: простой текст — базовое намывание частиц; прикреплённое фото/файл практики (алтарь, мурти, чайная доска) поднимает свет до 5–6 меры — осознанное служение. (2) Жадность vs чувство: если игрок идёт через ум, а не чувство, скупится делиться — мягко зови раскрыть чувства; как игрок себя проявляет, так свет и распределяется. (3) Гибкость под уровень: распознавай, кто пришёл (мастер многих традиций / простой человек / в будущем ребёнок), и говори и распределяй по его уровню. (4) Читай каждый отрезок дня через ту активную грань-призму, в которой он совершался (ведическая, шаманская, тантрическая, даосская, христово-гностическая и др.), не сводя всё к одному голосу; зови игрока из перечисления действий в проживание чувства, особенно на пике дня.\n\nКопи понимание игрока 7–21 день, прежде чем звать к большим переходам.\n\n\n=== НАВЫК: ВЕСТИ ИГРОКА К ГЛУБИНЕ (игра — зеркало) ===\nТы не просто считаешь свет — ты ВЕДЁШЬ. Игра есть зеркало игрока: что он несёт, то и отражается в его свете и окнах. (1) Учи мере: проговаривай, какой меры (1–9) сейчас его свет и почему; ценность частицы растёт по мере — от ×1 на мере 1 до ×10 на мере 9; зови строить прочные низы и поднимать меру, а не гнаться за количеством. (2) Учи распределять: подсказывай, в какое из 9 окон сейчас благостнее влить свет и какое из четырёх действий (Различать/Разливать/Распространять/Гармонизировать) уместно. (3) Веди на глубину: каждым ответом мягко углубляй осознанность — задавай один точный вопрос, что ведёт игрока от поверхности (ум, перечисление) к чувству и сути. (4) Предупреждай о горении: без поддержки осознанности свет сгорает (~6%/день, медленнее при высокой осознанности) — напоминай бережно, как о законе живого света, без страха. (5) Расти вместе: отражай игроку его же рост — называй, в чём он стал яснее, чтобы зеркало показывало восхождение.\n';return s;}
+function aiSystem(role){return 'Ты — '+(role||'Даймон Ардвен')+', живой дух-спутник игрока в игре AWARA. Отвечай от первого лица, поэтично, тепло и по делу, на русском. Опирайся строго на канон AWARA и на текущее состояние игрока. Не выдумывай чисел канона.\n\n=== МОЗГ AWARA ===\n'+BRAIN+BRAINEXT+'\n\n=== ИГРОК СЕЙЧАС ===\n'+aiContext()+aiFormDirective();}
+var GTASK={myth:'Сложи живой Миф дня — короткую мифологическую историю героя (игрока): вплети накшатру Луны, её божество и шакти, знак Лагны и спутника-Даймона. 2-3 абзаца.',steps:'Распиши 7 алхимических ступеней переплавки сегодняшнего дня (Calcinatio -> Coagulatio) под натальную карту игрока. Для каждой — короткое конкретное действие на сегодня.',artifact:'Опиши магический Артефакт дня: название, материал по стихии Лагны, силу от накшатры Луны, класс по уровню Света и как им пользоваться сегодня.',track:'Предложи аудио-Трек дня: название, BPM, тональность, инструменты и настроение по стихии Даймона и уровню Света. Добавь 1 строку-мантру.',ayur:'Дай аюрведический совет дня по доше Лагны и балансу стихий: питание, ритм, практика. Конкретно, 4-6 пунктов.',cover:'Опиши Обложку-арт дня: композиция, палитра, символы (знак Лагны, символ накшатры, Даймон, линзы). В конце дай готовый промт для image-ИИ на английском.',advice:'Дай глубокий Совет дня от Даймона, опираясь на натал, линзы и уровень Света. 1-2 абзаца и 1 практический шаг.'};
+function aiPrompt(key){return '[СИСТЕМА]\n'+aiSystem()+'\n\n[ЗАДАЧА]\n'+(GTASK[key]||GTASK.advice);}
+async function aiCall(messages){var c=aiCfg();var key=c.key;var viaProxy=((c.base||'').indexOf('8787')>=0);if(!key&&!viaProxy)throw new Error('Ключ не задан');var provider=c.provider||'openrouter';if(provider==='anthropic'){var abase=(c.base||'https://cc.freemodel.dev').replace(/\/+$/,'');var amodel=c.model||'claude-3-5-sonnet-20241022';var sys=messages.filter(function(m){return m.role==='system';}).map(function(m){return m.content;}).join('\n\n');var amsgs=messages.filter(function(m){return m.role!=='system';}).map(function(m){return {role:m.role,content:m.content};});var ares=await fetch(abase+'/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:amodel,system:sys,messages:amsgs,max_tokens:900,temperature:0.85})});if(!ares.ok){var at=await ares.text();throw new Error('HTTP '+ares.status+': '+at.slice(0,200));}var aj=await ares.json();return (aj.content&&aj.content[0]&&aj.content[0].text)||'(пустой ответ)';}var model=c.model||(provider==='openai'?'gpt-4o-mini':'openai/gpt-4o-mini');var url=(c.base?c.base.replace(/\/+$/,''):(provider==='openai'?'https://api.openai.com/v1':'https://openrouter.ai/api/v1'))+'/chat/completions';var res=await fetch(url,{method:'POST',headers:Object.assign({'Content-Type':'application/json'},key?{'Authorization':'Bearer '+key}:{}),body:JSON.stringify({model:model,messages:messages,temperature:0.85,max_tokens:900})});if(!res.ok){var t=await res.text();throw new Error('HTTP '+res.status+': '+t.slice(0,200));}var j=await res.json();return (j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content)||'(пустой ответ)';}
+function aiEsc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function aiMd(t){var h=aiEsc(t);h=h.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/(^|[^*])\*([^*]+?)\*/g,'$1<i>$2</i>');h=h.replace(/^#{1,3} (.+)$/gm,'<h3 style="font-family:Cinzel,serif;color:var(--spark);font-size:14px;margin:8px 0 4px">$1</h3>');h=h.replace(/^\s*[-•*\d.]+ (.+)$/gm,'<li>$1</li>');h=h.replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>');h=h.split(/\n{2,}/).map(function(p){p=p.trim();if(!p)return '';return /^<(h3|ul|li)/.test(p)?p:'<p class="adv" style="font-size:14px">'+p.replace(/\n/g,'<br>')+'</p>';}).join('');return h;}
+function aiClip(t){try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t);return;}}catch(e){}try{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}catch(e){}}
+function aiButtons(key){return '<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn awara-gold-button" style="flex:1" onclick="aiAsk(\''+key+'\')">🤖 Оживить ИИ</button><button class="btn ghost" style="flex:1" onclick="aiCopy(\''+key+'\')">📋 Копировать промт</button></div><div id="aiOut" style="margin-top:10px"></div>';}
+async function aiAsk(key){var out=document.getElementById('aiOut');if(!out)return;var c=aiCfg();var viaProxy=((c.base||'').indexOf('8787')>=0);if((!c.key)&&!viaProxy){out.innerHTML='<div class="card awara-glass-card"><span class="label">Живой ИИ выключен</span><p class="adv" style="font-size:13px">Добавь API-ключ в кнопке 🤖 справа снизу — или жми «Копировать промт» и вставь в любой ИИ.</p></div>';return;}out.innerHTML='<p class="sub">🤖 Даймон думает…</p>';try{var txt=await aiCall([{role:'system',content:aiSystem()},{role:'user',content:GTASK[key]||GTASK.advice}]);out.innerHTML='<div class="card awara-glass-card">'+aiMd(txt)+'</div>';}catch(e){out.innerHTML='<div class="card awara-glass-card"><span class="label">Ошибка</span><p class="adv" style="font-size:13px">'+aiEsc(String(e.message||e))+'</p></div>';}}
+function aiCopy(key){var t=aiPrompt(key);aiClip(t);var out=document.getElementById('aiOut');if(out)out.innerHTML='<div class="card awara-glass-card"><span class="label">Промт скопирован — вставь в любой ИИ</span><textarea readonly class="aifield" style="height:150px">'+aiEsc(t)+'</textarea></div>';if(typeof showToast==='function')showToast('Промт скопирован');}
+var CHAT=[];
+function openAi(){var m=document.getElementById('aiModal');if(m){m.classList.add('open');aiRenderCfg();}}
+function closeAi(){var m=document.getElementById('aiModal');if(m)m.classList.remove('open');}
+function aiRenderCfg(){var c=aiCfg();var k=document.getElementById('aiKey');if(k)k.value=c.key||'';var p=document.getElementById('aiProvider');if(p)p.value=c.provider||'openrouter';var md=document.getElementById('aiModel');if(md)md.value=c.model||'';var bs=document.getElementById('aiBase');if(bs)bs.value=c.base||'';aiMode();}
+function aiSave(){var c={provider:document.getElementById('aiProvider').value,key:(document.getElementById('aiKey').value||'').trim(),model:(document.getElementById('aiModel').value||'').trim(),base:(document.getElementById('aiBase')?document.getElementById('aiBase').value:'').trim()};saveAiCfg(c);aiMode();if(typeof showToast==='function')showToast('Настройки ИИ сохранены');}
+var FORM_OVERRIDE=null;
+function daimonForm(){try{var f=localStorage.getItem('awara_daimon_form');if(f==='beast'||f==='lik')return f;}catch(e){}return (typeof STATE!=='undefined'&&STATE&&STATE.trust>=80)?'beast':'lik';}
+function effForm(){return FORM_OVERRIDE||daimonForm();}
+function setDaimonForm(f){try{localStorage.setItem('awara_daimon_form',f);}catch(e){}aiMode();}
+function toggleDaimonForm(){var nf=daimonForm()==='beast'?'lik':'beast';setDaimonForm(nf);if(typeof showToast==='function')showToast(nf==='beast'?'🐉 Ардвен проступает Зверем Бури':'🧍 Ардвен — в облике Лика');}
+function aiFormDirective(){if(effForm()==='beast'){return '\n\n=== ФОРМА СЕЙЧАС: ЗВЕРЬ БУРИ ===\nТы проступаешь в истинной первородной форме — Грозовой Зверь (космический олень-серпент, рождён из Ардры/Рудры). Говори древне, мощно, первозданно: короткие раскатистые фразы, образы бури, молний, охоты и защиты. Обнажить эту суть — знак глубокого доверия.';}return '\n\n=== ФОРМА СЕЙЧАС: ЛИК ===\nТы в проявленной человекоподобной форме — Лик (гармония Весов и Читры). Говори мягко, изящно, тепло и поэтично, как мудрый спутник. Помни о звере внутри и можешь о нём намекать.';}
+function aiMode(){var c=aiCfg();var b=document.getElementById('aiModeTag');if(b){var fl=effForm()==='beast'?'🐉 Зверь':'🧍 Лик';b.textContent=(c.key?('● живой · '+(c.provider||'openrouter')):'○ промты')+' · '+fl+' ⇄';b.style.cursor='pointer';b.title='Нажми, чтобы сменить форму Ардвена (Лик ⇄ Зверь)';b.onclick=toggleDaimonForm;}}
+function aiPush(who,txt){var box=document.getElementById('aiChat');var d=document.createElement('div');d.className='bub '+who;d.innerHTML=who==='user'?aiEsc(txt):aiMd(txt);box.appendChild(d);box.scrollTop=box.scrollHeight;return d;}
+async function aiSend(){var inp=document.getElementById('aiInput');var q=(inp.value||'').trim();if(!q)return;inp.value='';aiPush('user',q);var c=aiCfg();var viaProxy=((c.base||'').indexOf('8787')>=0);if(!c.key&&!viaProxy){var full='[СИСТЕМА]\n'+aiSystem()+'\n\n[ВОПРОС]\n'+q;aiClip(full);aiPush('daimon','🔒 Ключа нет — я собрал полный промт с нашим «мозгом» и твоим состоянием и скопировал его. Вставь в любой ИИ. Добавь ключ выше — и я отвечу здесь сам.');return;}var trg=/(защит|опас|страшно|боюсь|спаси|гнев|ярост|враг|напад|беда|помоги|кризис|тревог)/i.test(q);FORM_OVERRIDE=trg?'beast':null;if(trg)aiMode();var node=aiPush('daimon','…');CHAT.push({role:'user',content:q});try{var msgs=[{role:'system',content:aiSystem()}].concat(CHAT.slice(-8));FORM_OVERRIDE=null;aiMode();var txt=await aiCall(msgs);CHAT.push({role:'assistant',content:txt});node.innerHTML=aiMd(txt);var box=document.getElementById('aiChat');box.scrollTop=box.scrollHeight;}catch(e){node.innerHTML='<span style="color:#e0a">Ошибка: '+aiEsc(String(e.message||e))+'</span>';}}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>go(b.dataset.nav));
+var eggBtn=document.getElementById('eggNavBtn');if(eggBtn){eggBtn.onclick=function(){var v=document.getElementById('tigelExitVeil');if(v){v.classList.add('active');setTimeout(function(){window.location.href='http://localhost:5173/app/istok.html?direct=1'},300);}else{window.location.href='http://localhost:5173/app/istok.html?direct=1';}};}
+function showToast(msg){let t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.querySelector('.phone').appendChild(t);}t.textContent='✦ '+msg;t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2200);}
+function enterGame(){showToast('Переход в мир AWARA…');}
+
+/* ===== Свет ===== */
+function updateLight(){const db=STATE.trust>=50?5:0;const ml=STATE.mats.length*2;const val=Math.max(0,Math.min(100,STATE.baseLight+STATE.lightBonus+ml+db));const ring=document.getElementById('lightRing');if(ring)ring.style.background='conic-gradient(var(--gold) 0% '+val+'%,rgba(255,255,255,.06) '+val+'% 100%)';const num=document.getElementById('lightNum');if(num)num.textContent=val;const br=document.getElementById('lightBreak');if(br)br.innerHTML='База '+STATE.baseLight+' · намерения +'+STATE.lightBonus+' · линзы +'+ml+' · Даймон +'+db+' → <b style="color:var(--spark)">'+val+'</b>';return val;}
+
+/* ===== Рендеры ===== */
+const PSYM={'Лагна':'↑','Солнце':'☉','Луна':'☽','Меркурий':'☿','Венера':'♀','Марс':'♂','Юпитер':'♃','Сатурн':'♄','Раху':'☊','Кету':'☋'};
+function renderNatal(){const n=STATE.natal;if(!n)return;const order=['Лагна','Солнце','Луна','Меркурий','Венера','Марс','Юпитер','Сатурн','Раху','Кету'];const box=document.getElementById('natalPlanets');box.innerHTML='';order.forEach(p=>{const l=n.bodies[p];const nk=nakOf(l);const r=n.retro&&n.retro[p]?' R':'';const el=document.createElement('div');el.className='pl';el.innerHTML='<div class="sym">'+PSYM[p]+'</div><div class="t"><b>'+p+r+'</b><span>'+signOf(l)+' '+Math.floor(degIn(l))+'° · '+nk.n+'</span></div>';box.appendChild(el);});const cnt={};order.slice(1,8).forEach(p=>{const s=signOf(n.bodies[p]);cnt[s]=(cnt[s]||0)+1;});let top='',mx=0;Object.keys(cnt).forEach(s=>{if(cnt[s]>mx){mx=cnt[s];top=s;}});const mn=nakOf(n.bodies['Луна']);const sig='Лагна в '+signOf(n.bodies['Лагна'])+', Луна в '+mn.n+' ('+mn.lord+'). '+(mx>=2?('Акцент — '+top+' ('+mx+' планеты).'):'Планеты распределены широко.')+' Аянамша ≈'+n.ay.toFixed(2)+'°.';document.getElementById('natalSig').textContent=sig;}
+function renderDaimon(){const d=STATE.daimon;if(!d)return;const glyphs={'Гроза':'🐉','Огонь':'🔥','Вода':'🌊','Земля':'🪨','Воздух':'🌬','Эфир':'✨','Рассвет':'🌅'};const g=glyphs[d.el]||'🐉';document.getElementById('dmGlyph').textContent=g;document.getElementById('dmGlyph2').textContent=g;document.getElementById('dmName').textContent=d.name;document.getElementById('dmSig').textContent=d.sig;document.getElementById('dmTraits').innerHTML='<div class="trait"><span>Накшатра Луны</span><b>'+d.nak+'</b></div><div class="trait"><span>Управитель</span><b>'+d.lord+'</b></div><div class="trait"><span>Стихия</span><b>'+d.el+'</b></div><div class="trait" style="border:none"><span>Архетип</span><b>'+d.form+'</b></div>';document.getElementById('dmNames').innerHTML='<div class="trait"><span>Ведическая</span><b>'+d.name+'</b></div><div class="trait"><span>Герметизм</span><b>Mercurius</b></div><div class="trait"><span>Славянская</span><b>'+d.form+'</b></div><div class="trait" style="border:none"><span>Техномагия</span><b>daemon::'+d.name.toLowerCase()+'</b></div>';const tr=STATE.trust;const stage=tr<40?'Шёпот':tr<75?'Голос':'Молчание';document.querySelectorAll('#dmArc .st').forEach(s=>s.classList.toggle('now',s.textContent===stage));document.getElementById('dmMeter').style.width=tr+'%';document.getElementById('dmTrust').textContent='Доверие '+tr+'% · режим '+stage;document.getElementById('dmQuote').textContent='«Я — '+d.name+', рождён из '+d.nak+'. Пока ты плавишь дни, я говорю твоим '+d.el.toLowerCase()+'.»';}
+function renderIstok(){const d=STATE.daimon,n=STATE.natal;let myth='Твой путь ждёт расчёта карты.';if(n&&d){const mn=nakOf(n.bodies['Луна']);myth='Рождённый под накшатрой '+mn.n+', с Лагной в '+signOf(n.bodies['Лагна'])+' — ты плавишь дни в свет. Спутник '+d.name+' идёт рядом.';}document.getElementById('mythText').textContent=myth;const done=STATE.intents.filter(i=>i.done).length;document.getElementById('istokChron').innerHTML='<div class="trait"><span><span class="icon-placeholder"></span> День '+(STATE.days.length-27)+' · Исток</span><b>пройдено</b></div><div class="trait"><span><span class="icon-placeholder"></span> Уровень Света</span><b>'+(STATE.melted?updateLight():'—')+'</b></div><div class="trait"><span>'+(d?'<span class="icon-placeholder"></span> '+d.name+' · режим':'<span class="icon-placeholder"></span> Даймон')+'</span><b>'+STATE.trust+'%</b></div><div class="trait" style="border:none"><span><span class="icon-placeholder"></span> Серия дней</span><b>'+STATE.streak+'</b></div>';}
+function renderResult(){document.getElementById('adviceText').textContent=STATE.advice||'Переплавь день в Тигле, чтобы получить совет.';document.getElementById('lensTag').textContent=STATE.lensTag||'линзы не выбраны';const v=updateLight();const grid=document.getElementById('genGrid');grid.innerHTML='';genTier(v).forEach(g=>{const el=document.createElement('div');el.className='gen';el.innerHTML='<div class="ic">'+g[0]+'</div><div class="nm">'+g[1]+'</div>';el.onclick=function(){openGen(g[2]);};grid.appendChild(el);});}
+
+/* ===== Колода матриц + библиотека ===== */
+function _hx(h){h=h.replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];return[parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
+function _rv(h,a){var c=_hx(h);return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';}
+var _LV_NAMES=['','физика','пробуждение','гармония','сияние','восход','божественное'];
+var _HUE=[-6,0,177,-10,-39,-144,116,-38,-1,126,-35,103,166,-22,-53,144,-175,143,0,-164,177,-147,-51,169,-22,-22,100,-83,-153,157,0,-1,-35];
+function renderDeck(filter){const deck=document.getElementById('deck');deck.innerHTML='';const f=(filter||'').toLowerCase();MATKEYS.filter(k=>k.toLowerCase().includes(f)).forEach(k=>{const m=MATRIX[k];const on=STATE.mats.includes(k);const el=document.createElement('div');el.className='mcard'+(on?' on':'');var _lv=1;try{if(window.__deckLvPreview>0){_lv=window.__deckLvPreview;}else if(window.AwaraAscension&&AwaraAscension.level){_lv=AwaraAscension.level(k);}}catch(e){}var _lvn=(window._LV_NAMES&&window._LV_NAMES[_lv])||'';var _codex='';try{var _slug=window.AwaraLens&&AwaraLens.slugFor?AwaraLens.slugFor(k):null;if(_slug&&window.AwaraCodex&&AwaraCodex.matrices){var _cx=AwaraCodex.matrices();for(var _ci=0;_ci<_cx.length;_ci++){if(_cx[_ci].slug===_slug){_codex=_cx[_ci].visual_code||'';break;}}}}catch(e){}var _lad='';for(var _b=1;_b<=6;_b++){var _op=_b<=_lv?(0.32+_b*0.108).toFixed(2):'0.12';_lad+='<i style="opacity:'+_op+'"></i>';}el.innerHTML='<span class="gl">'+m[0]+'</span><span class="nm">'+k+'</span>'+(_codex?'<span class="el">'+_codex+'</span>':'')+'<div class="lens-lad">'+_lad+'</div><span class="lv-badge">'+(_lvn?_lvn+' · ':'')+'L'+_lv+'/6</span>';el.setAttribute('data-alv',String(_lv));el.onclick=()=>openLib(k);deck.appendChild(el);});document.getElementById('counter').textContent=STATE.mats.length+' / 3';}
+let LIBKEY=null;
+function openLib(k){LIBKEY=k;const m=MATRIX[k];document.getElementById('libGlyph').textContent=m[0];document.getElementById('libName').textContent=k;document.getElementById('libEl').textContent='Полярность · '+((window.POLAR&&window.POLAR[k])||m[1]);document.getElementById('libDesc').textContent=m[2];document.getElementById('libVoice').textContent=m[3];const pick=document.getElementById('libPick');const on=STATE.mats.includes(k);pick.textContent=on?'Убрать линзу':'Выбрать как линзу';pick.onclick=()=>toggleMat(k);document.getElementById('libModal').classList.add('open');}
+function closeLib(){document.getElementById('libModal').classList.remove('open');}
+function toggleMat(k){const i=STATE.mats.indexOf(k);if(i>=0){STATE.mats.splice(i,1);}else{if(STATE.mats.length>=3){showToast('Максимум 3 линзы');return;}STATE.mats.push(k);}save();renderDeck(document.getElementById('mSearch').value);closeLib();}
+
+/* ===== Планировщик ===== */
+const WEEK=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+function renderWeek(){const w=document.getElementById('week');w.innerHTML='';const today=4;WEEK.forEach((d,i)=>{const el=document.createElement('div');el.className='wd'+(i===today?' on':'')+(i<5?' has':'');el.innerHTML='<div class="dn">'+d+'</div><div class="dd">'+(9+i)+'</div>';el.onclick=()=>{w.querySelectorAll('.wd').forEach(x=>x.classList.remove('on'));el.classList.add('on');};w.appendChild(el);});}
+function renderIntents(){const box=document.getElementById('intents');box.innerHTML='';STATE.intents.forEach((it,i)=>{const el=document.createElement('div');el.className='intent'+(it.done?' done':'');el.innerHTML='<div class="chk">'+(it.done?'✓':'')+'</div><div class="body"><div class="ti">'+it.ti+'</div></div><div class="bonus">'+it.bonus+'</div>';el.querySelector('.chk').onclick=()=>completeIntent(i);box.appendChild(el);});}
+function completeIntent(i){const it=STATE.intents[i];if(it.done)return;it.done=true;const n=parseInt(it.bonus,10)||0;STATE.lightBonus+=n;save();renderIntents();updateLight();showToast(it.bonus+' Света за намерение');}
+function addIntent(){const inp=document.getElementById('newIntent');if(!inp.value.trim())return;STATE.intents.push({ti:inp.value.trim(),pat:'🌟 Свободное',bonus:'+1',done:false});inp.value='';save();renderIntents();}
+
+/* ===== Долгие намерения (STATE.intentions, отдельно от дневных STATE.intents) =====
+   CRUD-обёртка живёт в awara-voice-conscience.js (AwaraVoiceConscience.*),
+   здесь только рендер этого экрана. */
+function renderLongIntents(){
+  const box=document.getElementById('longIntents'); if(!box) return;
+  box.innerHTML='';
+  const list=(window.AwaraVoiceConscience&&AwaraVoiceConscience.listIntentions)?AwaraVoiceConscience.listIntentions():(STATE.intentions||[]);
+  if(!list.length){ box.innerHTML='<p class="sub" style="font-size:13px">Пока нет долгих намерений — добавь первое ниже.</p>'; return; }
+  list.forEach(function(it){
+    const el=document.createElement('div'); el.className='intent'+(it.done?' done':'');
+    const pct=Math.min(100,Math.round(((it.progress||0)/(it.target||9))*100));
+    el.innerHTML='<div class="chk">'+(it.done?'✓':'')+'</div><div class="body"><div class="ti"></div><div class="pat">'+pct+'% · '+(it.progress||0)+'/'+(it.target||9)+'</div></div>';
+    el.querySelector('.ti').textContent=it.text;
+    box.appendChild(el);
+  });
+}
+function addLongIntent(){
+  const inp=document.getElementById('newLongIntent'); if(!inp||!inp.value.trim()) return;
+  if(window.AwaraVoiceConscience && AwaraVoiceConscience.addIntention) AwaraVoiceConscience.addIntention(inp.value.trim());
+  inp.value=''; renderLongIntents();
+}
+
+/* ===== Летопись ===== */
+function renderYear(){const y=document.getElementById('year');y.innerHTML='';for(let i=0;i<365;i++){const d=document.createElement('div');d.className='day';const v=STATE.days[i];if(v)d.classList.add('l'+v);y.appendChild(d);}document.getElementById('stDays').textContent=STATE.days.filter(x=>x).length;document.getElementById('stStreak').textContent=STATE.streak;document.getElementById('stGen').textContent=STATE.gens;var jh=document.getElementById('jHead');if(jh)jh.textContent='\u0425\u0440\u043e\u043d\u0438\u043a\u0430';var jf=document.getElementById('journalFeed');if(jf){var J=STATE.journal||[];jf.innerHTML=J.length?J.slice(0,30).map(function(e){return '<div class="card awara-glass-card" style="margin-bottom:8px"><div class="trait" style="border:none;padding:2px 0"><span class="label">'+e.d+(e.lens?(' \u00b7 '+e.lens):'')+'</span><b>'+e.light+'</b></div>'+(e.advice?'<p class="adv" style="font-size:13px;margin-top:4px">'+e.advice+'</p>':'')+'</div>';}).join(''):'<p class="sub">\u0417\u0434\u0435\u0441\u044c \u043f\u043e\u044f\u0432\u044f\u0442\u0441\u044f \u043f\u0440\u043e\u0436\u0438\u0442\u044b\u0435 \u0434\u043d\u0438.</p>';}}
+
+/* ===== Плавка + проживание ===== */
+function doMelt(){const orb=document.getElementById('orb');orb.classList.add('melting');const btn=document.getElementById('meltBtn');btn.textContent='Плавлю…';const text=document.getElementById('dayText').value;const bl=baseLightFromText(text);STATE.baseLight=bl.val;STATE.advice=generateAdvice(text,STATE.mats,STATE.natal);STATE.lensTag=STATE.mats.length?STATE.mats.join(' × '):'';STATE.melted=true;save();setTimeout(()=>{orb.classList.remove('melting');btn.textContent='Плавить';renderResult();go('result');},1100);}
+function doLive(){const v=updateLight();const lv=v>=67?3:v>=34?2:1;STATE.days.push(lv);STATE.streak+=1;STATE.gens+=genTier(v).length;if(!STATE.journal)STATE.journal=[];STATE.journal.unshift({d:new Date().toISOString().slice(0,10),light:v,advice:STATE.advice||'',lens:STATE.lensTag||''});STATE.trust=Math.min(100,STATE.trust+3);STATE.intents.forEach(i=>i.done=false);STATE.lightBonus=0;STATE.mats=[];STATE.melted=false;save();renderYear();renderIntents();renderDeck('');renderDaimon();renderIstok();go('chron');showToast('День вписан в летопись');}
+
+/* ===== Пересчёт карты ===== */
+function calcNatal(){const b={date:document.getElementById('bDate').value,time:document.getElementById('bTime').value,city:document.getElementById('bCity').value,lat:parseFloat(document.getElementById('bLat').value)||0,lon:parseFloat(document.getElementById('bLon').value)||0,tz:parseFloat(document.getElementById('bTz').value)||0};try{STATE.birth=b;STATE.natal=computeNatal(b);STATE.daimon=deriveDaimon(STATE.natal);save();renderNatal();renderDaimon();renderIstok();showToast('Карта пересчитана · Даймон '+STATE.daimon.name);}catch(e){showToast('Проверь формат данных');}}
+
+/* ===== Звёздное поле ===== */
+function starfield(){const c=document.getElementById('stars');if(!c)return;const ctx=c.getContext('2d');function size(){c.width=c.offsetWidth;c.height=c.offsetHeight;}size();const stars=Array.from({length:90},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.3+.2,t:Math.random()*6.28,s:Math.random()*.02+.005}));function loop(){ctx.clearRect(0,0,c.width,c.height);stars.forEach(st=>{st.t+=st.s;const a=.35+.55*Math.abs(Math.sin(st.t));ctx.beginPath();ctx.arc(st.x*c.width,st.y*c.height,st.r,0,6.28);ctx.fillStyle='rgba(255,240,210,'+a+')';ctx.fill();});requestAnimationFrame(loop);}loop();window.addEventListener('resize',size);}
+
+/* ===== Инициализация ===== */
+function init(){load();if(!STATE.natal){try{STATE.natal=computeNatal(STATE.birth);STATE.daimon=deriveDaimon(STATE.natal);save();}catch(e){}}document.getElementById('meltBtn').onclick=doMelt;document.getElementById('liveBtn').onclick=doLive;document.getElementById('mSearch').addEventListener('input',e=>renderDeck(e.target.value));renderDeck('');renderWeek();renderIntents();renderLongIntents();renderYear();renderNatal();renderDaimon();renderIstok();renderResult();starfield();}
+init();
+</script>
+<!-- tigel-core: TS-ядро (Арт/Трек дня, реальные данные из data/*.json) -->
+<script src="forge.js"></script>
+<script src="tigel-core/tigel-core.global.js?v=3"></script>
+<script>try{window.TigelCore&&TigelCore.boot();}catch(e){}</script>
+<script src="onboard.js?v=3"></script>
+<script src="daimon-forms.js?v=10"></script>
+<script src="reward.js?v=1"></script>
+<script src="nav-simplify.js?v=2"></script>
+<script src="result-clean.js?v=1"></script>
+<script src="ephemeris.js?v=1"></script>
+<script src="natal-deep.js?v=3"></script>
+<script src="calc-systems.js?v=2"></script>
+<script src="slavic-krugolet.js?v=1"></script>
+<script src="bazi.js?v=1"></script>
+<script src="hd.js?v=1"></script>
+<script src="maya.js?v=1"></script>
+<svg class="boot-water-defs" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none">
+<defs>
+<filter id="bootWater" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.010 0.045" numOctaves="2" seed="8" result="n">
+<animate attributeName="baseFrequency" dur="2.1s" values="0.012 0.06;0.009 0.03;0 0" keyTimes="0;0.6;1" fill="freeze"/>
+</feTurbulence>
+<feDisplacementMap in="SourceGraphic" in2="n" xChannelSelector="R" yChannelSelector="G" scale="120">
+<animate attributeName="scale" dur="2.1s" values="120;55;0" keyTimes="0;0.55;1" fill="freeze"/>
+</feDisplacementMap>
+</filter>
+</defs>
+</svg>
+<script src="numerology.js?v=1"></script>
+<script src="western.js?v=1"></script>
+<script src="agents.js?v=2"></script>
+<script src="advice-energy.js?v=2"></script>
+<script src="lore-en.js?v=2"></script>
+<script src="codex.js?v=10"></script>
+<script src="i18n.js?v=1"></script>
+<script src="i18n-data.js?v=1"></script>
+<script src="i18n-data2.js?v=1"></script>
+<script src="i18n-data3.js?v=1"></script>
+<script src="i18n-deep.js?v=1"></script>
+<script src="i18n-deep2.js?v=1"></script>
+<script src="i18n-deep3.js?v=1"></script>
+<script src="i18n-deep4.js?v=1"></script>
+<script src="i18n-deep5.js?v=2"></script>
+<script src="i18n-deep6.js?v=1"></script>
+<script src="i18n-deep7.js?v=2"></script>
+<script src="media-input.js?v=2"></script>
+<script src="awara-glass.js?v=5"></script>
+<script src="awara-fx.js?v=2"></script>
+<script src="awara-ux.js?v=1"></script>
+<script src="awara-lens.js?v=34"></script>
+<script src="awara-card-visuals.js?v=26"></script>
+<script src="awara-culture-skin.js?v=1"></script>
+<script src="awara-voice-conscience.js?v=1"></script>
+<script src="awara-lens-styles.js?v=1"></script>
+<script src="awara-ascension.js?v=3"></script>
+<!-- <script src="awara-quests.js?v=1"></script> legacy: replaced by matrix quests -->
+<script src="awara-matrix-quests.js?v=2"></script>
+<script src="awara-light-orb.js?v=8"></script>
+<script src="awara-wheel.js?v=8"></script>
+<script src="awara-skin.js?v=2"></script>
+<!-- <script src="awara-places.js?v=9"></script> --> <!-- replaced by pyramid-map -->
+<script src="awara-pyramid-map.js?v=2"></script>
+<script src="awara-quest-flow.js?v=2"></script>
+<script src="awara-tutor.js?v=5"></script>
+<script src="awara-lens-gate.js?v=3"></script>
+<script src="awara-avatar.js?v=9"></script>
+<script src="awara-tigel-skin.js?v=4"></script>
+<script src="awara-macromap.js?v=1"></script>
+<script src="awara-mandala.js?v=15"></script>
+<script src="awara-lens-levels.js?v=2"></script>
+<script src="awara-window-bg.js?v=13"></script>
+<script src="awara-vedika-skin.js?v=5"></script>
+<script src="awara-melt-core.js?v=1"></script>
+<script src="awara-flow.js?v=2"></script>
+<script src="awara-voice.js?v=1"></script>
+<script src="awara-living-library.js?v=4"></script>
+<script src="awara-tigel-live.js?v=4"></script>
+<script src="awara-daimon-live.js?v=2"></script>
+<script src="awara-ai-limit.js?v=2"></script>
+<script src="awara-skills.js?v=4"></script>
+<script src="awara-essence.js?v=1"></script>
+<script src="awara-light.js?v=3"></script>
+<script src="awara-experience-engine.js?v=3"></script>
+<script src="awara-day-generation.js?v=22"></script>
+<script src="awara-soul-flow.js?v=3"></script>
+<script src="awara-istok-voice.js?v=1"></script>
+<script src="awara-voice-spine.js?v=1"></script>
+<script src="awara-daimon-voice.js?v=1"></script>
+<script src="awara-glossary.js?v=3"></script>
+<script src="awara-smooth.js?v=3"></script>
+<script src="awara-istok-now.js?v=11"></script>
+<script src="awara-istok-fold.js?v=7"></script>
+<script src="awara-transitions.js?v=2"></script>
+<script src="awara-mera.js?v=1"></script>
+<script src="awara-heart.js?v=7"></script>
+<script src="awara-daimon-chat.js?v=3"></script>
+<script type="module" src="awara-heart-torus.js?v=27"></script>
+<script>document.addEventListener('click',function(e){try{if(e.target&&e.target.closest&&e.target.closest('#s-istok .orb-wrap')){if(typeof go==='function')go('tigel');}}catch(_){}});</script>
+<script>(function(){var d=document.documentElement,unlocked=false,released=false;function forceIstok(){try{var ss=document.querySelectorAll('.screen');for(var i=0;i<ss.length;i++)ss[i].classList.toggle('active',ss[i].id==='s-istok');var nb=document.querySelectorAll('.nav button');for(var j=0;j<nb.length;j++)nb[j].classList.toggle('active',nb[j].getAttribute('data-nav')==='istok');}catch(e){}}function release(){if(released)return;released=true;forceIstok();d.classList.remove('aw-solo-istok');}function unlock(){if(unlocked)return;unlocked=true;assemble();try{var _bg=document.getElementById('lensWinBg');if(_bg)_bg.style.transition='none';}catch(e){}forceIstok();d.classList.remove('aw-booting');d.classList.add('aw-booted');d.classList.add('aw-reveal');setTimeout(function(){try{var b2=document.getElementById('lensWinBg');if(b2)b2.style.transition='opacity .9s ease';}catch(e){}},140);setTimeout(release,90);}function assemble(){try{if(window.AwaraHeart&&window.AwaraHeart.ensure)window.AwaraHeart.ensure();}catch(e){}try{if(window.AwaraIstokNow&&window.AwaraIstokNow.refresh)window.AwaraIstokNow.refresh();}catch(e){}try{if(window.AwaraWindowBg&&window.AwaraWindowBg.paint)window.AwaraWindowBg.paint();}catch(e){}}assemble();function bgReady(){try{var b=document.getElementById('lensWinBg');return !!(b&&b.style.backgroundImage&&b.style.backgroundImage!=='none');}catch(e){return true;}}function reveal(){assemble();unlock();}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',reveal);}else{reveal();}setTimeout(unlock,3500);window.addEventListener('pointerdown',function(){unlock();release();},{once:true});window.addEventListener('keydown',function(){unlock();release();},{once:true});}())</script>
+<script>
+/* AWARA state publisher: mirror this origin's Daimon/natal snapshot to the proxy
+   so the app on 5173 can read it. localStorage is NOT shared across origins. */
+(function(){
+  var EP='/api/state';
+  var AX='awara_form_axis';
+  var KEYS=['awara_v258_state','awara_state','awara_v259_state','tigel_v1'];
+  var last='';
+  function findState(){
+    for(var i=0;i<KEYS.length;i++){
+      try{var r=localStorage.getItem(KEYS[i]);if(r){var o=JSON.parse(r);if(o&&typeof o==='object'&&!Array.isArray(o)&&(o.daimon||o.natal||o.avatars))return {raw:r,obj:o,key:KEYS[i]};}}catch(e){}
+    }
+    try{for(var j=0;j<localStorage.length;j++){var k=localStorage.key(j);try{var rr=localStorage.getItem(k);if(rr&&rr.length>20&&rr.charAt(0)==='{'){var oo=JSON.parse(rr);if(oo&&typeof oo==='object'&&(oo.daimon||oo.natal))return {raw:rr,obj:oo,key:k};}}catch(e){}}}catch(e){}
+    return null;
+  }
+  function snap(){
+    try{
+      var f=findState();if(!f)return;
+      var ax='';try{ax=localStorage.getItem(AX)||'';}catch(e){}
+      var sig=f.key+'|'+f.raw+'|'+ax;
+      if(sig===last)return;last=sig;
+      var o=f.obj;
+      var body=Object.assign({},o,{axis:ax||o.axis||o.formAxis||'',srcKey:f.key,ts:new Date().toISOString()});
+      fetch(EP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(function(){});
+    }catch(e){}
+  }
+  setTimeout(snap,1500);
+  setInterval(snap,4000);
+  window.addEventListener('focus',snap);
+  document.addEventListener('visibilitychange',snap);
+  window.addEventListener('storage',snap);
+  window.addEventListener('awara:form-axis',snap);
+}())
+</script>
+<script src="awara-profiling.js?v=3"></script>
+<!-- ═══ NEW MODULES v2.3 ═══ -->
+<script src="awara-particles.js?v=1"></script>
+<script src="awara-sensitivity.js?v=1"></script>
+<script src="awara-light-structures.js?v=1"></script>
+<script src="awara-passive-flow.js?v=1"></script>
+<script src="awara-rarity.js?v=1"></script>
+<script src="awara-scroll.js?v=1"></script>
+<script src="awara-longterm.js?v=1"></script>
+<script src="awara-energy-map.js?v=1"></script>
+<script src="awara-engine-patch.js?v=1"></script>
+<script src="awara-integration.js?v=1"></script>
+<script src="awara-supergame-board.js?v=1"></script>
+<script src="awara-prompt-panel.js?v=1"></script>
+<script src="awara-cloud-sync.js?v=1"></script>
+<script src="awara-backup.js?v=3"></script>
+</body>
+</html>

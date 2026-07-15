@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000">
+<title>AWARA · Эволюция Яйца</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400&family=Cinzel:wght@400;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  width:100%;height:100%;overflow:hidden;color:#c9a84c;
+  background:
+    radial-gradient(ellipse at 38% 28%, rgba(60,20,100,0.32), transparent 52%),
+    radial-gradient(ellipse at 70% 72%, rgba(140,80,20,0.14), transparent 48%),
+    radial-gradient(ellipse at 50% 50%, rgba(20,10,50,0.6), transparent 70%),
+    #04020e;
+}
+
+#egg-wrap{
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+}
+
+/* тихое мерцание звёзд на фоне */
+#bg-stars{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.7) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(255,220,140,0.5) 0 1px, transparent 1.4px),
+    radial-gradient(circle, rgba(200,200,255,0.4) 0 1px, transparent 1.2px);
+  background-size:180px 180px, 260px 260px, 140px 140px;
+  background-position:22px 40px, 80px 110px, 50px 170px;
+  opacity:0.45;
+}
+
+#egg-svg{
+  width:min(260px,64vw);height:min(360px,64vh);
+  transition:opacity 1.5s ease, filter 1s ease;
+}
+
+#egg-canvas{
+  position:fixed;inset:0;z-index:2;
+  opacity:0;transition:opacity 2s ease;
+  pointer-events:none;
+}
+#egg-canvas.visible{opacity:1;}
+
+/* ── stage label ── */
+#stage-label{
+  position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+  text-align:center;z-index:10;pointer-events:none;
+}
+#stage-name{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(13px,2.8vw,18px);
+  color:#ffd700;letter-spacing:.28em;
+  text-shadow:0 0 20px rgba(255,215,0,0);
+  transition:color .8s, text-shadow .8s;
+}
+#stage-sub{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  color:rgba(201,168,76,0.35);letter-spacing:.18em;margin-top:5px;
+  transition:color .8s;
+}
+#stage-bar{
+  width:100px;height:1px;background:rgba(201,168,76,0.12);
+  margin:8px auto 0;border-radius:1px;overflow:hidden;
+}
+#stage-bar-fill{
+  height:100%;background:rgba(201,168,76,0.5);
+  width:0%;transition:width .6s ease;
+}
+
+/* ── creator button ── */
+#creator-btn{
+  position:fixed;bottom:18px;right:18px;z-index:30;
+  width:34px;height:34px;border-radius:50%;cursor:pointer;
+  background:rgba(201,168,76,0.06);
+  border:1px solid rgba(201,168,76,0.18);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;font-size:13px;
+  color:rgba(201,168,76,0.4);
+  transition:all .25s;
+}
+#creator-btn:hover{background:rgba(201,168,76,0.16);color:#ffd700;border-color:rgba(201,168,76,0.45);}
+
+/* ── creator panel ── */
+#creator-panel{
+  position:fixed;bottom:62px;right:14px;z-index:30;
+  width:210px;
+  background:rgba(3,1,10,0.97);
+  border:1px solid rgba(201,168,76,0.18);
+  border-radius:12px;padding:14px;
+  display:none;
+  box-shadow:0 0 50px rgba(0,0,0,0.9),0 0 20px rgba(201,168,76,0.04);
+}
+#creator-panel.open{display:block;}
+
+.cp-title{
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:.22em;
+  color:rgba(201,168,76,0.5);text-align:center;margin-bottom:12px;
+}
+.cp-val{
+  font-family:'JetBrains Mono',monospace;font-size:20px;
+  color:#ffd700;text-align:center;margin-bottom:2px;
+  text-shadow:0 0 14px rgba(255,215,0,0.3);
+  transition:text-shadow .4s;
+}
+.cp-val-label{
+  font-family:'JetBrains Mono',monospace;font-size:7px;
+  color:rgba(201,168,76,0.3);letter-spacing:.12em;text-align:center;
+  margin-bottom:10px;
+}
+
+#light-slider{
+  width:100%;cursor:pointer;margin:6px 0 12px;
+  accent-color:#c9a84c;
+}
+
+.pump-row{display:flex;gap:4px;margin-bottom:8px;}
+.pbtn{
+  flex:1;padding:5px 2px;
+  background:rgba(201,168,76,0.06);
+  border:1px solid rgba(201,168,76,0.18);
+  border-radius:6px;color:rgba(201,168,76,0.6);
+  cursor:pointer;font-family:'JetBrains Mono',monospace;
+  font-size:8px;letter-spacing:.04em;transition:all .2s;
+}
+.pbtn:hover{background:rgba(201,168,76,0.18);color:#ffd700;}
+.pbtn.gold{background:rgba(255,215,0,0.09);border-color:rgba(255,215,0,0.35);color:#ffd700;}
+
+/* stage dots */
+.sdots{display:flex;justify-content:space-between;align-items:center;margin:10px 0 10px;}
+.sdot{
+  width:22px;height:22px;border-radius:50%;cursor:pointer;
+  border:1px solid rgba(201,168,76,0.18);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:7px;
+  color:rgba(201,168,76,0.3);transition:all .25s;
+  background:rgba(0,0,0,0.6);
+}
+.sdot.reached{border-color:rgba(201,168,76,0.42);color:rgba(201,168,76,0.55);}
+.sdot.active{
+  border-color:#ffd700;color:#ffd700;
+  background:rgba(255,215,0,0.1);
+  box-shadow:0 0 8px rgba(255,215,0,0.3);
+}
+
+.sdot-label{
+  font-family:'JetBrains Mono',monospace;font-size:6px;
+  color:rgba(201,168,76,0.25);text-align:center;
+  margin-bottom:8px;letter-spacing:.05em;
+}
+
+.cp-reset{
+  width:100%;padding:5px;border-radius:6px;cursor:pointer;
+  background:rgba(255,80,80,0.06);
+  border:1px solid rgba(255,80,80,0.18);
+  color:rgba(255,110,110,0.45);
+  font-family:'JetBrains Mono',monospace;
+  font-size:7px;letter-spacing:.1em;transition:all .2s;
+}
+.cp-reset:hover{background:rgba(255,80,80,0.15);color:rgba(255,110,110,0.9);}
+
+/* back */
+#back-btn{
+  position:fixed;top:14px;left:14px;z-index:30;
+  font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.12em;
+  color:rgba(201,168,76,0.28);padding:6px 10px;
+  border:1px solid rgba(201,168,76,0.1);border-radius:6px;
+  text-decoration:none;transition:all .2s;
+}
+#back-btn:hover{color:rgba(201,168,76,0.65);border-color:rgba(201,168,76,0.28);}
+
+@keyframes eggBreathe{
+  0%,100%{opacity:var(--eo,0.9);}
+  50%{opacity:1;}
+}
+@keyframes arrPulse{
+  0%,100%{opacity:.55;}
+  50%{opacity:1;}
+}
+.nav-arr{animation:arrPulse 2.8s ease-in-out infinite;}
+.nav-arr:nth-child(2){animation-delay:.7s;}
+.nav-arr:nth-child(3){animation-delay:1.4s;}
+.nav-arr:nth-child(4){animation-delay:2.1s;}
+.nav-arr:active circle{fill:rgba(255,255,255,0.14);}
+
+/* ── stub overlay ── */
+#nav-stub{
+  position:fixed;inset:0;z-index:50;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(2,1,10,0.92);backdrop-filter:blur(10px);
+  flex-direction:column;gap:12px;
+  animation:stubIn .25s ease;
+}
+#nav-stub.show{display:flex;}
+@keyframes stubIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+#stub-dir{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.22em;color:rgba(201,168,76,0.4);
+}
+#stub-title{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(18px,5vw,28px);
+  color:#ffd700;letter-spacing:.25em;
+  text-shadow:0 0 30px rgba(255,215,0,0.4);
+}
+#stub-sub{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:rgba(201,168,76,0.35);letter-spacing:.15em;
+}
+#stub-close{
+  margin-top:24px;padding:8px 28px;
+  border:1px solid rgba(201,168,76,0.25);border-radius:8px;
+  background:rgba(201,168,76,0.07);
+  font-family:'Cinzel',serif;font-size:10px;
+  color:rgba(201,168,76,0.6);letter-spacing:.15em;cursor:pointer;
+  transition:all .2s;
+}
+#stub-close:hover{background:rgba(201,168,76,0.18);color:#ffd700;}
+</style>
+</head>
+<body>
+
+<a href="index.html" id="back-btn">← ЛОББИ</a>
+<div id="bg-stars"></div>
+
+<div id="egg-wrap">
+  <svg id="egg-svg" viewBox="-115 -145 230 290" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="eggclip">
+        <path d="M0,-128 C68,-128 96,-62 96,22 C96,88 60,128 0,128 C-60,128 -96,88 -96,22 C-96,-62 -68,-128 0,-128 Z"/>
+      </clipPath>
+      <radialGradient id="fg0" cx="50%" cy="38%" r="55%">
+        <stop offset="0%" stop-color="#0a0800" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="fg1" cx="50%" cy="38%" r="58%">
+        <stop offset="0%" stop-color="#2e1c00" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="fg2" cx="50%" cy="36%" r="62%">
+        <stop offset="0%" stop-color="#4a2c00" stop-opacity="0.7"/>
+        <stop offset="60%" stop-color="#1c1000" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="fg3" cx="50%" cy="34%" r="66%">
+        <stop offset="0%" stop-color="#6b3e00" stop-opacity="0.85"/>
+        <stop offset="45%" stop-color="#301e00" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0.1"/>
+      </radialGradient>
+    </defs>
+
+    <!-- fill -->
+    <path id="efill"
+      d="M0,-128 C68,-128 96,-62 96,22 C96,88 60,128 0,128 C-60,128 -96,88 -96,22 C-96,-62 -68,-128 0,-128 Z"
+      fill="url(#fg0)" opacity="0"/>
+
+    <!-- outline -->
+    <path id="eout"
+      d="M0,-128 C68,-128 96,-62 96,22 C96,88 60,128 0,128 C-60,128 -96,88 -96,22 C-96,-62 -68,-128 0,-128 Z"
+      fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+
+    <!-- cross clipped to egg -->
+    <g clip-path="url(#eggclip)">
+      <line id="cv" x1="0" y1="-128" x2="0" y2="128"
+        stroke="rgba(255,255,255,0.18)" stroke-width="0.6"/>
+      <line id="ch" x1="-96" y1="0" x2="96" y2="0"
+        stroke="rgba(255,255,255,0.18)" stroke-width="0.6"/>
+    </g>
+
+    <!-- RA center -->
+    <circle id="ra" cx="0" cy="0" r="3" fill="rgba(255,255,255,0.3)"/>
+
+    <!-- стрелки навигации -->
+    <!-- ← ДУША -->
+    <g id="arr-left" class="nav-arr" data-dir="left" style="cursor:pointer">
+      <circle cx="-104" cy="0" r="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+      <polyline points="-101,0 -108,0" stroke="rgba(255,255,255,0.55)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+      <polyline points="-108,0 -104,-4 -104,4 -108,0" fill="rgba(255,255,255,0.45)" stroke="none"/>
+    </g>
+    <!-- → МАТРИЦЫ -->
+    <g id="arr-right" class="nav-arr" data-dir="right" style="cursor:pointer">
+      <circle cx="104" cy="0" r="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+      <polyline points="101,0 108,0" stroke="rgba(255,255,255,0.55)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+      <polyline points="108,0 104,-4 104,4 108,0" fill="rgba(255,255,255,0.45)" stroke="none"/>
+    </g>
+    <!-- ↑ ИГРА -->
+    <g id="arr-top" class="nav-arr" data-dir="top" style="cursor:pointer">
+      <circle cx="0" cy="-138" r="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+      <polyline points="0,-135 0,-142" stroke="rgba(255,255,255,0.55)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+      <polyline points="0,-142 -4,-138 4,-138 0,-142" fill="rgba(255,255,255,0.45)" stroke="none"/>
+    </g>
+    <!-- ↓ ДАЙМОН -->
+    <g id="arr-bot" class="nav-arr" data-dir="bot" style="cursor:pointer">
+      <circle cx="0" cy="138" r="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+      <polyline points="0,135 0,142" stroke="rgba(255,255,255,0.55)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+      <polyline points="0,142 -4,138 4,138 0,142" fill="rgba(255,255,255,0.45)" stroke="none"/>
+    </g>
+
+    <!-- top: ИГРА -->
+    <text id="ql0" x="0" y="-72"
+      font-family="Cinzel,serif" font-size="9" letter-spacing="1.5"
+      text-anchor="middle" dominant-baseline="middle"
+      fill="rgba(255,255,255,0.42)">ИГРА</text>
+    <text id="qd0" x="0" y="-58"
+      font-family="JetBrains Mono,monospace" font-size="5" letter-spacing="0.6"
+      text-anchor="middle" dominant-baseline="middle"
+      fill="rgba(255,255,255,0.18)">хроника · обмен</text>
+
+    <!-- bottom: ДАЙМОН -->
+    <text id="ql1" x="0" y="68"
+      font-family="Cinzel,serif" font-size="9" letter-spacing="1.5"
+      text-anchor="middle" dominant-baseline="middle"
+      fill="rgba(255,255,255,0.42)">ДАЙМОН</text>
+    <text id="qd1" x="0" y="82"
+      font-family="JetBrains Mono,monospace" font-size="5" letter-spacing="0.6"
+      text-anchor="middle" dominant-baseline="middle"
+      fill="rgba(255,255,255,0.18)">вселенная</text>
+
+    <!-- left: ДУША -->
+    <text id="ql2" x="-52" y="-7"
+      font-family="Cinzel,serif" font-size="9" letter-spacing="1.5"
+      text-anchor="middle" dominant-baseline="middle"
+      fill="rgba(255,255,255,0.42)">ДУША</text>
+    <text id="qd2" x="-52" y="6"
+      font-family="JetBrains Mono,monospace" font-size="5" letter-spacing="0.5"
+      text-anchor="middle" dominant-baseline="middle"
+      fill="rgba(255,255,255,0.18)">тигель · свет</text>
+
+    <!-- right: МАТРИЦЫ -->
+    <text id="ql3" x="52" y="-7"
+      font-family="Cinzel,serif" font-size="9" letter-spacing="1"
+      text-anchor="middle" dominant-baseline="middle"
+      fill="rgba(255,255,255,0.42)">МАТРИЦЫ</text>
+    <text id="qd3" x="52" y="6"
+      font-family="JetBrains Mono,monospace" font-size="5" letter-spacing="0.4"
+      text-anchor="middle" dominant-baseline="middle"
+      fill="rgba(255,255,255,0.18)">ключи</text>
+  </svg>
+</div>
+
+<canvas id="egg-canvas"></canvas>
+
+<div id="stage-label">
+  <div id="stage-name">ЗЕРНО</div>
+  <div id="stage-sub">семя бытия</div>
+  <div id="stage-bar"><div id="stage-bar-fill"></div></div>
+</div>
+
+<!-- stub overlay -->
+<div id="nav-stub">
+  <div id="stub-dir"></div>
+  <div id="stub-title"></div>
+  <div id="stub-sub"></div>
+  <button id="stub-close" onclick="closeStub()">← НАЗАД</button>
+</div>
+
+<button id="creator-btn" title="Режим Создателя">✦</button>
+
+<div id="creator-panel">
+  <div class="cp-title">✦ РЕЖИМ СОЗДАТЕЛЯ</div>
+  <div class="cp-val" id="cp-val">0</div>
+  <div class="cp-val-label">кристаллов света</div>
+  <input type="range" id="light-slider" min="0" max="30000" step="50" value="0">
+  <div class="pump-row">
+    <button class="pbtn" onclick="addLight(100)">+100</button>
+    <button class="pbtn" onclick="addLight(1000)">+1К</button>
+    <button class="pbtn" onclick="addLight(5000)">+5К</button>
+    <button class="pbtn gold" onclick="jumpTo(i => i+1)">→ СТ</button>
+  </div>
+  <div class="sdots" id="sdots"></div>
+  <div class="sdot-label" id="sdot-label">нажми точку — прыгни на стадию</div>
+  <button class="cp-reset" onclick="resetLight()">↺ СБРОС</button>
+</div>
+
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.157.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+
+// ── СТАДИИ ──────────────────────────────────────────────────────
+const STAGES = [
+  { min:0,     name:'ЗЕРНО',   sub:'семя бытия',         outA:.72, fillA:.08,  crossA:.28, glowPx:0    },
+  { min:300,   name:'ИСКРА',   sub:'первый свет',         outA:.82, fillA:.32,  crossA:.38, glowPx:0    },
+  { min:1000,  name:'СВЕТ',    sub:'пробуждение',         outA:.78, fillA:.55,  crossA:.42, glowPx:6    },
+  { min:3000,  name:'ФОРМА',   sub:'обретение тела',      outA:.92, fillA:.82,  crossA:.6,  glowPx:12   },
+  { min:7000,  name:'ЖИЗНЬ',   sub:'живое существо',      outA:1,   fillA:1,    crossA:.8,  glowPx:0    },
+  { min:20000, name:'ОГОНЬ',   sub:'полный свет',         outA:1,   fillA:1,    crossA:1,   glowPx:0    },
+];
+const MAX_LIGHT = 30000;
+const LS_KEY = 'awara_egg_demo_light';
+
+let light = Math.min(MAX_LIGHT, Math.max(0, parseInt(localStorage.getItem(LS_KEY) || '0')));
+let threeReady = false;
+let ra3, raRing3, eggMesh;
+
+// ── HELPERS ─────────────────────────────────────────────────────
+function stageIdx(l) {
+  for (let i = STAGES.length - 1; i >= 0; i--)
+    if (l >= STAGES[i].min) return i;
+  return 0;
+}
+function stagePct(l) {
+  const s = stageIdx(l);
+  const lo = STAGES[s].min;
+  const hi = s < STAGES.length - 1 ? STAGES[s+1].min : MAX_LIGHT;
+  return Math.min(1, (l - lo) / (hi - lo));
+}
+function lerp(a, b, t) { return a + (b - a) * t; }
+function lerpCol(l) {
+  // white → gold → bright gold
+  const t = Math.min(1, stageIdx(l) / 4 + stagePct(l) / 5);
+  const r = 255, g = Math.round(lerp(255, 215, t)), b2 = Math.round(lerp(255, 0, t));
+  return [r, g, b2];
+}
+
+// ── SVG UPDATE ──────────────────────────────────────────────────
+function updateSVG(l) {
+  const si = stageIdx(l);
+  const pct = stagePct(l);
+  const st = STAGES[si];
+  const nx = STAGES[Math.min(si + 1, STAGES.length - 1)];
+
+  const oA = lerp(st.outA, nx.outA, pct);
+  const fA = lerp(st.fillA, nx.fillA, pct);
+  const cA = lerp(st.crossA, nx.crossA, pct);
+  const [r, g, b] = lerpCol(l);
+
+  const col = (a) => `rgba(${r},${g},${b},${a.toFixed(2)})`;
+  const labelA = Math.min(1, 0.38 + si * 0.15 + pct * 0.06);
+  const descA = labelA * 0.45;
+  const strokeW = si >= 3 ? 1.5 : 1;
+
+  // outline
+  const eo = document.getElementById('eout');
+  eo.setAttribute('stroke', col(oA));
+  eo.setAttribute('stroke-width', strokeW);
+
+  // fill
+  const ef = document.getElementById('efill');
+  ef.setAttribute('opacity', fA);
+  ef.setAttribute('fill', `url(#fg${Math.min(si, 3)})`);
+
+  // cross
+  ['cv','ch'].forEach(id => {
+    const el = document.getElementById(id);
+    el.setAttribute('stroke', col(cA));
+  });
+
+  // RA dot — всегда видна, даже на стадии 0
+  const ra = document.getElementById('ra');
+  ra.setAttribute('r', 3.5 + si * 1.8);
+  const raAlpha = Math.max(0.55, Math.min(1, oA));
+  ra.setAttribute('fill', col(raAlpha));
+  ra.style.filter = `drop-shadow(0 0 ${4 + si*2.5}px rgba(255,${200+si*8},${si*30},${0.5 + si*0.1}))`;
+
+  // quadrant labels
+  for (let i = 0; i < 4; i++) {
+    document.getElementById(`ql${i}`).setAttribute('fill', col(labelA));
+    document.getElementById(`qd${i}`).setAttribute('fill', col(descA));
+  }
+
+  // SVG glow + breathe
+  const svg = document.getElementById('egg-svg');
+  const glow = lerp(0, 16, Math.min(1, (si - 1) / 3));
+  svg.style.filter = glow > 0
+    ? `drop-shadow(0 0 ${glow.toFixed(1)}px rgba(255,215,0,${(glow/24).toFixed(2)}))`
+    : 'none';
+  // дыхание с самого начала — на стадии 0 очень медленное и тихое
+  const dur = Math.max(3.5, 10 - si * 1.2);
+  svg.style.animation = `eggBreathe ${dur.toFixed(1)}s ease-in-out infinite`;
+  svg.style.setProperty('--eo', (0.78 + si * 0.04).toFixed(2));
+}
+
+// ── THREE.JS (стадии 4–5) ────────────────────────────────────────
+function initThree() {
+  if (threeReady) return;
+  threeReady = true;
+
+  const canvas = document.getElementById('egg-canvas');
+  const R = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  R.setPixelRatio(Math.min(devicePixelRatio, 2));
+  R.setSize(innerWidth, innerHeight);
+
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 0.1, 20);
+  cam.position.set(0, 0, 4.2);
+
+  // звёзды
+  const sg = new THREE.BufferGeometry();
+  const sa = new Float32Array(480 * 3);
+  for (let i = 0; i < sa.length; i += 3) {
+    const r = 10 + Math.random() * 8, t = Math.random() * Math.PI * 2, p = Math.acos(2 * Math.random() - 1);
+    sa[i] = r * Math.sin(p) * Math.cos(t); sa[i+1] = r * Math.sin(p) * Math.sin(t); sa[i+2] = r * Math.cos(p);
+  }
+  sg.setAttribute('position', new THREE.BufferAttribute(sa, 3));
+  scene.add(new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xffffff, size: .022, transparent: true, opacity: .35 })));
+
+  // яйцо (упрощённое — без меридианов)
+  function eggGeo(s = 1) { const g = new THREE.SphereGeometry(1, 48, 36); g.scale(1, 1.3 * s, .7 * s); return g; }
+
+  const eggGroup = new THREE.Group();
+  eggGroup.position.y = 0.08;
+  scene.add(eggGroup);
+
+  // внешний слой
+  eggMesh = new THREE.Mesh(eggGeo(1.02), new THREE.MeshStandardMaterial({
+    color: 0xffd700, roughness: .35, metalness: .7,
+    transparent: true, opacity: .2, depthWrite: false
+  }));
+  eggGroup.add(eggMesh);
+
+  // внутренний слой
+  eggGroup.add(new THREE.Mesh(eggGeo(.68), new THREE.MeshStandardMaterial({
+    color: 0xffaa00, roughness: .2, metalness: .85,
+    transparent: true, opacity: .12, depthWrite: false
+  })));
+
+  // крест (4 меридиана по 90°)
+  const lm = new THREE.LineBasicMaterial({ color: 0xffd700, transparent: true, opacity: .35, depthWrite: false });
+  for (let lng = 0; lng < 360; lng += 90) {
+    const pts = [];
+    for (let lat = -88; lat <= 88; lat += 3) {
+      const phi = (90 - lat) * Math.PI / 180, th = lng * Math.PI / 180, r = 1.03;
+      pts.push(new THREE.Vector3(-r * Math.sin(phi) * Math.cos(th), r * Math.cos(phi) * 1.3, r * Math.sin(phi) * Math.sin(th) * .7));
+    }
+    eggGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), lm));
+  }
+  // горизонтальное кольцо (экватор)
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(.98, .004, 8, 100),
+    new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: .3, depthWrite: false }));
+  ring.scale.set(1, 1.3, .7); eggGroup.add(ring);
+
+  // RA ядро
+  const raG = new THREE.Group(); scene.add(raG);
+  ra3 = new THREE.Mesh(new THREE.SphereGeometry(.13, 32, 32), new THREE.ShaderMaterial({
+    vertexShader: 'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader: 'varying vec3 vN;void main(){float i=pow(.58-dot(vN,vec3(0,0,1)),2.);gl_FragColor=vec4(1.,.92,.18,1.)*i*3.2+vec4(1.,.8,0.,1.)*.35;}',
+    transparent: true, blending: THREE.AdditiveBlending, depthWrite: false
+  }));
+  raG.add(ra3);
+  raG.add(new THREE.Mesh(new THREE.SphereGeometry(.26, 24, 24), new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: .1, depthWrite: false })));
+  raRing3 = new THREE.Mesh(new THREE.TorusGeometry(.19, .005, 8, 80), new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: .5 }));
+  raRing3.rotation.x = Math.PI / 2; raG.add(raRing3);
+
+  // свет
+  scene.add(new THREE.AmbientLight(0x221100, 4));
+  const sun = new THREE.DirectionalLight(0xffeedd, 5); sun.position.set(4, 3, 4); scene.add(sun);
+
+  let rot = 0;
+  function loop(ts) {
+    requestAnimationFrame(loop);
+    const t = ts * .001;
+    rot += .004; eggGroup.rotation.y = rot;
+    const pulse = 1 + Math.sin(t * 1.9) * .09;
+    if (ra3) ra3.scale.setScalar(pulse);
+    if (raRing3) raRing3.rotation.z += .008;
+    R.render(scene, cam);
+  }
+  loop(0);
+
+  window.addEventListener('resize', () => {
+    R.setSize(innerWidth, innerHeight);
+    cam.aspect = innerWidth / innerHeight;
+    cam.updateProjectionMatrix();
+  });
+}
+
+// ── ГЛАВНЫЙ UPDATE ───────────────────────────────────────────────
+function update(l) {
+  light = Math.max(0, Math.min(MAX_LIGHT, l));
+  localStorage.setItem(LS_KEY, light);
+
+  const si = stageIdx(light);
+  const pct = stagePct(light);
+  const st = STAGES[si];
+
+  // label
+  document.getElementById('stage-name').textContent = st.name;
+  document.getElementById('stage-sub').textContent = st.sub;
+  document.getElementById('stage-bar-fill').style.width = (pct * 100) + '%';
+
+  // creator panel
+  document.getElementById('cp-val').textContent = light.toLocaleString('ru');
+  document.getElementById('light-slider').value = light;
+
+  // dots
+  document.querySelectorAll('.sdot').forEach((d, i) => {
+    d.classList.toggle('active', i === si);
+    d.classList.toggle('reached', i < si);
+  });
+  const sdl = document.getElementById('sdot-label');
+  sdl.textContent = `${st.name} · ${light.toLocaleString('ru')} / ${(si < STAGES.length - 1 ? STAGES[si+1].min : MAX_LIGHT).toLocaleString('ru')}`;
+
+  // stage name glow grows with stages
+  const nameEl = document.getElementById('stage-name');
+  nameEl.style.textShadow = si >= 2 ? `0 0 ${8+si*6}px rgba(255,215,0,${0.15+si*0.08})` : 'none';
+
+  // SVG (стадии 0-3)
+  updateSVG(light);
+
+  const svg = document.getElementById('egg-svg');
+  const canvas = document.getElementById('egg-canvas');
+
+  if (si >= 4) {
+    initThree();
+    canvas.classList.add('visible');
+    svg.style.opacity = '0';
+    svg.style.pointerEvents = 'none';
+  } else {
+    canvas.classList.remove('visible');
+    svg.style.opacity = '1';
+    svg.style.pointerEvents = 'auto';
+  }
+}
+
+// ── НАВИГАЦИЯ ────────────────────────────────────────────────────
+const NAV = {
+  left: { dir:'←', title:'ДУША',     sub:'тигель · свет · практика',  href:'tigel-app.html' },
+  right:{ dir:'→', title:'МАТРИЦЫ',  sub:'ключи · культуры · пути',   href:'matrices.html'  },
+  top:  { dir:'↑', title:'ИГРА',     sub:'хроника · обмен · квесты',  href:'index.html'     },
+  bot:  { dir:'↓', title:'ДАЙМОН',   sub:'вселенная · стихии · ДНК',  href:'daimon.html'    },
+};
+
+function openStub(dir) {
+  const n = NAV[dir];
+  document.getElementById('stub-dir').textContent = n.dir;
+  document.getElementById('stub-title').textContent = n.title;
+  document.getElementById('stub-sub').textContent = n.sub;
+  document.getElementById('nav-stub').classList.add('show');
+}
+window.closeStub = () => document.getElementById('nav-stub').classList.remove('show');
+
+// клики по стрелкам SVG
+document.querySelectorAll('.nav-arr').forEach(el => {
+  el.addEventListener('click', () => openStub(el.dataset.dir));
+});
+
+// свайп
+let tx = 0, ty = 0;
+document.addEventListener('touchstart', e => {
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  const dy = e.changedTouches[0].clientY - ty;
+  if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
+  if (Math.abs(dx) > Math.abs(dy)) {
+    openStub(dx < 0 ? 'left' : 'right');
+  } else {
+    openStub(dy < 0 ? 'top' : 'bot');
+  }
+}, { passive: true });
+
+// ESC закрывает
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeStub(); });
+
+// ── CONTROLS ─────────────────────────────────────────────────────
+window.addLight = (n) => update(light + n);
+window.resetLight = () => update(0);
+
+// прыжок на следующую стадию
+window.jumpTo = () => {
+  const si = stageIdx(light);
+  if (si < STAGES.length - 1) update(STAGES[si + 1].min);
+};
+
+// слайдер
+document.getElementById('light-slider').addEventListener('input', function() {
+  update(parseInt(this.value));
+});
+
+// точки стадий
+const dotsEl = document.getElementById('sdots');
+STAGES.forEach((s, i) => {
+  const d = document.createElement('div');
+  d.className = 'sdot';
+  d.textContent = i;
+  d.title = `${s.name} (от ${s.min.toLocaleString('ru')})`;
+  d.onclick = () => update(s.min);
+  dotsEl.appendChild(d);
+});
+
+// кнопка создателя
+document.getElementById('creator-btn').onclick = () =>
+  document.getElementById('creator-panel').classList.toggle('open');
+
+// старт
+update(light);
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AWARA State Module Test</title>
+  <style>
+    body { font-family: monospace; background: #000; color: #c9a84c; padding: 20px; }
+    pre { background: #0a0a14; padding: 15px; border-radius: 8px; white-space: pre-wrap; }
+    h1 { color: #ffd700; }
+    button { 
+      padding: 8px 16px; margin: 4px;
+      background: #c9a84c; color: #000; border: none;
+      cursor: pointer; font-family: inherit;
+    }
+    button:hover { background: #ffd700; }
+    .output { min-height: 200px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>AWARA State Module Test</h1>
+  <div>
+    <button id="btn-load">Load State</button>
+    <button id="btn-add">Add Light (+100)</button>
+    <button id="btn-tigel">Add Tigel Entry</button>
+    <button id="btn-reset">Reset State</button>
+  </div>
+  <pre class="output" id="output">Нажми любую кнопку...</pre>
+  
+  <script type="module">
+    import { 
+      loadState, saveState, updateState, resetState,
+      getLight, addLight, addTigelEntry, getTigelEntries
+    } from './state-module.js';
+    
+    const output = document.getElementById('output');
+    const log = (label, data) => {
+      output.textContent = `${label}:\n${JSON.stringify(data, null, 2)}`;
+    };
+    
+    document.getElementById('btn-load').onclick = () => {
+      log('Текущее состояние', loadState());
+    };
+    
+    document.getElementById('btn-add').onclick = () => {
+      const newLight = addLight(100);
+      log('Добавлено 100 света. Всего', newLight);
+    };
+    
+    document.getElementById('btn-tigel').onclick = () => {
+      const count = addTigelEntry({
+        note: 'Тестовая запись',
+        emotion: 'спокойствие'
+      });
+      log('Запись добавлена. Всего записей', count);
+    };
+    
+    document.getElementById('btn-reset').onclick = () => {
+      resetState();
+      log('Состояние сброшено', loadState());
+    };
+    
+    // Автозагрузка при старте
+    log('Состояние при загрузке', loadState());
+  </script>
+</body>
+</html>

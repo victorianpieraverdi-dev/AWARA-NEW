@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>AWARA · Исток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { width: 100%; height: 100%; }
+  body { background: #05050a; overflow: hidden; cursor: pointer;
+         -webkit-tap-highlight-color: transparent; }
+  /* Сцена: два слоя-обёртки, чтобы оси цвета/размерности не трогали UI (TierLadder вне них). */
+  .scene-tier, .scene-color { width: 100%; height: 100%; }
+  /* Ось ЦВЕТА: ч/б -> полный спектр по body[data-theme] (ставит PlayerProvider). */
+  .scene-color { transition: filter 1.2s ease; }
+  body:not([data-theme]) .scene-color,
+  body[data-theme="level0"] .scene-color { filter: grayscale(1) saturate(0.85); }
+  body[data-theme="level1"] .scene-color { filter: grayscale(0.7) saturate(0.95); }
+  body[data-theme="level2"] .scene-color { filter: grayscale(0.45); }
+  body[data-theme="level3"] .scene-color { filter: grayscale(0.2); }
+  body[data-theme="level4"] .scene-color { filter: grayscale(0) saturate(1.1); }
+  /* Ось РАЗМЕРНОСТИ: T0 статично+грубо (заморозка кадра + низкий dpr в Canvas) -> T5 живо. */
+  .scene-tier { transition: filter 1s ease; }
+  body:not([data-tier]) .scene-tier,
+  body[data-tier="0"] .scene-tier { filter: contrast(1.15) brightness(0.88); }
+  body[data-tier="1"] .scene-tier { filter: contrast(1.05) brightness(0.95); }
+  body[data-tier="2"] .scene-tier { filter: none; }
+  body[data-tier="3"] .scene-tier { filter: contrast(1.04) brightness(1.03); }
+  body[data-tier="4"] .scene-tier { filter: contrast(1.06) brightness(1.05) saturate(1.06); }
+  body[data-tier="5"] .scene-tier { filter: contrast(1.09) brightness(1.08) saturate(1.12); }
+  /* Грубость низких tier'ов: низкий dpr Canvas даёт пиксельную картинку -> рисуем блочно. */
+  body:not([data-tier]) canvas,
+  body[data-tier="0"] canvas,
+  body[data-tier="1"] canvas { image-rendering: pixelated; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="./istok-main.tsx"></script>
+</body>
+</html>

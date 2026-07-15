@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · Чат Матрицы</title>
+<link rel="stylesheet" href="css/main.css">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100dvh;overflow:hidden;background:#02010a;color:#c9a84c;font-family:'Cormorant Garamond',serif}
+body{display:flex;flex-direction:column;background:radial-gradient(ellipse at 30% 25%,rgba(124,58,237,.25),transparent 42%),radial-gradient(ellipse at 75% 65%,rgba(245,158,11,.12),transparent 45%),#02010a}
+
+header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid rgba(201,168,76,.15);flex-shrink:0;gap:6px;background:rgba(2,1,10,.9)}
+header .back{color:#c9a84c;text-decoration:none;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;padding:6px 10px;border:1px solid rgba(201,168,76,.2);border-radius:8px}
+header .back:hover{border-color:#ffd700;color:#ffd700}
+header .title-area{text-align:center;flex:1}
+header .title-area .t{font-family:'Cinzel',serif;font-size:13px;color:#ffd700;letter-spacing:.08em}
+header .title-area .m{font-size:8px;color:rgba(201,168,76,.35);font-family:'JetBrains Mono',monospace}
+header .players-btn{min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.15);border-radius:50%;color:#c9a84c;cursor:pointer;font-size:18px;position:relative;transition:all .3s}
+header .players-btn:active{background:rgba(201,168,76,.2)}
+header .players-btn .badge{position:absolute;top:-2px;right:-2px;background:#ffd700;color:#02010a;font-size:7px;min-width:14px;height:14px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:bold}
+
+.chat-area{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:6px;-webkit-overflow-scrolling:touch}
+.chat-area .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;color:rgba(201,168,76,.2)}
+.chat-area .empty .glyph{font-size:42px;filter:drop-shadow(0 0 16px rgba(201,168,76,.4))}
+.chat-area .empty p{font-size:13px;font-style:italic}
+
+.msg{max-width:85%;padding:8px 12px;border-radius:10px;animation:fadeIn .25s ease}
+.msg.mine{align-self:flex-end;background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(180,130,40,.06));border:1px solid rgba(201,168,76,.2);cursor:pointer}
+.msg.other{align-self:flex-start;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);cursor:pointer}
+.msg.system{align-self:center;background:rgba(255,180,40,.06);border:1px solid rgba(255,180,40,.15);font-size:10px;color:rgba(255,200,100,.7);text-align:center;max-width:95%;padding:6px 14px;border-radius:16px;font-family:'JetBrains Mono',monospace;font-size:9px}
+.msg .sender{font-family:'Cinzel',serif;font-size:9px;color:#ffd700;margin-bottom:1px;letter-spacing:.04em}
+.msg .text{font-size:13px;color:rgba(220,210,190,.9);line-height:1.45;word-break:break-word}
+.msg .time{font-size:7px;color:rgba(201,168,76,.25);margin-top:3px;font-family:'JetBrains Mono',monospace;text-align:right}
+.msg .mine-tag{font-size:7px;color:rgba(201,168,76,.35)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.input-row{display:flex;gap:6px;padding:8px 10px;padding-bottom:max(8px,env(safe-area-inset-bottom));border-top:1px solid rgba(201,168,76,.1);flex-shrink:0;background:rgba(2,1,10,.92);position:sticky;bottom:0}
+.input-row input{flex:1;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(201,168,76,.18);border-radius:10px;color:#dcd2be;font-family:'JetBrains Mono',monospace;font-size:16px;outline:none;transition:border-color .3s}
+.input-row input:focus{border-color:#ffd700}
+.input-row button{min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:10px;color:#ffd700;font-family:'Cinzel',serif;font-size:12px;cursor:pointer;letter-spacing:.1em}
+.input-row button:active{background:rgba(201,168,76,.25)}
+.input-row .send-btn{font-size:16px}
+.input-row .exch-btn{font-size:16px;background:rgba(255,180,40,.1);border-color:rgba(255,180,40,.25)}
+
+/* EXCHANGE PANEL */
+.exch-panel{display:none;position:absolute;bottom:100%;left:0;right:0;background:rgba(2,1,10,.96);border:1px solid rgba(255,180,40,.2);border-radius:12px 12px 0 0;padding:14px;z-index:5}
+.exch-panel.show{display:block}
+.exch-panel .ex-title{font-family:'Cinzel',serif;font-size:11px;color:#ffd700;margin-bottom:8px;text-align:center}
+.exch-panel select,.exch-panel input{width:100%;padding:8px;margin-bottom:6px;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.15);border-radius:8px;color:#dcd2be;font-family:'JetBrains Mono',monospace;font-size:13px;outline:none}
+.exch-panel select:focus,.exch-panel input:focus{border-color:#ffb832}
+.exch-panel .ex-send{width:100%;padding:8px;background:rgba(255,180,40,.15);border:1px solid rgba(255,180,40,.3);border-radius:8px;color:#ffb832;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;letter-spacing:.1em}
+.exch-panel .ex-send:active{background:rgba(255,180,40,.25)}
+.exch-panel .ex-balance{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,.4);text-align:center;margin-bottom:8px}
+
+/* PLAYERS PANEL */
+.players-panel{display:none;position:fixed;right:0;top:0;bottom:0;width:min(280px,85vw);z-index:30;background:rgba(2,1,10,.97);border-left:1px solid rgba(201,168,76,.2);flex-direction:column;overflow-y:auto}
+.players-panel.show{display:flex}
+.players-panel .pp-header{padding:14px;border-bottom:1px solid rgba(201,168,76,.12);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(2,1,10,.97);z-index:2}
+.players-panel .pp-title{font-family:'Cinzel',serif;font-size:12px;color:#ffd700}
+.players-panel .pp-close{min-width:36px;min-height:36px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:50%;color:#c9a84c;cursor:pointer;font-size:14px}
+.players-panel .pp-player{padding:10px 14px;border-bottom:1px solid rgba(201,168,76,.05);cursor:pointer;transition:background .2s;display:flex;justify-content:space-between;align-items:center}
+.players-panel .pp-player:hover,.players-panel .pp-player:active{background:rgba(201,168,76,.06)}
+.players-panel .pp-player.active{background:rgba(201,168,76,.1);border-left:2px solid #ffd700}
+.players-panel .pp-player .pp-name{font-size:12px;color:#c9a84c}
+.players-panel .pp-player .pp-count{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(201,168,76,.35)}
+.players-panel .pp-player .pp-me{font-size:8px;color:rgba(201,168,76,.3)}
+.players-panel .pp-filter-bar{display:none;padding:6px 14px;border-bottom:1px solid rgba(201,168,76,.08);background:rgba(201,168,76,.04)}
+.players-panel .pp-filter-bar.show{display:flex;align-items:center;gap:8px}
+.players-panel .pp-filter-bar span{font-size:9px;color:rgba(201,168,76,.5);font-family:'JetBrains Mono',monospace}
+.players-panel .pp-filter-bar button{background:transparent;border:1px solid rgba(201,168,76,.15);color:#c9a84c;font-size:8px;padding:2px 8px;border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace}
+
+.lang-switch{position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px}
+.lang-switch button{padding:3px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:8px;cursor:pointer;border-radius:4px}
+
+/* TOAST */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);padding:8px 16px;background:rgba(0,0,0,.9);border:1px solid rgba(201,168,76,.3);border-radius:20px;color:#ffd700;font-family:'Cormorant Garamond',serif;font-size:12px;z-index:50;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.on{opacity:1}
+
+@media(max-width:375px){header{padding:8px 10px}.msg{max-width:92%}.input-row input{font-size:16px}}
+</style>
+</head>
+<body>
+
+
+
+<header>
+  <a href="index.html" class="back">←</a>
+  <div class="title-area"><div class="t" id="chat-title" data-i18n="chat.title">ЧАТ МАТРИЦЫ</div><div class="m" id="chat-matrix">—</div></div>
+  <button class="players-btn" onclick="togglePlayers()" title="Игроки" data-i18n-title="chat.players.btn">👥<span class="badge" id="players-badge" style="display:none">0</span></button>
+</header>
+
+<div class="chat-area" id="chat-area">
+  <div class="empty"><div class="glyph">✦</div><p data-i18n="chat.empty">Сообщений пока нет. Напиши первое.</p></div>
+</div>
+
+<div class="players-panel" id="players-panel">
+  <div class="pp-header"><div class="pp-title" data-i18n="chat.players.title">👥 ИГРОКИ МАТРИЦЫ</div><button class="pp-close" onclick="togglePlayers()">×</button></div>
+  <div class="pp-filter-bar" id="pp-filter-bar"><span data-i18n="chat.filter">фильтр:</span><span id="pp-filter-name" style="color:#ffd700">—</span><button onclick="clearFilter()" data-i18n="chat.filter.all">× ВСЕ</button></div>
+  <div id="pp-list"></div>
+</div>
+
+<div style="position:sticky;bottom:0;flex-shrink:0;z-index:10;background:rgba(2,1,10,.95)">
+  <div class="exch-panel" id="exch-panel">
+    <div class="ex-title" data-i18n="chat.exchange.title">💫 ПЕРЕВЕСТИ СВЕТ</div>
+    <div class="ex-balance"><span data-i18n="chat.exchange.balance">Баланс:</span> <span id="ex-balance" style="color:#ffb832">0</span> ✦</div>
+    <select id="ex-target"></select>
+    <input type="number" id="ex-amount" placeholder="Сумма..." data-i18n-placeholder="chat.exchange.amount" min="1" inputmode="numeric">
+    <button class="ex-send" onclick="sendLight()" data-i18n="chat.exchange.send">ОТПРАВИТЬ</button>
+  </div>
+  <div class="input-row">
+    <button class="exch-btn" onclick="toggleExchange()" title="Светообмен">💫</button>
+    <input id="msg-input" type="text" placeholder="Сообщение..." data-i18n-placeholder="chat.input.placeholder" maxlength="500" autocomplete="off" enterkeyhint="send">
+    <button class="send-btn" onclick="sendMsg()">→</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+  import { getActivePerception, PERCEPTIONS } from './js/matrixSwitcher.js';
+  import { loadState, updateState } from './js/state-module.js';
+  import { t } from './js/i18n.js';
+  const _lang = localStorage.getItem('awara_lang') || 'ru';
+
+  const STORAGE_PREFIX = 'awara_matrix_chat_';
+  const MAX_MSGS = 500;
+  const EXCHANGE_KEY = 'awara_transfers';
+
+  let playerId = localStorage.getItem('awara_player_id');
+  if (!playerId) { playerId = 'p_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); localStorage.setItem('awara_player_id', playerId); }
+  let playerName = localStorage.getItem('awara_player_name') || 'Путник';
+
+  let matrixId = getActivePerception();
+  let messages = [];
+  let filterPlayer = null;
+
+  function loadMsgs() {
+    try { messages = JSON.parse(localStorage.getItem(STORAGE_PREFIX + matrixId) || '[]'); } catch(e) { messages = []; }
+  }
+  function saveMsgs() {
+    if (messages.length > MAX_MSGS) messages = messages.slice(-MAX_MSGS);
+    localStorage.setItem(STORAGE_PREFIX + matrixId, JSON.stringify(messages));
+  }
+
+  function render() {
+    const area = document.getElementById('chat-area');
+    let list = filterPlayer ? messages.filter(m => m.playerId === filterPlayer || m.system) : messages;
+    if (list.length === 0) {
+      area.innerHTML = filterPlayer
+        ? '<div class="empty"><div class="glyph">🔍</div><p>'+(_lang==='en'?'No messages from this player':'Нет сообщений от этого игрока')+'</p></div>'
+        : '<div class="empty"><div class="glyph">✦</div><p>'+t('chat.empty')+'</p></div>';
+      area.scrollTop = area.scrollHeight;
+      return;
+    }
+    area.innerHTML = list.map(m => {
+      if (m.system) return '<div class="msg system">' + m.text + '</div>';
+      const isMine = m.playerId === playerId;
+      const time = new Date(m.timestamp);
+      const timeStr = time.toLocaleTimeString('ru-RU', {hour:'2-digit',minute:'2-digit'});
+      return '<div class="msg ' + (isMine ? 'mine' : 'other') + '" onclick="window._filterPlayer(\'' + m.playerId + '\')">' +
+        (isMine ? '' : '<div class="sender">' + esc(m.playerName || (_lang==='en'?'Wanderer':'Путник')) + '</div>') +
+        '<div class="text">' + esc(m.text) + '</div>' +
+        '<div class="time">' + (isMine ? '<span class="mine-tag">'+(_lang==='en'?'(you)':'(ты)')+'</span> ' : '') + timeStr + '</div>' +
+        '</div>';
+    }).join('');
+    area.scrollTop = area.scrollHeight;
+  }
+
+  function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  window.sendMsg = function() {
+    const input = document.getElementById('msg-input');
+    const text = input.value.trim();
+    if (!text) return;
+    messages.push({ text, playerId, playerName, timestamp: Date.now(), matrixId });
+    saveMsgs();
+    input.value = '';
+    filterPlayer = null;
+    render();
+    updatePlayers();
+  };
+
+  // ══ СВЕТООБМЕН ══
+  window.toggleExchange = function() {
+    const panel = document.getElementById('exch-panel');
+    panel.classList.toggle('show');
+    if (panel.classList.contains('show')) {
+      const state = loadState();
+      document.getElementById('ex-balance').textContent = Math.round(state.totalLight || 0);
+      // Список получателей
+      const players = getUniquePlayers().filter(p => p.id !== playerId);
+      const sel = document.getElementById('ex-target');
+      sel.innerHTML = players.map(p => '<option value="' + p.id + '">' + (p.name||(_lang==='en'?'Wanderer':'Путник')) + '</option>').join('');
+      if (players.length === 0) sel.innerHTML = '<option>'+(_lang==='en'?'— no players —':'— нет игроков —')+'</option>';
+    }
+  };
+
+  window.sendLight = function() {
+    const targetId = document.getElementById('ex-target').value;
+    const amount = parseInt(document.getElementById('ex-amount').value);
+    const state = loadState();
+    const balance = Math.round(state.totalLight || 0);
+
+    if (!targetId || targetId === playerId || !amount || amount <= 0) {
+      showToast(_lang==='en'?'Check recipient and amount':'Проверь получателя и сумму');
+      return;
+    }
+    if (amount > balance) {
+      showToast(_lang==='en'?'Not enough lightcoins':'Недостаточно светкоинов');
+      return;
+    }
+
+    // Списать
+    updateState({ totalLight: balance - amount });
+
+    // Записать трансфер
+    let transfers = [];
+    try { transfers = JSON.parse(localStorage.getItem(EXCHANGE_KEY) || '[]'); } catch(e) {}
+    transfers.push({ from: playerId, to: targetId, amount, timestamp: Date.now(), matrixId });
+    localStorage.setItem(EXCHANGE_KEY, JSON.stringify(transfers));
+
+    // Системное сообщение
+    const targetName = getPlayerName(targetId);
+    messages.push({ text: '💫 ' + playerName + ' → ' + targetName + ': +' + amount + (_lang==='en'?' lightcoins':' светкоинов'), system: true, timestamp: Date.now(), matrixId });
+    saveMsgs();
+    render();
+
+    document.getElementById('ex-amount').value = '';
+    document.getElementById('exch-panel').classList.remove('show');
+    document.getElementById('ex-balance').textContent = balance - amount;
+    showToast((_lang==='en'?'Sent +':'Отправлено +') + amount + ' ✦ → ' + targetName);
+  };
+
+  // ══ ИГРОКИ ══
+  function getUniquePlayers() {
+    const seen = {};
+    const players = [{id: playerId, name: playerName, count: 0}];
+    seen[playerId] = true;
+    messages.forEach(m => {
+      if (m.system || !m.playerId) return;
+      if (seen[m.playerId]) {
+        const p = players.find(x => x.id === m.playerId);
+        if (p) p.count++;
+      } else {
+        seen[m.playerId] = true;
+        players.push({id: m.playerId, name: m.playerName || 'Путник', count: 1});
+      }
+    });
+    return players;
+  }
+  function getPlayerName(id) {
+    const p = getUniquePlayers().find(x => x.id === id);
+    return p ? p.name : 'Путник';
+  }
+
+  window.togglePlayers = function() {
+    document.getElementById('players-panel').classList.toggle('show');
+    updatePlayers();
+  };
+
+  function updatePlayers() {
+    const list = document.getElementById('pp-list');
+    const players = getUniquePlayers();
+    const badge = document.getElementById('players-badge');
+    const others = players.filter(p => p.id !== playerId).length;
+    if (others > 0) { badge.style.display = 'flex'; badge.textContent = others; }
+    else badge.style.display = 'none';
+
+    list.innerHTML = players.map(p =>
+      '<div class="pp-player' + (filterPlayer === p.id ? ' active' : '') + '" onclick="window._filterPlayer(\'' + p.id + '\')">' +
+      '<div><div class="pp-name">' + (p.id === playerId ? '✦ ' : '') + (p.name||'Путник') + '</div>' +
+      (p.id === playerId ? '<div class="pp-me">это вы</div>' : '') +
+      '</div>' +
+      '<div class="pp-count">' + p.count + ' сообщ.</div>' +
+      '</div>'
+    ).join('');
+
+    if (filterPlayer) {
+      const bar = document.getElementById('pp-filter-bar');
+      bar.classList.add('show');
+      document.getElementById('pp-filter-name').textContent = getPlayerName(filterPlayer);
+    } else {
+      document.getElementById('pp-filter-bar').classList.remove('show');
+    }
+  }
+
+  window._filterPlayer = function(id) {
+    filterPlayer = (filterPlayer === id) ? null : id;
+    updatePlayers();
+    render();
+    document.getElementById('players-panel').classList.remove('show');
+  };
+
+  window.clearFilter = function() {
+    filterPlayer = null;
+    updatePlayers();
+    render();
+  };
+
+  function showToast(text) {
+    const t = document.getElementById('toast');
+    t.textContent = text; t.classList.add('on');
+    clearTimeout(t._timeout);
+    t._timeout = setTimeout(() => t.classList.remove('on'), 3000);
+  }
+
+  function updateTitle() {
+    const p = PERCEPTIONS.find(p => p.id === matrixId);
+    document.getElementById('chat-title').textContent = (p ? p.label : matrixId) + (_lang==='en'?' · CHAT':' · ЧАТ');
+    document.getElementById('chat-matrix').textContent = p ? p.desc : '';
+  }
+
+  // Enter = отправить
+  document.getElementById('msg-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+  });
+
+  // Закрыть панели по ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.getElementById('exch-panel').classList.remove('show');
+      document.getElementById('players-panel').classList.remove('show');
+    }
+  });
+
+  // Опрос смены матрицы
+  setInterval(function() {
+    const current = getActivePerception();
+    if (current !== matrixId) {
+      matrixId = current;
+      filterPlayer = null;
+      loadMsgs();
+      render();
+      updateTitle();
+      updatePlayers();
+    }
+  }, 1500);
+
+  // Межвкладочная синхронизация
+  window.addEventListener('storage', function(e) {
+    if (e.key && e.key.startsWith(STORAGE_PREFIX)) { loadMsgs(); render(); updatePlayers(); }
+  });
+
+  // Старт
+  loadMsgs();
+  render();
+  updateTitle();
+  updatePlayers();
+</script>
+<script type="module">
+  import { applyTranslations } from './js/i18n.js';
+    applyTranslations();
+</script>
+<!-- M-033: RU/EN переключатель -->
+<div style="position:fixed;top:8px;right:8px;z-index:100;display:flex;gap:4px">
+  <button id="lang-ru" onclick="localStorage.setItem('awara_lang','ru');if(window.switchLang)window.switchLang('ru');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">RU</button>
+  <button id="lang-en" onclick="localStorage.setItem('awara_lang','en');if(window.switchLang)window.switchLang('en');else location.reload()" style="min-width:36px;min-height:36px;padding:4px 8px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:9px;cursor:pointer;border-radius:6px;font-family:'Cinzel',serif;backdrop-filter:blur(8px)">EN</button>
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang } from './js/i18n.js';
+window.switchLang = function(lang) {
+  setLang(lang);
+  translatePage();
+  document.querySelectorAll('#lang-ru,#lang-en').forEach(function(b){
+    b.style.borderColor = b.textContent === lang.toUpperCase() ? '#ffd700' : 'rgba(201,168,76,.2)';
+    b.style.color = b.textContent === lang.toUpperCase() ? '#ffd700' : '#c9a84c';
+  });
+};
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  var cur = getLang();
+  if (window.switchLang) window.switchLang(cur);
+});
+</script>
+</body>
+</html>

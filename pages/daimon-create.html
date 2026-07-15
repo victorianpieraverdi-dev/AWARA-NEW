@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>Daimon Creation · AWARA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/daimon-create.css">
+</head>
+<body>
+
+<div class="page-shell">
+  <!-- Header -->
+  <header class="page-header">
+    <a href="../index.html" class="back-link" data-i18n="app.back">&larr; LOBBY</a>
+    <h1 class="page-title" data-i18n="daimon.create_title">DAIMON CREATION</h1>
+    <div class="page-subtitle" data-i18n="daimon.create_subtitle">Choose your path of summoning</div>
+  </header>
+
+  <!-- Method cards -->
+  <div class="method-grid">
+
+    <!-- Quick Select -->
+    <div class="method-card" data-method="quick" id="card-quick">
+      <div class="card-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="20" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+          <path d="M17 24l5 5 9-9" stroke="#ffd700" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2 class="card-title" data-i18n="daimon.quick_select">QUICK SELECT</h2>
+      <p class="card-desc" data-i18n="daimon.quick_desc">3-5 questions, no personal data</p>
+      <div class="card-meta">
+        <span class="meta-time">~2 min</span>
+        <span class="meta-accuracy">60%</span>
+      </div>
+      <button class="card-btn" data-i18n="daimon.begin">BEGIN</button>
+    </div>
+
+    <!-- Natal Chart -->
+    <div class="method-card featured" data-method="natal" id="card-natal">
+      <div class="card-badge" data-i18n="daimon.recommended">RECOMMENDED</div>
+      <div class="card-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="20" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+          <circle cx="24" cy="24" r="12" stroke="#ffd700" stroke-width="1" fill="none"/>
+          <circle cx="24" cy="12" r="3" fill="#ffd700"/>
+          <circle cx="36" cy="24" r="2" fill="#c9a84c"/>
+          <circle cx="24" cy="36" r="2.5" fill="#c9a84c"/>
+          <circle cx="12" cy="24" r="2" fill="#c9a84c"/>
+        </svg>
+      </div>
+      <h2 class="card-title" data-i18n="daimon.natal_chart">NATAL CHART</h2>
+      <p class="card-desc" data-i18n="daimon.natal_desc">Full Vedic analysis</p>
+      <div class="card-meta">
+        <span class="meta-time">~5 min</span>
+        <span class="meta-accuracy">95%</span>
+      </div>
+      <button class="card-btn" data-i18n="daimon.begin">BEGIN</button>
+    </div>
+
+    <!-- Random Gift -->
+    <div class="method-card" data-method="random" id="card-random">
+      <div class="card-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="20" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+          <path d="M16 20c0-4 3-7 8-7s8 3 8 7c0 5-8 5-8 11" stroke="#ffd700" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="24" cy="36" r="2" fill="#ffd700"/>
+        </svg>
+      </div>
+      <h2 class="card-title" data-i18n="daimon.random_gift">GIFT OF FATE</h2>
+      <p class="card-desc" data-i18n="daimon.random_desc">Trust the cosmos</p>
+      <div class="card-meta">
+        <span class="meta-time">~30 sec</span>
+        <span class="meta-accuracy">?</span>
+      </div>
+      <button class="card-btn" data-i18n="daimon.begin">BEGIN</button>
+    </div>
+
+  </div>
+
+  <!-- Flow container (quiz, natal form, random -- injected here) -->
+  <div id="flow-container" class="flow-container hidden"></div>
+
+  <!-- Results container (daimon gallery, confirmation) -->
+  <div id="results-container" class="results-container hidden"></div>
+
+</div>
+
+<script type="module">
+import { translatePage, setLang, getLang, createLangSwitcher } from '../js/i18n.js';
+import { initQuickSelect } from '../js/flows/quick-select.js';
+import { initNatalFlow } from '../js/flows/natal-chart.js';
+import { initRandomGift } from '../js/flows/random-gift.js';
+
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage();
+  createLangSwitcher();
+
+  // Method card click handlers
+  document.querySelectorAll('.method-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      var method = card.dataset.method;
+      var grid = document.querySelector('.method-grid');
+      var flow = document.getElementById('flow-container');
+
+      grid.classList.add('hidden');
+      flow.classList.remove('hidden');
+
+      if (method === 'quick') initQuickSelect(flow);
+      else if (method === 'natal') initNatalFlow(flow);
+      else if (method === 'random') initRandomGift(flow);
+    });
+  });
+});
+
+// Global: go back to method selection
+window.backToMethodSelect = function() {
+  var grid = document.querySelector('.method-grid');
+  var flow = document.getElementById('flow-container');
+  var results = document.getElementById('results-container');
+  flow.innerHTML = '';
+  flow.classList.add('hidden');
+  results.innerHTML = '';
+  results.classList.add('hidden');
+  grid.classList.remove('hidden');
+};
+</script>
+
+</body>
+</html>

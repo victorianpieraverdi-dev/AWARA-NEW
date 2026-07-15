@@ -1,0 +1,114 @@
+/* AWARA FX LAYER v2 -- additive depth & motion over Linear + Aceternity DS */
+
+/* ===== 1. AMBIENT BACKGROUND: aurora + dot-grid + noise ===== */
+.phone::before{
+  content:"";
+  position:absolute;
+  inset:-18%;
+  z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(46% 38% at 15% 6%,   rgba(132,104,214,0.45), transparent 66%),
+    radial-gradient(40% 32% at 90% 14%,  rgba(208,176,86,0.30),  transparent 70%),
+    radial-gradient(64% 50% at 50% 116%, rgba(96,66,176,0.42),   transparent 72%);
+  filter:blur(20px) saturate(120%);
+  animation:aw-aurora 22s ease-in-out infinite alternate;
+}
+@keyframes aw-aurora{
+  0%  {transform:translate3d(-2%,-1%,0)  scale(1.02); opacity:.85;}
+  50% {transform:translate3d(2%,1.5%,0)  scale(1.08); opacity:1;}
+  100%{transform:translate3d(-1%,2%,0)   scale(1.04); opacity:.9;}
+}
+.phone::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1.4px);
+  background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(125% 100% at 50% 0%, #000 32%, transparent 80%);
+          mask-image:radial-gradient(125% 100% at 50% 0%, #000 32%, transparent 80%);
+  opacity:.7;
+}
+.cosmos::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  mix-blend-mode:overlay;
+  opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ===== 2. CARD SPOTLIGHT + running gold border on hover ===== */
+.awara-glass-card{position:relative; isolation:isolate;}
+.awara-glass-card::after{
+  content:"";
+  position:absolute; inset:0; z-index:-1;
+  border-radius:inherit;
+  background:radial-gradient(190px circle at var(--mx,-300px) var(--my,-300px), rgba(208,176,86,0.18), transparent 60%);
+  opacity:0; transition:opacity .35s ease;
+  pointer-events:none;
+}
+.awara-glass-card:hover::after{opacity:1;}
+.awara-glass-card::before{
+  content:"";
+  position:absolute; inset:0; z-index:-1;
+  border-radius:inherit; padding:1px;
+  background:conic-gradient(from var(--aw-angle,0deg), transparent 0%, rgba(208,176,86,0.7) 12%, transparent 30%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  opacity:0; transition:opacity .4s ease;
+  pointer-events:none;
+}
+.awara-glass-card:hover::before{opacity:1; animation:aw-fx-spin 4s linear infinite;}
+@keyframes aw-fx-spin{to{--aw-angle:360deg;}}
+
+/* ===== 3. ENTRANCE (staggered reveal of cards on active screen) ===== */
+.screen.active .awara-glass-card{animation:aw-card-in .5s cubic-bezier(.2,.7,.2,1) both;}
+.screen.active .awara-glass-card:nth-child(1){animation-delay:.04s;}
+.screen.active .awara-glass-card:nth-child(2){animation-delay:.10s;}
+.screen.active .awara-glass-card:nth-child(3){animation-delay:.16s;}
+.screen.active .awara-glass-card:nth-child(4){animation-delay:.22s;}
+.screen.active .awara-glass-card:nth-child(5){animation-delay:.28s;}
+.screen.active .awara-glass-card:nth-child(6){animation-delay:.34s;}
+@keyframes aw-card-in{from{opacity:0; transform:translateY(14px) scale(.985);} to{opacity:1; transform:none;}}
+
+/* ===== 4. GRADIENT HEADINGS (animated gold shine) ===== */
+.screen h1{
+  background:linear-gradient(100deg,#FBE7A1 0%, #FFFFFF 28%, #D4AF37 58%, #FBE7A1 100%);
+  background-size:220% auto;
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+  animation:aw-text-shine 7s linear infinite;
+}
+@keyframes aw-text-shine{to{background-position:220% center;}}
+
+/* ===== 5. BUTTON GLOW + sparkles ===== */
+.awara-gold-button{animation:aw-btn-glow 3.2s ease-in-out infinite;}
+@keyframes aw-btn-glow{
+  0%,100%{box-shadow:0 0 0 rgba(208,176,86,0);}
+  50%    {box-shadow:0 0 18px rgba(208,176,86,.35);}
+}
+.awara-gold-button:hover{box-shadow:0 0 26px rgba(208,176,86,.55) !important;}
+.btn:not(.ghost):hover{box-shadow:0 0 24px rgba(208,176,86,.45);}
+.aw-spark{
+  position:absolute; z-index:9; width:6px; height:6px; margin:-3px;
+  border-radius:50%;
+  background:radial-gradient(circle,#FFE9A8,#D4AF37 60%,transparent 72%);
+  box-shadow:0 0 6px rgba(255,215,120,.9);
+  pointer-events:none;
+  animation:aw-spark-fly .9s ease-out forwards;
+}
+@keyframes aw-spark-fly{
+  0%  {transform:translate(0,0) scale(1);   opacity:1;}
+  100%{transform:translate(var(--dx,0),var(--dy,0)) scale(.2); opacity:0;}
+}
+
+/* ===== reduced motion ===== */
+@media (prefers-reduced-motion: reduce){
+  .phone::before, .screen h1, .awara-gold-button, .screen.active .awara-glass-card{animation:none !important;}
+}

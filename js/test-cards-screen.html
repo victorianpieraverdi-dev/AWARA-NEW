@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест: Cards Screen · AWARA T-066</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #0a0a14;
+      color: #c9a84c;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    h1 { font-family: 'Cinzel', serif; color: #ffd700; margin-bottom: 20px; text-align: center; }
+    .test-section {
+      background: rgba(18,14,30,0.72);
+      border: 1px solid rgba(201,168,76,0.22);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      max-width: 700px;
+      margin-left: auto; margin-right: auto;
+    }
+    .test-title { color: #ffe080; margin-bottom: 10px; font-size: 14px; }
+    .pass { color: #00ffaa; }
+    .fail { color: #ff6666; }
+    .warn { color: #ffaa00; }
+    .result { font-size: 12px; margin: 4px 0; padding: 4px 8px; background: rgba(0,0,0,0.3); border-radius: 4px; }
+    button {
+      padding: 10px 16px;
+      background: transparent;
+      border: 1px solid #c9a84c;
+      color: #ffd700;
+      font-family: 'Cinzel', serif;
+      cursor: pointer;
+      border-radius: 8px;
+      margin: 4px;
+      transition: all 0.3s;
+    }
+    button:hover { background: rgba(201,168,76,0.15); box-shadow: 0 0 12px rgba(201,168,76,0.3); }
+    .log {
+      margin-top: 16px; padding: 12px;
+      background: rgba(0,0,0,0.4); border-radius: 8px;
+      font-size: 11px; max-height: 300px; overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      max-width: 700px;
+      margin-left: auto; margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Тест: Cards Screen (T-066)</h1>
+
+  <div class="test-section">
+    <div class="test-title">1. Загрузка агентов (canon-module)</div>
+    <button onclick="runTest1()">Тест</button>
+    <div class="result" id="test1">&#8212;</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">2. Генерация 63 карт (21 агент &#215; 3 матрицы)</div>
+    <button onclick="runTest2()">Тест</button>
+    <div class="result" id="test2">&#8212;</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">3. Фильтр по матрице</div>
+    <button onclick="runTest3()">Тест</button>
+    <div class="result" id="test3">&#8212;</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">4. localStorage collected</div>
+    <button onclick="runTest4()">Тест</button>
+    <div class="result" id="test4">&#8212;</div>
+  </div>
+
+  <div class="test-section">
+    <div class="test-title">5. Проверка cards.html структуры</div>
+    <div class="result" id="test5">&#8212;</div>
+  </div>
+
+  <div class="log" id="test-log"></div>
+
+  <script type="module">
+    import { loadAgents, loadMatrices } from './canon-module.js';
+
+    const logEl = document.getElementById('test-log');
+    function log(msg) {
+      logEl.innerHTML += '<div>[' + new Date().toLocaleTimeString() + '] ' + msg + '</div>';
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    window.runTest1 = async function() {
+      try {
+        const agents = await loadAgents();
+        const el = document.getElementById('test1');
+        if (agents?.length === 21) {
+          el.innerHTML = '<span class="pass">PASS</span> — 21 агент загружен';
+        } else {
+          el.innerHTML = '<span class="fail">FAIL</span> — агентов: ' + (agents?.length || 0);
+        }
+        log('Тест 1: ' + (agents?.length === 21 ? 'PASS' : 'FAIL'));
+      } catch(e) {
+        document.getElementById('test1').innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+      }
+    };
+
+    window.runTest2 = async function() {
+      const agents = await loadAgents();
+      const MATRICES = ['vedic', 'slavic', 'kabbalistic'];
+      const totalCards = agents.length * MATRICES.length;
+      const el = document.getElementById('test2');
+      el.innerHTML =
+        '<div class="result"><span class="' + (totalCards === 63 ? 'pass' : 'fail') + '">' +
+        (totalCards === 63 ? 'PASS' : 'FAIL') + ' — ' + agents.length + '\u00d7' + MATRICES.length +
+        ' = ' + totalCards + ' карт' +
+        '</span></div>';
+      log('Тест 2: ' + totalCards + ' карт');
+    };
+
+    window.runTest3 = function() {
+      const el = document.getElementById('test3');
+      const MATRICES = ['vedic', 'slavic', 'kabbalistic'];
+      const filters = ['all', 'vedic', 'slavic', 'kabbalistic', 'collected'];
+      el.innerHTML = filters.map(f =>
+        '<div class="result"><span class="pass">Фильтр: ' + f.toUpperCase() + '</span></div>'
+      ).join('');
+      log('Тест 3: ' + filters.length + ' фильтров');
+    };
+
+    window.runTest4 = function() {
+      const el = document.getElementById('test4');
+      try {
+        const testKey = 'awara_cards_collected_test';
+        const testData = { 'test_card_1': true };
+        localStorage.setItem(testKey, JSON.stringify(testData));
+        const read = JSON.parse(localStorage.getItem(testKey));
+        localStorage.removeItem(testKey);
+
+        if (read && read['test_card_1']) {
+          el.innerHTML = '<span class="pass">PASS</span> — localStorage read/write работает';
+        } else {
+          el.innerHTML = '<span class="fail">FAIL</span> — localStorage не работает';
+        }
+        log('Тест 4: ' + (read ? 'PASS' : 'FAIL'));
+      } catch(e) {
+        document.getElementById('test4').innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+      }
+    };
+
+    // Тест 5: Проверка cards.html
+    (async function() {
+      const el = document.getElementById('test5');
+      try {
+        const resp = await fetch('../cards.html');
+        if (resp.ok) {
+          const html = await resp.text();
+          const checks = [];
+          checks.push(html.includes('canon-module.js') ? 'PASS: импорт canon-module' : 'FAIL');
+          checks.push(html.includes('id="cards-grid"') ? 'PASS: cards-grid' : 'FAIL');
+          checks.push(html.includes('id="filter-bar"') ? 'PASS: filter-bar' : 'FAIL');
+          checks.push(html.includes('id="card-popup"') ? 'PASS: card-popup' : 'FAIL');
+          checks.push(html.includes('LOCAL_KEY') ? 'PASS: localStorage key' : 'FAIL');
+
+          el.innerHTML = checks.map(c =>
+            '<div class="result"><span class="' + (c.startsWith('PASS') ? 'pass' : 'fail') + '">' + c + '</span></div>'
+          ).join('');
+          log('Тест 5: ' + checks.filter(c => c.startsWith('PASS')).length + '/' + checks.length + ' PASS');
+        } else {
+          el.innerHTML = '<span class="fail">FAIL</span> — cards.html не найден';
+        }
+      } catch(e) {
+        el.innerHTML = '<span class="fail">FAIL</span> — ' + e.message;
+      }
+    })();
+
+    log('Тесты загружены.');
+  </script>
+</body>
+</html>

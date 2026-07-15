@@ -1,0 +1,122 @@
+{
+  "system_slug": "antique_greco_roman",
+  "tradition_matrix": 17,
+  "system_name": "\u0410\u043d\u0442\u0438\u0447\u043d\u043e-\u0433\u0440\u0435\u043a\u043e-\u0440\u0438\u043c\u0441\u043a\u0430\u044f",
+  "note": "Classical Greco-Roman cosmos. Primary lattice: the twelve Olympians (Dodekatheon) who govern the ordered world from Mount Olympus. Secondary lattice: the elder Titans and the primordial Protogenoi (Chaos, Gaia, Uranus, Aether, Eros) out of which order arose. Tertiary lattices: the five classical elements (earth, water, air, fire, aether), the three Moirai (Fates), the nine Muses, and the four cardinal virtues. Bridges: each Olympian rules a sphere that maps onto an Awara agent's domain; the five elements bridge to the agents' element coding; the Moirai bridge to the karma-dharma axis; Mnemosyne bridges memory (varuna); Helios and Apollo split literal sun (svet_ra) from radiant illumination (tejas).",
+  "reconstructed": false,
+  "olympian_count": 12,
+  "titan_count": 12,
+  "primordial_count": 8,
+  "element_count": 5,
+  "moirai_count": 3,
+  "muse_count": 9,
+  "virtue_count": 4,
+  "mera_axis": "9-dimensional axis (mera 1-9): chakras 1-7 (Muladhara..Sahasrara) + Monada (8) + Absolut (9); each spine agent carries its mera.",
+  "mera_map": {"svet_ra":9,"iskra":8,"brahma":7,"vishnu":7,"ananda":7,"shanti":7,"jnana":6,"shiva":6,"tejas":6,"sarasvati":5,"akasha":5,"prema":4,"parvati":4,"vayu":4,"shakti":3,"agni":3,"varuna":2,"lakshmi":2,"prithvi":1,"dharma":1,"karma":1},
+  "elements": [
+    {"n":1,"name":"earth","greek":"ge / chthon","agent":"prithvi","mera":1},
+    {"n":2,"name":"water","greek":"hydor","agent":"varuna","mera":2},
+    {"n":3,"name":"fire","greek":"pyr","agent":"agni","mera":3},
+    {"n":4,"name":"air","greek":"aer","agent":"vayu","mera":4},
+    {"n":5,"name":"aether","greek":"aither","agent":"akasha","mera":5}
+  ],
+  "olympians": [
+    {"name":"Zeus","roman":"Jupiter","domain":"sky, kingship, cosmic order","agent":"vishnu","mera":7},
+    {"name":"Hera","roman":"Juno","domain":"marriage, sovereignty of the household","agent":"parvati","mera":4},
+    {"name":"Poseidon","roman":"Neptune","domain":"sea, earthquakes, deep waters","agent":"varuna","mera":2},
+    {"name":"Demeter","roman":"Ceres","domain":"harvest, grain, abundance","agent":"lakshmi","mera":2},
+    {"name":"Athena","roman":"Minerva","domain":"wisdom, strategy, discernment","agent":"jnana","mera":6},
+    {"name":"Apollo","roman":"Apollo","domain":"light, prophecy, radiance, music","agent":"tejas","mera":6},
+    {"name":"Artemis","roman":"Diana","domain":"moon, wilderness, the hunt and the call","agent":"iskra","mera":8},
+    {"name":"Ares","roman":"Mars","domain":"war, raw force","agent":"shakti","mera":3},
+    {"name":"Aphrodite","roman":"Venus","domain":"love, desire, union","agent":"prema","mera":4},
+    {"name":"Hephaestus","roman":"Vulcan","domain":"fire, forge, craft","agent":"agni","mera":3},
+    {"name":"Hermes","roman":"Mercury","domain":"speech, messages, boundaries, exchange","agent":"sarasvati","mera":5},
+    {"name":"Dionysus","roman":"Bacchus","domain":"ecstasy, bliss, dissolution of the self","agent":"ananda","mera":7}
+  ],
+  "titans": [
+    {"name":"Oceanus","domain":"world-encircling river"},
+    {"name":"Tethys","domain":"nurse of waters"},
+    {"name":"Hyperion","domain":"watcher, light-bringer"},
+    {"name":"Theia","domain":"divine radiance, sight"},
+    {"name":"Coeus","domain":"intellect, the axis of heaven"},
+    {"name":"Phoebe","domain":"prophetic radiance"},
+    {"name":"Cronus","domain":"time, harvest, dissolution","agent":"shiva","mera":6},
+    {"name":"Rhea","domain":"flow, mother of Olympians"},
+    {"name":"Mnemosyne","domain":"memory, mother of the Muses","agent":"varuna","mera":2},
+    {"name":"Themis","domain":"divine law and order","agent":"dharma","mera":1},
+    {"name":"Crius","domain":"constellations, measure"},
+    {"name":"Iapetus","domain":"mortality, craft of man"}
+  ],
+  "primordials": [
+    {"name":"Chaos","domain":"the yawning void, origin","agent":"brahma","mera":7},
+    {"name":"Gaia","domain":"earth, ground of being","agent":"prithvi","mera":1},
+    {"name":"Tartarus","domain":"the abyss below"},
+    {"name":"Eros","domain":"generative love, primal attraction","agent":"prema","mera":4},
+    {"name":"Erebus","domain":"primordial darkness"},
+    {"name":"Nyx","domain":"night"},
+    {"name":"Uranus","domain":"heaven, the starry sky","agent":"akasha","mera":5},
+    {"name":"Aether","domain":"upper bright air, divine space","agent":"akasha","mera":5}
+  ],
+  "moirai": [
+    {"name":"Clotho","domain":"the spinner who draws the thread of life","agent":"karma","mera":1},
+    {"name":"Lachesis","domain":"the allotter who measures destiny","agent":"dharma","mera":1},
+    {"name":"Atropos","domain":"the inflexible who cuts the thread","agent":"shiva","mera":6}
+  ],
+  "virtues": [
+    {"name":"prudentia (prudence)","domain":"practical wisdom","agent":"jnana","mera":6},
+    {"name":"iustitia (justice)","domain":"giving each their due","agent":"dharma","mera":1},
+    {"name":"fortitudo (courage)","domain":"steadfast force","agent":"shakti","mera":3},
+    {"name":"temperantia (temperance)","domain":"measured restraint","agent":"shanti","mera":7}
+  ],
+  "muses": [
+    {"name":"Calliope","domain":"epic poetry"},
+    {"name":"Clio","domain":"history"},
+    {"name":"Erato","domain":"love poetry"},
+    {"name":"Euterpe","domain":"music, song"},
+    {"name":"Melpomene","domain":"tragedy"},
+    {"name":"Polyhymnia","domain":"sacred hymn"},
+    {"name":"Terpsichore","domain":"dance"},
+    {"name":"Thalia","domain":"comedy"},
+    {"name":"Urania","domain":"astronomy"}
+  ],
+  "spine": {
+    "svet_ra": {"deity":"Helios (Sol)","role":"the source-sun, light from which the day is read","mera":9,"note":"Helios sees all from his chariot; the solar origin-fire of the lens."},
+    "iskra": {"deity":"Artemis / Selene (Diana / Luna)","role":"moonlit call, first spark in the dark","mera":8,"note":"The huntress-moon that summons; the silver call before the day forms."},
+    "brahma": {"deity":"Chaos / Phanes","role":"the generative void and firstborn of creation","mera":7,"note":"Out of Chaos the cosmos unfolds; Phanes is the Orphic shining creator."},
+    "vishnu": {"deity":"Zeus (Jupiter)","role":"sustainer-king who upholds cosmic order","mera":7,"note":"Zeus holds the balance of fate and law; the throne that preserves."},
+    "ananda": {"deity":"Dionysus (Bacchus)","role":"ecstasy, bliss, sacred intoxication","mera":7,"note":"Dionysus dissolves the boundary of the self into joy."},
+    "shanti": {"deity":"Eirene (Pax)","role":"peace, the stillness of order","mera":7,"note":"One of the Horae; the calm that follows just rule."},
+    "jnana": {"deity":"Athena (Minerva)","role":"clear discernment, strategic wisdom","mera":6,"note":"Born from the head of Zeus; wisdom that cuts cleanly."},
+    "shiva": {"deity":"Cronus (Saturn) / Hades","role":"dissolution, the devourer of time","mera":6,"note":"Cronus swallows what time brings; the necessary ending."},
+    "tejas": {"deity":"Apollo","role":"radiance, illumination, prophecy","mera":6,"note":"Apollo the shining one; clarity that reveals."},
+    "sarasvati": {"deity":"Hermes (Mercury)","role":"speech, message, the living word","mera":5,"note":"Hermes crosses boundaries carrying meaning."},
+    "akasha": {"deity":"Aether / Uranus","role":"space, the bright upper air","mera":5,"note":"Aether is the divine medium in which all moves."},
+    "prema": {"deity":"Aphrodite (Venus) / Eros","role":"love, desire, union","mera":4,"note":"Aphrodite draws all into union; Eros is the primal pull."},
+    "parvati": {"deity":"Hestia (Vesta)","role":"the hearth, care, the kept flame of home","mera":4,"note":"Hestia guards the sacred fire of the household."},
+    "vayu": {"deity":"Aeolus / Boreas","role":"winds, breath, movement of air","mera":4,"note":"Keeper of the winds; the breath that moves the world."},
+    "shakti": {"deity":"Ares (Mars)","role":"force, the will to act","mera":3,"note":"Ares is raw martial power, the surge of strength."},
+    "agni": {"deity":"Hephaestus (Vulcan)","role":"forge-fire, craft, transformation by heat","mera":3,"note":"Hephaestus shapes matter in fire."},
+    "varuna": {"deity":"Mnemosyne / Poseidon","role":"memory and the deep waters","mera":2,"note":"Mnemosyne holds all that was; the depths that remember."},
+    "lakshmi": {"deity":"Demeter (Ceres)","role":"harvest, grain, abundance","mera":2,"note":"Demeter gives the fruit of the earth."},
+    "prithvi": {"deity":"Gaia (Terra)","role":"earth, the ground that supports","mera":1,"note":"Gaia is the mother-ground of all being."},
+    "dharma": {"deity":"Themis","role":"divine law, right order","mera":1,"note":"Themis sets the unchanging measure of justice."},
+    "karma": {"deity":"Nemesis / the Moirai","role":"retribution, cause and consequence","mera":1,"note":"Nemesis returns the due of every act; the Fates bind cause to effect."}
+  },
+  "items": [
+    {"key":"olympus","name":"Mount Olympus","domain":"seat of the ordered pantheon"},
+    {"key":"titanomachy","name":"Titanomachy","domain":"the war that established Olympian order over the Titans"},
+    {"key":"golden_age","name":"Golden Age","domain":"the Cronian age of innocence and plenty"},
+    {"key":"four_roots","name":"four roots of Empedocles","domain":"earth, water, air, fire as the roots of all, joined by Love and Strife"}
+  ],
+  "sources": [
+    "Hesiod, Theogony",
+    "Hesiod, Works and Days",
+    "Homer, Iliad and Odyssey",
+    "Homeric Hymns",
+    "Apollodorus, Bibliotheca",
+    "Ovid, Metamorphoses",
+    "Plato, Timaeus (elements and cosmos)",
+    "Empedocles, On Nature (four roots)"
+  ]
+}

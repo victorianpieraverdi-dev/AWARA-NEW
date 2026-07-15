@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>AWARA · Мироздание</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'JetBrains Mono',monospace;color:#cfc4a6;cursor:pointer}
+  #c{position:fixed;inset:0;display:block}
+  .hud{position:fixed;z-index:10;pointer-events:none;user-select:none;transition:opacity .6s}
+  #brand{top:18px;left:22px;font-family:'Cinzel Decorative',serif;letter-spacing:3px;font-size:15px;color:#e8d9a8;text-shadow:0 0 18px rgba(255,210,140,.4)}
+  #brand small{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:#9a8a66;margin-top:4px;font-weight:300}
+  #hint{bottom:26px;left:0;right:0;text-align:center;font-size:12px;color:#9a8a66;letter-spacing:1px;padding:0 16px}
+  #lang{top:16px;right:20px;z-index:12;pointer-events:auto;cursor:pointer;border:1px solid #4a4222;border-radius:20px;padding:5px 12px;font-size:11px;color:#cdbf90;background:rgba(20,16,8,.5)}
+  #flash{position:fixed;inset:0;z-index:20;background:radial-gradient(circle at 50% 50%,#fff 0%,#fff5d6 28%,#ffd277 52%,#6a86ff 78%,#000 100%);opacity:0;pointer-events:none}
+  #err{position:fixed;inset:0;display:none;z-index:99;background:#100;color:#f88;padding:22px;font:13px/1.6 monospace;white-space:pre-wrap;overflow:auto}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="brand" class="hud">МИРОЗДАНИЕ<small data-ru="вглядись в зрачок мира" data-en="gaze into the pupil of the world">…</small></div>
+<div id="hint" class="hud" data-ru="огни на горизонте — вселенные иных · кликни в центр, чтобы войти в свой Исток" data-en="horizon lights — other universes · click the center to enter your Source">…</div>
+<div id="lang">RU / EN</div>
+<div id="flash"></div>
+<div id="err"><b>Ошибка</b><br><span id="err-msg"></span></div>
+
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}</script>
+<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+<script type="module">
+import * as THREE from 'three';
+const $=s=>document.querySelector(s);
+function showErr(m){ const e=$('#err'); $('#err-msg').textContent=String(m); e.style.display='block'; }
+window.addEventListener('error',e=>showErr(e.message+'  @line '+e.lineno));
+window.addEventListener('unhandledrejection',e=>showErr('promise: '+((e.reason&&e.reason.message)||e.reason)));
+
+/* ---- GSAP (с микро-шимом на случай офлайна) ---- */
+const G = window.gsap || (function(){
+  function to(target,vars){
+    const dur=(vars.duration||1)*1000, delay=(vars.delay||0)*1000, t0=performance.now();
+    const skip=['duration','ease','onUpdate','onComplete','delay'];
+    const keys=Object.keys(vars).filter(k=>!skip.includes(k));
+    const from={}; keys.forEach(k=>from[k]=target[k]);
+    function step(now){ let p=(now-t0-delay)/dur; if(p<0){requestAnimationFrame(step);return;} p=Math.min(1,p);
+      const e=p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+      keys.forEach(k=>target[k]=from[k]+(vars[k]-from[k])*e);
+      vars.onUpdate&&vars.onUpdate(); if(p<1)requestAnimationFrame(step); else vars.onComplete&&vars.onComplete(); }
+    requestAnimationFrame(step);
+  }
+  return {to};
+})();
+
+try{
+const IS_MOBILE = matchMedia('(max-width:768px)').matches;
+const canvas=$('#c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio, IS_MOBILE?1.5:1.25));
+renderer.setSize(innerWidth,innerHeight);
+renderer.autoClear=false;
+renderer.setClearColor(0x000000,1);
+
+/* состояние мыши (параллакс) */
+const mouse=new THREE.Vector2(0,0), mouseT=new THREE.Vector2(0,0);
+addEventListener('pointermove',e=>{ mouseT.x=(e.clientX/innerWidth)*2-1; mouseT.y=-((e.clientY/innerHeight)*2-1); });
+
+/* ============ 1. ФОН: объёмная туманность + линзирование вокруг Зрачка ============ */
+const bgScene=new THREE.Scene();
+const bgCam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const uni={
+  uTime:{value:0}, uRes:{value:new THREE.Vector2(innerWidth,innerHeight)},
+  uMouse:{value:new THREE.Vector2(0,0)}, uWarp:{value:0.0}, uPupil:{value:0.17}, uStreak:{value:0.0}
+};
+const FRAG=`
+precision highp float;
+varying vec2 vUv;
+uniform float uTime,uWarp,uPupil,uStreak;
+uniform vec2 uRes,uMouse;
+float h21(vec2 p){ p=fract(p*vec2(123.34,345.45)); p+=dot(p,p+34.345); return fract(p.x*p.y); }
+float vn(vec2 p){ vec2 i=floor(p),f=fract(p); vec2 u=f*f*(3.0-2.0*f);
+  float a=h21(i),b=h21(i+vec2(1,0)),c=h21(i+vec2(0,1)),d=h21(i+vec2(1,1));
+  return mix(mix(a,b,u.x),mix(c,d,u.x),u.y); }
+const mat2 ROT=mat2(0.80,0.60,-0.60,0.80);
+float fbm(vec2 p){ float s=0.0,a=0.55; for(int i=0;i<6;i++){ s+=a*vn(p); p=ROT*p*2.02; a*=0.5; } return s; }
+void main(){
+  vec2 uv=(vUv*2.0-1.0); uv.x*=uRes.x/uRes.y;
+  vec2 p=uv + uMouse*0.10;                 // микро-параллакс газа
+  float r=length(p)+1e-4;
+  float ang=atan(p.y,p.x);
+  // ГРАВИТАЦИОННОЕ ЛИНЗИРОВАНИЕ у зрачка
+  float pull=uPupil/r;
+  float swirl=ang + pull*2.2 + uTime*0.05 + uWarp*pull*4.0;
+  float rl=r - 0.07*pull;
+  float depth=log(rl+9e-4);
+  // DOMAIN WARP -> клубящаяся туманность
+  vec2 q=vec2(swirl/6.2831*4.0, depth*1.4 - uTime*0.08 - uWarp*3.2);
+  vec2 w1=vec2(fbm(q+vec2(0.0,1.7)), fbm(q+vec2(5.2,1.3)));
+  vec2 w2=vec2(fbm(q+4.0*w1+vec2(1.7,9.2)), fbm(q+4.0*w1+vec2(8.3,2.8)));
+  float neb=pow(clamp(fbm(q+4.0*w2),0.0,1.0),1.5);
+  float tg=smoothstep(uPupil,0.98,r);
+  vec3 gold=vec3(1.0,0.86,0.46),orange=vec3(1.0,0.52,0.16),magenta=vec3(0.66,0.20,0.62),violet=vec3(0.26,0.10,0.50);
+  vec3 col=mix(gold,orange,smoothstep(0.0,0.34,tg));
+  col=mix(col,magenta,smoothstep(0.30,0.66,tg));
+  col=mix(col,violet ,smoothstep(0.62,1.0,tg));
+  float pupilMask=smoothstep(uPupil,uPupil+0.06,r);
+  float fall=smoothstep(1.28,0.26,r);
+  col*= neb*1.3*fall*pupilMask + 0.035;
+  // раскалённый аккреционный ободок зрачка
+  col+=gold*pow(smoothstep(uPupil+0.14,uPupil,r),2.0)*0.95*pupilMask;
+  // тёмное ядро (сам зрачок)
+  col*=smoothstep(uPupil*0.42,uPupil,r);
+  // звёздная пыль (2 слоя параллакса)
+  for(int k=0;k<2;k++){
+    vec2 sg=uv + uMouse*(0.05+float(k)*0.08)*2.0;
+    float st=h21(floor(sg*(620.0+float(k)*360.0))+float(k)*7.0);
+    col+=vec3(0.82,0.86,1.0)*step(0.9986,st)*(0.4+0.4*sin(uTime*2.0+st*40.0));
+  }
+  // РАДИАЛЬНЫЕ ЛУЧИ warp
+  float streak=pow(abs(sin(ang*64.0+uTime*2.0)),8.0)*smoothstep(0.08,0.95,r);
+  col+=vec3(1.0,0.92,0.7)*streak*(uStreak*1.7);
+  // центральный высвет при прыжке
+  col+=vec3(1.0,0.95,0.82)*uWarp*pow(smoothstep(1.25,0.0,r),2.0)*1.3;
+  col*=smoothstep(1.5,0.18,length(uv));    // виньетка
+  col=col/(col+0.62); col=pow(col,vec3(0.82));
+  gl_FragColor=vec4(col,1.0);
+}`;
+const bgMat=new THREE.ShaderMaterial({
+  depthTest:false, depthWrite:false, uniforms:uni,
+  vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.0,1.0); }`,
+  fragmentShader:FRAG
+});
+bgScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),bgMat));
+
+/* ============ 2. ОРБИТАЛЬНЫЕ ОГНИ — вселенные иных (сгустки энергии) ============ */
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(55, innerWidth/innerHeight, 0.1, 200);
+camera.position.set(0,0,8);
+
+const orbGroup=new THREE.Group(); scene.add(orbGroup);
+const N = IS_MOBILE?14:26;
+const PAL=[ [1.0,0.83,0.42],[0.45,0.86,0.95],[0.72,0.45,1.0],[0.95,0.35,0.6],[0.4,1.0,0.7] ];
+const pos=new Float32Array(N*3), col=new Float32Array(N*3), siz=new Float32Array(N), pha=new Float32Array(N);
+for(let i=0;i<N;i++){
+  const a=(i/N)*Math.PI*2 + Math.random()*0.18;
+  const R=4.7+Math.random()*1.1;
+  pos[i*3]=Math.cos(a)*R; pos[i*3+1]=Math.sin(a)*R*0.92; pos[i*3+2]=(Math.random()-0.5)*1.6;
+  const c=PAL[(Math.random()*PAL.length)|0];
+  col[i*3]=c[0]; col[i*3+1]=c[1]; col[i*3+2]=c[2];
+  siz[i]=(IS_MOBILE?22:30)+Math.random()*28;
+  pha[i]=Math.random();
+}
+const g=new THREE.BufferGeometry();
+g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+g.setAttribute('aColor',new THREE.BufferAttribute(col,3));
+g.setAttribute('aSize',new THREE.BufferAttribute(siz,1));
+g.setAttribute('aPhase',new THREE.BufferAttribute(pha,1));
+const blobMat=new THREE.ShaderMaterial({
+  transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+  uniforms:{ uTime:{value:0} },
+  vertexShader:`
+    attribute float aSize; attribute float aPhase; attribute vec3 aColor;
+    varying vec3 vColor; varying float vPhase; uniform float uTime;
+    void main(){ vColor=aColor; vPhase=aPhase;
+      vec4 mv=modelViewMatrix*vec4(position,1.0);
+      float tw=0.7+0.3*sin(uTime*2.5+aPhase*6.2831);
+      gl_PointSize=aSize*tw*(300.0/max(0.001,-mv.z));
+      gl_Position=projectionMatrix*mv; }`,
+  fragmentShader:`
+    varying vec3 vColor; varying float vPhase; uniform float uTime;
+    void main(){ vec2 d=gl_PointCoord-0.5; float r=length(d); if(r>0.5) discard;
+      float core=smoothstep(0.5,0.0,r); float glow=pow(core,2.0);
+      float flick=0.72+0.28*sin(uTime*4.0+vPhase*10.0);
+      gl_FragColor=vec4(vColor*(0.6+0.9*glow)*flick, glow); }`
+});
+orbGroup.add(new THREE.Points(g,blobMat));
+
+/* ============ 3. WARP JUMP (GSAP) ============ */
+const warp={ z:8, fov:55, amt:0, streak:0 };
+let warping=false;
+function warpJump(){
+  if(warping) return; warping=true;
+  $('#brand').style.opacity=0; $('#hint').style.opacity=0; $('#lang').style.opacity=0;
+  G.to(warp,{ z:-24, duration:1.5, ease:'power3.in' });        // рывок в Бездну по Z
+  G.to(warp,{ fov:172, duration:1.5, ease:'power2.in' });      // растяжение FOV (гиперпространство)
+  G.to(warp,{ streak:1.0, duration:1.0, ease:'power2.in' });   // радиальные лучи
+  G.to(warp,{ amt:1.0, duration:1.3, ease:'power2.in' });      // линзирование+высвет
+  const fx={o:0}, flash=$('#flash');
+  G.to(fx,{ o:1, duration:0.45, delay:1.2, onUpdate:()=>{ flash.style.opacity=fx.o; },
+    onComplete:()=>{ try{ sessionStorage.setItem('awara_from_eye','1'); }catch(e){} location.href='multiverse-map.html'; } });
+}
+canvas.addEventListener('click', warpJump);
+
+/* ============ РЕНДЕР ============ */
+function resize(){
+  renderer.setSize(innerWidth,innerHeight);
+  uni.uRes.value.set(innerWidth,innerHeight);
+  camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+}
+addEventListener('resize',resize);
+
+const clock=new THREE.Clock();
+function frame(){
+  const t=clock.getElapsedTime();
+  mouse.lerp(mouseT,0.06);
+  uni.uTime.value=t; uni.uMouse.value.copy(mouse);
+  uni.uWarp.value=warp.amt; uni.uStreak.value=warp.streak;
+  blobMat.uniforms.uTime.value=t;
+  orbGroup.rotation.z += 0.0006;
+  // камера: параллакс пока не в прыжке
+  if(!warping){ camera.position.x=mouse.x*0.5; camera.position.y=mouse.y*0.5; }
+  camera.position.z=warp.z; camera.fov=warp.fov; camera.updateProjectionMatrix();
+  camera.lookAt(0,0,0);
+  renderer.clear();
+  renderer.render(bgScene,bgCam);
+  renderer.clearDepth();
+  renderer.render(scene,camera);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ============ ЯЗЫК ============ */
+function applyLang(l){
+  document.querySelectorAll('[data-ru]').forEach(el=>{ el.textContent = l==='en' ? el.dataset.en : el.dataset.ru; });
+}
+let lang = (localStorage.getItem('awara_lang')||'ru');
+applyLang(lang);
+$('#lang').addEventListener('click',e=>{ e.stopPropagation(); lang = lang==='ru'?'en':'ru'; localStorage.setItem('awara_lang',lang); applyLang(lang); });
+
+}catch(err){ showErr((err&&err.stack)||err); }
+</script>
+</body>
+</html>

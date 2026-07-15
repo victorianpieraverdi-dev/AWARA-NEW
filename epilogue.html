@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · Эпилог · 7 слоёв</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100%;background:#02010a;color:#c9a84c;font-family:'Cormorant Garamond',serif}
+body{overflow-x:hidden;background:radial-gradient(ellipse at 50% 12%,rgba(255,215,0,.16),transparent 42%),radial-gradient(ellipse at 50% 78%,rgba(80,40,120,.18),transparent 48%),#02010a}
+.stars{position:fixed;inset:0;background-image:radial-gradient(circle at 16% 22%,rgba(255,255,255,.28) 0 1px,transparent 2px),radial-gradient(circle at 78% 18%,rgba(255,215,0,.24) 0 1px,transparent 2px),radial-gradient(circle at 64% 72%,rgba(201,168,76,.18) 0 1px,transparent 2px),radial-gradient(circle at 30% 84%,rgba(255,255,255,.16) 0 1px,transparent 2px);opacity:.9;pointer-events:none}
+.page{position:relative;z-index:1;min-height:100vh;padding:28px 14px 116px;display:flex;align-items:center;justify-content:center}
+.card{width:min(960px,100%);padding:clamp(22px,5vw,54px);border:1px solid rgba(201,168,76,.22);border-radius:26px;background:linear-gradient(145deg,rgba(2,1,10,.78),rgba(18,12,28,.72));box-shadow:0 24px 90px rgba(0,0,0,.5),inset 0 0 70px rgba(255,215,0,.035);backdrop-filter:blur(12px);text-align:center}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.28em;color:rgba(201,168,76,.48);text-transform:uppercase;margin-bottom:12px}
+h1{font-family:'Cinzel Decorative',serif;font-size:clamp(26px,8vw,58px);line-height:1.14;letter-spacing:.11em;color:#ffd700;text-shadow:0 0 38px rgba(255,215,0,.32);margin-bottom:16px}
+.lead{font-size:clamp(20px,5.6vw,34px);line-height:1.35;color:#f4d98a;margin:0 auto 22px;max-width:760px}
+.text{font-size:clamp(15px,3.8vw,20px);line-height:1.7;color:rgba(201,168,76,.72);max-width:760px;margin:0 auto 28px}
+.path{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin:28px auto 30px;max-width:860px}
+.step{min-height:92px;padding:12px 8px;border:1px solid rgba(201,168,76,.18);border-radius:14px;background:rgba(0,0,0,.28);display:flex;flex-direction:column;justify-content:center;gap:6px}
+.step strong{font-family:'Cinzel',serif;color:#ffd700;font-size:12px;letter-spacing:.1em;font-weight:400}
+.step span{font-family:'JetBrains Mono',monospace;font-size:8px;line-height:1.45;color:rgba(201,168,76,.56)}
+.actions{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+a.button{padding:11px 18px;border:1px solid rgba(201,168,76,.32);border-radius:12px;background:rgba(201,168,76,.08);color:#c9a84c;text-decoration:none;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.11em;white-space:nowrap}
+a.button:hover{border-color:#ffd700;color:#ffd700;background:rgba(201,168,76,.14)}
+.layer-nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:20;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;width:min(94vw,560px)}
+.layer-link{padding:9px 14px;background:rgba(2,1,10,.82);border:1px solid rgba(201,168,76,.28);border-radius:10px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;text-decoration:none;white-space:nowrap;backdrop-filter:blur(10px)}
+.layer-link:hover{border-color:#ffd700;color:#ffd700;background:rgba(201,168,76,.12)}
+@media(max-width:760px){.page{align-items:flex-start;padding-top:18px}.path{grid-template-columns:1fr 1fr}.step{min-height:74px}.card{border-radius:20px}.lead{margin-bottom:16px}.text{margin-bottom:20px}}
+@media(max-width:375px){.path{grid-template-columns:1fr}.step{min-height:auto}.card{padding:20px 14px}.layer-link,a.button{font-size:9px;padding:8px 10px}.page{padding-bottom:128px}.kicker{font-size:8px;letter-spacing:.18em}h1{letter-spacing:.07em}.lead{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<main class="page">
+  <section class="card">
+    <div class="kicker">СЛОЙ 7 · ЭПИЛОГ / ВОЗВРАТ</div>
+    <h1>ПУТЕШЕСТВИЕ ЗАВЕРШЕНО</h1>
+    <p class="lead">Ты прошёл все слои мироздания.</p>
+    <p class="text">От ауры человека через регион, земной додекаэдр, Чатуралоку, Брахманду и космические силы путь снова возвращает сознание к точке входа. Внутреннее и внешнее стали одной картой.</p>
+
+    <div class="path" aria-label="Итог пути по слоям">
+      <div class="step"><strong>1</strong><span>Аура человека</span></div>
+      <div class="step"><strong>2</strong><span>Регион / локация</span></div>
+      <div class="step"><strong>3</strong><span>Додекаэдр Земли</span></div>
+      <div class="step"><strong>4</strong><span>Чатуралока</span></div>
+      <div class="step"><strong>5</strong><span>Брахманда · 14 лок</span></div>
+      <div class="step"><strong>6</strong><span>Космические силы</span></div>
+      <div class="step"><strong>7</strong><span>Возврат</span></div>
+    </div>
+
+    <div class="actions">
+      <a href="index.html" class="button">В ЛОББИ</a>
+      <a href="aura-pole.html" class="button">НАЧАТЬ ЗАНОВО</a>
+    </div>
+  </section>
+</main>
+
+<nav class="layer-nav" aria-label="Навигация слоёв">
+  <a href="cosmic-forces.html" class="layer-link">ВНУТРЬ · СИЛЫ</a>
+  <a href="index.html" class="layer-link">ЛОББИ</a>
+  <a href="aura-pole.html" class="layer-link">НАЧАТЬ ЗАНОВО</a>
+</nav>
+</body>
+</html>

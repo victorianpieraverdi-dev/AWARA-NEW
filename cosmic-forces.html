@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02010a">
+<title>AWARA · Космические Силы · Тримурти</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Cormorant Garamond',serif;color:#c9a84c;touch-action:pan-x pan-y}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,rgba(50,30,10,.4),transparent 55%),#02010a}
+canvas{position:fixed;inset:0;z-index:1;touch-action:none}
+.hud{position:relative;z-index:2;text-align:center;pointer-events:none;margin-top:-30px}
+.hud h1{font-family:'Cinzel Decorative',serif;font-size:14px;color:#ffd700;letter-spacing:.16em;text-shadow:0 0 30px rgba(255,215,0,.4)}
+.hud .sub{font-size:8px;color:rgba(201,168,76,.35);letter-spacing:.2em;font-family:'JetBrains Mono',monospace}
+.info-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:8px 16px;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.2);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(201,168,76,.5);pointer-events:none;z-index:3;text-align:center;max-width:90vw}
+.layer-nav{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;width:min(94vw,560px)}
+.layer-link{padding:8px 12px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:8px;color:#c9a84c;font-family:'Cinzel',serif;font-size:10px;cursor:pointer;text-decoration:none;letter-spacing:.09em;white-space:nowrap;backdrop-filter:blur(8px)}
+.layer-link:hover{background:rgba(201,168,76,.15);color:#ffd700;border-color:#ffd700}
+.kosha-bar{position:fixed;bottom:102px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:0;background:rgba(2,1,10,.85);border:1px solid rgba(201,168,76,.18);border-radius:24px;padding:4px 6px;backdrop-filter:blur(12px)}
+.kosha-dot{display:flex;align-items:center;gap:4px;padding:5px 8px;text-decoration:none;color:rgba(201,168,76,.35);font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.06em;border-radius:16px;transition:all .3s;white-space:nowrap;min-height:28px}
+.kosha-dot:hover{color:rgba(201,168,76,.7);background:rgba(201,168,76,.06)}
+.kosha-dot.active{color:#ffd700;background:rgba(255,215,0,.1);text-shadow:0 0 12px rgba(255,215,0,.4)}
+.kosha-dot .kd-circle{width:6px;height:6px;border-radius:50%;background:rgba(201,168,76,.2);transition:all .3s;flex-shrink:0}
+.kosha-dot.active .kd-circle{background:#ffd700;box-shadow:0 0 8px rgba(255,215,0,.5)}
+.kosha-sep{width:12px;height:1px;background:rgba(201,168,76,.12);flex-shrink:0}
+@media(max-width:480px){.kosha-dot span{display:none}.kosha-dot{padding:6px}.kosha-bar{gap:0;padding:4px 8px}}
+.side-panel{position:fixed;top:36px;left:4px;bottom:112px;width:108px;z-index:5;overflow-y:auto;padding:2px;display:flex;flex-direction:column;gap:2px;scrollbar-width:none}
+.side-panel::-webkit-scrollbar{display:none}
+.panel-item{padding:3px 5px;background:rgba(2,1,10,.75);border:1px solid rgba(201,168,76,.12);border-radius:5px;cursor:pointer;font-size:7px;line-height:1.2;font-family:'JetBrains Mono',monospace;color:rgba(201,168,76,.5);transition:border-color .2s,color .2s}
+.panel-item:hover,.panel-item.active{border-color:rgba(255,215,0,.5);color:#ffd700;background:rgba(201,168,76,.08)}
+.panel-item .pi-name{font-family:'Cinzel',serif;font-size:8px}
+.panel-item .pi-sub{font-size:6px;opacity:.5}
+.panel-label{font-family:'Cinzel',serif;font-size:7px;color:rgba(201,168,76,.3);letter-spacing:.1em;padding:4px 2px 1px;text-transform:uppercase}
+.reset-cam{position:fixed;top:40px;right:8px;z-index:10;padding:4px 10px;background:rgba(0,0,0,.6);border:1px solid rgba(201,168,76,.25);border-radius:6px;color:#c9a84c;font-family:'Cinzel',serif;font-size:8px;cursor:pointer;letter-spacing:.05em;min-height:28px}
+.reset-cam:hover{border-color:#ffd700;color:#ffd700}
+.lang-switch{position:fixed;top:8px;right:8px;z-index:10;display:flex;gap:4px}
+.lang-switch button{padding:3px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:#c9a84c;font-size:8px;cursor:pointer;border-radius:4px}
+.modal-overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;padding:16px}
+.modal{max-width:320px;width:100%;background:rgba(2,1,10,.95);border:1px solid rgba(201,168,76,.3);border-radius:12px;padding:20px;text-align:center}
+.modal-icon{width:40px;height:40px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+.modal h3{font-family:'Cinzel',serif;font-size:14px;color:#ffd700;margin-bottom:4px}
+.modal .modal-role{font-size:9px;color:rgba(201,168,76,.5);font-family:'JetBrains Mono',monospace;margin-bottom:8px}
+.modal p{font-size:11px;color:rgba(201,168,76,.7);line-height:1.5;margin-bottom:14px}
+.modal button{padding:6px 20px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:6px;color:#ffd700;font-family:'Cinzel',serif;font-size:10px;cursor:pointer}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="hud"><h1 id="t-title">КОСМИЧЕСКИЕ СИЛЫ</h1><div class="sub" id="t-sub">ТРИМУРТИ · БОЖЕСТВА · РА</div></div>
+<div class="info-bar" id="info-bar">вращай · нажми на сферу</div>
+<div class="kosha-bar">
+  <a href="earth-player.html" class="kosha-dot" title="Аннамайя-коша"><div class="kd-circle"></div><span>АННА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="aura-pole.html" class="kosha-dot" title="Пранамайя-коша"><div class="kd-circle"></div><span>ПРАНА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="mind-space.html" class="kosha-dot" title="Маномайя-коша"><div class="kd-circle"></div><span>МАНАС</span></a>
+  <div class="kosha-sep"></div>
+  <a href="vedic-cosmos.html" class="kosha-dot" title="Виджнянамайя-коша"><div class="kd-circle"></div><span>ВИДЖНЯНА</span></a>
+  <div class="kosha-sep"></div>
+  <a href="cosmic-forces.html" class="kosha-dot active" title="Анандамайя-коша"><div class="kd-circle"></div><span>АНАНДА</span></a>
+</div>
+<nav class="layer-nav" aria-label="Навигация слоёв">
+  <a href="vedic-cosmos.html" class="layer-link" id="t-back1">ВНУТРЬ · БРАХМАНДА</a>
+  <a href="index.html" class="layer-link" id="t-lobby">ЛОББИ</a>
+  <a href="epilogue.html" class="layer-link" id="t-back2">НАРУЖУ · ЭПИЛОГ</a>
+</nav>
+<div class="side-panel" id="side-panel"></div>
+<button class="reset-cam" id="reset-cam">СБРОС</button>
+
+<div class="lang-switch">
+<button onclick="localStorage.setItem('awara_lang','ru');location.reload()">RU</button>
+<button onclick="localStorage.setItem('awara_lang','en');location.reload()">EN</button>
+</div>
+
+<div class="modal-overlay" id="modal-overlay">
+<div class="modal" id="modal">
+  <div class="modal-icon" id="modal-icon"></div>
+  <h3 id="modal-name"></h3>
+  <div class="modal-role" id="modal-role"></div>
+  <p id="modal-desc"></p>
+  <button id="modal-close">ЗАКРЫТЬ</button>
+</div>
+</div>
+
+<div id="loading" style="position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:#02010a;font-family:'Cinzel',serif;color:#ffd700;font-size:14px;letter-spacing:.2em"><span>ЗАГРУЗКА...</span></div>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+document.getElementById('loading').style.display='none';
+
+const canvas=document.getElementById('c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.setSize(window.innerWidth,window.innerHeight);
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(40,window.innerWidth/window.innerHeight,0.1,50);
+camera.position.set(0,0,10);
+
+const root=new THREE.Group();
+scene.add(root);
+
+scene.add(new THREE.AmbientLight(0x334466,.5));
+const dL=new THREE.DirectionalLight(0xffd700,.4);
+dL.position.set(2,4,3);scene.add(dL);
+
+// Stars
+const sg=new THREE.BufferGeometry();
+const sa=new Float32Array(800*3);
+for(let i=0;i<800*3;i+=3){const r=14+Math.random()*12,th=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);sa[i]=r*Math.sin(ph)*Math.cos(th);sa[i+1]=r*Math.sin(ph)*Math.sin(th);sa[i+2]=r*Math.cos(ph);}
+sg.setAttribute('position',new THREE.BufferAttribute(sa,3));
+scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:.04,transparent:true,opacity:.3})));
+
+const _lang=localStorage.getItem('awara_lang')||'ru';
+function _t(ru,en){return _lang==='en'?en:ru;}
+
+// ══ ENTITIES ══
+const ENTITIES=[
+  // Trimurti
+  {id:'brahma', name:'Брахма', name_en:'Brahma', role:'Творец', role_en:'Creator',
+   color:'#ffd700', y:2.8, x:0, z:0, r:.45, orbit:0,
+   desc:'Творец Вселенной. Первый из Тримурти. Создал 14 лок и все живые существа. Восседает на лотосе, растущем из пупка Вишну. 4 лица смотрят на 4 стороны света.',
+   desc_en:'Creator of the Universe. First of the Trimurti. Created 14 lokas and all living beings. Sits on a lotus growing from Vishnu\'s navel. 4 faces look in 4 directions.'},
+  {id:'vishnu', name:'Вишну', name_en:'Vishnu', role:'Хранитель', role_en:'Preserver',
+   color:'#4488ff', y:0, x:2.8, z:0, r:.45, orbit:0,
+   desc:'Хранитель Вселенной. Второй из Тримурти. Поддерживает порядок Дхармы. Спит на змее Шеше в Океане Молока. 10 Аватар нисходят для защиты мира.',
+   desc_en:'Preserver of the Universe. Second of the Trimurti. Maintains the order of Dharma. Sleeps on serpent Shesha in the Ocean of Milk. 10 Avatars descend to protect the world.'},
+  {id:'shiva', name:'Шива', name_en:'Shiva', role:'Разрушитель / Преобразователь', role_en:'Destroyer / Transformer',
+   color:'#ff4444', y:0, x:-2.8, z:0, r:.45, orbit:0,
+   desc:'Разрушитель и Преобразователь. Третий из Тримурти. Танец Тандава разрушает старое для нового цикла. Обитает на горе Кайлас. Третий Глаз уничтожает иллюзию.',
+   desc_en:'Destroyer and Transformer. Third of the Trimurti. Tandava dance destroys the old for a new cycle. Dwells on Mount Kailas. Third Eye destroys illusion.'},
+
+  // Cosmic Forces
+  {id:'ra', name:'РА', name_en:'RA', role:'Изначальный Свет', role_en:'Primordial Light',
+   color:'#ffcc00', y:0, x:0, z:0, r:.6, orbit:0,
+   desc:'РА -- Изначальный Свет. Источник всех Нисходящих Потоков. Центр Брахманды. Солнце за Солнцем. Истинный Свет, пронизывающий все 14 лок.',
+   desc_en:'RA -- Primordial Light. Source of all Descending Flows. Center of Brahmanda. Sun behind the Sun. True Light pervading all 14 lokas.'},
+
+  // Devas (orbital)
+  {id:'indra', name:'Индра', name_en:'Indra', role:'Царь Богов · Свар-лока', role_en:'King of Gods · Svar-loka',
+   color:'#88ccff', y:1.8, x:1.8, z:0, r:.25, orbit:3.2,
+   desc:'Царь Богов и повелитель Сварга-локи (Рая). Владыка молний и дождей. Защитник Дхармы. Правит полубогами.',
+   desc_en:'King of Gods and ruler of Svarga-loka (Paradise). Lord of lightning and rain. Protector of Dharma. Rules the demigods.'},
+  {id:'agni', name:'Агни', name_en:'Agni', role:'Бог Огня · Бхур-лока', role_en:'God of Fire · Bhur-loka',
+   color:'#ff6600', y:-1.0, x:2.2, z:.8, r:.22, orbit:3.2,
+   desc:'Бог Огня. Посредник между людьми и богами. Жертвенный огонь несёт подношения на небеса. Присутствует в каждом доме.',
+   desc_en:'God of Fire. Mediator between humans and gods. Sacrificial fire carries offerings to heaven. Present in every home.'},
+  {id:'varuna', name:'Варуна', name_en:'Varuna', role:'Бог Вод · Океаны', role_en:'God of Waters · Oceans',
+   color:'#2266aa', y:-1.5, x:-2.0, z:.6, r:.22, orbit:3.2,
+   desc:'Бог Мирового Океана и космического порядка Рита. Хранитель клятв и моральных законов. Владыка подводного мира.',
+   desc_en:'God of the World Ocean and cosmic order Rita. Guardian of oaths and moral laws. Lord of the underwater world.'},
+  {id:'surya', name:'Сурья', name_en:'Surya', role:'Бог Солнца · Бхувар-лока', role_en:'Sun God · Bhuvar-loka',
+   color:'#ffaa00', y:2.0, x:-1.5, z:-.5, r:.25, orbit:3.2,
+   desc:'Бог Солнца. Видимое проявление РА. Едет по небу на колеснице, запряжённой семью конями (7 цветов спектра). Отец Ману и Ямы.',
+   desc_en:'Sun God. Visible manifestation of RA. Rides across the sky on a chariot drawn by seven horses (7 spectrum colors). Father of Manu and Yama.'},
+  {id:'chandra', name:'Чандра', name_en:'Chandra', role:'Бог Луны · Бхувар-лока', role_en:'Moon God · Bhuvar-loka',
+   color:'#ccddff', y:1.2, x:-2.5, z:.3, r:.2, orbit:3.2,
+   desc:'Бог Луны. Управляет приливами и растительным миром. Сома -- лунный нектар бессмертия. 27 накшатр -- его жёны.',
+   desc_en:'Moon God. Controls tides and plant life. Soma -- lunar nectar of immortality. 27 nakshatras -- his wives.'},
+  {id:'vasuki', name:'Васуки', name_en:'Vasuki', role:'Царь Нагов · Патала', role_en:'King of Nagas · Patala',
+   color:'#44cc88', y:-2.5, x:1.0, z:-.4, r:.2, orbit:3.2,
+   desc:'Царь змеев-нагов. Использовался как верёвка при Пахтании Молочного Океана. Обитает в Патала-локе. Носит драгоценный камень Нагамани.',
+   desc_en:'King of naga serpents. Used as rope during Churning of the Ocean of Milk. Dwells in Patala-loka. Wears the precious Nagamani gem.'},
+  {id:'shesha', name:'Шеша', name_en:'Shesha', role:'Космический Змей · Основа', role_en:'Cosmic Serpent · Foundation',
+   color:'#33aa77', y:-2.8, x:-1.2, z:-.3, r:.2, orbit:3.2,
+   desc:'Тысячеголовый Змей, на котором покоится Вишну. Основа всех миров. Когда Шеша шевелится -- происходят землетрясения. Ади-Шеша -- первозданный.',
+   desc_en:'Thousand-headed Serpent on which Vishnu rests. Foundation of all worlds. When Shesha stirs -- earthquakes occur. Adi-Shesha -- the primordial.'},
+  {id:'bali', name:'Бали Махарадж', name_en:'Bali Maharaj', role:'Великий Царь · Сутала', role_en:'Great King · Sutala',
+   color:'#cc8844', y:-1.8, x:0, z:2.0, r:.2, orbit:3.2,
+   desc:'Великий царь Асуров, правящий Сутала-локой. Побеждён Ваманой (аватаром Вишну), но получил царство за праведность. Идеал преданности.',
+   desc_en:'Great king of Asuras, ruling Sutala-loka. Defeated by Vamana (avatar of Vishnu) but given a kingdom for righteousness. Ideal of devotion.'},
+  {id:'ildabaof', name:'Ильда Баоф', name_en:'Ilda Baoth', role:'Тёмная Сила · Дно', role_en:'Dark Force · The Bottom',
+   color:'#661111', y:-3.0, x:0, z:0, r:.3, orbit:0,
+   desc:'Тёмная сила, замыкающая сознания на себе. Создатель Социальной Пирамиды. Энергия Дна Чатура-Локи. Искажённая Вторая Мера.',
+   desc_en:'Dark force locking consciousnesses onto itself. Creator of the Social Pyramid. Energy of the Bottom of Chatur Loka. Distorted Second Measure.'}
+];
+
+// ══ BUILD 3D SCENE ══
+const entityMeshes=[];
+const raycaster=new THREE.Raycaster();
+
+// RA core (center)
+const raGeo=new THREE.SphereGeometry(.6,32,32);
+const raMat=new THREE.ShaderMaterial({
+  vertexShader:'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:'varying vec3 vN;void main(){float i=pow(.65-dot(vN,vec3(0,0,1)),2.);gl_FragColor=vec4(1.,.92,.4,1.)*i*1.8+vec4(1.,.84,0.,1.)*.4;}',
+  transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false
+});
+const raCore=new THREE.Mesh(raGeo,raMat);
+root.add(raCore);
+
+// RA halo
+const raHalo=new THREE.Mesh(new THREE.SphereGeometry(.9,32,32),new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.08,depthWrite:false}));
+root.add(raHalo);
+
+// RA pulsing rings
+const raRingGeo=new THREE.TorusGeometry(.8,.01,16,64);
+const raRing1=new THREE.Mesh(raRingGeo,new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.4,depthWrite:false}));
+raRing1.rotation.x=Math.PI/2;root.add(raRing1);
+const raRing2=new THREE.Mesh(new THREE.TorusGeometry(1.1,.008,16,64),new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.2,depthWrite:false}));
+raRing2.rotation.x=Math.PI/3;raRing2.rotation.y=Math.PI/5;root.add(raRing2);
+
+// Descending flow beam (top to bottom)
+const beamGeo=new THREE.CylinderGeometry(.015,.015,8,8);
+const beamMat=new THREE.MeshBasicMaterial({color:0xffd700,transparent:true,opacity:.12,depthWrite:false});
+root.add(new THREE.Mesh(beamGeo,beamMat));
+
+// Entity spheres
+ENTITIES.forEach(e=>{
+  if(e.id==='ra') return; // RA is the center, already drawn
+  const geo=new THREE.SphereGeometry(e.r,24,24);
+  const mat=new THREE.MeshStandardMaterial({color:e.color,roughness:.3,metalness:.5,transparent:true,opacity:.8,emissive:e.color,emissiveIntensity:.15});
+  const mesh=new THREE.Mesh(geo,mat);
+  mesh.position.set(e.x,e.y,e.z);
+  mesh.userData=e;
+  root.add(mesh);
+  entityMeshes.push(mesh);
+
+  // Glow
+  const glowGeo=new THREE.SphereGeometry(e.r*1.4,16,16);
+  const glowMat=new THREE.MeshBasicMaterial({color:e.color,transparent:true,opacity:.06,depthWrite:false});
+  const glow=new THREE.Mesh(glowGeo,glowMat);
+  glow.position.copy(mesh.position);
+  root.add(glow);
+
+  // Connection line to RA center
+  const pts=[new THREE.Vector3(0,0,0),new THREE.Vector3(e.x,e.y,e.z)];
+  const lineGeo=new THREE.BufferGeometry().setFromPoints(pts);
+  const lineMat=new THREE.LineBasicMaterial({color:e.color,transparent:true,opacity:.08});
+  root.add(new THREE.Line(lineGeo,lineMat));
+
+  // Label
+  const cv=document.createElement('canvas');cv.width=200;cv.height=50;
+  const cx=cv.getContext('2d');
+  cx.fillStyle=e.color;cx.font='bold 12px Cinzel,serif';cx.textAlign='center';
+  cx.fillText(_t(e.name,e.name_en),100,20);
+  cx.fillStyle='rgba(255,255,255,.35)';cx.font='8px JetBrains Mono,monospace';
+  cx.fillText(_t(e.role,e.role_en),100,36);
+  const tex=new THREE.CanvasTexture(cv);tex.minFilter=THREE.LinearFilter;
+  const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false,depthWrite:false}));
+  sprite.position.set(e.x+(e.x>=0?.5:-.5),e.y+.3,e.z);
+  sprite.scale.set(.9,.22,1);
+  root.add(sprite);
+});
+
+// Trimurti triangle
+const triPts=[
+  new THREE.Vector3(0,2.8,0),
+  new THREE.Vector3(2.8,0,0),
+  new THREE.Vector3(-2.8,0,0),
+  new THREE.Vector3(0,2.8,0)
+];
+const triGeo=new THREE.BufferGeometry().setFromPoints(triPts);
+const triMat=new THREE.LineBasicMaterial({color:0xffd700,transparent:true,opacity:.15});
+root.add(new THREE.Line(triGeo,triMat));
+
+// ══ SIDE PANEL ══
+const panel=document.getElementById('side-panel');
+function buildPanel(){
+  panel.innerHTML='';
+  const label1=document.createElement('div');label1.className='panel-label';label1.textContent=_t('ТРИМУРТИ','TRIMURTI');panel.appendChild(label1);
+  const trimurti=ENTITIES.filter(e=>['brahma','vishnu','shiva'].includes(e.id));
+  trimurti.forEach(e=>{
+    const d=document.createElement('div');d.className='panel-item';
+    d.innerHTML=`<div class="pi-name" style="color:${e.color}">${_t(e.name,e.name_en)}</div><div class="pi-sub">${_t(e.role,e.role_en)}</div>`;
+    d.onclick=()=>showModal(e);
+    panel.appendChild(d);
+  });
+  const label2=document.createElement('div');label2.className='panel-label';label2.textContent=_t('ЦЕНТР','CENTER');panel.appendChild(label2);
+  const ra=ENTITIES.find(e=>e.id==='ra');
+  const d2=document.createElement('div');d2.className='panel-item';
+  d2.innerHTML=`<div class="pi-name" style="color:${ra.color}">${_t(ra.name,ra.name_en)}</div><div class="pi-sub">${_t(ra.role,ra.role_en)}</div>`;
+  d2.onclick=()=>showModal(ra);
+  panel.appendChild(d2);
+  const label3=document.createElement('div');label3.className='panel-label';label3.textContent=_t('БОЖЕСТВА','DEITIES');panel.appendChild(label3);
+  const deities=ENTITIES.filter(e=>!['brahma','vishnu','shiva','ra','ildabaof'].includes(e.id));
+  deities.forEach(e=>{
+    const d=document.createElement('div');d.className='panel-item';
+    d.innerHTML=`<div class="pi-name" style="color:${e.color}">${_t(e.name,e.name_en)}</div><div class="pi-sub">${_t(e.role,e.role_en)}</div>`;
+    d.onclick=()=>showModal(e);
+    panel.appendChild(d);
+  });
+  const label4=document.createElement('div');label4.className='panel-label';label4.textContent=_t('ТЁМНАЯ СИЛА','DARK FORCE');panel.appendChild(label4);
+  const ilda=ENTITIES.find(e=>e.id==='ildabaof');
+  const d4=document.createElement('div');d4.className='panel-item';
+  d4.innerHTML=`<div class="pi-name" style="color:${ilda.color}">${_t(ilda.name,ilda.name_en)}</div><div class="pi-sub">${_t(ilda.role,ilda.role_en)}</div>`;
+  d4.onclick=()=>showModal(ilda);
+  panel.appendChild(d4);
+}
+buildPanel();
+
+// ══ MODAL ══
+const modalOverlay=document.getElementById('modal-overlay');
+function showModal(e){
+  document.getElementById('modal-icon').style.background=`radial-gradient(circle,${e.color}55,transparent)`;
+  document.getElementById('modal-name').textContent=_t(e.name,e.name_en);
+  document.getElementById('modal-role').textContent=_t(e.role,e.role_en);
+  document.getElementById('modal-desc').textContent=_t(e.desc,e.desc_en);
+  document.getElementById('modal-close').textContent=_t('ЗАКРЫТЬ','CLOSE');
+  modalOverlay.style.display='flex';
+}
+document.getElementById('modal-close').onclick=()=>{modalOverlay.style.display='none';};
+modalOverlay.onclick=ev=>{if(ev.target===modalOverlay)modalOverlay.style.display='none';};
+
+// ══ RAYCASTING (click on spheres) ══
+const pointer=new THREE.Vector2();
+function onTap(ex,ey){
+  pointer.x=(ex/window.innerWidth)*2-1;
+  pointer.y=-(ey/window.innerHeight)*2+1;
+  raycaster.setFromCamera(pointer,camera);
+  const hits=raycaster.intersectObjects(entityMeshes);
+  if(hits.length>0){
+    const e=hits[0].object.userData;
+    if(e&&e.name) showModal(e);
+  }
+}
+canvas.addEventListener('pointerup',ev=>{if(!dragMoved)onTap(ev.clientX,ev.clientY);});
+
+// ══ DRAG ROTATION ══
+let isDrag=false,dragMoved=false,prevX=0,prevY=0;
+canvas.addEventListener('pointerdown',ev=>{isDrag=true;dragMoved=false;prevX=ev.clientX;prevY=ev.clientY;});
+canvas.addEventListener('pointermove',ev=>{
+  if(!isDrag)return;
+  const dx=ev.clientX-prevX,dy=ev.clientY-prevY;
+  if(Math.abs(dx)+Math.abs(dy)>3)dragMoved=true;
+  root.rotation.y+=dx*.005;
+  root.rotation.x+=dy*.005;
+  root.rotation.x=Math.max(-1.2,Math.min(1.2,root.rotation.x));
+  prevX=ev.clientX;prevY=ev.clientY;
+});
+window.addEventListener('pointerup',()=>{isDrag=false;});
+
+// ══ ZOOM ══
+let zoomDist=10;
+canvas.addEventListener('wheel',ev=>{
+  ev.preventDefault();
+  zoomDist=Math.max(4,Math.min(20,zoomDist+ev.deltaY*.005));
+  camera.position.z=zoomDist;
+},{passive:false});
+
+// Pinch zoom
+let pinchDist=0;
+canvas.addEventListener('touchstart',ev=>{
+  if(ev.touches.length===2){
+    const dx=ev.touches[0].clientX-ev.touches[1].clientX;
+    const dy=ev.touches[0].clientY-ev.touches[1].clientY;
+    pinchDist=Math.sqrt(dx*dx+dy*dy);
+  }
+},{passive:true});
+canvas.addEventListener('touchmove',ev=>{
+  if(ev.touches.length===2){
+    const dx=ev.touches[0].clientX-ev.touches[1].clientX;
+    const dy=ev.touches[0].clientY-ev.touches[1].clientY;
+    const d=Math.sqrt(dx*dx+dy*dy);
+    const delta=(pinchDist-d)*.02;
+    zoomDist=Math.max(4,Math.min(20,zoomDist+delta));
+    camera.position.z=zoomDist;
+    pinchDist=d;
+  }
+},{passive:true});
+
+// Reset camera
+document.getElementById('reset-cam').onclick=()=>{
+  root.rotation.set(0,0,0);
+  zoomDist=10;camera.position.set(0,0,10);
+};
+
+// ══ ANIMATE ══
+let t=0;
+function animate(){
+  requestAnimationFrame(animate);
+  t+=.005;
+  raRing1.rotation.z=t*.4;
+  raRing2.rotation.z=-t*.3;
+  raCore.scale.setScalar(1+Math.sin(t*2)*.03);
+  raHalo.scale.setScalar(1+Math.sin(t*1.5)*.05);
+  renderer.render(scene,camera);
+}
+animate();
+
+window.addEventListener('resize',()=>{
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+
+// ══ i18n ══
+if(_lang==='en'){
+  document.getElementById('t-title').textContent='COSMIC FORCES';
+  document.getElementById('t-sub').textContent='TRIMURTI · DEITIES · RA';
+  document.getElementById('info-bar').textContent='rotate · tap a sphere';
+  document.getElementById('t-back1').textContent='INWARD · BRAHMANDA';
+  document.getElementById('t-lobby').textContent='LOBBY';
+  document.getElementById('t-back2').textContent='OUTWARD · EPILOGUE';
+  document.getElementById('reset-cam').textContent='RESET';
+}
+
+/* ── Global Guna state ── */
+(function(){
+  var GUNA_VIS={sattva:{color:'#ffd700',label:'САТТВА'},rajas:{color:'#ff6633',label:'РАДЖАС'},tamas:{color:'#6644aa',label:'ТАМАС'}};
+  var g=localStorage.getItem('awara_guna')||'sattva';
+  var v=GUNA_VIS[g]||GUNA_VIS.sattva;
+  var el=document.createElement('div');
+  el.style.cssText='position:fixed;top:52px;left:50%;transform:translateX(-50%);z-index:10;padding:3px 10px;border-radius:10px;font-family:JetBrains Mono,monospace;font-size:7px;letter-spacing:.08em;border:1px solid '+v.color+'44;color:'+v.color+';background:rgba(0,0,0,.5);backdrop-filter:blur(8px);pointer-events:none;opacity:.6';
+  el.textContent=v.label;
+  document.body.appendChild(el);
+})();
+</script>
+</body>
+</html>

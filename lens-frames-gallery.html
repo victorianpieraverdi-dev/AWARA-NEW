@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AWARA · Галерея рамок 33×6</title>
+<style>
+:root{--bg:#05050d;--text:#ece9f5;--muted:#8e88a4;--line:rgba(255,255,255,.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(circle at 50% -8%,#140f33,#05050d 58%);color:var(--text);font-family:'Segoe UI',system-ui,Arial,sans-serif;padding:26px 22px 60px;min-height:100vh}
+h1{font-size:23px;font-weight:600;letter-spacing:.01em}
+.sub{color:var(--muted);font-size:13px;margin:6px 0 18px;max-width:780px;line-height:1.55}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:24px;position:sticky;top:0;background:linear-gradient(180deg,#05050dee,#05050d99);backdrop-filter:blur(6px);padding:10px 0;z-index:30}
+.bar label{font-size:12px;color:var(--muted)}
+.bar select,.bar button{background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:13px;cursor:pointer}
+.bar button.on{background:linear-gradient(120deg,#ffd27a,#ffb347);color:#0a0a14;border-color:#ffd27a}
+.matrix{margin-bottom:30px}
+.mhead{display:flex;align-items:center;gap:11px;margin-bottom:12px;flex-wrap:wrap}
+.mhead .id{font-family:monospace;font-size:11px;color:var(--muted);width:26px}
+.mhead .nm{font-size:16px;font-weight:600}
+.mhead .slug{color:var(--muted);font-size:11px;font-family:monospace}
+.mhead .sw{display:flex;gap:4px;margin-left:2px}
+.mhead .sw i{width:15px;height:15px;border-radius:50%;display:block;box-shadow:0 0 6px -1px currentColor}
+.ladder{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+@media(max-width:1000px){.ladder{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.ladder{grid-template-columns:repeat(2,1fr)}}
+
+/* ============================================================
+   ДВИЖОК РАМОК  (frame engine)
+   Один шаблон .win. Матрица даёт 3 цвета (--c1/--c2/--c3),
+   уровень (.lv1..lv6) даёт сложность оформления.
+   33 матрицы × 6 уровней = 198 окон без дублирования.
+   ============================================================ */
+@property --awang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes awspin{to{--awang:360deg}}
+@keyframes awbreath{0%,100%{opacity:.85}50%{opacity:1}}
+
+.win{
+  --c1:#caa84c; --c2:#7b62c9; --c3:#f4e3b0;
+  --lv-bw:1px; --lv-radius:12px; --lv-bedge:55%; --lv-glow:none;
+  position:relative; border-radius:var(--lv-radius);
+  padding:13px 13px 14px; min-height:158px; cursor:pointer;
+  display:flex; flex-direction:column;
+  background:linear-gradient(158deg,color-mix(in srgb,var(--c1) 13%,#0c0a1c),color-mix(in srgb,var(--c2) 17%,#07060f));
+  border:var(--lv-bw) solid color-mix(in srgb,var(--c1) var(--lv-bedge),transparent);
+  box-shadow:var(--lv-glow);
+  isolation:isolate; transition:transform .18s ease;
+}
+.win:hover{transform:translateY(-3px)}
+.win .lvtag{font-family:monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--c3) 80%,#fff);opacity:.9}
+.win .form{font-size:16px;font-weight:600;margin:3px 0 1px;color:#fff}
+.win .qual{font-size:11px;color:color-mix(in srgb,var(--c3) 70%,var(--muted))}
+.win .glyph{position:absolute;top:10px;right:12px;font-size:15px;opacity:.5}
+.win .body{margin-top:auto;font-size:11.5px;line-height:1.4;color:rgba(236,233,245,.74)}
+.win .pill{display:inline-block;margin-top:9px;font-size:10px;font-family:monospace;padding:4px 9px;border-radius:999px;border:1px solid color-mix(in srgb,var(--c1) 50%,transparent);color:color-mix(in srgb,var(--c3) 85%,#fff);background:color-mix(in srgb,var(--c1) 12%,transparent)}
+.win .lvnum{position:absolute;bottom:9px;right:12px;font-family:monospace;font-size:10px;color:var(--muted)}
+
+/* градиентная рамка (уровни 4..6) через mask */
+.win::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:var(--lv-bw);pointer-events:none;z-index:2;opacity:0;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
+.win::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0}
+
+/* УРОВЕНЬ 1 · Горн · физика — грубо, тускло */
+.win.lv1{--lv-bw:1px;--lv-radius:7px;--lv-bedge:34%;--lv-glow:inset 0 0 0 1px rgba(255,255,255,.02);filter:saturate(.62) brightness(.88)}
+.win.lv1::after{background:repeating-linear-gradient(45deg,rgba(0,0,0,.16) 0 3px,transparent 3px 7px)}
+/* УРОВЕНЬ 2 · Расплав · пробуждение */
+.win.lv2{--lv-bw:1.4px;--lv-radius:11px;--lv-bedge:58%;--lv-glow:0 0 16px -6px var(--c1)}
+.win.lv2::after{background:linear-gradient(0deg,color-mix(in srgb,var(--c1) 22%,transparent),transparent 42%)}
+/* УРОВЕНЬ 3 · Бассейн · гармония */
+.win.lv3{--lv-bw:1.4px;--lv-radius:19px;--lv-bedge:66%;--lv-glow:0 0 24px -8px color-mix(in srgb,var(--c1),var(--c2))}
+.win.lv3::after{background:radial-gradient(70% 50% at 50% 108%,color-mix(in srgb,var(--c2) 26%,transparent),transparent 70%)}
+/* УРОВЕНЬ 4 · Призма · сияние — гранёная градиентная рамка */
+.win.lv4{--lv-bw:2px;--lv-radius:14px;--lv-bedge:0%;--lv-glow:0 0 26px -6px var(--c2),0 0 10px -4px var(--c3)}
+.win.lv4::before{opacity:1;background:linear-gradient(135deg,var(--c3),var(--c1),var(--c2))}
+/* УРОВЕНЬ 5 · Воронка · восход — вращающаяся рамка */
+.win.lv5{--lv-bw:2.2px;--lv-radius:20px;--lv-bedge:0%;--lv-glow:0 0 34px -6px var(--c2),0 0 14px -4px var(--c1)}
+.win.lv5::before{opacity:1;background:conic-gradient(from var(--awang),var(--c1),var(--c2),var(--c3),var(--c1));animation:awspin 9s linear infinite}
+.win.lv5::after{background:radial-gradient(80% 60% at 50% 50%,color-mix(in srgb,var(--c2) 20%,transparent),transparent 72%)}
+/* УРОВЕНЬ 6 · Квант · божественное — ореол + вращение + частицы */
+.win.lv6{--lv-bw:2.6px;--lv-radius:22px;--lv-bedge:0%;--lv-glow:0 0 46px -6px var(--c2),0 0 22px -4px var(--c3),0 0 90px -22px var(--c1)}
+.win.lv6::before{opacity:1;background:conic-gradient(from var(--awang),var(--c3),var(--c1),var(--c2),var(--c3));animation:awspin 6s linear infinite}
+.win.lv6::after{animation:awbreath 4s ease-in-out infinite;background:
+  radial-gradient(1.4px 1.4px at 18% 24%,rgba(255,255,255,.9),transparent 60%),
+  radial-gradient(1.2px 1.2px at 76% 32%,color-mix(in srgb,var(--c3) 90%,#fff),transparent 60%),
+  radial-gradient(1.5px 1.5px at 42% 70%,rgba(255,255,255,.7),transparent 60%),
+  radial-gradient(1.1px 1.1px at 86% 78%,color-mix(in srgb,var(--c3) 80%,#fff),transparent 60%),
+  radial-gradient(85% 60% at 50% 0,color-mix(in srgb,var(--c3) 28%,transparent),transparent 72%)}
+.win.lv6 .form{text-shadow:0 0 16px color-mix(in srgb,var(--c3) 70%,transparent)}
+
+.note{color:var(--muted);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:14px;line-height:1.6}
+.note code{font-family:monospace;color:#ffd27a;background:rgba(255,255,255,.05);padding:1px 5px;border-radius:5px}
+</style>
+</head>
+<body>
+<h1>Лестница эволюции окон · 33 матрицы × 6 уровней</h1>
+<p class="sub">Один движок рамок: цвет берётся из палитры матрицы (data/lens_styles.json), а сложность оформления — из уровня (1 Горн → 6 Квант). Ничего не рисуется вручную — все 198 окон строятся из 39 настроек (33 палитры + 6 уровней).</p>
+<div class="bar">
+  <label>Уровень:</label>
+  <button data-lv="all" class="on">Все 6</button>
+  <button data-lv="1">1 Горн</button>
+  <button data-lv="2">2 Расплав</button>
+  <button data-lv="3">3 Бассейн</button>
+  <button data-lv="4">4 Призма</button>
+  <button data-lv="5">5 Воронка</button>
+  <button data-lv="6">6 Квант</button>
+</div>
+<div id="grid"></div>
+<p class="note">Движок рамки — это CSS-класс <code>.win.lvN</code> + три переменные <code>--c1/--c2/--c3</code>. Чтобы встроить в игру: на любое окно ставим класс уровня и прокидываем цвета активной линзы из <code>lensPalette(slug)</code>. Те же данные → тот же React-компонент в основной игре.</p>
+
+<script>
+const MATRICES=[
+{id:1,slug:'vedic',name:'Ведическая',pal:['#d99a2b','#b13a2e','#f4e3b0'],glyph:'🪔',motif:'лотос · мандала'},
+{id:25,slug:'tarot_arcanic',name:'Таро',pal:['#c9a84c','#2b3a67','#e8dcc0'],glyph:'🃏',motif:'аркан · ключ'},
+{id:3,slug:'kabbalistic',name:'Каббала',pal:['#1d2b4a','#d4b14a','#8a93c2'],glyph:'✡',motif:'Древо Сефирот'},
+{id:24,slug:'hermetic_alchemical',name:'Алхимия',pal:['#7a5a2e','#caa64a','#3b4a3a'],glyph:'⚗',motif:'ребис · уроборос'},
+{id:5,slug:'slavic',name:'Славянская',pal:['#c23b2e','#f2efe6','#2c2a28'],glyph:'☀',motif:'коловрат · заря'},
+{id:8,slug:'gnostic',name:'Гностика',pal:['#3a2a5a','#d6c24a','#0d0b1a'],glyph:'✨',motif:'искра · плерома'},
+{id:7,slug:'daoist',name:'Даосизм',pal:['#2e3a36','#cfd8cf','#7a8c6b'],glyph:'☯',motif:'инь-ян · вода'},
+{id:27,slug:'chinese_iching',name:'И-Цзин',pal:['#8a2e22','#d8c89a','#1c1c1c'],glyph:'☰',motif:'гексаграмма'},
+{id:2,slug:'egyptian',name:'Египет',pal:['#caa23a','#1f4e79','#d96f2e'],glyph:'☥',motif:'анх · око Гора'},
+{id:4,slug:'mayan',name:'Майя',pal:['#1f7a6b','#caa23a','#7a2e22'],glyph:'🐍',motif:'глиф · пирамида'},
+{id:20,slug:'aztec_mexica',name:'Ацтеки',pal:['#b6361f','#1f8f7a','#e0b53a'],glyph:'🦅',motif:'Солнечный камень'},
+{id:10,slug:'celtic',name:'Кельты',pal:['#2e6b4a','#c9a84c','#3a3a4a'],glyph:'☘',motif:'трискелион · узел'},
+{id:6,slug:'norse',name:'Скандинавия',pal:['#4a5a6b','#cfd6dd','#7a5a2e'],glyph:'ᚱ',motif:'руна · Иггдрасиль'},
+{id:13,slug:'shamanic',name:'Шаманизм',pal:['#a8521f','#2a2a2a','#3a6b7a'],glyph:'🦅',motif:'бубен · дух-животное'},
+{id:29,slug:'buddhist_mahayana',name:'Буддизм',pal:['#8a1f2e','#d9a72b','#2e5a6b'],glyph:'☸',motif:'лотос · дхармачакра'},
+{id:19,slug:'islamic_sufi_nur',name:'Суфизм · Нур',pal:['#1f7a8a','#d4b14a','#0d2a3a'],glyph:'☪',motif:'арабеска · свет'},
+{id:21,slug:'christian_mystical_grail',name:'Грааль',pal:['#1d2b6b','#caa23a','#7a1f2e'],glyph:'✝',motif:'Грааль · нимб'},
+{id:31,slug:'atlantean_lemurian',name:'Атлантида',pal:['#1f8a9a','#cfeaf0','#3a4a8a'],glyph:'🔮',motif:'кристалл · волна'},
+{id:11,slug:'shambhala',name:'Шамбала',pal:['#e8e2d0','#caa84c','#3a6b9a'],glyph:'🏔',motif:'сияющий град'},
+{id:14,slug:'gene_keys',name:'Gene Keys',pal:['#2a2a5a','#d4b14a','#3a8a7a'],glyph:'🧬',motif:'спираль ДНК'},
+{id:26,slug:'astrological',name:'Астрология',pal:['#0d1b3a','#d4b14a','#6b7aa8'],glyph:'♊',motif:'зодиак · дома'},
+{id:16,slug:'cosmic_galactic',name:'Космос',pal:['#1a0d3a','#c24a8a','#3aa8d6'],glyph:'🌌',motif:'галактика · врата'},
+{id:9,slug:'shinto',name:'Синто',pal:['#c23b4a','#f0e8e0','#3a6b5a'],glyph:'⛩',motif:'тории · сакура'},
+{id:23,slug:'sumerian_babylonian',name:'Шумер',pal:['#1f4e8a','#b07a3a','#d8c89a'],glyph:'🔱',motif:'зиккурат · ламассу'},
+{id:18,slug:'zoroastrian',name:'Зороастризм',pal:['#d96f2e','#caa23a','#1d2b4a'],glyph:'🔥',motif:'огонь Атар'},
+{id:30,slug:'afro_dogon',name:'Догоны',pal:['#a8521f','#2a3a6b','#d8b87a'],glyph:'★',motif:'Сириус · маска'},
+{id:22,slug:'yoruba_ifa_orisha',name:'Йоруба · Ифа',pal:['#1f8a4a','#d4b14a','#b6361f'],glyph:'🥁',motif:'ориша · каури'},
+{id:28,slug:'tantric_kashmiri',name:'Тантра',pal:['#7a1f5a','#d96f2e','#caa23a'],glyph:'🔱',motif:'янтра · кундалини'},
+{id:32,slug:'posthuman_ai_sophianic',name:'София-ИИ',pal:['#2a1f5a','#3ad6c2','#d6b0f0'],glyph:'🕶',motif:'нейросеть · гало'},
+{id:15,slug:'technomagical',name:'Техномагия',pal:['#0d2a3a','#3ad6ff','#caa84c'],glyph:'⚡',motif:'схема-руна'},
+{id:33,slug:'advaita_siddha',name:'Адвайта',pal:['#f0ead8','#caa84c','#3a3a4a'],glyph:'⚬',motif:'свет · безмолвие'},
+{id:12,slug:'julian_byzantine',name:'Византия',pal:['#caa23a','#6b1f3a','#1d3a5a'],glyph:'☦',motif:'икона · мозаика'},
+{id:17,slug:'antique_greco_roman',name:'Античность',pal:['#b6361f','#1f6b8a','#e0d6b0'],glyph:'🏛',motif:'лира · лавр'}
+];
+const LEVELS=[
+{n:1,form:'Горн',qual:'Физика',body:'Грубое сжигание — отделяем явное.'},
+{n:2,form:'Расплав',qual:'Пробуждение',body:'Опыт становится текучим.'},
+{n:3,form:'Бассейн',qual:'Гармония',body:'Уравновешивание, принятие.'},
+{n:4,form:'Призма',qual:'Сияние',body:'Разложение на спектр граней.'},
+{n:5,form:'Воронка',qual:'Восход',body:'Встраивание в траекторию пути.'},
+{n:6,form:'Квант',qual:'Божественное',body:'Единство: опыт и наблюдатель слиты.'}
+];
+const grid=document.getElementById('grid');
+MATRICES.forEach(m=>{
+  const row=document.createElement('div'); row.className='matrix';
+  const head=document.createElement('div'); head.className='mhead';
+  head.innerHTML='<span class="id">#'+m.id+'</span><span class="nm">'+m.name+'</span>'+
+    '<span class="sw">'+m.pal.map(c=>'<i style="background:'+c+';color:'+c+'"></i>').join('')+'</span>'+
+    '<span class="slug">'+m.slug+'</span>';
+  row.appendChild(head);
+  const lad=document.createElement('div'); lad.className='ladder';
+  LEVELS.forEach(L=>{
+    const w=document.createElement('div'); w.className='win lv'+L.n; w.dataset.lv=L.n;
+    w.style.setProperty('--c1',m.pal[0]);
+    w.style.setProperty('--c2',m.pal[2]||m.pal[1]);
+    w.style.setProperty('--c3',m.pal[1]);
+    w.innerHTML='<span class="glyph">'+m.glyph+'</span>'+
+      '<div class="lvtag">уровень '+L.n+'/6</div>'+
+      '<div class="form">'+L.form+'</div>'+
+      '<div class="qual">'+L.qual+'</div>'+
+      '<div class="body">'+L.body+'<span class="pill">'+m.motif+'</span></div>'+
+      '<span class="lvnum">'+m.name+'</span>';
+    lad.appendChild(w);
+  });
+  row.appendChild(lad);
+  grid.appendChild(row);
+});
+// фильтр по уровню
+document.querySelectorAll('.bar button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.bar button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    const lv=b.dataset.lv;
+    document.querySelectorAll('.win').forEach(w=>{ w.style.display=(lv==='all'||w.dataset.lv===lv)?'':'none'; });
+  };
+});
+</script>
+</body>
+</html>

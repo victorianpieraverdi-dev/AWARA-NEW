@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWARA Canon Module Test</title>
+  <style>
+    body { 
+      font-family: 'Cormorant Garamond', serif; 
+      background: #000; color: #c9a84c; padding: 20px;
+      margin: 0;
+    }
+    h1 { color: #ffd700; font-family: 'Cinzel', serif; }
+    button { 
+      padding: 12px 20px; margin: 6px;
+      background: transparent; border: 1px solid #c9a84c;
+      color: #ffd700; cursor: pointer;
+      font-family: 'Cinzel', serif; text-transform: uppercase;
+    }
+    button:hover { background: rgba(201,168,76,0.1); }
+    .output { 
+      background: #0a0a14; padding: 16px; 
+      border-radius: 8px; margin-top: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+      max-height: 400px; overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .stat {
+      display: inline-block; 
+      padding: 8px 16px; margin: 4px;
+      border: 1px solid #c9a84c; border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>AWARA Canon Module Test</h1>
+  <p>Проверка загрузки данных канона (21/33/14/9/63/693)</p>
+  
+  <div>
+    <button id="btn-preload">Preload All</button>
+    <button id="btn-agents">Load Agents</button>
+    <button id="btn-matrices">Load Matrices</button>
+    <button id="btn-map">Load Map</button>
+    <button id="btn-locas">Load Locas</button>
+    <button id="btn-chakras">Load Chakras</button>
+    <button id="btn-cards">Load Cards</button>
+    <button id="btn-clear">Clear Cache</button>
+  </div>
+  
+  <div id="stats"></div>
+  <div class="output" id="output">Нажми Preload All для загрузки всего канона...</div>
+  
+  <script type="module">
+    import { 
+      preloadCanon, loadAgents, loadMatrices, loadAgentMatrixMap,
+      loadLocas, loadChakras, loadCards,
+      getAgentById, getMatrixById, clearCanonCache
+    } from './canon-module.js';
+    
+    const output = document.getElementById('output');
+    const stats = document.getElementById('stats');
+    
+    const log = (label, data) => {
+      output.textContent = `${label}:\n${JSON.stringify(data, null, 2)}`;
+    };
+    
+    const updateStats = (canon) => {
+      stats.innerHTML = `
+        <div class="stat">Агенты: ${canon.agents?.length || 0}/21</div>
+        <div class="stat">Матрицы: ${canon.matrices?.length || 0}/33</div>
+        <div class="stat">Локи: ${canon.locas?.length || 0}/14</div>
+        <div class="stat">Чакры: ${canon.chakras?.length || 0}/9</div>
+        <div class="stat">Карты: ${canon.cards?.length || 0}/63</div>
+        <div class="stat">Время: ${canon.elapsed}мс</div>
+      `;
+    };
+    
+    document.getElementById('btn-preload').onclick = async () => {
+      output.textContent = 'Загрузка...';
+      const canon = await preloadCanon();
+      updateStats(canon);
+      log('Канон загружен', {
+        agents: canon.agents?.length,
+        matrices: canon.matrices?.length,
+        locas: canon.locas?.length,
+        chakras: canon.chakras?.length,
+        cards: canon.cards?.length,
+        agentMatrixMap: canon.agentMatrixMap ? 'OK' : null,
+        elapsed: canon.elapsed + 'мс'
+      });
+    };
+    
+    document.getElementById('btn-agents').onclick = async () => {
+      const agents = await loadAgents();
+      log('Агенты', agents?.slice(0, 3));
+    };
+    
+    document.getElementById('btn-matrices').onclick = async () => {
+      const matrices = await loadMatrices();
+      log('Матрицы', matrices?.slice(0, 3));
+    };
+    
+    document.getElementById('btn-map').onclick = async () => {
+      const map = await loadAgentMatrixMap();
+      log('Карта соответствий (первые 5)', Array.isArray(map) ? map.slice(0, 5) : map);
+    };
+    
+    document.getElementById('btn-locas').onclick = async () => {
+      const locas = await loadLocas();
+      log('Локи', locas);
+    };
+    
+    document.getElementById('btn-chakras').onclick = async () => {
+      const chakras = await loadChakras();
+      log('Чакры', chakras);
+    };
+    
+    document.getElementById('btn-cards').onclick = async () => {
+      const cards = await loadCards();
+      log('Карты', cards?.slice(0, 3));
+    };
+    
+    document.getElementById('btn-clear').onclick = () => {
+      clearCanonCache();
+      output.textContent = 'Кэш очищен. Следующая загрузка будет с диска.';
+      stats.innerHTML = '';
+    };
+    
+    // Авто-preload
+    (async () => {
+      const canon = await preloadCanon();
+      updateStats(canon);
+    })();
+  </script>
+</body>
+</html>
