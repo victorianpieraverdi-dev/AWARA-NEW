@@ -45,9 +45,10 @@ function buildModal(){
   wrap.id='identityModal';
   wrap.className='libmodal open';
   // .libmodal по умолчанию position:absolute (в рамках .phone) — здесь нужен
-  // настоящий полноэкранный фикс поверх ВСЕГО, как у #awEntry/#tigelEntryVeil.
+  // настоящий полноэкранный фикс поверх ВСЕГО. z-index сильно выше игровых
+  // оверлеев (макс. найденный в игре — 100011, у #profCfmWrap).
   wrap.style.position='fixed';
-  wrap.style.zIndex='100005';
+  wrap.style.zIndex='200000';
   wrap.innerHTML=
     '<div class="libcard awara-glass-card" style="max-width:340px;text-align:center">'+
       '<div class="libglyph">🔑</div>'+
