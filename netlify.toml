@@ -1,6 +1,14 @@
 [build]
   publish = "."
 
+# Главная страница ведёт в Тигель. index.html (старое лобби) остаётся на
+# месте, просто больше не открывается по умолчанию на "/".
+[[redirects]]
+  from = "/"
+  to = "/tigel-app.html"
+  status = 302
+  force = true
+
 [functions]
   node_bundler = "esbuild"
   directory = "netlify/functions"
