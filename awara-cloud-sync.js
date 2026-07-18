@@ -16,21 +16,11 @@ var INTERVAL=5*60*1000; // 5 мин
 var timer=null;
 var syncing=false;
 
-/* ── Player ID ── */
-function uuid(){
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){
-    var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);
-  });
-}
+/* ── Player ID ──
+   Имя-ключ задаёт игрок сам (окно входа, awara-identity.js) — здесь только
+   читаем localStorage. Без него синк не запускается (см. boot ниже). */
 function getPlayerId(){
-  var id;
-  try{id=localStorage.getItem(PID_KEY);}catch(e){}
-  if(!id){
-    id=uuid();
-    try{localStorage.setItem(PID_KEY,id);}catch(e){}
-    console.log('[CloudSync] new playerId:',id);
-  }
-  return id;
+  try{return localStorage.getItem(PID_KEY)||null;}catch(e){return null;}
 }
 
 /* ── Собрать все данные ── */
@@ -79,10 +69,12 @@ function api(body,cb){
 /* ── Сохранить в облако ── */
 function cloudSave(cb){
   if(syncing)return;
+  var pid=getPlayerId();
+  if(!pid){if(cb)cb(new Error('no playerId yet'));return;}
   syncing=true;
   var ts=Date.now();
   var data=collectAll();
-  api({action:'save',playerId:getPlayerId(),data:data,ts:ts},function(err,res){
+  api({action:'save',playerId:pid,data:data,ts:ts},function(err,res){
     syncing=false;
     if(err){
       console.warn('[CloudSync] save error:',err);
@@ -102,7 +94,9 @@ function cloudSave(cb){
 
 /* ── Загрузить из облака ── */
 function cloudLoad(cb){
-  api({action:'load',playerId:getPlayerId()},function(err,res){
+  var pid=getPlayerId();
+  if(!pid){if(cb)cb(new Error('no playerId yet'));return;}
+  api({action:'load',playerId:pid},function(err,res){
     if(err){
       console.warn('[CloudSync] load error:',err);
       if(cb)cb(err);
@@ -158,6 +152,29 @@ function syncStatus(){
 
 /* ── Boot ── */
 function boot(){
+  // При уходе со страницы — сохранить (если уже есть имя-ключ)
+  window.addEventListener('beforeunload',function(){
+    var pid=getPlayerId();
+    if(!pid)return;
+    try{
+      var data=collectAll();
+      var body=JSON.stringify({action:'save',playerId:pid,data:data,ts:Date.now()});
+      navigator.sendBeacon(ENDPOINT,new Blob([body],{type:'application/json'}));
+    }catch(e){}
+  });
+
+  // При возвращении на страницу — загрузить (cloudLoad сама молча пропустит без имени)
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState==='visible'){
+      cloudLoad();
+    }
+  });
+
+  if(!getPlayerId()){
+    console.log('[CloudSync] нет имени-ключа — жду входа игрока (awara-identity.js запустит синк сам)');
+    return;
+  }
+
   // Проверить доступность эндпоинта
   try{
     fetch(ENDPOINT,{method:'OPTIONS'}).then(function(r){
@@ -177,23 +194,6 @@ function boot(){
   }catch(e){
     console.log('[CloudSync] not available');
   }
-
-  // При уходе со страницы — сохранить
-  window.addEventListener('beforeunload',function(){
-    // Sync save (beacon)
-    try{
-      var data=collectAll();
-      var body=JSON.stringify({action:'save',playerId:getPlayerId(),data:data,ts:Date.now()});
-      navigator.sendBeacon(ENDPOINT,new Blob([body],{type:'application/json'}));
-    }catch(e){}
-  });
-
-  // При возвращении на страницу — загрузить
-  document.addEventListener('visibilitychange',function(){
-    if(document.visibilityState==='visible'){
-      cloudLoad();
-    }
-  });
 
   console.log('[CloudSync] v1 ready — playerId:',getPlayerId());
 }
