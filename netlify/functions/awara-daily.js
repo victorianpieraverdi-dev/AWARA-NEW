@@ -51,6 +51,121 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+// ── Хроника / энергия дня (DeepSeek, отдельно от callAI/OpenRouter выше) ───
+const DEEPSEEK_URL = 'https://api.deepseek.com/v1/chat/completions';
+const DEFAULT_CHRONICLE_PROMPT =
+  'Ты — летописец AWARA, хранитель личной Хроники игрока. По вчерашним ' +
+  'диалогам игрока с его Даймоном и его текущему состоянию сложи короткую ' +
+  'запись «энергия дня» — 2-4 предложения, поэтично и тепло, по-русски, в ' +
+  'духе алхимии и внутреннего пути. Не выдумывай числа канона (агенты, ' +
+  'матрицы и т.д.). Если вчера игрок не писал в чат — мягко отметь тишину ' +
+  'дня как часть пути, без упрёка.';
+
+async function getConfigText(db, docId) {
+  try {
+    const snap = await db.collection('config').doc(docId).get();
+    if (snap.exists) {
+      const d = snap.data() || {};
+      return d.text || d.prompt || d.content || null;
+    }
+  } catch (err) {
+    console.error(`[awara-daily] config/${docId} read failed:`, err);
+  }
+  return null;
+}
+
+async function callDeepSeek(messages) {
+  const res = await fetch(DEEPSEEK_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+    },
+    body: JSON.stringify({ model: 'deepseek-chat', messages, temperature: 0.85 }),
+  });
+  if (!res.ok) {
+    throw new Error(`DeepSeek ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  }
+  const j = await res.json();
+  return (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || '';
+}
+
+// players/{playerId}.data — JSON-строка ВСЕГО localStorage (см. awara-cloud-sync.js).
+// Внутри — свой JSON-ключ awara_v258_state с игровым состоянием.
+async function getPlayerStateSummary(db, player) {
+  try {
+    const snap = await db.collection('players').doc(player).get();
+    if (!snap.exists) return null;
+    const all = JSON.parse(snap.data().data || '{}');
+    return all.awara_v258_state ? JSON.parse(all.awara_v258_state) : null;
+  } catch (err) {
+    console.error('[awara-daily] player state parse failed:', err);
+    return null;
+  }
+}
+
+// Один equality-фильтр (без orderBy на другом поле) — не требует ручного
+// составного индекса в Firestore. Сортировка/фильтр по дате — уже в коде.
+async function getYesterdayChats(db, player) {
+  try {
+    const snap = await db.collection('chats').where('player', '==', player).limit(200).get();
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    return snap.docs
+      .map((d) => d.data())
+      .filter((c) => c.ts && new Date(c.ts).toISOString().slice(0, 10) === yesterday)
+      .sort((a, b) => a.ts - b.ts);
+  } catch (err) {
+    console.error('[awara-daily] chats read failed:', err);
+    return [];
+  }
+}
+
+async function generateChronicleEntry(db, player, day) {
+  const chats = await getYesterdayChats(db, player);
+  const state = await getPlayerStateSummary(db, player);
+
+  const dialogSummary = chats.length
+    ? chats.map((c) => `Игрок: ${c.question}\nДаймон: ${c.answer}`).join('\n\n')
+    : '(вчера игрок не писал в чат)';
+  const stateSummary = state ? JSON.stringify(state).slice(0, 1500) : '(состояние пока не сохранено)';
+
+  const systemPrompt = (await getConfigText(db, 'chronicle-prompt')) || DEFAULT_CHRONICLE_PROMPT;
+  const userContext = `День: ${day}\n\nВчерашние диалоги игрока с Даймоном:\n${dialogSummary}\n\nСостояние игрока (сырые данные):\n${stateSummary}`;
+
+  const text = await callDeepSeek([
+    { role: 'system', content: systemPrompt },
+    { role: 'user', content: userContext },
+  ]);
+
+  return { player, day, text, createdAt: new Date().toISOString() };
+}
+
+// Отдаёт (генерируя при необходимости) запись за сегодня + ленту последних
+// записей игрока. Повторные вызовы в тот же день читают готовую запись —
+// генерация (платный вызов DeepSeek) происходит максимум раз в день.
+async function getChronicleEntry(body) {
+  const { player } = body;
+  if (!player) throw new Error('player required');
+
+  const db = getDb();
+  const day = new Date().toISOString().slice(0, 10);
+  const ref = db.collection('chronicle').doc(player + '_' + day);
+
+  const snap = await ref.get();
+  let today;
+  if (snap.exists) {
+    today = snap.data();
+  } else {
+    today = await generateChronicleEntry(db, player, day);
+    await ref.set(today);
+  }
+
+  const feedSnap = await db.collection('chronicle').where('player', '==', player).limit(90).get();
+  const feed = feedSnap.docs.map((d) => d.data()).sort((a, b) => (a.day < b.day ? 1 : -1));
+
+  return { player, today, feed };
+}
+
 // ── getDailyMeaning ────────────────────────────────────────────────────────
 async function getDailyMeaning(body) {
   const { playerId, date, player = {}, force = false } = body;
@@ -202,6 +317,8 @@ exports.handler = async (event) => {
       result = await getDailyMeaning(body);
     } else if (action === 'askOracle') {
       result = await askOracle(body);
+    } else if (action === 'getChronicleEntry') {
+      result = await getChronicleEntry(body);
     } else {
       return {
         statusCode: 400,
