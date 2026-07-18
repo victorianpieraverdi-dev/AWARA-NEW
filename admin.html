@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AWARA · Админ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: #05050a; color: #eae6f2;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    padding: 24px 16px 60px;
+  }
+  h1, h2 { font-family: 'Cinzel', serif; color: #c9a84c; font-weight: 600; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  h2 { font-size: 16px; margin: 28px 0 10px; }
+  .sub { color: #8a8698; font-size: 12px; margin: 0 0 20px; }
+  .card {
+    background: #000; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 10px;
+  }
+  input, textarea, button {
+    font-family: inherit; font-size: 13px; background: #0a0a14; color: #eae6f2;
+    border: 1px solid rgba(201,168,76,0.3); border-radius: 8px; padding: 8px 10px;
+  }
+  input, textarea { width: 100%; }
+  textarea { min-height: 100px; resize: vertical; }
+  button {
+    cursor: pointer; color: #c9a84c; border-color: rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.08); transition: background .15s ease;
+  }
+  button:hover { background: rgba(201,168,76,0.18); }
+  button:disabled { opacity: .5; cursor: default; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .playerRow {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); cursor: pointer;
+  }
+  .playerRow:hover { background: rgba(201,168,76,0.06); }
+  .playerRow b { color: #c9a84c; }
+  .muted { color: #8a8698; }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px;
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+  .badge.on { color: #ffd700; border-color: #ffd700; }
+  .chat-q { color: #8a8698; }
+  .chat-a { color: #eae6f2; margin: 4px 0 10px; }
+  #loginScreen { max-width: 340px; margin: 80px auto; text-align: center; }
+  #app { display: none; max-width: 720px; margin: 0 auto; }
+  #detail { display: none; }
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <h1>Код доступа</h1>
+  <p class="sub">Панель создателя AWARA.</p>
+  <input id="codeInput" type="password" placeholder="код" autocomplete="off" />
+  <div id="loginMsg" class="sub" style="min-height:16px;margin-top:8px"></div>
+  <button id="loginBtn" style="margin-top:10px;width:100%">Войти</button>
+</div>
+
+<div id="app">
+  <h1>AWARA · Админ</h1>
+  <p class="sub">Игроки, диалоги, настройки ИИ.</p>
+
+  <h2>Игроки</h2>
+  <div class="card" id="playersCard"><span class="muted">Загрузка…</span></div>
+
+  <div id="detail">
+    <h2 id="detailTitle">Игрок</h2>
+    <div class="card">
+      <div class="row">
+        <span>Безлимит:</span>
+        <button id="unlimitedToggle">…</button>
+      </div>
+    </div>
+    <h2>Хроника</h2>
+    <div class="card" id="chronicleBox"><span class="muted">—</span></div>
+    <h2>Последние диалоги</h2>
+    <div class="card" id="chatsBox"><span class="muted">—</span></div>
+  </div>
+
+  <h2>Мозги</h2>
+  <p class="sub">Тексты, которыми управляется ИИ — без передеплоя.</p>
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <b style="color:#c9a84c">config/system-prompt</b>
+      <button data-save="system-prompt">Сохранить</button>
+    </div>
+    <textarea id="cfg-system-prompt" style="margin-top:8px" placeholder="Системный промпт чата Даймона (по умолчанию — зашит в коде)"></textarea>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <b style="color:#c9a84c">config/quota-message</b>
+      <button data-save="quota-message">Сохранить</button>
+    </div>
+    <textarea id="cfg-quota-message" style="margin-top:8px" placeholder="Сообщение при исчерпании дневного лимита"></textarea>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <b style="color:#c9a84c">config/chronicle-prompt</b>
+      <button data-save="chronicle-prompt">Сохранить</button>
+    </div>
+    <textarea id="cfg-chronicle-prompt" style="margin-top:8px" placeholder="Промпт генерации Хроники"></textarea>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var ENDPOINT='/.netlify/functions/awara-admin';
+var code=null;
+
+function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function call(action,extra){
+  var body=Object.assign({code:code,action:action},extra||{});
+  return fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+    .then(function(r){return r.json().then(function(j){return {ok:r.ok,json:j};});});
+}
+
+/* ── Вход ── */
+document.getElementById('loginBtn').onclick=function(){
+  var input=document.getElementById('codeInput');
+  var msg=document.getElementById('loginMsg');
+  var attempt=input.value.trim();
+  if(!attempt){msg.textContent='Введи код.';return;}
+  msg.textContent='Проверяю…';
+  code=attempt;
+  call('listPlayers').then(function(res){
+    if(!res.ok){msg.textContent=res.json.error||'Код не подошёл.';code=null;return;}
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('app').style.display='block';
+    renderPlayers(res.json.players||[]);
+    loadConfig();
+  }).catch(function(){msg.textContent='Не достучался до сервера.';});
+};
+document.getElementById('codeInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter')document.getElementById('loginBtn').click();
+});
+
+/* ── Игроки ── */
+function renderPlayers(players){
+  var card=document.getElementById('playersCard');
+  if(!players.length){card.innerHTML='<span class="muted">Пока никого.</span>';return;}
+  card.innerHTML=players.map(function(p){
+    return '<div class="playerRow" data-player="'+esc(p.player)+'">'+
+      '<span><b>'+esc(p.player)+'</b> <span class="muted">'+(p.lastSeen?esc(p.lastSeen).slice(0,16):'—')+'</span></span>'+
+      '<span class="row"><span class="muted">'+p.todayCount+'/день</span>'+
+      '<span class="badge'+(p.unlimited?' on':'')+'">'+(p.unlimited?'безлимит':'лимит')+'</span></span>'+
+    '</div>';
+  }).join('');
+  card.querySelectorAll('.playerRow').forEach(function(row){
+    row.onclick=function(){openPlayer(row.getAttribute('data-player'));};
+  });
+}
+
+function openPlayer(player){
+  var detail=document.getElementById('detail');
+  detail.style.display='block';
+  document.getElementById('detailTitle').textContent='Игрок · '+player;
+  document.getElementById('chronicleBox').innerHTML='<span class="muted">Загрузка…</span>';
+  document.getElementById('chatsBox').innerHTML='<span class="muted">Загрузка…</span>';
+  var toggle=document.getElementById('unlimitedToggle');
+  toggle.textContent='…';
+  toggle.onclick=null;
+
+  call('getPlayerDetail',{player:player}).then(function(res){
+    if(!res.ok){document.getElementById('chatsBox').innerHTML='<span class="muted">Ошибка.</span>';return;}
+    var d=res.json;
+
+    var unlimited=false;
+    call('listPlayers').then(function(lp){
+      var row=(lp.json.players||[]).find(function(x){return x.player===player;});
+      unlimited=row?row.unlimited:false;
+      paintToggle();
+    });
+    function paintToggle(){
+      toggle.textContent=unlimited?'выключить':'включить';
+      toggle.onclick=function(){
+        toggle.disabled=true;
+        call('setUnlimited',{player:player,unlimited:!unlimited}).then(function(r2){
+          toggle.disabled=false;
+          if(r2.ok){unlimited=!unlimited;paintToggle();}
+        });
+      };
+    }
+
+    document.getElementById('chronicleBox').innerHTML=(d.chronicle&&d.chronicle.length)
+      ? d.chronicle.map(function(c){return '<div style="margin-bottom:8px"><b class="muted">'+esc(c.day)+'</b><div class="chat-a">'+esc(c.text)+'</div></div>';}).join('')
+      : '<span class="muted">Пока нет записей.</span>';
+
+    document.getElementById('chatsBox').innerHTML=(d.chats&&d.chats.length)
+      ? d.chats.map(function(c){return '<div style="margin-bottom:10px"><div class="chat-q">'+esc(c.question)+'</div><div class="chat-a">'+esc(c.answer)+'</div></div>';}).join('')
+      : '<span class="muted">Пока нет диалогов.</span>';
+  });
+}
+
+/* ── Мозги ── */
+var CONFIG_DOCS=['system-prompt','quota-message','chronicle-prompt'];
+function loadConfig(){
+  call('getConfig').then(function(res){
+    if(!res.ok)return;
+    CONFIG_DOCS.forEach(function(id){
+      var ta=document.getElementById('cfg-'+id);
+      if(ta)ta.value=(res.json.config||{})[id]||'';
+    });
+  });
+}
+document.querySelectorAll('[data-save]').forEach(function(btn){
+  btn.onclick=function(){
+    var id=btn.getAttribute('data-save');
+    var ta=document.getElementById('cfg-'+id);
+    btn.disabled=true;
+    var oldText=btn.textContent;
+    call('setConfig',{docId:id,text:ta.value}).then(function(res){
+      btn.disabled=false;
+      btn.textContent=res.ok?'Сохранено':'Ошибка';
+      setTimeout(function(){btn.textContent=oldText;},1500);
+    });
+  };
+});
+})();
+</script>
+</body>
+</html>
