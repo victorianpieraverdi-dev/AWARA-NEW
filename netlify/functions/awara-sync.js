@@ -25,7 +25,7 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-const COL = 'player_saves';
+const COL = 'players';
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
