@@ -44,6 +44,9 @@ function buildModal(){
   var wrap=document.createElement('div');
   wrap.id='identityModal';
   wrap.className='libmodal open';
+  // .libmodal по умолчанию position:absolute (в рамках .phone) — здесь нужен
+  // настоящий полноэкранный фикс поверх ВСЕГО, как у #awEntry/#tigelEntryVeil.
+  wrap.style.position='fixed';
   wrap.style.zIndex='100005';
   wrap.innerHTML=
     '<div class="libcard awara-glass-card" style="max-width:340px;text-align:center">'+
