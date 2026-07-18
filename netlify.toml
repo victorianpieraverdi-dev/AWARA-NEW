@@ -4,3 +4,8 @@
 [functions]
   node_bundler = "esbuild"
   directory = "netlify/functions"
+
+# Netlify by default doesn't install a function's own package.json deps
+# (netlify/functions/package.json, holding firebase-admin) — this plugin does.
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
