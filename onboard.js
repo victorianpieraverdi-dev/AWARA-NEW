@@ -180,6 +180,9 @@ function reset(){try{localStorage.removeItem(DONE);}catch(e){}}
 
 window.AwaraOnboard={start:start,finish:finish,reset:reset,isDone:isDone,__ready:true};
 
-function boot(){if(!isDone())start(0);}
+// Онбординг ждёт вход по имени-ключу (awara-identity.js) — тот вызовет
+// AwaraOnboard.start() сам после входа. Без имени-ключа onboard.js молчит.
+function hasIdentity(){try{return !!localStorage.getItem('awara_player_id');}catch(e){return false;}}
+function boot(){if(!hasIdentity())return;if(!isDone())start(0);}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(boot,80);});}else{setTimeout(boot,80);}
 })();

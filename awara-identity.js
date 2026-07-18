@@ -28,14 +28,20 @@ function checkExisting(key,cb){
   }).catch(function(e){cb(e,false);});
 }
 
-// После входа — подтянуть сохранение (если есть) и запустить авто-синк.
-// awara-cloud-sync.js сам не стартует без имени-ключа (см. его boot()).
+// После входа — подтянуть сохранение (если есть), запустить авто-синк и
+// (если ещё не пройден) впустить старое знакомство onboard.js — оно само
+// не стартует без имени-ключа, ждёт этого вызова.
 function afterLogin(){
   try{
     if(window.AwaraCloudSync&&window.AwaraCloudSync.load){
       window.AwaraCloudSync.load(function(){
         window.AwaraCloudSync.start();
       });
+    }
+  }catch(e){}
+  try{
+    if(window.AwaraOnboard&&window.AwaraOnboard.start&&!window.AwaraOnboard.isDone()){
+      window.AwaraOnboard.start(0);
     }
   }catch(e){}
 }
@@ -59,6 +65,7 @@ function buildModal(){
       '<div id="idActions" style="margin-top:14px;display:flex;gap:8px">'+
         '<button class="btn awara-gold-button" id="idSubmitBtn" style="flex:1">Войти</button>'+
       '</div>'+
+      '<p class="sub" style="font-size:11px;margin-top:14px;opacity:.6">Сменить игрока: напиши Даймону «выход»</p>'+
     '</div>';
   document.body.appendChild(wrap);
   return wrap;
