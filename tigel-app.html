@@ -656,6 +656,31 @@ init();
 <script src="awara-essence.js?v=1"></script>
 <script src="awara-light.js?v=3"></script>
 <script src="awara-experience-engine.js?v=3"></script>
+<script src="awara-quest-arcs.js?v=1"></script>
+<script src="awara-quest-selector.js?v=1"></script>
+<script>
+/* ═══ Квесты v2: адаптер света для арок + дневной tick ═══ */
+(function(){
+  /* Адаптер: свет арок идёт через AwaraXP.processExperience по образцу
+     awara-quest-flow.js (_completeQuest). Награда арки масштабируется так,
+     чтобы сумма осей = amount; движок применит поверх множители и окна Мер.
+     При недоступности движка/лимите — бросаем, AwaraArcs сам уйдёт в fallback. */
+  window.AwaraArcsLightAdapter=function(arc,amount,kind){
+    if(!(window.AwaraXP&&window.AwaraXP.__ready)) throw new Error('AwaraXP not ready');
+    if(window.AwaraXP.canDoQuest&&!window.AwaraXP.canDoQuest()) throw new Error('quest_cap');
+    var reward={},sum=0,k;
+    for(k in (arc.reward||{})) sum+=arc.reward[k]||0;
+    if(sum>0){ for(k in arc.reward) reward[k]=Math.round(arc.reward[k]*amount/sum*100)/100; }
+    else reward={clarity:amount};
+    var quest={id:'arc:'+(arc.questId||arc.id)+':'+kind,title:arc.title,text:arc.text,type:'ritual',proof:'check',reward:reward,tier:arc.level||5};
+    window.AwaraXP.processExperience(quest,null,arc.slug||null,arc.level||5,{media_type:'none',coop_players:1})
+      .then(function(res){ if(res&&res.error) console.warn('[Arcs] light not granted:',res.error); })
+      .catch(function(e){ console.warn('[Arcs] processExperience failed:',e); });
+  };
+  /* Старт дня (открытие Тигеля): проверка пропусков, срыв просроченных арок */
+  try{ if(window.AwaraArcs) AwaraArcs.tick(); }catch(e){}
+})();
+</script>
 <script src="awara-day-generation.js?v=22"></script>
 <script src="awara-soul-flow.js?v=3"></script>
 <script src="awara-istok-voice.js?v=1"></script>
@@ -724,5 +749,6 @@ init();
 <script src="awara-identity.js?v=1"></script>
 <script src="awara-chronicle.js?v=1"></script>
 <script src="awara-backup.js?v=3"></script>
+<script src="awara-dev-arc.js?v=1"></script>
 </body>
 </html>
