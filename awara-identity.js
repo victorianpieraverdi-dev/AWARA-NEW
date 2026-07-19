@@ -18,24 +18,47 @@ function normalizeKey(raw){
   return (raw||'').trim().toLowerCase().replace(/\s+/g,'-').slice(0,40);
 }
 
+function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// Мобильная сеть может просто зависнуть без ошибки — fetch тогда никогда не
+// разрешится. 15с — жёсткий потолок ожидания, дальше считаем это отказом.
+function fetchTimeout(url,opts,ms){
+  var ctrl=(typeof AbortController!=='undefined')?new AbortController():null;
+  var opts2=ctrl?Object.assign({},opts,{signal:ctrl.signal}):opts;
+  var timer=ctrl?setTimeout(function(){ctrl.abort();},ms):null;
+  return fetch(url,opts2).then(function(r){if(timer)clearTimeout(timer);return r;},function(e){if(timer)clearTimeout(timer);throw e;});
+}
+
 function checkExisting(key,cb){
-  fetch(SYNC_ENDPOINT,{
+  fetchTimeout(SYNC_ENDPOINT,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({action:'load',playerId:key})
-  }).then(function(r){return r.json();}).then(function(j){
+  },15000).then(function(r){
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return r.json();
+  }).then(function(j){
     cb(null, !!(j&&j.ok&&j.found));
-  }).catch(function(e){cb(e,false);});
+  }).catch(function(e){
+    var reason=(e&&e.name==='AbortError')?'таймаут 15с':String((e&&e.message)||e);
+    cb(reason,false);
+  });
 }
 
-// После входа — подтянуть сохранение (если есть) и запустить авто-синк.
-// awara-cloud-sync.js сам не стартует без имени-ключа (см. его boot()).
+// После входа — подтянуть сохранение (если есть), запустить авто-синк и
+// (если ещё не пройден) впустить старое знакомство onboard.js — оно само
+// не стартует без имени-ключа, ждёт этого вызова.
 function afterLogin(){
   try{
     if(window.AwaraCloudSync&&window.AwaraCloudSync.load){
       window.AwaraCloudSync.load(function(){
         window.AwaraCloudSync.start();
       });
+    }
+  }catch(e){}
+  try{
+    if(window.AwaraOnboard&&window.AwaraOnboard.start&&!window.AwaraOnboard.isDone()){
+      window.AwaraOnboard.start(0);
     }
   }catch(e){}
 }
@@ -59,6 +82,7 @@ function buildModal(){
       '<div id="idActions" style="margin-top:14px;display:flex;gap:8px">'+
         '<button class="btn awara-gold-button" id="idSubmitBtn" style="flex:1">Войти</button>'+
       '</div>'+
+      '<p class="sub" style="font-size:11px;margin-top:14px;opacity:.6">Сменить игрока: напиши Даймону «выход»</p>'+
     '</div>';
   document.body.appendChild(wrap);
   return wrap;
@@ -82,7 +106,13 @@ function showLoginModal(){
     msg.textContent='Ищу тебя во вселенной…';
     checkExisting(key,function(err,found){
       if(btn)btn.disabled=false;
-      if(err){msg.textContent='Не достучался до сервера — попробуй ещё раз.';return;}
+      if(err){
+        msg.innerHTML='Вселенная молчит. Проверь связь и попробуй ещё раз.<br>'+
+          '<span style="opacity:.5;font-size:10px">'+esc(err)+'</span>';
+        actions.innerHTML='<button class="btn awara-gold-button" id="idRetryBtn" style="flex:1">Повторить</button>';
+        modal.querySelector('#idRetryBtn').onclick=submit;
+        return;
+      }
       if(found){
         msg.textContent='';
         actions.innerHTML=

@@ -901,7 +901,7 @@
       "method": "count_element_frequency",
       "description": "Подсчёт: какая стихия встречается чаще всего из 7 систем → доминанта дня",
       "resonance_multiplier": {
-        "0_matches": 1.0,
+        "0_matches": 1,
         "1_match": 1.15,
         "2_matches": 1.3,
         "3_matches": 1.45,
@@ -952,7 +952,7 @@
       },
       "agent_resonance_multiplier": {
         "match": 1.2,
-        "no_match": 1.0
+        "no_match": 1
       }
     }
   },
@@ -994,16 +994,16 @@
         "quality_score": {
           "type": "float",
           "range": [
-            0.0,
-            1.0
+            0,
+            1
           ],
           "description": "Искренность, глубина, конкретность ответа"
         },
         "fullness_score": {
           "type": "float",
           "range": [
-            0.0,
-            1.0
+            0,
+            1
           ],
           "description": "Сколько уровней затронуто (тело+ум+чувства+воля+дух)"
         },
@@ -1061,12 +1061,12 @@
     "lens_depth": {
       "description": "Глубина линзы: чем выше уровень, тем больше множитель",
       "values": {
-        "1": 1.0,
+        "1": 1,
         "2": 1.2,
         "3": 1.4,
         "4": 1.6,
         "5": 1.8,
-        "6": 2.0
+        "6": 2
       }
     },
     "daily_energy_resonance": {
@@ -1076,7 +1076,7 @@
     "agent_resonance": {
       "description": "Совпадение стихии ответа со стихией агента дня",
       "match": 1.2,
-      "no_match": 1.0
+      "no_match": 1
     },
     "loka_density": {
       "description": "Плотность локи: высшие локи дают больше за счёт density",
@@ -1103,7 +1103,7 @@
       "description": "Качество сознания в ответе",
       "values": {
         "sattva": 1.5,
-        "rajas": 1.0,
+        "rajas": 1,
         "tamas": 0.6
       }
     },
@@ -1112,7 +1112,7 @@
       "formula": "0.5 + quality_score * 0.5",
       "range": [
         0.5,
-        1.0
+        1
       ],
       "note": "quality=0 → ×0.5, quality=0.5 → ×0.75, quality=1.0 → ×1.0"
     },
@@ -1122,7 +1122,7 @@
         {
           "ring_min": -3,
           "quality_min": 0,
-          "multiplier": 1.0
+          "multiplier": 1
         },
         {
           "ring_min": 1,
@@ -1147,14 +1147,14 @@
         {
           "ring_min": 9,
           "quality_min": 0.9,
-          "multiplier": 2.0
+          "multiplier": 2
         }
       ]
     },
     "coop_bonus": {
       "description": "Множитель за совместный квест",
       "values": {
-        "1": 1.0,
+        "1": 1,
         "2": 1.3,
         "3": 1.5,
         "4": 1.7
@@ -1165,7 +1165,7 @@
       "description": "Множитель за творческое выражение в ответе",
       "levels": {
         "none": {
-          "multiplier": 1.0,
+          "multiplier": 1,
           "description": "Обычный текст"
         },
         "lyrical": {
@@ -1189,7 +1189,7 @@
     "media_bonus": {
       "description": "Множитель за приложенные медиа-файлы",
       "values": {
-        "none": 1.0,
+        "none": 1,
         "photo_1": 1.2,
         "photo_2plus": 1.3,
         "audio": 1.4,
@@ -1937,9 +1937,6 @@
   "pacing": {
     "_comment": "Система пейсинга — растягивает игру на 6+ месяцев",
     "ai_evals_by_ring": {
-      "-3": 3,
-      "-2": 3,
-      "-1": 5,
       "0": 5,
       "1": 7,
       "2": 8,
@@ -1949,12 +1946,12 @@
       "6": 20,
       "7": 25,
       "8": 30,
-      "9": 999
+      "9": 999,
+      "-3": 3,
+      "-2": 3,
+      "-1": 5
     },
     "daily_quest_cap_by_ring": {
-      "-3": 5,
-      "-2": 5,
-      "-1": 5,
       "0": 5,
       "1": 6,
       "2": 6,
@@ -1964,7 +1961,10 @@
       "6": 8,
       "7": 10,
       "8": 10,
-      "9": 12
+      "9": 12,
+      "-3": 5,
+      "-2": 5,
+      "-1": 5
     },
     "depth_gates": {
       "2": {
@@ -2974,7 +2974,7 @@
       "streak_multiplier": {
         "1_7": {
           "days": "1-7",
-          "multiplier": 1.0,
+          "multiplier": 1,
           "label": "Начало"
         },
         "8_21": {
@@ -2989,7 +2989,7 @@
         },
         "61_plus": {
           "days": "61+",
-          "multiplier": 2.0,
+          "multiplier": 2,
           "label": "Практика стала частью тебя"
         }
       },
@@ -3004,7 +3004,7 @@
     },
     "lens_activation_threshold": {
       "description": "Когда пассивный свет в спящей линзе достигает порога, линза 'пробуждается'",
-      "threshold": 5.0,
+      "threshold": 5,
       "effect": "Линза появляется на экране как 'наливающаяся', подсказка: 'Твоя практика чайной церемонии пробудила линзу И-Цзин'"
     },
     "overnight_passive": {
@@ -3107,7 +3107,7 @@
         "name_ru": "Спящий эфир",
         "color": "чёрный → серый",
         "description": "Сознание рассеяно. Действия механические. Частицы капают слабо.",
-        "particle_multiplier": 1.0,
+        "particle_multiplier": 1,
         "default_state": true,
         "note": "Каждый раз когда игрок теряет осознанность — эфир засыпает"
       },
@@ -3427,6 +3427,74 @@
       "archive": "jehovih.ru/index.php/sistemy-miroponimaniya/russkij-master/",
       "local_path": "C:\\AWARA\\РАДОСВЕТ\\Русский Мастер\\",
       "supplementary": "Папка РАДОСВЕТ — библиотека первоисточников"
+    }
+  },
+  "quest_arcs": {
+    "_comment": "Многодневные квесты L5-L6: обеты, циклы, паломничества, синтез-недели",
+    "arc_types": {
+      "vow": {
+        "name_ru": "Обет / Гейс",
+        "description": "Держать ограничение или обязательство N дней"
+      },
+      "cycle": {
+        "name_ru": "Цикл наблюдения",
+        "description": "Одно явление, N дней подряд, накопление видения"
+      },
+      "pilgrimage": {
+        "name_ru": "Паломничество",
+        "description": "Цепочка квестов одной локации, тир за тиром"
+      },
+      "synthesis": {
+        "name_ru": "Синтез-неделя",
+        "description": "Каждый день — новая грань одного целого"
+      }
+    },
+    "max_active": 2,
+    "allowed_skips": 1,
+    "checkpoint_share": 0.12,
+    "completion_bonus": 1.5,
+    "broken_share": 0.4,
+    "unlock": {
+      "min_level": 5,
+      "min_quality_avg": 0.5
+    },
+    "daily_checkin_hook": "Чекпоинты арок показываются внутри существующего daily_checkin"
+  },
+  "quest_selector": {
+    "_comment": "Веса выдачи квестов. Селектор перемножает факторы.",
+    "weights": {
+      "profile_lens": 1.5,
+      "daily_energy_element": 1.3,
+      "lagging_axis": 1.4,
+      "spiral_next_level": 1.6,
+      "echo_other_lens": 1.15,
+      "repeat_penalty": 0.45,
+      "repeat_window_days": 10
+    },
+    "personalization_slots": {
+      "_comment": "Подстановка объекта из профиля игрока в текст квеста (чайный мастер → гайвань вместо 'вода')",
+      "enabled": true,
+      "source": "life_activities + intention_classification",
+      "ai_rewrite": "Финальную формулировку шлифует ИИ в голосе агента линзы (cultural_name из agent_matrix_map.json)"
+    }
+  },
+  "spiral_echo": {
+    "_comment": "Спираль: архетип возвращается глубже. Эхо: тот же архетип в другой линзе.",
+    "spiral": {
+      "show_previous": true,
+      "message_ru": "Ты смотрел на это на уровне {prev}. Посмотри теперь.",
+      "min_days_between_turns": 3
+    },
+    "echo": {
+      "show_on_complete": true,
+      "message_ru": "Эхо: ты уже проживал это как «{title}» в линзе {lens}.",
+      "feeds_lens_crossing": "P9.4 — скрещённая линза = архетипы, прожитые в обеих"
+    },
+    "perception_sharpness": {
+      "_comment": "Резкость микроскопа: видимая кривая качества восприятия",
+      "metric": "скользящее среднее quality_score и fullness_score за 7 дней",
+      "display": "экран Путь / Духовный портрет",
+      "gates_visible": true
     }
   }
 }

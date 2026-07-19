@@ -35,6 +35,27 @@ var GUNA_DISPLAY={tamas:{name:'Тамас',color:'#666',icon:'●'},rajas:{name:
 var WIN_DISPLAY={daimon:{icon:'☽',name:'Даймон',color:'#7b62c9'},locations:{icon:'🗺',name:'Локации',color:'#6BAF6B'},emf:{icon:'⚡',name:'ЭМП',color:'#D4A946'},newmatrix:{icon:'◈',name:'Новая Матрица',color:'#C97B62'},soul:{icon:'◉',name:'Душа',color:'#9D86E0'},daimon_soul:{icon:'☽◉',name:'Даймон+Душа',color:'#8A7AD0'},chronicle:{icon:'📜',name:'Хроника',color:'#C9A84C'},hram:{icon:'🏛',name:'Храм',color:'#FFD27A'},cosmos:{icon:'🌌',name:'Космос',color:'#A0C0FF'},supergame:{icon:'🌟',name:'Супер-Игра',color:'#FFE0A0'}};
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
+/* ---- v2 selector: тексты спирали/эха из engine_config.json (spiral_echo) ---- */
+function engineCfg(){ try{ return (window.AwaraXP&&AwaraXP.getConfig)?AwaraXP.getConfig():null; }catch(e){ return null; } }
+function spiralMsg(sp){
+  var c=engineCfg();
+  var t=(c&&c.spiral_echo&&c.spiral_echo.spiral&&c.spiral_echo.spiral.message_ru)||'Ты смотрел на это на уровне {prev}. Посмотри теперь.';
+  return t.replace('{prev}', sp.level);
+}
+function echoMsg(e){
+  var c=engineCfg();
+  var t=(c&&c.spiral_echo&&c.spiral_echo.echo&&c.spiral_echo.echo.message_ru)||'Эхо: ты уже проживал это как «{title}» в линзе {lens}.';
+  return t.replace('{title}', e.title||e.archetype||'').replace('{lens}', e.lens||'');
+}
+
+/* ---- v2 причины: стихия дня — та же формула, что в awara-quest-selector.js::dailyElement() ---- */
+var TYPE_ELEMENT_MQ={do:'Земля',meditate:'Эфир',observe:'Воздух',reflect:'Вода',create:'Огонь',study:'Воздух',ritual:'Огонь'};
+function dailyElementMq(){
+  var now=new Date();
+  var dayOfYear=Math.floor((now-new Date(now.getFullYear(),0,0))/86400000);
+  return ['Огонь','Вода','Земля','Воздух','Эфир'][dayOfYear%5];
+}
+
 /* ---- quest data cache ---- */
 var _cache={}; /* slug -> parsed json */
 var _facesCache={}; /* slug -> faces from codex */
@@ -210,7 +231,28 @@ function ensureStyles(){
 '#matrixBonuses .mb-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(201,168,76,.08)}',
 '#matrixBonuses .mb-row:last-child{border-bottom:none}',
 '#matrixBonuses .mb-name{font-size:14px;color:#d7d2e8}',
-'#matrixBonuses .mb-val{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--gold)}'
+'#matrixBonuses .mb-val{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--gold)}',
+/* v2 selector: спираль и эхо */
+'#matrixQuests .mq-spiral{font-size:12px;color:var(--spark,#ffd27a);font-style:italic;margin-top:6px;opacity:.9}',
+'#matrixQuests .mq-echo{font-size:12px;color:var(--violet-soft,#9d86e0);font-style:italic;margin-top:4px;opacity:.85}',
+'#matrixQuests .mq-why{font-size:12px;color:var(--muted,#8e88a4);font-style:italic;margin-top:6px;opacity:.85}',
+/* v2 arcs: многодневный путь */
+'#arcQuests .arc-item,#arcQuests .arc-offer{border:1px solid rgba(201,168,76,.28);border-radius:14px;padding:12px;margin-bottom:10px;background:linear-gradient(160deg,rgba(201,168,76,.06),rgba(255,255,255,.015))}',
+'#arcQuests .arc-item:last-child,#arcQuests .arc-offer:last-child{margin-bottom:0}',
+'#arcQuests .arc-hdr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}',
+'#arcQuests .arc-hdr b{font-family:"Cinzel",serif;color:#fff;font-size:15px;font-weight:500}',
+'#arcQuests .arc-type{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--gold,#c9a84c);border:1px solid var(--line,rgba(201,168,76,.16));border-radius:20px;padding:2px 7px}',
+'#arcQuests .arc-meta{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted,#8e88a4);letter-spacing:.05em;margin-top:5px;text-transform:uppercase}',
+'#arcQuests .arc-prompt{color:#d7d2e8;font-size:14px;line-height:1.45;margin-top:7px}',
+'#arcQuests .arc-note{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line,rgba(201,168,76,.16));border-radius:10px;color:#ece9f5;padding:8px 10px;font-size:14px;font-family:inherit;margin-top:8px;box-sizing:border-box;outline:none;resize:vertical;min-height:44px}',
+'#arcQuests .arc-note:focus{border-color:var(--gold,#c9a84c)}',
+'#arcQuests .arc-checkin,#arcQuests .arc-accept{background:linear-gradient(120deg,var(--gold,#c9a84c),var(--spark,#ffd27a));border:none;border-radius:10px;color:#0a0a14;padding:7px 16px;font-size:12px;font-family:"JetBrains Mono",monospace;cursor:pointer;margin-top:8px;text-transform:uppercase;letter-spacing:.04em;font-weight:600}',
+'#arcQuests .arc-checkin:disabled{background:rgba(255,255,255,.08);color:var(--muted,#8e88a4);cursor:default}',
+/* v2 pilgrimage: задание текущего дня */
+'#arcQuests .arc-day{margin-top:8px;padding:8px 10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02)}',
+'#arcQuests .arc-day b{font-family:"Cinzel",serif;color:#fff;font-size:13.5px;font-weight:500}',
+'#arcQuests .arc-day-text{color:#d7d2e8;font-size:13.5px;line-height:1.45;margin-top:4px}',
+'#arcQuests .arc-day-tier{display:block;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted,#8e88a4);margin-top:5px}'
   ].join('\n');
   document.head.appendChild(st);
 }
@@ -291,6 +333,8 @@ function render(){
         +'<p class="mq-sub">\u0417\u0430\u0434\u0430\u043d\u0438\u044f \u0434\u043b\u044f \u043c\u0430\u0442\u0440\u0438\u0446\u044b \u00ab'+matName+'\u00bb \u0433\u043e\u0442\u043e\u0432\u044f\u0442\u0441\u044f. \u041f\u043e\u043a\u0430 \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b: \u0412\u0435\u0434\u0438\u0447\u0435\u0441\u043a\u0430\u044f, \u0422\u0430\u0440\u043e, \u0414\u0430\u043e\u0441\u0441\u043a\u0430\u044f.</p>';
       /* still load faces for bonuses */
       loadFaces(slug, function(faces){ renderBonuses(faces); });
+      /* v2 arcs: многодневный путь доступен и без данных линзы */
+      try{ renderArcsBlock(slug, lv); }catch(e){}
       return;
     }
     loadFaces(slug, function(faces){
@@ -299,22 +343,50 @@ function render(){
   });
 }
 
+/* ---- v2 selector: взвешенная выдача с фолбэком на старую логику ---- */
+function regenDayQuests(data, faces, slug, lv, day){
+  var s=S(); if(!s) return;
+  /* селектор подключён НИЖЕ по файлу (после experience-engine):
+     при самом первом рендере его может ещё не быть — дождаться DOMContentLoaded */
+  if(!window.AwaraQuestSelector && document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', function(){ regenDayQuests(data, faces, slug, lv, day); });
+    return;
+  }
+  function applyItems(items){
+    s.matQuests={day:day, slug:slug, items:items, proof:(s.matQuests&&s.matQuests.proof)||{}};
+    saveState();
+    renderWithData(data, faces, slug, lv, day);
+  }
+  function fallback(){
+    var picks=pickDayQuests(data, lv);
+    applyItems(picks.map(function(p){ return {id:p.q.id, lv:p.lv, done:false}; }));
+  }
+  if(window.AwaraQuestSelector){
+    AwaraQuestSelector.init().then(function(){
+      return AwaraQuestSelector.pick({slug:slug, maxLevel:lv, count:3});
+    }).then(function(res){
+      if(!res||!res.length){ fallback(); return; }
+      res.forEach(function(r){ try{ AwaraQuestSelector.markServed(r); }catch(e){} });
+      applyItems(res.map(function(r){
+        return {id:r.quest.id, lv:r.level, done:false,
+          spiral_of:r.spiral_of||null,
+          echoes:(r.echoes&&r.echoes.length)?r.echoes.slice(0,1):[]};
+      }));
+    }).catch(function(e){
+      console.warn('[MatrixQuests] selector failed, fallback:', e);
+      fallback();
+    });
+  } else fallback();
+}
+
 function renderWithData(data, faces, slug, lv, day){
   var s=S(); if(!s) return;
   ensureQuestState();
 
   /* regenerate quests if day or slug changed */
   if(s.matQuests.day!==day || s.matQuests.slug!==slug){
-    var picks=pickDayQuests(data, lv);
-    s.matQuests={
-      day:day,
-      slug:slug,
-      items:picks.map(function(p){
-        return {id:p.q.id, lv:p.lv, done:false};
-      }),
-      proof:s.matQuests.proof||{}
-    };
-    saveState();
+    regenDayQuests(data, faces, slug, lv, day);
+    return;
   }
 
   var host=ensureHost(); if(!host) return;
@@ -371,6 +443,18 @@ function renderWithData(data, faces, slug, lv, day){
     h+='<div class="mq-hdr"><b>'+q.title+'</b><span class="mq-lv">'+lvLabel+'</span></div>';
     h+='<div class="mq-agent">\u043f\u043e\u043a\u0440\u043e\u0432\u0438\u0442\u0435\u043b\u044c: '+agentName+'</div>';
     h+='<div class="mq-text">'+q.text+'</div>';
+
+    /* v2 selector: \u0441\u043f\u0438\u0440\u0430\u043b\u044c \u0430\u0440\u0445\u0435\u0442\u0438\u043f\u0430 \u0438 \u044d\u0445\u043e-\u043f\u0430\u0440\u0430\u043b\u043b\u0435\u043b\u044c */
+    /* \u043e\u0434\u043d\u0430 \u0441\u0442\u0440\u043e\u043a\u0430-\u043f\u0440\u0438\u0447\u0438\u043d\u0430 \u0437\u0430 \u0440\u0430\u0437: \u0441\u043f\u0438\u0440\u0430\u043b\u044c > \u0441\u0442\u0438\u0445\u0438\u044f \u0434\u043d\u044f > \u044d\u0445\u043e
+       (\u043e\u0442\u0441\u0442\u0430\u044e\u0449\u0430\u044f \u043e\u0441\u044c \u0438 \u043f\u0440\u043e\u0444\u0438\u043b\u044c\u043d\u044b\u0435 \u043b\u0438\u043d\u0437\u044b: \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430 \u0432 \u0438\u0433\u0440\u0435 \u043d\u0435\u0442 \u2014
+       setProfile \u043d\u0438\u0433\u0434\u0435 \u043d\u0435 \u0432\u044b\u0437\u044b\u0432\u0430\u0435\u0442\u0441\u044f, awara_onboarding_v1 \u043d\u0438\u043a\u0435\u043c \u043d\u0435 \u043f\u0438\u0448\u0435\u0442\u0441\u044f) */
+    if(item.spiral_of){
+      h+='<div class="mq-spiral">\ud83c\udf00 '+esc(spiralMsg(item.spiral_of))+'</div>';
+    } else if(TYPE_ELEMENT_MQ[q.type]===dailyElementMq()){
+      h+='<div class="mq-why">\u2726 \u0421\u0442\u0438\u0445\u0438\u044f \u0434\u043d\u044f \u2014 '+dailyElementMq()+'. \u042d\u0442\u043e\u0442 \u0448\u0430\u0433 \u0437\u0432\u0443\u0447\u0438\u0442 \u0441 \u043d\u0435\u0439 \u0432 \u043b\u0430\u0434.</div>';
+    } else if(item.echoes&&item.echoes.length){
+      h+='<div class="mq-echo">\u3030 '+esc(echoMsg(item.echoes[0]))+'</div>';
+    }
 
     /* interactive proof area */
     if(!item.done){
@@ -516,6 +600,9 @@ function renderWithData(data, faces, slug, lv, day){
 
   /* dynamic bonuses */
   renderBonuses(faces);
+
+  /* v2 arcs: многодневный путь */
+  try{ renderArcsBlock(slug, lv); }catch(e){}
 }
 
 /* ---- switch quest difficulty ---- */
@@ -728,6 +815,13 @@ function completeQuest(i, playerText){
     return;
   }
 
+  /* v2 selector: зачёт архетипа — питает спираль и эхо */
+  try{
+    if(window.AwaraQuestSelector && quest){
+      AwaraQuestSelector.markCompleted({slug:slug, level:item.lv||1, quest:quest});
+    }
+  }catch(e){}
+
   /* v2: call AwaraXP.processExperience() */
   if(window.AwaraXP && window.AwaraXP.__ready && quest){
     var lensSlug=slug;
@@ -935,6 +1029,152 @@ function _showMatrixResult(quest, item, result, slug){
     };
   }
 }
+
+/* ═══════════════════════════════════════════
+   v2 arcs: МНОГОДНЕВНЫЙ ПУТЬ (L5+)
+   Карточка активной арки + предложение новой из pickArc().
+   ═══════════════════════════════════════════ */
+
+function arcTypeName(t){
+  var c=engineCfg();
+  var at=c&&c.quest_arcs&&c.quest_arcs.arc_types;
+  if(at&&at[t]&&at[t].name_ru) return at[t].name_ru;
+  return t||'';
+}
+
+function ensureArcHost(){
+  var ex=document.getElementById('arcQuests'); if(ex) return ex;
+  var mq=document.getElementById('matrixQuests');
+  if(!mq||!mq.parentNode) return null;
+  var box=document.createElement('div');
+  box.id='arcQuests'; box.className='card awara-glass-card';
+  box.style.marginTop='18px'; box.style.display='none';
+  mq.parentNode.insertBefore(box, mq);
+  return box;
+}
+
+/* v2 pilgrimage: days[] исходной арки по questId.
+   AwaraArcs.start() не переносит days из сида — на активной арке
+   поле days занято картой чекинов (dateISO -> note). */
+var _arcDaysMap=null,_arcDaysLoading=false;
+function arcDaysFor(questId){
+  if(_arcDaysMap) return _arcDaysMap[questId]||null;
+  if(!_arcDaysLoading){
+    _arcDaysLoading=true;
+    fetch('data/arc_quests_seed.json').then(function(r){ return r.ok?r.json():[]; }).then(function(list){
+      _arcDaysMap={};
+      (list||[]).forEach(function(a){ if(a.id&&a.days&&a.days.length) _arcDaysMap[a.id]=a.days; });
+      try{ var inf=activeSlug(); if(inf) renderArcsBlock(inf.slug, inf.lv||1); }catch(e){}
+    }).catch(function(){ _arcDaysMap={}; });
+  }
+  return null;
+}
+
+function arcCardHtml(arc){
+  var st=null;
+  try{ st=AwaraArcs.statusOf(arc.id); }catch(e){}
+  var can=!!(st&&st.canCheckinToday);
+  var skipsLeft=Math.max(0,(AwaraArcs.config.allowedSkips||0)-(arc.missed||0));
+  var h='<div class="arc-item" data-arc="'+esc(arc.id)+'">';
+  h+='<div class="arc-hdr"><b>'+esc(arc.title)+'</b><span class="arc-type">'+esc(arcTypeName(arc.arcType))+'</span></div>';
+  h+='<div class="arc-meta">день '+arc.doneCount+' из '+arc.duration+' · пропусков осталось: '+skipsLeft+'</div>';
+  h+='<div class="arc-prompt">'+esc(arc.checkpointPrompt)+'</div>';
+  var pdays=arcDaysFor(arc.questId);
+  if(pdays && arc.doneCount<pdays.length){
+    var pd=pdays[arc.doneCount];
+    h+='<div class="arc-day"><b>'+esc(pd.title)+'</b>';
+    h+='<div class="arc-day-text">'+esc(pd.text)+'</div>';
+    h+='<span class="arc-day-tier">ярус '+esc(pd.tier)+'</span></div>';
+  }
+  h+='<textarea class="arc-note" placeholder="Пара строк о прожитом дне…"></textarea>';
+  h+='<button class="arc-checkin"'+(can?'':' disabled')+' data-arc="'+esc(arc.id)+'">'+(can?'Отметить день':'Сегодня уже отмечено')+'</button>';
+  h+='</div>';
+  return h;
+}
+
+function arcOfferHtml(a){
+  var h='<div class="arc-offer">';
+  h+='<div class="arc-hdr"><b>'+esc(a.title)+'</b><span class="arc-type">'+esc(arcTypeName(a.arc_type))+'</span></div>';
+  h+='<div class="arc-meta">'+a.duration_days+' дн. · L'+a.level+'</div>';
+  h+='<div class="arc-prompt">'+esc(a.text||'')+'</div>';
+  h+='<button class="arc-accept">Принять путь</button>';
+  h+='</div>';
+  return h;
+}
+
+function renderArcsBlock(slug, lv){
+  if(!window.AwaraArcs) return;
+  /* lv из renderWithData может быть глубиной квеста (switchDepth) —
+     для гейта арок берём фактический уровень линзы */
+  try{ var inf=activeSlug(); if(inf&&inf.slug===slug) lv=inf.lv||lv; }catch(e){}
+  var host=ensureArcHost(); if(!host) return;
+  var active=[];
+  try{ active=AwaraArcs.active(); }catch(e){}
+  var h='<span class="label">Многодневный путь</span>';
+  active.forEach(function(a){ h+=arcCardHtml(a); });
+  h+='<div id="arcOffer"></div>';
+  host.innerHTML=h;
+  host.style.display=active.length?'':'none';
+
+  /* чекин активной арки */
+  host.querySelectorAll('.arc-checkin').forEach(function(btn){
+    btn.onclick=function(){
+      var id=btn.getAttribute('data-arc');
+      var it=btn.closest('.arc-item');
+      var ta=it?it.querySelector('.arc-note'):null;
+      var r=AwaraArcs.checkin(id, ta?ta.value.trim():'');
+      if(r&&!r.ok&&r.reason==='already_today'){
+        try{ if(typeof showToast==='function') showToast('Сегодня уже отмечено'); }catch(e){}
+      }
+      renderArcsBlock(slug, lv);
+    };
+  });
+
+  /* предложение новой арки: уровень линзы 5+ и меньше 2 активных */
+  var maxAct=(AwaraArcs.config&&AwaraArcs.config.maxActive)||2;
+  if(lv>=5 && active.length<maxAct && window.AwaraQuestSelector){
+    AwaraQuestSelector.init().then(function(){
+      var offer=AwaraQuestSelector.pickArc({slug:slug, maxLevel:lv});
+      var od=document.getElementById('arcOffer');
+      if(!offer||!od) return;
+      /* защита от дубля id (questId@дата): если арка уже стартовала сегодня
+         (в т.ч. сорвана сегодня) — AwaraArcs.checkin по этому id попадёт в старую
+         запись, поэтому сегодня её повторно не предлагаем */
+      var d=new Date();
+      var dupId=offer.id+'@'+d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+      var all=[]; try{ all=AwaraArcs.all(); }catch(e){}
+      for(var di=0;di<all.length;di++) if(all[di].id===dupId) return;
+      od.innerHTML=arcOfferHtml(offer);
+      host.style.display='';
+      var btn=od.querySelector('.arc-accept');
+      if(btn) btn.onclick=function(){
+        var r=AwaraArcs.start(offer);
+        if(r&&r.ok){
+          try{ if(typeof showToast==='function') showToast('Путь принят: '+offer.title); }catch(e){}
+        }
+        renderArcsBlock(slug, lv);
+      };
+    }).catch(function(e){});
+  }
+}
+
+/* события арок → тост со светом (общий showToast Тигеля) */
+(function(){
+  function t(msg){ try{ if(typeof showToast==='function') showToast(msg); }catch(e){} }
+  window.addEventListener('awara:arc-checkin', function(e){
+    var d=(e&&e.detail)||{};
+    if(d.arc&&d.arc.status==='completed') return; /* completed покажет свой тост */
+    t('Путь: день отмечен · ☀ +'+(d.light||0));
+  });
+  window.addEventListener('awara:arc-completed', function(e){
+    var d=(e&&e.detail)||{};
+    t('Путь «'+((d.arc&&d.arc.title)||'')+'» завершён ✦ ☀ +'+(d.light||0));
+  });
+  window.addEventListener('awara:arc-broken', function(e){
+    var d=(e&&e.detail)||{};
+    t('Путь «'+((d.arc&&d.arc.title)||'')+'» прерван · частичный зачёт ☀ +'+(d.light||0));
+  });
+})();
 
 /* ---- dynamic agent bonuses ---- */
 var BONUS_MAP={

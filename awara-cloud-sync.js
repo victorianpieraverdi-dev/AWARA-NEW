@@ -53,16 +53,25 @@ function restoreAll(data){
   return count;
 }
 
-/* ── API вызов ── */
+/* ── API вызов ──
+   15с потолок: на мобильной сети fetch может зависнуть без ошибки, тогда
+   callback никогда не вызовется — AbortController гарантирует, что он
+   всё равно придёт (с ошибкой таймаута). */
 function api(body,cb){
   try{
+    var ctrl=(typeof AbortController!=='undefined')?new AbortController():null;
+    var timer=ctrl?setTimeout(function(){ctrl.abort();},15000):null;
     fetch(ENDPOINT,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(body)
-    }).then(function(r){return r.json();}).then(function(j){
+      body:JSON.stringify(body),
+      signal:ctrl?ctrl.signal:undefined
+    }).then(function(r){if(timer)clearTimeout(timer);return r.json();}).then(function(j){
       cb(null,j);
-    }).catch(function(e){cb(e);});
+    }).catch(function(e){
+      if(timer)clearTimeout(timer);
+      cb((e&&e.name==='AbortError')?new Error('таймаут 15с'):e);
+    });
   }catch(e){cb(e);}
 }
 
