@@ -119,7 +119,9 @@ exports.handler = async (event) => {
     }
 
     const override = await getConfigText(db, 'system-prompt');
-    const finalMessages = override ? [{ role: 'system', content: override }, ...messages] : messages;
+    const finalMessages = override
+      ? [{ role: 'system', content: override }, ...messages.filter((m) => m.role !== 'system')]
+      : messages;
 
     const dsRes = await fetch(DEEPSEEK_URL, {
       method: 'POST',
