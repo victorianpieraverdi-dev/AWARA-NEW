@@ -56,6 +56,52 @@ function dailyElementMq(){
   return ['Огонь','Вода','Земля','Воздух','Эфир'][dayOfYear%5];
 }
 
+/* ---- v2 профиль (дешёвая часть): 1–2 отстающие оси из STATE.axes → setProfile ----
+   Не трогаем движок селектора. Профильные линзы (onboarding) — отдельный шаг. */
+function axesSnapshot(){
+  try{
+    if(window.AwaraXP&&AwaraXP.getAxes) return AwaraXP.getAxes()||{};
+  }catch(e){}
+  try{
+    var s=S();
+    if(s&&s.axes) return s.axes;
+  }catch(e2){}
+  return {};
+}
+function laggingAxesFromState(n){
+  n=n||2;
+  var ax=axesSnapshot();
+  var list=[], total=0, max=0, min=Infinity;
+  for(var i=0;i<AXES.length;i++){
+    var a=AXES[i];
+    var v=+(ax[a]||0);
+    list.push({a:a, v:v});
+    total+=v;
+    if(v>max) max=v;
+    if(v<min) min=v;
+  }
+  /* без накопленных осей не подделываем «отставание» (все нули) */
+  if(total<=0||max<=min) return [];
+  list.sort(function(x,y){
+    if(x.v!==y.v) return x.v-y.v;
+    return x.a<y.a?-1:x.a>y.a?1:0;
+  });
+  return list.slice(0,n).map(function(x){ return x.a; });
+}
+function syncSelectorProfile(){
+  if(!window.AwaraQuestSelector||!AwaraQuestSelector.setProfile) return [];
+  var lag=laggingAxesFromState(2);
+  try{ AwaraQuestSelector.setProfile({laggingAxes:lag}); }catch(e){}
+  return lag;
+}
+function questMainAxis(q){
+  if(!q||!q.reward) return null;
+  var keys=Object.keys(q.reward);
+  if(!keys.length) return null;
+  keys.sort(function(a,b){ return (q.reward[b]||0)-(q.reward[a]||0); });
+  return keys[0];
+}
+
 /* ---- quest data cache ---- */
 var _cache={}; /* slug -> parsed json */
 var _facesCache={}; /* slug -> faces from codex */
@@ -363,6 +409,7 @@ function regenDayQuests(data, faces, slug, lv, day){
   }
   if(window.AwaraQuestSelector){
     AwaraQuestSelector.init().then(function(){
+      syncSelectorProfile();
       return AwaraQuestSelector.pick({slug:slug, maxLevel:lv, count:3});
     }).then(function(res){
       if(!res||!res.length){ fallback(); return; }
@@ -444,12 +491,14 @@ function renderWithData(data, faces, slug, lv, day){
     h+='<div class="mq-agent">\u043f\u043e\u043a\u0440\u043e\u0432\u0438\u0442\u0435\u043b\u044c: '+agentName+'</div>';
     h+='<div class="mq-text">'+q.text+'</div>';
 
-    /* v2 selector: \u0441\u043f\u0438\u0440\u0430\u043b\u044c \u0430\u0440\u0445\u0435\u0442\u0438\u043f\u0430 \u0438 \u044d\u0445\u043e-\u043f\u0430\u0440\u0430\u043b\u043b\u0435\u043b\u044c */
-    /* \u043e\u0434\u043d\u0430 \u0441\u0442\u0440\u043e\u043a\u0430-\u043f\u0440\u0438\u0447\u0438\u043d\u0430 \u0437\u0430 \u0440\u0430\u0437: \u0441\u043f\u0438\u0440\u0430\u043b\u044c > \u0441\u0442\u0438\u0445\u0438\u044f \u0434\u043d\u044f > \u044d\u0445\u043e
-       (\u043e\u0442\u0441\u0442\u0430\u044e\u0449\u0430\u044f \u043e\u0441\u044c \u0438 \u043f\u0440\u043e\u0444\u0438\u043b\u044c\u043d\u044b\u0435 \u043b\u0438\u043d\u0437\u044b: \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430 \u0432 \u0438\u0433\u0440\u0435 \u043d\u0435\u0442 \u2014
-       setProfile \u043d\u0438\u0433\u0434\u0435 \u043d\u0435 \u0432\u044b\u0437\u044b\u0432\u0430\u0435\u0442\u0441\u044f, awara_onboarding_v1 \u043d\u0438\u043a\u0435\u043c \u043d\u0435 \u043f\u0438\u0448\u0435\u0442\u0441\u044f) */
+    /* v2: одна строка-причина (приоритет: спираль → отстающая ось → стихия → эхо).
+       Профильная линза (onboarding) — пока без строки: awara_onboarding_v1 никто не пишет. */
+    var _mainAx=questMainAxis(q);
+    var _lagAx=laggingAxesFromState(2);
     if(item.spiral_of){
       h+='<div class="mq-spiral">\ud83c\udf00 '+esc(spiralMsg(item.spiral_of))+'</div>';
+    } else if(_mainAx&&_lagAx.indexOf(_mainAx)>=0){
+      h+='<div class="mq-why">\u2726 \u041e\u0441\u044c \u00ab'+esc(AXIS_NAME[_mainAx]||_mainAx)+'\u00bb \u043f\u0440\u043e\u0441\u0438\u0442 \u0432\u043d\u0438\u043c\u0430\u043d\u0438\u044f. \u042d\u0442\u043e\u0442 \u0448\u0430\u0433 \u0435\u0451 \u043f\u0438\u0442\u0430\u0435\u0442.</div>';
     } else if(TYPE_ELEMENT_MQ[q.type]===dailyElementMq()){
       h+='<div class="mq-why">\u2726 \u0421\u0442\u0438\u0445\u0438\u044f \u0434\u043d\u044f \u2014 '+dailyElementMq()+'. \u042d\u0442\u043e\u0442 \u0448\u0430\u0433 \u0437\u0432\u0443\u0447\u0438\u0442 \u0441 \u043d\u0435\u0439 \u0432 \u043b\u0430\u0434.</div>';
     } else if(item.echoes&&item.echoes.length){

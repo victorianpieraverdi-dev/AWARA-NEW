@@ -1,8 +1,38 @@
 # AWARA / ТИГЕЛЬ — HANDOFF
 
+_Обновлено: 2026-07-21. Сессия «Квесты v2» (приёмка + профиль)._
+
+## 0. ТЕКУЩАЯ СЕССИЯ (2026-07-21) — начать отсюда
+
+**Ветка `dev`.** Полный хендофф Квестов v2: [`docs/quests-v2-handoff.md`](docs/quests-v2-handoff.md).
+
+### Статус Квестов v2
+
+- Перенос из `C:\AWARA` / `task/quests-v2` → CLEAN: коммит `96d7f7b`.
+- Движки (`awara-quest-arcs.js`, `awara-quest-selector.js`) — **не трогать**.
+- Индекс — только `py tools/build_archetype_index.py` (эталон 5508/5205/214).
+- Seed — append-only (17 ручных арок).
+- **Не push / не Netlify** без явной команды Павла.
+
+### План сессии (по порядку)
+
+1. **A** ✅ — `docs/quests-v2-handoff.md` + этот файл.
+2. **B** ✅ — headless приёмка `node tools/quests-v2-accept.js` → 17/17 PASS; пересборка индекса 5508/5205/214. Пункт 6 (`?dev=arc`) — только глазами в браузере.
+3. **C** ✅ — дешёвый профиль lag-оси в `awara-matrix-quests.js` (`syncSelectorProfile` + строка-причина). Движки не трогались. `?v=3` на matrix-quests.
+
+### Следующий кандидат
+
+Дорогой профиль: экран занятий → линзы → `awara_onboarding_v1` (autoProfile селектора уже читает ключ).
+
+**Не push / не Netlify** без команды Павла.
+
+---
+
+## 0b. АРХИВ — СЕССИЯ «Облако» (2026-07-19)
+
 _Обновлено: 2026-07-19. Сессия «Облако» (Netlify + Firestore + DeepSeek)._
 
-## 0. ТЕКУЩАЯ СЕССИЯ (2026-07-19) — начать отсюда
+## 0. (архив) СЕССИЯ (2026-07-19)
 
 **Ветка `dev`, НЕ смержена в `main`.** PR #1: https://github.com/victorianpieraverdi-dev/AWARA-NEW/pull/1
 **Deploy preview (бесплатный, обновляется на каждый push в dev):** https://dev--transcendent-creponne-73195d.netlify.app
