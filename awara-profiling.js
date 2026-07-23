@@ -133,7 +133,7 @@ canvas#profStars{position:absolute;inset:0;width:100%;height:100%}
 .prof-scanline{position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 3px,rgba(255,255,255,.012) 3px 4px);pointer-events:none}
 
 /* ── Scroll ── */
-.prof-scroll{position:relative;z-index:2;flex:1;overflow-y:auto;overflow-x:hidden;padding:0 18px 140px;-webkit-overflow-scrolling:touch;max-width:520px;margin:0 auto}
+.prof-scroll{position:relative;z-index:2;flex:1;width:100%;overflow-y:auto;overflow-x:hidden;padding:0 18px 140px;-webkit-overflow-scrolling:touch;max-width:520px;margin:0 auto;box-sizing:border-box}
 .prof-scroll::-webkit-scrollbar{width:0}
 
 /* ── Header ── */
@@ -186,7 +186,9 @@ canvas#profStars{position:absolute;inset:0;width:100%;height:100%}
 @keyframes tagIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
 
 /* ── Category Grid ── */
-.prof-cats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px}
+.prof-cats{display:flex;flex-direction:column;margin:16px auto 0;max-width:340px}
+.prof-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.prof-exp-row{display:block}
 
 /* ── Category Card ── */
 .prof-cat{
@@ -195,7 +197,6 @@ canvas#profStars{position:absolute;inset:0;width:100%;height:100%}
   transition:all .35s cubic-bezier(.22,.68,.36,1);position:relative;overflow:hidden;
   -webkit-tap-highlight-color:transparent;
 }
-.prof-cat:active{transform:scale(.95)}
 .prof-cat .ci{font-size:26px;display:block;margin-bottom:4px;transition:transform .3s ease}
 .prof-cat .cn{font-family:'Cinzel',serif;font-size:11px;color:#fff;line-height:1.2;letter-spacing:.02em}
 
@@ -217,22 +218,21 @@ canvas#profStars{position:absolute;inset:0;width:100%;height:100%}
 .prof-cat.s1 .cb,.prof-cat.s2 .cb,.prof-cat.s3 .cb,.prof-cat.smax .cb{opacity:1;transform:scale(1)}
 
 /* ── Expand Panel ── */
-.prof-exp-wrap{display:block}
 .prof-exp{overflow:hidden;max-height:0;opacity:0;display:none;
   transition:max-height .45s cubic-bezier(.22,.68,.36,1),opacity .35s ease,margin .35s ease;margin:0}
 .prof-exp.open{display:block;max-height:800px;opacity:1;margin:2px 0 6px}
-.prof-exp-in{padding:4px 0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.prof-exp-in{padding:4px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 
 /* ── Branch Chip ── */
 .prof-br{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:9px 14px;border:1px solid rgba(255,255,255,.07);border-radius:24px;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  box-sizing:border-box;min-height:52px;
+  padding:9px 10px;border:1px solid rgba(255,255,255,.07);border-radius:24px;
   background:rgba(255,255,255,.02);cursor:pointer;
   transition:all .25s cubic-bezier(.22,.68,.36,1);
   -webkit-tap-highlight-color:transparent;
 }
-.prof-br:active{transform:scale(.95)}
-.prof-br .bn{font-family:'Cormorant Garamond',serif;font-size:15px;color:#ece9f5;white-space:nowrap}
+.prof-br .bn{font-family:'Cormorant Garamond',serif;font-size:14px;color:#ece9f5;white-space:normal;text-align:center;line-height:1.2}
 .prof-br .bk{width:8px;height:8px;border-radius:50%;border:1.5px solid rgba(157,134,224,.4);
   flex:0 0 8px;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
 .prof-br.sel{border-color:rgba(201,168,76,.4);
@@ -265,7 +265,7 @@ canvas#profStars{position:absolute;inset:0;width:100%;height:100%}
 .prof-reset:hover,.prof-reset:active{border-color:rgba(201,168,76,.3);color:var(--gold,#c9a84c)}
 
 /* ── Responsive ── */
-@media(max-width:360px){.prof-cats{grid-template-columns:1fr 1fr;gap:8px}.prof-hdr h1{font-size:20px}}
+@media(max-width:360px){.prof-row,.prof-exp-in{grid-template-columns:1fr 1fr;gap:8px}.prof-hdr h1{font-size:20px}}
 
 /* ── Pulse on rank change ── */
 @keyframes rankPulse{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
@@ -287,7 +287,7 @@ function buildOverlay(){
     <div class="prof-hdr">
       <h1>Карта Путей</h1>
       <p class="prof-sub">Открывай сферы — выбирай всё, что резонирует</p>
-      <button class="prof-reset" id="profResetBtn" style="display:none">⟳ Сбросить</button>
+      <button class="prof-reset" id="profResetBtn" style="visibility:hidden">⟳ Сбросить</button>
     </div>
 
     <div class="prof-live" id="profLive">
@@ -316,26 +316,29 @@ function buildOverlay(){
 
     <div class="prof-cats" id="profCats">`;
 
-  CATS.forEach(cat => {
-    html += `
+  for(let i = 0; i < CATS.length; i += 3){
+    const rowCats = CATS.slice(i, i + 3);
+    html += `<div class="prof-row">`;
+    rowCats.forEach(cat => {
+      html += `
       <div class="prof-cat" data-cat="${cat.id}" id="pc_${cat.id}">
         <div class="cb" id="pcb_${cat.id}">0</div>
         <span class="ci">${cat.icon}</span>
         <div class="cn">${cat.name}</div>
       </div>`;
-  });
-
-  html += `</div>
-    <div class="prof-exp-wrap" id="profExpWrap">`;
-
-  CATS.forEach(cat => {
-    html += `
-      <div class="prof-exp" id="pe_${cat.id}"><div class="prof-exp-in">`;
-    cat.branches.forEach(br => {
-      html += `<div class="prof-br" data-branch="${br.id}"><div class="bk"></div><span class="bn">${br.name}</span></div>`;
     });
-    html += `</div></div>`;
-  });
+    html += `</div>
+    <div class="prof-exp-row">`;
+    rowCats.forEach(cat => {
+      html += `
+      <div class="prof-exp" id="pe_${cat.id}"><div class="prof-exp-in">`;
+      cat.branches.forEach(br => {
+        html += `<div class="prof-br" data-branch="${br.id}"><div class="bk"></div><span class="bn">${br.name}</span></div>`;
+      });
+      html += `</div></div>`;
+    });
+    html += `</div>`;
+  }
 
   html += `</div>
     <div class="prof-cfm-wrap" id="profCfmWrap">
@@ -488,7 +491,7 @@ function updateUI(){
 
   // ── Confirm ──
   document.getElementById('profCfmWrap').classList.toggle('show', n >= 1);
-  var rb = document.getElementById('profResetBtn'); if(rb) rb.style.display = n > 0 ? 'inline-block' : 'none';
+  var rb = document.getElementById('profResetBtn'); if(rb) rb.style.visibility = n > 0 ? 'visible' : 'hidden';
 }
 
 /* ─── Build Profile ─── */
