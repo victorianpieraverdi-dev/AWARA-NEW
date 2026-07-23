@@ -201,15 +201,12 @@ canvas#profStars{position:absolute;inset:0;width:100%;height:100%}
 
 /* Category glow states */
 .prof-cat.s1{border-color:rgba(123,98,201,.25);background:rgba(123,98,201,.04)}
-.prof-cat.s1 .ci{transform:scale(1.05)}
 .prof-cat.s2{border-color:rgba(170,140,76,.3);background:linear-gradient(160deg,rgba(201,168,76,.06),rgba(123,98,201,.04))}
-.prof-cat.s2 .ci{transform:scale(1.1)}
 .prof-cat.s3{border-color:rgba(201,168,76,.4);background:linear-gradient(160deg,rgba(201,168,76,.1),rgba(123,98,201,.06));
   box-shadow:0 0 16px rgba(201,168,76,.1)}
-.prof-cat.s3 .ci{transform:scale(1.15)}
 .prof-cat.smax{border-color:rgba(255,210,122,.5);background:linear-gradient(160deg,rgba(255,210,122,.12),rgba(201,168,76,.08));
   box-shadow:0 0 24px rgba(201,168,76,.2)}
-.prof-cat.smax .ci{transform:scale(1.2);filter:drop-shadow(0 0 6px rgba(255,210,122,.5))}
+.prof-cat.smax .ci{filter:drop-shadow(0 0 6px rgba(255,210,122,.5))}
 
 /* Badge */
 .prof-cat .cb{position:absolute;top:5px;right:6px;min-width:16px;height:16px;border-radius:10px;
@@ -220,10 +217,11 @@ canvas#profStars{position:absolute;inset:0;width:100%;height:100%}
 .prof-cat.s1 .cb,.prof-cat.s2 .cb,.prof-cat.s3 .cb,.prof-cat.smax .cb{opacity:1;transform:scale(1)}
 
 /* ── Expand Panel ── */
-.prof-exp{grid-column:1/-1;overflow:hidden;max-height:0;opacity:0;display:none;
+.prof-exp-wrap{display:block}
+.prof-exp{overflow:hidden;max-height:0;opacity:0;display:none;
   transition:max-height .45s cubic-bezier(.22,.68,.36,1),opacity .35s ease,margin .35s ease;margin:0}
 .prof-exp.open{display:block;max-height:800px;opacity:1;margin:2px 0 6px}
-.prof-exp-in{padding:4px 0;display:flex;flex-wrap:wrap;gap:8px}
+.prof-exp-in{padding:4px 0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 
 /* ── Branch Chip ── */
 .prof-br{
@@ -324,7 +322,14 @@ function buildOverlay(){
         <div class="cb" id="pcb_${cat.id}">0</div>
         <span class="ci">${cat.icon}</span>
         <div class="cn">${cat.name}</div>
-      </div>
+      </div>`;
+  });
+
+  html += `</div>
+    <div class="prof-exp-wrap" id="profExpWrap">`;
+
+  CATS.forEach(cat => {
+    html += `
       <div class="prof-exp" id="pe_${cat.id}"><div class="prof-exp-in">`;
     cat.branches.forEach(br => {
       html += `<div class="prof-br" data-branch="${br.id}"><div class="bk"></div><span class="bn">${br.name}</span></div>`;
@@ -332,7 +337,7 @@ function buildOverlay(){
     html += `</div></div>`;
   });
 
-  html += `</div></div>
+  html += `</div>
     <div class="prof-cfm-wrap" id="profCfmWrap">
       <button class="prof-cfm" id="profCfmBtn">Начать путь</button>
     </div>`;
