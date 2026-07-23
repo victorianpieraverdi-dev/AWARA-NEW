@@ -122,8 +122,18 @@ function injectCSS(){
 #profilingOverlay.visible{opacity:1}
 #profilingOverlay.hiding{opacity:0;pointer-events:none}
 
+/* ── Cosmos background ── */
+.prof-cosmos{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.prof-neb{position:absolute;border-radius:50%;filter:blur(50px);opacity:.55;mix-blend-mode:screen;animation:profDrift 26s ease-in-out infinite}
+.prof-neb.a{width:340px;height:340px;top:-90px;left:-70px;background:radial-gradient(circle,#5b3ea8,transparent 70%)}
+.prof-neb.b{width:300px;height:300px;bottom:40px;right:-90px;background:radial-gradient(circle,#8a6a2e,transparent 70%);animation-delay:-8s}
+.prof-neb.c{width:260px;height:260px;top:40%;left:30%;background:radial-gradient(circle,#3a2f73,transparent 70%);animation-delay:-15s}
+@keyframes profDrift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-24px) scale(1.12)}}
+canvas#profStars{position:absolute;inset:0;width:100%;height:100%}
+.prof-scanline{position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 3px,rgba(255,255,255,.012) 3px 4px);pointer-events:none}
+
 /* ── Scroll ── */
-.prof-scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 18px 140px;-webkit-overflow-scrolling:touch}
+.prof-scroll{position:relative;z-index:2;flex:1;overflow-y:auto;overflow-x:hidden;padding:0 18px 140px;-webkit-overflow-scrolling:touch;max-width:520px;margin:0 auto}
 .prof-scroll::-webkit-scrollbar{width:0}
 
 /* ── Header ── */
@@ -210,9 +220,9 @@ function injectCSS(){
 .prof-cat.s1 .cb,.prof-cat.s2 .cb,.prof-cat.s3 .cb,.prof-cat.smax .cb{opacity:1;transform:scale(1)}
 
 /* ── Expand Panel ── */
-.prof-exp{grid-column:1/-1;overflow:hidden;max-height:0;opacity:0;
+.prof-exp{grid-column:1/-1;overflow:hidden;max-height:0;opacity:0;display:none;
   transition:max-height .45s cubic-bezier(.22,.68,.36,1),opacity .35s ease,margin .35s ease;margin:0}
-.prof-exp.open{max-height:800px;opacity:1;margin:2px 0 6px}
+.prof-exp.open{display:block;max-height:800px;opacity:1;margin:2px 0 6px}
 .prof-exp-in{padding:4px 0;display:flex;flex-wrap:wrap;gap:8px}
 
 /* ── Branch Chip ── */
@@ -274,7 +284,8 @@ function buildOverlay(){
   const axisKeys = ['discipline','compassion','will','devotion','clarity','transformation','unity'];
   const axColors = ['#c9a84c','#e08686','#ff7a3d','#7bc98a','#86b4e0','#c986e0','#ffd27a'];
 
-  let html = `<div class="prof-scroll">
+  let html = `<div class="prof-cosmos"><div class="prof-neb a"></div><div class="prof-neb b"></div><div class="prof-neb c"></div><canvas id="profStars"></canvas><div class="prof-scanline"></div></div>
+  <div class="prof-scroll">
     <div class="prof-hdr">
       <h1>Карта Путей</h1>
       <p class="prof-sub">Открывай сферы — выбирай всё, что резонирует</p>
@@ -330,6 +341,35 @@ function buildOverlay(){
   document.body.appendChild(ov);
   requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('visible')));
   bindEvents();
+  profStarfield();
+}
+
+/* ─── Cosmos starfield (mirrors tigel-app.html's own #stars canvas) ─── */
+function profStarfield(){
+  const c = document.getElementById('profStars');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  function size(){ c.width = c.offsetWidth; c.height = c.offsetHeight; }
+  size();
+  const stars = Array.from({length:70}, () => ({
+    x:Math.random(), y:Math.random(), r:Math.random()*1.3+.2,
+    t:Math.random()*6.28, s:Math.random()*.02+.005
+  }));
+  function loop(){
+    if(!document.body.contains(c)) return;
+    ctx.clearRect(0,0,c.width,c.height);
+    stars.forEach(st => {
+      st.t += st.s;
+      const a = .35 + .55*Math.abs(Math.sin(st.t));
+      ctx.beginPath();
+      ctx.arc(st.x*c.width, st.y*c.height, st.r, 0, 6.28);
+      ctx.fillStyle = 'rgba(255,240,210,'+a+')';
+      ctx.fill();
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+  window.addEventListener('resize', size);
 }
 
 /* ─── Events ─── */
@@ -353,14 +393,19 @@ function bindEvents(){
 
 function toggleExpand(catId){
   const was = expandedCat;
-  if(expandedCat){
-    const old = document.getElementById('pe_' + expandedCat);
-    if(old) old.classList.remove('open');
+  if(was){
+    const old = document.getElementById('pe_' + was);
+    if(old){
+      old.classList.remove('open');
+      setTimeout(() => { old.style.display = 'none'; }, 450);
+    }
   }
   if(catId !== was){
     expandedCat = catId;
     const panel = document.getElementById('pe_' + catId);
     if(panel){
+      panel.style.display = 'block';
+      void panel.offsetHeight; // force reflow so max-height transition animates
       panel.classList.add('open');
       setTimeout(() => {
         const ce = document.getElementById('pc_' + catId);
